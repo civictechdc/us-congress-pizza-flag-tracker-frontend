@@ -1,32 +1,32 @@
 import React, { useState } from "react";
-import TutorialDataService from "../services/TutorialService";
+import OrderDataService from "../services/OrderService";
 
-const AddTutorial = () => {
-  const initialTutorialState = {
+const AddOrder = () => {
+  const initialOrderState = {
     id: null,
     order_number: "",
     coffice: "",
     usastate: "",
     published: false
   };
-  const [tutorial, setTutorial] = useState(initialTutorialState);
+  const [order, setOrder] = useState(initialOrderState);
   const [submitted, setSubmitted] = useState(false);
 
   const handleInputChange = event => {
     const { name, value } = event.target;
-    setTutorial({ ...tutorial, [name]: value });
+    setOrder({ ...order, [name]: value });
   };
 
-  const saveTutorial = () => {
+  const saveOrder = () => {
     var data = {
-      order_number: tutorial.order_number,
-      coffice: tutorial.coffice,
-      usa_state: tutorial.usa_state
+      order_number: order.order_number,
+      coffice: order.coffice,
+      usa_state: order.usa_state
     };
 
-    TutorialDataService.create(data)
+    OrderDataService.create(data)
       .then(response => {
-        setTutorial({
+        setOrder({
           id: response.data.id,
           order_number: response.data.order_number,
           coffice: response.data.coffice,
@@ -41,8 +41,8 @@ const AddTutorial = () => {
       });
   };
 
-  const newTutorial = () => {
-    setTutorial(initialTutorialState);
+  const newOrder = () => {
+    setOrder(initialOrderState);
     setSubmitted(false);
   };
 
@@ -51,7 +51,7 @@ const AddTutorial = () => {
       {submitted ? (
         <div>
           <h4>You submitted successfully!</h4>
-          <button className="btn btn-success" onClick={newTutorial}>
+          <button className="btn btn-success" onClick={newOrder}>
             Add
           </button>
         </div>
@@ -64,7 +64,7 @@ const AddTutorial = () => {
               className="form-control"
               id="order_number"
               required
-              value={tutorial.order_number}
+              value={order.order_number}
               onChange={handleInputChange}
               name="order_number"
             />
@@ -77,7 +77,7 @@ const AddTutorial = () => {
               className="form-control"
               id="coffice"
               required
-              value={tutorial.coffice}
+              value={order.coffice}
               onChange={handleInputChange}
               name="coffice"
             />
@@ -90,13 +90,13 @@ const AddTutorial = () => {
               className="form-control"
               id="usa_state"
               required
-              value={tutorial.usa_state}
+              value={order.usa_state}
               onChange={handleInputChange}
               name="usa_state"
             />
           </div>
 
-          <button onClick={saveTutorial} className="btn btn-success">
+          <button onClick={saveOrder} className="btn btn-success">
             Submit
           </button>
         </div>
@@ -105,4 +105,4 @@ const AddTutorial = () => {
   );
 };
 
-export default AddTutorial;
+export default AddOrder;

@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import TutorialDataService from "../services/TutorialService";
+import OrderDataService from "../services/OrderService";
 import { Link } from "react-router-dom";
 
-const TutorialsList = () => {
-  const [tutorials, setTutorials] = useState([]);
-  const [currentTutorial, setCurrentTutorial] = useState(null);
+const OrdersList = () => {
+  const [orders, setOrders] = useState([]);
+  const [currentOrder, setCurrentOrder] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchTitle, setSearchTitle] = useState("");
 
   useEffect(() => {
-    retrieveTutorials();
+    retrieveOrders();
   }, []);
 
   const onChangeSearchTitle = e => {
@@ -17,10 +17,10 @@ const TutorialsList = () => {
     setSearchTitle(searchTitle);
   };
 
-  const retrieveTutorials = () => {
-    TutorialDataService.getAll()
+  const retrieveOrders = () => {
+    OrderDataService.getAll()
       .then(response => {
-        setTutorials(response.data);
+        setOrders(response.data);
         console.log(response.data);
       })
       .catch(e => {
@@ -29,18 +29,18 @@ const TutorialsList = () => {
   };
 
   const refreshList = () => {
-    retrieveTutorials();
-    setCurrentTutorial(null);
+    retrieveOrders();
+    setCurrentOrder(null);
     setCurrentIndex(-1);
   };
 
-  const setActiveTutorial = (tutorial, index) => {
-    setCurrentTutorial(tutorial);
+  const setActiveOrder = (order, index) => {
+    setCurrentOrder(order);
     setCurrentIndex(index);
   };
 
-  const removeAllTutorials = () => {
-    TutorialDataService.removeAll()
+  const removeAllOrders = () => {
+    OrderDataService.removeAll()
       .then(response => {
         console.log(response.data);
         refreshList();
@@ -51,9 +51,9 @@ const TutorialsList = () => {
   };
 
   const findByTitle = () => {
-    TutorialDataService.findByTitle(searchTitle)
+    OrderDataService.findByTitle(searchTitle)
       .then(response => {
-        setTutorials(response.data);
+        setOrders(response.data);
         console.log(response.data);
       })
       .catch(e => {
@@ -84,55 +84,55 @@ const TutorialsList = () => {
         </div>
       </div>
       <div className="col-md-6">
-        <h4>Tutorials List</h4>
+        <h4>Orders List</h4>
 
         <ul className="list-group">
-          {tutorials &&
-            tutorials.map((tutorial, index) => (
+          {orders &&
+            orders.map((order, index) => (
               <li
                 className={
                   "list-group-item " + (index === currentIndex ? "active" : "")
                 }
-                onClick={() => setActiveTutorial(tutorial, index)}
+                onClick={() => setActiveOrder(order, index)}
                 key={index}
               >
-                {tutorial.title}
+                {order.title}
               </li>
             ))}
         </ul>
 
         <button
           className="m-3 btn btn-sm btn-danger"
-          onClick={removeAllTutorials}
+          onClick={removeAllOrders}
         >
           Remove All
         </button>
       </div>
       <div className="col-md-6">
-        {currentTutorial ? (
+        {currentOrder ? (
           <div>
-            <h4>Tutorial</h4>
+            <h4>Order</h4>
             <div>
               <label>
                 <strong>Title:</strong>
               </label>{" "}
-              {currentTutorial.title}
+              {currentOrder.title}
             </div>
             <div>
               <label>
                 <strong>Description:</strong>
               </label>{" "}
-              {currentTutorial.description}
+              {currentOrder.description}
             </div>
             <div>
               <label>
                 <strong>Status:</strong>
               </label>{" "}
-              {currentTutorial.published ? "Published" : "Pending"}
+              {currentOrder.published ? "Published" : "Pending"}
             </div>
 
             <Link
-              to={"/tutorials/" + currentTutorial.id}
+              to={"/orders/" + currentOrder.id}
               className="badge badge-warning"
             >
               Edit
@@ -141,7 +141,7 @@ const TutorialsList = () => {
         ) : (
           <div>
             <br />
-            <p>Please click on a Tutorial...</p>
+            <p>Please click on a Order...</p>
           </div>
         )}
       </div>
@@ -149,4 +149,4 @@ const TutorialsList = () => {
   );
 };
 
-export default TutorialsList;
+export default OrdersList;

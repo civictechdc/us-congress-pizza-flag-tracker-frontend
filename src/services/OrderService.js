@@ -1,31 +1,31 @@
 import http from "../http-common";
 
 const getAll = () => {
-  return http.get("/tutorials");
+  return http.get("/orders");
 };
 
 const get = id => {
-  return http.get(`/tutorials/${id}`);
+  return http.get(`/orders/${id}`);
 };
 
 const create = data => {
-  return http.post("/create", data);
+  return http.post("/orders/create", data);
 };
 
 const update = (id, data) => {
-  return http.put(`/tutorials/${id}`, data);
+  return http.put(`/orders/${id}`, data);
 };
 
 const remove = id => {
-  return http.delete(`/tutorials/${id}`);
+  return http.delete(`/orders/${id}`);
 };
 
 const removeAll = () => {
-  return http.delete(`/tutorials`);
+  return http.delete(`/orders`);
 };
 
 const findByTitle = title => {
-  return http.get(`/tutorials?title=${title}`);
+  return http.get(`/orders?title=${title}`);
 };
 
 export default {
