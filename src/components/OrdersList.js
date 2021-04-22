@@ -20,8 +20,8 @@ const OrdersList = () => {
   const retrieveOrders = () => {
     OrderDataService.getAll()
       .then(response => {
-        setOrders(response.data);
-        console.log(response.data);
+        setOrders(response.data.data);
+        console.log(response.data.data);
       })
       .catch(e => {
         console.log(e);
@@ -60,7 +60,7 @@ const OrdersList = () => {
         console.log(e);
       });
   };
-
+  console.log('debug orders', orders)
   return (
     <div className="list row">
       <div className="col-md-8">
