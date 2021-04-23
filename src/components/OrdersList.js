@@ -20,8 +20,8 @@ const OrdersList = () => {
   const retrieveOrders = () => {
     OrderDataService.getAll()
       .then(response => {
-        setOrders(response.data.data);
-        console.log(response.data.data);
+        setOrders(response.data.orders);
+        console.log("debug", response.data);
       })
       .catch(e => {
         console.log(e);
@@ -96,7 +96,7 @@ const OrdersList = () => {
                 onClick={() => setActiveOrder(order, index)}
                 key={index}
               >
-                {order.title}
+                {order.order_number} {order.usa_state} {order.coffice}
               </li>
             ))}
         </ul>
