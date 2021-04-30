@@ -12,18 +12,18 @@ const OrdersList = () => {
     retrieveOrders();
   }, []);
 
-  const onChangeSearchTitle = e => {
+  const onChangeSearchTitle = (e) => {
     const searchTitle = e.target.value;
     setSearchTitle(searchTitle);
   };
 
   const retrieveOrders = () => {
     OrderDataService.getAll()
-      .then(response => {
+      .then((response) => {
         setOrders(response.data.orders);
         console.log("debug", response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
@@ -41,26 +41,44 @@ const OrdersList = () => {
 
   const removeAllOrders = () => {
     OrderDataService.removeAll()
-      .then(response => {
+      .then((response) => {
         console.log(response.data);
         refreshList();
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
 
   const findByTitle = () => {
     OrderDataService.findByTitle(searchTitle)
-      .then(response => {
+      .then((response) => {
         setOrders(response.data);
         console.log(response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
-  console.log('debug orders', orders)
+
+  const orderTbody = (
+    <tbody className="flag-group">
+      {orders &&
+        orders.map((order, index) => (
+          <tr
+            className={
+              "flag-group-item " + (index === currentIndex ? "active" : "")
+            }
+            onClick={() => setActiveOrder(order, index)}
+            key={index}
+          >
+            <td>{order.order_number}</td>
+            <td>{order.usa_state}</td>
+            <td>{order.coffice}</td>
+          </tr>
+        ))}
+    </tbody>
+  );
   return (
     <div className="list row">
       <div className="col-md-8">
@@ -86,25 +104,18 @@ const OrdersList = () => {
       <div className="col-md-6">
         <h4>Orders List</h4>
 
-        <ul className="list-group">
-          {orders &&
-            orders.map((order, index) => (
-              <li
-                className={
-                  "list-group-item " + (index === currentIndex ? "active" : "")
-                }
-                onClick={() => setActiveOrder(order, index)}
-                key={index}
-              >
-                {order.order_number} {order.usa_state} {order.coffice}
-              </li>
-            ))}
-        </ul>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Order Number</th>
+              <th scope="col">USA State</th>
+              <th scope="col">Congressional Office</th>
+            </tr>
+          </thead>
+          {orderTbody}
+        </table>
 
-        <button
-          className="m-3 btn btn-sm btn-danger"
-          onClick={removeAllOrders}
-        >
+        <button className="m-3 btn btn-sm btn-danger" onClick={removeAllOrders}>
           Remove All
         </button>
       </div>
