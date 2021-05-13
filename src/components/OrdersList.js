@@ -125,15 +125,21 @@ const OrdersList = () => {
             <h4>Order</h4>
             <div>
               <label>
-                <strong>Title:</strong>
+                <strong>Order Number:</strong>
               </label>{" "}
-              {currentOrder.title}
+              {currentOrder.order_number}
             </div>
             <div>
               <label>
-                <strong>Description:</strong>
+                <strong>Congressional Office:</strong>
               </label>{" "}
-              {currentOrder.description}
+              {currentOrder.coffice}
+            </div>
+            <div>
+              <label>
+                <strong>Congressional Office:</strong>
+              </label>{" "}
+              {currentOrder.uuid}
             </div>
             <div>
               <label>
@@ -143,7 +149,7 @@ const OrdersList = () => {
             </div>
 
             <Link
-              to={"/orders/" + currentOrder.id}
+              to={"/orders/" + currentOrder.uuid}
               className="badge badge-warning"
             >
               Edit

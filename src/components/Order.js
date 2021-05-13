@@ -6,6 +6,11 @@ const Order = props => {
     id: null,
     title: "",
     description: "",
+    published: false,
+    id: null,
+    order_number: "",
+    coffice: "",
+    usastate: "",
     published: false
   };
   const [currentOrder, setCurrentOrder] = useState(initialOrderState);
@@ -34,8 +39,8 @@ const Order = props => {
   const updatePublished = status => {
     var data = {
       id: currentOrder.id,
-      title: currentOrder.title,
-      description: currentOrder.description,
+      order_number: currentOrder.order_number,
+      coffice: currentOrder.coffice,
       published: status
     };
 
@@ -84,18 +89,18 @@ const Order = props => {
                 className="form-control"
                 id="title"
                 name="title"
-                value={currentOrder.title}
+                value={currentOrder.order_number}
                 onChange={handleInputChange}
               />
             </div>
             <div className="form-group">
-              <label htmlFor="description">Description</label>
+              <label htmlFor="coffice">Congressional Office</label>
               <input
                 type="text"
                 className="form-control"
-                id="description"
-                name="description"
-                value={currentOrder.description}
+                id="coffice"
+                name="coffice"
+                value={currentOrder.coffice}
                 onChange={handleInputChange}
               />
             </div>
