@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import OrderDataService from "../services/OrderService";
+import { baseURL } from "../http-common";
 
 const Order = (props) => {
   const initialOrderState = {
@@ -10,7 +11,7 @@ const Order = (props) => {
     id: null,
     order_number: "",
     coffice: "",
-    usastate: "",
+    usa_state: "",
     published: false,
   };
   const [currentOrder, setCurrentOrder] = useState(initialOrderState);
@@ -84,12 +85,12 @@ const Order = (props) => {
           <h4>Order</h4>
           <form>
             <div className="form-group">
-              <label htmlFor="title">Title</label>
+              <label htmlFor="order_number">Order Number</label>
               <input
                 type="text"
                 className="form-control"
-                id="title"
-                name="title"
+                id="order_number"
+                name="order_number"
                 value={currentOrder.order_number}
                 onChange={handleInputChange}
               />
@@ -104,6 +105,24 @@ const Order = (props) => {
                 value={currentOrder.coffice}
                 onChange={handleInputChange}
               />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="usastate">USA State</label>
+              <input
+                type="text"
+                className="form-control"
+                id="usastate"
+                name="usastate"
+                value={currentOrder.usa_state}
+                onChange={handleInputChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>QR Code</label>
+              {currentOrder.uuid}
+              <img src={baseURL+"qrcode/"+currentOrder.uuid}/>
             </div>
 
             <div className="form-group">
