@@ -4,11 +4,11 @@ const getAll = () => {
   return http.get("/orders");
 };
 
-const get = uuid => {
+const get = (uuid) => {
   return http.get(`/orders/${uuid}`);
 };
 
-const create = data => {
+const create = (data) => {
   return http.post("/orders/create", data);
 };
 
@@ -16,7 +16,7 @@ const update = (id, data) => {
   return http.put(`/orders/${id}`, data);
 };
 
-const remove = id => {
+const remove = (id) => {
   return http.delete(`/orders/${id}`);
 };
 
@@ -24,16 +24,17 @@ const removeAll = () => {
   return http.delete(`/orders`);
 };
 
-const findByTitle = title => {
+const findByTitle = (title) => {
   return http.get(`/orders?title=${title}`);
 };
 
-export default {
+const orderServiceObject = {
   getAll,
   get,
   create,
   update,
   remove,
   removeAll,
-  findByTitle
+  findByTitle,
 };
+export default orderServiceObject;

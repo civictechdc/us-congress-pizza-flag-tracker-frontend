@@ -8,11 +8,9 @@ const Order = (props) => {
     title: "",
     description: "",
     published: false,
-    id: null,
     order_number: "",
     coffice: "",
     usa_state: "",
-    published: false,
   };
   const [currentOrder, setCurrentOrder] = useState(initialOrderState);
   const [message, setMessage] = useState("");
@@ -122,7 +120,10 @@ const Order = (props) => {
             <div className="form-group">
               <label>QR Code</label>
               {currentOrder.uuid}
-              <img src={baseURL+"qrcode/"+currentOrder.uuid}/>
+              <img
+                src={baseURL + "qrcode/" + currentOrder.uuid}
+                alt="QR Code"
+              />
             </div>
 
             <div className="form-group">
