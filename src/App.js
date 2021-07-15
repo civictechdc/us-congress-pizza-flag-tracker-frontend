@@ -7,11 +7,11 @@ import Order from "./components/Order";
 import OrdersList from "./components/OrdersList";
 
 function App() {
-  return (
-    <div>
+  return (<>
+    <header> 
       <nav className="navbar navbar-expand navbar-dark bg-dark">
         <a href="/orders" className="navbar-brand">
-          bezKoder
+          Flagpizza
         </a>
         <div className="navbar-nav mr-auto">
           <li className="nav-item">
@@ -26,6 +26,9 @@ function App() {
           </li>
         </div>
       </nav>
+    </header>
+
+    <main className="flex-shrink-0" role="main">
 
       <div className="container mt-3">
         <Switch>
@@ -34,7 +37,20 @@ function App() {
           <Route path="/orders/:id" component={Order} />
         </Switch>
       </div>
-    </div>
+    </main>
+      {/* */}
+    <footer className="footer mt-auto py-3">
+      <div className="container">
+        <span className="text-muted"><div className="mt-3 ml-3">
+        A project of <a href="https://codefordc.org">Code for DC</a>.&nbsp;
+        <a href="https://github.com/codefordc/us-congress-pizza-flag-tracker-frontend/">
+          Open Source on GitHub</a>. 
+          Hosted by <a href="https://netlify.com/">Netlify</a>
+      </div> 
+      </span>
+      </div>
+    </footer>
+    </>
   );
 }
 
