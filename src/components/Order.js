@@ -121,7 +121,7 @@ const Order = (props) => {
               <label>QR Code</label>
               {currentOrder.uuid}
               <img
-                src={baseURL + "qrcode/" + currentOrder.uuid}
+                src={baseURL + "/qrcode/" + currentOrder.uuid}
                 alt="QR Code"
               />
             </div>
