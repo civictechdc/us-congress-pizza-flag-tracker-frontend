@@ -4,7 +4,7 @@ import { baseURL } from "../http-common";
 
 const Order = (props) => {
   const initialOrderState = {
-    id: null,
+    uuid: null,
     title: "",
     description: "",
     published: false,
@@ -38,13 +38,13 @@ const Order = (props) => {
 
   const updatePublished = (status) => {
     var data = {
-      id: currentOrder.id,
+      uuid: currentOrder.uuid,
       order_number: currentOrder.order_number,
       coffice: currentOrder.coffice,
       published: status,
     };
 
-    OrderDataService.update(currentOrder.id, data)
+    OrderDataService.update(currentOrder.uuid, data)
       .then((response) => {
         setCurrentOrder({ ...currentOrder, published: status });
         console.log(response.data);
@@ -55,7 +55,7 @@ const Order = (props) => {
   };
 
   const updateOrder = () => {
-    OrderDataService.update(currentOrder.id, currentOrder)
+    OrderDataService.update(currentOrder.uuid, currentOrder)
       .then((response) => {
         console.log(response.data);
         setMessage("The order was updated successfully!");
@@ -66,7 +66,8 @@ const Order = (props) => {
   };
 
   const deleteOrder = () => {
-    OrderDataService.remove(currentOrder.id)
+    
+    OrderDataService.remove(currentOrder.uuid)
       .then((response) => {
         console.log(response.data);
         props.history.push("/orders");
