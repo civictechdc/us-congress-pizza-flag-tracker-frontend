@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import OrderDataService from "../services/OrderService";
+ 
+const STATES = require('./states.json');
 
 const AddOrder = () => {
   const initialOrderState = {
@@ -17,13 +19,13 @@ const AddOrder = () => {
     setOrder({ ...order, [name]: value });
   };
 
-  const saveOrder = () => {
+  const saveOrder = () => { 
     var data = {
       order_number: order.order_number,
       coffice: order.coffice,
       usa_state: order.usa_state
     };
-
+    console.log(data);
     OrderDataService.create(data)
       .then(response => {
         setOrder({
@@ -69,6 +71,18 @@ const AddOrder = () => {
               name="order_number"
             />
           </div>
+ 
+          <div className="form-group"> 
+            <label htmlFor="usa_state">US State</label>  
+            <select value={order.usa_state}  
+                    id="usa_state" 
+                    onChange={handleInputChange}  
+                    name="usa_state">
+                      {STATES && STATES.map((state) => {
+                      return <option value={state}>{state}</option>;
+                      })}
+            </select> 
+          </div>
 
           <div className="form-group">
             <label htmlFor="coffice">Congressional Office</label>
@@ -80,19 +94,6 @@ const AddOrder = () => {
               value={order.coffice}
               onChange={handleInputChange}
               name="coffice"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="usa_state">US State</label>
-            <input
-              type="text"
-              className="form-control"
-              id="usa_state"
-              required
-              value={order.usa_state}
-              onChange={handleInputChange}
-              name="usa_state"
             />
           </div>
 
