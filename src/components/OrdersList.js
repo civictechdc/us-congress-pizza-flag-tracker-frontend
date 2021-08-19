@@ -14,6 +14,7 @@ const OrdersList = () => {
 
   const onChangeSearchTitle = (e) => {
     const searchTitle = e.target.value;
+    console.log(e);
     setSearchTitle(searchTitle);
   };
 
@@ -53,8 +54,8 @@ const OrdersList = () => {
   const findByTitle = () => {
     OrderDataService.findByTitle(searchTitle)
       .then((response) => {
-        setOrders(response.data);
-        console.log(response.data);
+        console.log("found", response.data);
+        setOrders(response.data.orders);
       })
       .catch((e) => {
         console.log(e);
