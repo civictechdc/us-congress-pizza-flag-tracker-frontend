@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import OrderDataService from "../services/OrderService";
  
-const STATES = require('./states.json');
+//const STATES = require('./states.json');
+import {STATES} from "./states.js";
 
 const AddOrder = () => {
   const initialOrderState = {
     id: null,
     order_number: "",
     coffice: "",
-    usastate: "",
+    usa_state: "",
     published: false
   };
   const [order, setOrder] = useState(initialOrderState);
@@ -78,25 +79,27 @@ const AddOrder = () => {
                     id="usa_state" 
                     onChange={handleInputChange}  
                     name="usa_state">
-                      {STATES && STATES.map((state) => {
-                      return <option value={state}>{state}</option>;
+                      {STATES && STATES.map((state, index) => {
+                      return <option value={state.name} key ={index}>{state.name}</option>;
                       })}
             </select> 
           </div>
 
           <div className="form-group">
             <label htmlFor="coffice">Congressional Office</label>
-            <input
-              type="text"
-              className="form-control"
-              id="coffice"
-              required
-              value={order.coffice}
-              onChange={handleInputChange}
-              name="coffice"
-            />
+            <select value={order.coffice}
+            id="coffice"
+            onChange={handleInputChange}
+            name="coffice"
+            required>
+            {STATES && order.usa_state.length>0 && STATES.filter(state => state.name===order.usa_state)[0]['districts'].map((district, index)=>{
+              return <option value ={district} key={index}>{district}</option>;
+            })
+              
+              }
+              </select> 
           </div>
-
+             
           <button onClick={saveOrder} className="btn btn-success">
             Submit
           </button>
