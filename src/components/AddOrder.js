@@ -12,6 +12,7 @@ const AddOrder = () => {
     usa_state: "",
     published: false,
   };
+  const [exceptionMessage, setExceptionMessage] = useState(); 
   const [order, setOrder] = useState(initialOrderState);
   const [submitted, setSubmitted] = useState(false);
 
@@ -38,14 +39,30 @@ const AddOrder = () => {
         setSubmitted(true);
       })
       .catch((e) => {
+        setExceptionMessage("You have a problem. " + e.message);
         console.log(e);
       });
+  };
+
+  const WarningBox = ({
+    errorEvent,
+  }) => {
+    const errorMsg = errorEvent.message;
+    return <div class="alert alert-warning" role="alert">
+    Error {errorMsg}
+  </div>
   };
 
   const newOrder = () => {
     setOrder(initialOrderState);
     setSubmitted(false);
   };
+  if (exceptionMessage){
+    return <div class="alert alert-warning" role="alert">
+    Error {exceptionMessage}
+  </div>
+  }
+    
 
   return (
     <div className="submit-form">
