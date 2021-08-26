@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import OrderDataService from "../services/OrderService";
- 
+
 //const STATES = require('./states.json');
-import {STATES} from "./states.js";
+import { STATES } from "./states.js";
 
 const AddOrder = () => {
   const initialOrderState = {
@@ -10,36 +10,34 @@ const AddOrder = () => {
     order_number: "",
     coffice: "",
     usa_state: "",
-    published: false
+    published: false,
   };
   const [order, setOrder] = useState(initialOrderState);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleInputChange = event => {
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
     setOrder({ ...order, [name]: value });
   };
 
-  const saveOrder = () => { 
+  const saveOrder = () => {
     var data = {
       order_number: order.order_number,
       coffice: order.coffice,
-      usa_state: order.usa_state
+      usa_state: order.usa_state,
     };
-    console.log(data);
     OrderDataService.create(data)
-      .then(response => {
+      .then((response) => {
         setOrder({
           id: response.data.id,
           order_number: response.data.order_number,
           coffice: response.data.coffice,
           usa_state: response.data.usa_state,
-          published: response.data.published
+          published: response.data.published,
         });
         setSubmitted(true);
-        console.log(response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
@@ -72,34 +70,49 @@ const AddOrder = () => {
               name="order_number"
             />
           </div>
- 
-          <div className="form-group"> 
-            <label htmlFor="usa_state">US State</label>  
-            <select value={order.usa_state}  
-                    id="usa_state" 
-                    onChange={handleInputChange}  
-                    name="usa_state">
-                      {STATES && STATES.map((state, index) => {
-                      return <option value={state.name} key ={index}>{state.name}</option>;
-                      })}
-            </select> 
+
+          <div className="form-group">
+            <label htmlFor="usa_state">US State</label>
+            <select
+              value={order.usa_state}
+              id="usa_state"
+              onChange={handleInputChange}
+              name="usa_state"
+            >
+              {STATES &&
+                STATES.map((state, index) => {
+                  return (
+                    <option value={state.name} key={index}>
+                      {state.name}
+                    </option>
+                  );
+                })}
+            </select>
           </div>
 
           <div className="form-group">
             <label htmlFor="coffice">Congressional Office</label>
-            <select value={order.coffice}
-            id="coffice"
-            onChange={handleInputChange}
-            name="coffice"
-            required>
-            {STATES && order.usa_state.length>0 && STATES.filter(state => state.name===order.usa_state)[0]['districts'].map((district, index)=>{
-              return <option value ={district} key={index}>{district}</option>;
-            })
-              
-              }
-              </select> 
+            <select
+              value={order.coffice}
+              id="coffice"
+              onChange={handleInputChange}
+              name="coffice"
+              required
+            >
+              {STATES &&
+                order.usa_state &&
+                STATES.filter((state) => state.name === order.usa_state)[0][
+                  "districts"
+                ].map((district, index) => {
+                  return (
+                    <option value={district} key={index}>
+                      {district}
+                    </option>
+                  );
+                })}
+            </select>
           </div>
-             
+
           <button onClick={saveOrder} className="btn btn-success">
             Submit
           </button>
