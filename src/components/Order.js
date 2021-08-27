@@ -9,7 +9,7 @@ const Order = (props) => {
     description: "",
     published: false,
     order_number: "",
-    coffice: "",
+    office_code: "",
     usa_state: "",
   };
   const [currentOrder, setCurrentOrder] = useState(initialOrderState);
@@ -40,7 +40,7 @@ const Order = (props) => {
     var data = {
       uuid: currentOrder.uuid,
       order_number: currentOrder.order_number,
-      coffice: currentOrder.coffice,
+      office_code: currentOrder.office_code,
       published: status,
     };
 
@@ -95,13 +95,13 @@ const Order = (props) => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="coffice">Congressional Office</label>
+              <label htmlFor="office_code">Congressional Office</label>
               <input
                 type="text"
                 className="form-control"
-                id="coffice"
-                name="coffice"
-                value={currentOrder.coffice}
+                id="office_code"
+                name="office_code"
+                value={currentOrder.office_code}
                 onChange={handleInputChange}
               />
             </div>

@@ -75,7 +75,7 @@ const OrdersList = () => {
           >
             <td>{order.order_number}</td>
             <td>{order.usa_state}</td>
-            <td>{order.coffice}</td>
+            <td>{order.office_code}</td>
           </tr>
         ))}
     </tbody>
@@ -134,7 +134,7 @@ const OrdersList = () => {
               <label>
                 <strong>Congressional Office:</strong>
               </label>{" "}
-              {currentOrder.coffice}
+              {currentOrder.office_code}
             </div>
             <div>
               <label>
