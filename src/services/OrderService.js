@@ -24,7 +24,7 @@ const removeAll = () => {
   return http.delete(`/orders`);
 };
 
-const findByTitle = (order_number) => {
+const findByOrderNumber = (order_number) => {
   return http.get(`/order_num/${order_number}`);
 };
 
@@ -36,6 +36,6 @@ const orderServiceObject = {
   update,
   remove,
   removeAll,
-  findByTitle,
+  findByOrderNumber,
 };
 export default orderServiceObject;

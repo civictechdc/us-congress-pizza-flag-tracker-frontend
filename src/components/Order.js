@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import OrderDataService from "../services/OrderService";
 import { baseURL } from "../http-common";
 
+import { STATES } from "./states.js";
+
 const Order = (props) => {
   const initialOrderState = {
     uuid: null,
@@ -66,7 +68,6 @@ const Order = (props) => {
   };
 
   const deleteOrder = () => {
-    
     OrderDataService.remove(currentOrder.uuid)
       .then((response) => {
         console.log(response.data);
@@ -94,29 +95,50 @@ const Order = (props) => {
                 onChange={handleInputChange}
               />
             </div>
+
             <div className="form-group">
-              <label htmlFor="office_code">Congressional Office</label>
-              <input
-                type="text"
-                className="form-control"
-                id="office_code"
-                name="office_code"
-                value={currentOrder.office_code}
+              <label htmlFor="usa_state">US State</label>
+              <select
+                value={currentOrder.usa_state}
+                id="usa_state"
                 onChange={handleInputChange}
-              />
+                name="usa_state"
+              >
+                {STATES &&
+                  STATES.map((state, index) => {
+                    return (
+                      <option value={state.name} key={index}>
+                        {state.name}
+                      </option>
+                    );
+                  })}
+              </select>
             </div>
 
             <div className="form-group">
-              <label htmlFor="usastate">USA State</label>
-              <input
-                type="text"
-                className="form-control"
-                id="usastate"
-                name="usastate"
-                value={currentOrder.usa_state}
+              <label htmlFor="office_code">Congressional Office</label>
+              <select
+                value={currentOrder.office_code}
+                id="office_code"
                 onChange={handleInputChange}
-              />
+                name="office_code"
+                required
+              >
+                {STATES &&
+                  currentOrder.usa_state &&
+                  STATES.filter(
+                    (state) => state.name === currentOrder.usa_state
+                  )[0]["districts"].map((district, index) => {
+                    return (
+                      <option value={district} key={index}>
+                        {district}
+                      </option>
+                    );
+                  })}
+              </select>
             </div>
+
+
 
             <div className="form-group">
               <label>QR Code</label>
@@ -167,7 +189,7 @@ const Order = (props) => {
       ) : (
         <div>
           <br />
-          <p>Please click on a Order...</p>
+          <p>Please click on an order...</p>
         </div>
       )}
     </div>

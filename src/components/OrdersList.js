@@ -51,8 +51,8 @@ const OrdersList = () => {
       });
   };
 
-  const findByTitle = () => {
-    OrderDataService.findByTitle(searchTitle)
+  const findByOrderNumber = () => {
+    OrderDataService.findByOrderNumber(searchTitle)
       .then((response) => {
         console.log("found", response.data);
         setOrders(response.data.orders);
@@ -87,7 +87,7 @@ const OrdersList = () => {
           <input
             type="text"
             className="form-control"
-            placeholder="Search by title"
+            placeholder="Search by order number"
             value={searchTitle}
             onChange={onChangeSearchTitle}
           />
@@ -95,7 +95,7 @@ const OrdersList = () => {
             <button
               className="btn btn-outline-secondary"
               type="button"
-              onClick={findByTitle}
+              onClick={findByOrderNumber}
             >
               Search
             </button>
@@ -159,7 +159,7 @@ const OrdersList = () => {
         ) : (
           <div>
             <br />
-            <p>Please click on a Order...</p>
+            <p>Please click on an order...</p>
           </div>
         )}
       </div>
