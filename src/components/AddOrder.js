@@ -12,13 +12,13 @@ const AddOrder = () => {
     usa_state: "",
     published: false,
   };
-  const [exceptionMessage, setExceptionMessage] = useState(); 
+  const [exceptionMessage, setExceptionMessage] = useState();
   const [order, setOrder] = useState(initialOrderState);
   const [submitted, setSubmitted] = useState(false);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setOrder({ ...order, [name]: value });
+    setOrder({ ...order, [name]: value }); 
   };
 
   const saveOrder = () => {
@@ -43,26 +43,27 @@ const AddOrder = () => {
         console.log(e);
       });
   };
-
-  const WarningBox = ({
-    errorEvent,
-  }) => {
-    const errorMsg = errorEvent.message;
-    return <div class="alert alert-warning" role="alert">
-    Error {errorMsg}
-  </div>
-  };
+  // Unused variable warning:
+  //const WarningBox = ({
+  //  errorEvent,
+  //}) => {
+  //  const errorMsg = errorEvent.message;
+  //  return <div class="alert alert-warning" role="alert">
+  //  Error {errorMsg}
+  //</div>
+  //};
 
   const newOrder = () => {
     setOrder(initialOrderState);
     setSubmitted(false);
   };
-  if (exceptionMessage){
-    return <div class="alert alert-warning" role="alert">
-    Error {exceptionMessage}
-  </div>
+  if (exceptionMessage) {
+    return (
+      <div class="alert alert-warning" role="alert">
+        Error {exceptionMessage}
+      </div>
+    );
   }
-    
 
   return (
     <div className="submit-form">
@@ -130,7 +131,11 @@ const AddOrder = () => {
             </select>
           </div>
 
-          <button onClick={saveOrder} className="btn btn-success">
+          <button
+            disabled={!order.order_number || !order.usa_state || !order.coffice}
+            onClick={saveOrder}
+            className="btn btn-success"
+          >
             Submit
           </button>
         </div>
