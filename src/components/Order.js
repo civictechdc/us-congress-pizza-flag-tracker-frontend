@@ -124,6 +124,14 @@ const Order = (props) => {
                 name="office_code"
                 required
               >
+                {/* {STATES &&
+                  currentOrder.usa_state &&
+                  STATES.filter(
+                    (state) => state.name === currentOrder.usa_state
+                  ).filter((d) => d) &&  (
+                 <option value={currentOrder.office_code}>
+                        {currentOrder.office_code}
+                      </option>)} */}
                 {STATES &&
                   currentOrder.usa_state &&
                   STATES.filter(

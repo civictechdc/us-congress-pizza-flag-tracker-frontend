@@ -123,7 +123,7 @@ const AddOrder = () => {
           </div>
 
           <button
-            disabled={!order.order_number || !order.usa_state || !order.coffice}
+            disabled={!order.order_number || !order.usa_state || !order.office_code}
             onClick={saveOrder}
             className="btn btn-success"
           >
