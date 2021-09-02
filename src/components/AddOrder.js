@@ -8,7 +8,7 @@ const AddOrder = () => {
   const initialOrderState = {
     id: null,
     order_number: "",
-    coffice: "",
+    office_code: "",
     usa_state: "",
     published: false,
   };
@@ -24,7 +24,7 @@ const AddOrder = () => {
   const saveOrder = () => {
     var data = {
       order_number: order.order_number,
-      coffice: order.coffice,
+      office_code: order.office_code,
       usa_state: order.usa_state,
     };
     OrderDataService.create(data)
@@ -32,7 +32,7 @@ const AddOrder = () => {
         setOrder({
           id: response.data.id,
           order_number: response.data.order_number,
-          coffice: response.data.coffice,
+          office_code: response.data.office_code,
           usa_state: response.data.usa_state,
           published: response.data.published,
         });
@@ -40,18 +40,9 @@ const AddOrder = () => {
       })
       .catch((e) => {
         setExceptionMessage("You have a problem. " + e.message);
-        console.log(e);
+        console.log("Debug exception",e);
       });
-  };
-  // Unused variable warning:
-  //const WarningBox = ({
-  //  errorEvent,
-  //}) => {
-  //  const errorMsg = errorEvent.message;
-  //  return <div class="alert alert-warning" role="alert">
-  //  Error {errorMsg}
-  //</div>
-  //};
+  }; 
 
   const newOrder = () => {
     setOrder(initialOrderState);
@@ -109,12 +100,12 @@ const AddOrder = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="coffice">Congressional Office</label>
+            <label htmlFor="office_code">Congressional Office</label>
             <select
-              value={order.coffice}
-              id="coffice"
+              value={order.office_code}
+              id="office_code"
               onChange={handleInputChange}
-              name="coffice"
+              name="office_code"
               required
             >
               {STATES &&
@@ -132,7 +123,7 @@ const AddOrder = () => {
           </div>
 
           <button
-            disabled={!order.order_number || !order.usa_state || !order.coffice}
+            disabled={!order.order_number || !order.usa_state || !order.office_code}
             onClick={saveOrder}
             className="btn btn-success"
           >

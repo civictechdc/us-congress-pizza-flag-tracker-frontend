@@ -11,7 +11,7 @@ const Order = (props) => {
     description: "",
     published: false,
     order_number: "",
-    coffice: "",
+    office_code: "",
     usa_state: "",
   };
   const [currentOrder, setCurrentOrder] = useState(initialOrderState);
@@ -42,7 +42,7 @@ const Order = (props) => {
     var data = {
       uuid: currentOrder.uuid,
       order_number: currentOrder.order_number,
-      coffice: currentOrder.coffice,
+      office_code: currentOrder.office_code,
       published: status,
     };
 
@@ -116,14 +116,22 @@ const Order = (props) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="coffice">Congressional Office</label>
+              <label htmlFor="office_code">Congressional Office</label>
               <select
-                value={currentOrder.coffice}
-                id="coffice"
+                value={currentOrder.office_code}
+                id="office_code"
                 onChange={handleInputChange}
-                name="coffice"
+                name="office_code"
                 required
               >
+                {/* {STATES &&
+                  currentOrder.usa_state &&
+                  STATES.filter(
+                    (state) => state.name === currentOrder.usa_state
+                  ).filter((d) => d) &&  (
+                 <option value={currentOrder.office_code}>
+                        {currentOrder.office_code}
+                      </option>)} */}
                 {STATES &&
                   currentOrder.usa_state &&
                   STATES.filter(
@@ -138,31 +146,7 @@ const Order = (props) => {
               </select>
             </div>
 
-            {/*  Text entry fields
-            <div className="form-group">
-              <label htmlFor="coffice">Congressional Office</label>
-              <input
-               type="text"
-               className="form-control"
-               id="coffice"
-                name="coffice"
-                value={currentOrder.coffice}
-                onChange={handleInputChange}
-             />
-            </div>
-   
-            <div className="form-group">
-              <label htmlFor="usastate">USA State</label>
-              <input
-                type="text"
-                className="form-control"
-                id="usastate"
-                name="usastate"
-                value={currentOrder.usa_state}
-                onChange={handleInputChange}
-              />
-            </div>
-            */}
+
 
             <div className="form-group">
               <label>QR Code</label>
