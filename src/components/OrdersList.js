@@ -122,61 +122,38 @@ const OrdersList = () => {
         <div className="col-md-6">
           <h4>Orders List</h4>
 
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Order Number</th>
-                <th scope="col">USA State</th>
-                <th scope="col">Congressional Office</th>
-              </tr>
-            </thead>
-            {orderTbody}
-          </table>
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">Order Number</th>
+              <th scope="col">USA State</th>
+              <th scope="col">Congressional Office</th>
+            </tr>
+          </thead>
+          {orderTbody}
+        </table>
 
-          <button
-            className="m-3 btn btn-sm btn-danger"
-            onClick={removeAllOrders}
-          >
-            Remove All
-          </button>
-        </div>
-        <div className="col-md-6">
-          {currentOrder ? (
+        <button className="m-3 btn btn-sm btn-danger" onClick={removeAllOrders}>
+          Remove All
+        </button>
+      </div>
+      <div className="col-md-6">
+        {currentOrder ? (
+          <div>
+            <h4>Order</h4>
             <div>
-              <h4>Order</h4>
-              <div>
-                <label>
-                  <strong>Order Number:</strong>
-                </label>{" "}
-                {currentOrder.order_number}
-              </div>
-              <div>
-                <label>
-                  <strong>Congressional Office:</strong>
-                </label>{" "}
-                {currentOrder.home_office_code}
-              </div>
-              <div>
-                <label>
-                  <strong>Congressional Office:</strong>
-                </label>{" "}
-                {currentOrder.uuid}
-              </div>
-              <div>
-                <label>
-                  <strong>Status:</strong>
-                </label>{" "}
-                {currentOrder.published ? "Published" : "Pending"}
-              </div>
-
-              <Link
-                to={"/orders/" + currentOrder.uuid}
-                className="badge badge-warning"
-              >
-                Edit
-              </Link>
+              <label>
+                <strong>Order Number:</strong>
+              </label>{" "}
+              {currentOrder.order_number}
             </div>
-          ) : (
+            <div>
+              <label>
+                <strong>Congressional Office:</strong>
+              </label>{" "}
+              {currentOrder.office_code}
+            </div>
+           
             <div>
               <br />
               <p>Please click on an order...</p>
