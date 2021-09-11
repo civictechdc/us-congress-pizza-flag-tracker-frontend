@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import OrderDataService from "../services/OrderService";
+import OrderForm from './OrderForm'
 
-//const STATES = require('./states.json');
-import { STATES } from "./states.js";
-
-const AddOrder = () => {
+const AddOrder = (props) => {
+  const {existingOrder} = props;
+  
   const initialOrderState = {
     id: null,
     order_number: "",
@@ -12,14 +12,11 @@ const AddOrder = () => {
     usa_state: "",
     published: false,
   };
+
   const [exceptionMessage, setExceptionMessage] = useState();
-  const [order, setOrder] = useState(initialOrderState);
+  const [order, setOrder] = useState(existingOrder? existingOrder: initialOrderState);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setOrder({ ...order, [name]: value }); 
-  };
 
   const saveOrder = () => {
     var data = {
@@ -40,14 +37,15 @@ const AddOrder = () => {
       })
       .catch((e) => {
         setExceptionMessage("You have a problem. " + e.message);
-        console.log("Debug exception",e);
+        console.log("Debug exception", e);
       });
-  }; 
+  };
 
   const newOrder = () => {
     setOrder(initialOrderState);
     setSubmitted(false);
   };
+
   if (exceptionMessage) {
     return (
       <div class="alert alert-warning" role="alert">
@@ -56,83 +54,27 @@ const AddOrder = () => {
     );
   }
 
-  return (
-    <div className="submit-form">
-      {submitted ? (
+  if (submitted && !existingOrder) {
+    
+    return (
+      <div className="submit-form">
         <div>
           <h4>You submitted successfully!</h4>
           <button className="btn btn-success" onClick={newOrder}>
-            Add
+            Add a new order
           </button>
         </div>
-      ) : (
-        <div>
-          <div className="form-group">
-            <label htmlFor="order_number">Order Number</label>
-            <input
-              type="text"
-              className="form-control"
-              id="order_number"
-              required
-              value={order.order_number}
-              onChange={handleInputChange}
-              name="order_number"
-            />
-          </div>
+      </div>
+    );
+  } else {
+    
+    return (
+      <div>
+      <OrderForm order={order} setOrder={setOrder} saveOrder={saveOrder}/>
 
-          <div className="form-group">
-            <label htmlFor="usa_state">US State</label>
-            <select
-              value={order.usa_state}
-              id="usa_state"
-              onChange={handleInputChange}
-              name="usa_state"
-            >
-              {STATES &&
-                STATES.map((state, index) => {
-                  return (
-                    <option value={state.name} key={index}>
-                      {state.name}
-                    </option>
-                  );
-                })}
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="office_code">Congressional Office</label>
-            <select
-              value={order.office_code}
-              id="office_code"
-              onChange={handleInputChange}
-              name="office_code"
-              required
-            >
-              {STATES &&
-                order.usa_state &&
-                STATES.filter((state) => state.name === order.usa_state)[0][
-                  "districts"
-                ].map((district, index) => {
-                  return (
-                    <option value={district} key={index}>
-                      {district}
-                    </option>
-                  );
-                })}
-            </select>
-          </div>
-
-          <button
-            disabled={!order.order_number || !order.usa_state || !order.office_code}
-            onClick={saveOrder}
-            className="btn btn-success"
-          >
-            Submit
-          </button>
-        </div>
-      )}
-    </div>
-  );
+      </div>
+    );
+  }
 };
 
 export default AddOrder;

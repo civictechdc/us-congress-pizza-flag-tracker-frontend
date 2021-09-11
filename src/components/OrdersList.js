@@ -105,7 +105,7 @@ const OrdersList = () => {
       <div className="col-md-6">
         <h4>Orders List</h4>
 
-        <table class="table">
+        <table className="table">
           <thead>
             <tr>
               <th scope="col">Order Number</th>
@@ -136,12 +136,7 @@ const OrdersList = () => {
               </label>{" "}
               {currentOrder.office_code}
             </div>
-            <div>
-              <label>
-                <strong>Congressional Office:</strong>
-              </label>{" "}
-              {currentOrder.uuid}
-            </div>
+           
             <div>
               <label>
                 <strong>Status:</strong>
