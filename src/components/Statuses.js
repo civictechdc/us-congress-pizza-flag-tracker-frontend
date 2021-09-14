@@ -83,7 +83,7 @@ export const STATUSES = [{
   "sequence_num": 9,
   "description": "Staffer constituent notified"
     // depending on 8's comments, Congressional Office's constituent notified
-    // or constituent notified
+    // or "Constituent notified" to be consistent with seq_num 1
     //
     // flag goes from
     //   seq_num 8: "(can be: shipped)"
