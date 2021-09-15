@@ -28,14 +28,14 @@ export const STATUSES = [{
     // is it worth noting who received the flag for tracking purposes vs PII concerns?
 }, /* {
   "id": 5,
-    // alternate 5
+    // alternate id path 
     // subsequent ids will need to be renumbered if using alternate 5
   "office_code": "AOC flag office",
   "sequence_num": 4.4,
   "description": "AOC flag office has flown flag but not added certificate"
 }, {
  "id": 6,
-    // alternate 5 "id path"
+    // alternate id path
   "office_code": "AOC flag office",
   "sequence_num": 4.7,
     // it is not intended that 4.4 sequentially leads to 4.7
