@@ -10,12 +10,12 @@ export const STATUSES = [{
   "description": "HOSS verified as printed and scanned physical QR code"
 }, {
   "id": 3,
-  "office_code": "AOC flag office",
+  "office_code": "AOC",
   "sequence_num": 3,
   "description": "AOC received flag from HOSS"
 }, {
   "id": 4,
-  "office_code": "AOC flag office",
+  "office_code": "AOC",
   "sequence_num": 4,
   "description": "AOC has flown flag and added certificate"
     // OPTIONAL: date specified vs soon as possible
