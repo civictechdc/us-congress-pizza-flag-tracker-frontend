@@ -5,7 +5,7 @@ const Status = () => {
   const initialStatusState = {
     id: null,
     login_office_code: "not logged in",
-    current_status: "",
+    current_desciption: "",
   };
   const [status, setStatus] = useState(initialStatusState);
 
@@ -37,23 +37,26 @@ const Status = () => {
         </div>
         <hr />
       </form>
-      <h6>Status: {status.current_status}</h6>
+      <h6>Status: {status.current_desciption}</h6>
       <form>
         <div className="form-group">
-          <label htmlFor="current_status">Log in: </label>
+          <label htmlFor="current_desciption">Log in: </label>
           <select
-              value={status.current_status}
-              id="current_status"
+              value={status.current_desciption}
+              id="current_desciption"
               onChange={handleInputChange}
-              name="current_status"
+              name="current_desciption"
             >
-            {STATUSES && STATUSES.map((j, index) => {
-              if (status.login_office_code === j.office_code || status.login_office_code === "ADMIN") {
-              return (
-                <option value={j.description} key={index}>
-                  {j.description}
-                </option>              
-              );
+            {STATUSES && STATUSES.map((element, index) => {
+              if ((status.login_office_code === element.office_code) || 
+                (status.login_office_code === "ADMIN") || 
+                ((element.office_code === "ALL") && (status.login_office_code !== "not logged in"))
+                ) {
+                  return (
+                    <option value={element.description} key={index}>
+                      #{element.sequence_num} {element.description}
+                    </option>              
+                  );
               }
             })}
           </select>
