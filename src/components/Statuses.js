@@ -45,3 +45,15 @@ export const STATUSES = [{
   "sequence_num": 9,
   "description": "Order canceled"
 }]
+
+export const DEPTCODES = [{
+  "dept_code": "HOSS"  
+}, {
+  "dept_code": "AOC"
+}, {
+  "dept_code": "Mail Services"
+}, {
+  "dept_code": "STATE"
+}, {
+  "dept_code": "ADMIN"
+}]
