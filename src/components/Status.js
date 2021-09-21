@@ -37,6 +37,28 @@ const Status = () => {
         </div>
         <hr />
       </form>
+      <h6>Status: {status.current_status}</h6>
+      <form>
+        <div className="form-group">
+          <label htmlFor="current_status">Log in: </label>
+          <select
+              value={status.current_status}
+              id="current_status"
+              onChange={handleInputChange}
+              name="current_status"
+            >
+            {STATUSES && STATUSES.map((j, index) => {
+              if (status.login_office_code === j.office_code || status.login_office_code === "ADMIN") {
+              return (
+                <option value={j.description} key={index}>
+                  {j.description}
+                </option>              
+              );
+              }
+            })}
+          </select>
+        </div>
+      </form>
     </div>      
   );
 }
