@@ -19,30 +19,30 @@ const Status = () => {
     ? ""
     : <div>
         <h6>Status: {status.current_desciption}</h6>
-          <form>
-            <div className="form-group">
-              <label htmlFor="current_desciption">Log in: </label>
-              <select
-                value={status.current_desciption}
-                id="current_desciption"
-                onChange={handleInputChange}
-                name="current_desciption"
-                >
-                {STATUSES && STATUSES.map((element, index) => {
-                  if ((status.login_office_code === element.office_code) || 
-                  (status.login_office_code === "ADMIN") || 
-                  ((element.office_code === "ALL") && (status.login_office_code !== "not logged in"))
-                  ) {
-                    return (
-                      <option value={element.description} key={index}>
-                        #{element.sequence_num} {element.description}
-                      </option>              
-                    );
-                  }
-                })}
-              </select>
-            </div>      
-          </form>
+        <form>
+          <div className="form-group">
+            <label htmlFor="current_desciption">Log in: </label>
+            <select
+              value={status.current_desciption}
+              id="current_desciption"
+              onChange={handleInputChange}
+              name="current_desciption"
+              >
+              {STATUSES && STATUSES.map((element, index) => {
+                if ((status.login_office_code === element.office_code) || 
+                (status.login_office_code === "ADMIN") || 
+                ((element.office_code === "ALL") && (status.login_office_code !== "not logged in"))
+                ) {
+                  return (
+                    <option value={element.description} key={index}>
+                      #{element.sequence_num} {element.description}
+                    </option>              
+                  );
+                }
+              })}
+            </select>
+          </div>      
+        </form>
       </div>;
 
    return (
@@ -67,16 +67,8 @@ const Status = () => {
           </select>
         </div>
         <hr />
-      </form>
-      
-
-
-
-    {unLogged}
-
-
-
-      
+      </form>      
+      {unLogged}
     </div>      
   );
 }

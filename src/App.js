@@ -25,6 +25,7 @@ function App() {
               Add
             </Link>
           </li>
+          {/* Contents of Status Link to be folded in Order component post evaluation */}
           <li className="nav-item">
             <Link to={"/status"} className="nav-link">
               Status Demo
@@ -40,6 +41,7 @@ function App() {
         <Switch>
           <Route exact path={["/", "/orders"]} component={OrdersList} />
           <Route exact path="/add" component={AddOrder} />
+          {/* Contents of Status Route to be folded in Order component post evaluation*/}
           <Route exact path="/status" component={Status} />
           <Route path="/orders/:id" component={Order} />
         </Switch>
