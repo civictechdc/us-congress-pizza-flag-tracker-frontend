@@ -41,10 +41,7 @@ export const STATUSES = [{
   "description": "Constituent notified"
 }, {
   "id": 9,
-  "office_code": [
-    "HOSS",
-    "STATE"
-  ],
+  "office_code": "ALL",
   "sequence_num": 9,
   "description": "Order canceled"
 }]

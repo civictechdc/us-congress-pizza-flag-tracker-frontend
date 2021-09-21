@@ -5,6 +5,7 @@ import { Switch, Route, Link } from "react-router-dom";
 import AddOrder from "./components/AddOrder";
 import Order from "./components/Order";
 import OrdersList from "./components/OrdersList";
+import Status from "./components/Status";
 
 function App() {
   return (<>
@@ -24,6 +25,11 @@ function App() {
               Add
             </Link>
           </li>
+          <li className="nav-item">
+            <Link to={"/status"} className="nav-link">
+              Status Demo
+            </Link>
+          </li>
         </div>
       </nav>
     </header>
@@ -34,6 +40,7 @@ function App() {
         <Switch>
           <Route exact path={["/", "/orders"]} component={OrdersList} />
           <Route exact path="/add" component={AddOrder} />
+          <Route exact path="/status" component={Status} />
           <Route path="/orders/:id" component={Order} />
         </Switch>
       </div>
