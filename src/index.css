@@ -1,33 +1,53 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .flag-group-item {
   position: relative;
   padding: .75rem 1.25rem;
   background-color: #fff;
-  border: 1px solid rgba(0,0,0,.125);
+  border: 1px solid rgba(0, 0, 0, .125);
 }
 
 .flag-group-item.active {
-    z-index: 2;
-    color: #fff;
-    background-color: #007bff;
-    border-color: #007bff;
+  z-index: 2;
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
 }
 
 .flag-group {
   padding-left: 0;
   margin-bottom: 0;
   border-radius: .25rem;
+}
+
+.pop-container {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(10, 10, 10, .5);
+  z-index: 1000;
+}
+
+.pop-up {
+  cursor: pointer;
+  position: fixed;
+  width: 60vw;
+  height: 40vh;
+  left: 20vw;
+  top: 30vh;
+  background-color: white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
