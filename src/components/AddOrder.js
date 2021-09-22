@@ -88,7 +88,7 @@ const AddOrder = () => {
               onChange={handleInputChange}
               name="usa_state"
             >
-              <option key="gradius"></option>
+              <option key="blank"></option>
               {STATES &&
                 STATES.map((state, index) => {
                   return (
@@ -109,7 +109,7 @@ const AddOrder = () => {
               name="office_code"
               required
             >
-              <option key="gradius"></option>
+              <option key="blank"></option>
               {STATES &&
                 order.usa_state &&
                 STATES.filter((state) => state.name === order.usa_state)[0][
