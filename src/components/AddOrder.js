@@ -16,6 +16,17 @@ const AddOrder = () => {
   const [order, setOrder] = useState(initialOrderState);
   const [submitted, setSubmitted] = useState(false);
 
+  /*
+  const resetOfficeCode = () => {
+    setOrder({ ...order, office_code: ""});
+  }
+  */
+
+  const handleUSSTATEChange = (event) => {
+    const { name, value } = event.target;
+    setOrder({ ...order, [name]: value, office_code: "" }); 
+  };
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setOrder({ ...order, [name]: value }); 
@@ -85,7 +96,7 @@ const AddOrder = () => {
             <select
               value={order.usa_state}
               id="usa_state"
-              onChange={handleInputChange}
+              onChange={handleUSSTATEChange}
               name="usa_state"
             >
               <option key="blank"></option>
@@ -98,6 +109,9 @@ const AddOrder = () => {
                   );
                 })}
             </select>
+            {/* Temp OrderState visualizer */}
+              <h4>{order.usa_state}</h4>
+            {/* Temp OrderState visualizer */}  
           </div>
 
           <div className="form-group">
@@ -122,6 +136,9 @@ const AddOrder = () => {
                   );
                 })}
             </select>
+            {/* Temp OrderState visualizer */}
+              <h4>{order.office_code}</h4>
+            {/* Temp OrderState visualizer */}
           </div>
 
           <button
