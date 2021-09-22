@@ -38,7 +38,7 @@ const StatusForm = () => {
                       #{element.sequence_num} {element.description}
                     </option>              
                   );
-                } else return (<option hidden key={index} />)
+                } else return (<option hidden key={index} />)  // handle "Array.prototype.map() expects a value to be returned at the end of arrow function array-callback-return" error
               })}
             </select>
           </div>      
