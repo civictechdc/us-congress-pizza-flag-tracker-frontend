@@ -18,11 +18,9 @@ const Order = (props) => {
   const [message, setMessage] = useState("");
 
   const getOrder = (id) => {
-    console.log("id", id);
     OrderDataService.get(id)
       .then((response) => {
         setCurrentOrder(response.data);
-        console.log(response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -49,7 +47,6 @@ const Order = (props) => {
     OrderDataService.update(currentOrder.uuid, data)
       .then((response) => {
         setCurrentOrder({ ...currentOrder, published: status });
-        console.log(response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -59,7 +56,6 @@ const Order = (props) => {
   const updateOrder = () => {
     OrderDataService.update(currentOrder.uuid, currentOrder)
       .then((response) => {
-        console.log(response.data);
         setMessage("The order was updated successfully!");
       })
       .catch((e) => {
@@ -70,14 +66,12 @@ const Order = (props) => {
   const deleteOrder = () => {
     OrderDataService.remove(currentOrder.uuid)
       .then((response) => {
-        console.log(response.data);
         props.history.push("/orders");
       })
       .catch((e) => {
         console.log(e);
       });
   };
-  console.log(currentOrder);
   return (
     <div>
       {currentOrder ? (
@@ -145,8 +139,6 @@ const Order = (props) => {
                   })}
               </select>
             </div>
-
-
 
             <div className="form-group">
               <label>QR Code</label>

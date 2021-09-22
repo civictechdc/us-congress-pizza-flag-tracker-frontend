@@ -22,7 +22,6 @@ const OrdersList = () => {
     OrderDataService.getAll()
       .then((response) => {
         setOrders(response.data.orders);
-        console.log("debug", response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -43,7 +42,6 @@ const OrdersList = () => {
   const removeAllOrders = () => {
     OrderDataService.removeAll()
       .then((response) => {
-        console.log(response.data);
         refreshList();
       })
       .catch((e) => {
@@ -54,7 +52,6 @@ const OrdersList = () => {
   const findByOrderNumber = () => {
     OrderDataService.findByOrderNumber(searchTitle)
       .then((response) => {
-        console.log("found", response.data);
         setOrders(response.data.orders);
       })
       .catch((e) => {

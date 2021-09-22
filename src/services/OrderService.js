@@ -1,7 +1,8 @@
 import http from "../http-common";
+import authHeader from "../services/auth-header";
 
 const getAll = () => {
-  return http.get("/orders");
+  return http.get("/orders", { headers: authHeader() });
 };
 
 const get = (uuid) => {
@@ -27,7 +28,6 @@ const removeAll = () => {
 const findByOrderNumber = (order_number) => {
   return http.get(`/order_num/${order_number}`);
 };
-
 
 const orderServiceObject = {
   getAll,

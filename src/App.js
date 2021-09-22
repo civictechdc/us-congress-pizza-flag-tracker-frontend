@@ -2,11 +2,18 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Switch, Route, Link } from "react-router-dom";
 
+
 import AddOrder from "./components/AddOrder";
+import AuthService from "./services/AuthService";
+import Login from "./components/Login";
 import Order from "./components/Order";
 import OrdersList from "./components/OrdersList";
+import Signup from "./components/Signup";
 
 function App() {
+  function logOut() {
+    AuthService.logout();
+  }
   return (<>
     <header> 
       <nav className="navbar navbar-expand navbar-dark bg-dark">
@@ -24,6 +31,33 @@ function App() {
               Add
             </Link>
           </li>
+           <li className="nav-item">
+                <Link to={"/profile"} className="nav-link">
+                </Link>
+              </li>
+              <li className="nav-item">
+                <a href="/login" className="nav-link" onClick={logOut}>
+                  Log Out
+                </a>
+              </li>
+            </div>
+
+            <div className="navbar-nav ml-auto">
+              <li className="nav-item">
+                <Link to={"/login"} className="nav-link">
+                  Login
+                </Link>
+              </li>
+
+              <li className="nav-item">
+                <Link to={"/Signup"} className="nav-link">
+                  Sign Up
+                </Link>
+              </li>
+
+
+
+
         </div>
       </nav>
     </header>
@@ -35,6 +69,8 @@ function App() {
           <Route exact path={["/", "/orders"]} component={OrdersList} />
           <Route exact path="/add" component={AddOrder} />
           <Route path="/orders/:id" component={Order} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/Signup" component={Signup} />
         </Switch>
       </div>
     </main>

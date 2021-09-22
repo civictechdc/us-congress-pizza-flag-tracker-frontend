@@ -18,7 +18,7 @@ const AddOrder = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setOrder({ ...order, [name]: value }); 
+    setOrder({ ...order, [name]: value });
   };
 
   const saveOrder = () => {
@@ -40,9 +40,8 @@ const AddOrder = () => {
       })
       .catch((e) => {
         setExceptionMessage("You have a problem. " + e.message);
-        console.log("Debug exception",e);
       });
-  }; 
+  };
 
   const newOrder = () => {
     setOrder(initialOrderState);
@@ -123,7 +122,9 @@ const AddOrder = () => {
           </div>
 
           <button
-            disabled={!order.order_number || !order.usa_state || !order.office_code}
+            disabled={
+              !order.order_number || !order.usa_state || !order.office_code
+            }
             onClick={saveOrder}
             className="btn btn-success"
           >
