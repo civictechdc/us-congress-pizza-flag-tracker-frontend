@@ -5,8 +5,9 @@ export const baseURL = process.env.REACT_APP_BACKEND_API;
 console.log("BaseURL ", baseURL);
 
 export default axios.create({
-  baseURL,
+  baseURL: baseURL,
   headers: {
     "Content-type": "application/json",
+    "Access-Control-Allow-Origin": "*"
   },
 });
