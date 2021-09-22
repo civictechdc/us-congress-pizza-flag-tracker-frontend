@@ -17,12 +17,6 @@ const AddOrder = () => {
   const [order, setOrder] = useState(initialOrderState);
   const [submitted, setSubmitted] = useState(false);
 
-  /*
-  const resetOfficeCode = () => {
-    setOrder({ ...order, office_code: ""});
-  }
-  */
-
   const handleUSSTATEChange = (event) => {
     const { name, value } = event.target;
     setOrder({ ...order, [name]: value, office_code: "" }); 
@@ -102,7 +96,6 @@ const AddOrder = () => {
               name="usa_state"
             >
               <option value="select" key="black" hidden disabled>Select</option>
-              {/* Need styling advise -low priority */}
               {STATES &&
                 STATES.map((state, index) => {
                   return (
@@ -128,7 +121,6 @@ const AddOrder = () => {
               required
             >
               <option value="select" key="black" hidden disabled>Select</option>
-              {/* Need styling advise -low priority */}
               {STATES &&
                 order.usa_state &&
                 STATES.filter((state) => state.name === order.usa_state)[0][
