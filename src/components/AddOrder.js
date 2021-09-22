@@ -11,6 +11,7 @@ const AddOrder = () => {
     office_code: "",
     usa_state: "",
     published: false,
+    selection: "select",
   };
   const [exceptionMessage, setExceptionMessage] = useState();
   const [order, setOrder] = useState(initialOrderState);
@@ -94,12 +95,14 @@ const AddOrder = () => {
           <div className="form-group">
             <label htmlFor="usa_state">US State</label>
             <select
-              value={order.usa_state}
+              value={order.selection}
+              // value={order.usa_state}
               id="usa_state"
               onChange={handleUSSTATEChange}
               name="usa_state"
             >
-              <option key="blank"></option>
+              <option value="select" key="black" hidden disabled>Select</option>
+              {/* Need styling advise -low priority */}
               {STATES &&
                 STATES.map((state, index) => {
                   return (
@@ -117,13 +120,15 @@ const AddOrder = () => {
           <div className="form-group">
             <label htmlFor="office_code">Congressional Office</label>
             <select
-              value={order.office_code}
+              value={order.selection}
+              // value={order.office_code}
               id="office_code"
               onChange={handleInputChange}
               name="office_code"
               required
             >
-              <option key="blank"></option>
+              <option value="select" key="black" hidden disabled>Select</option>
+              {/* Need styling advise -low priority */}
               {STATES &&
                 order.usa_state &&
                 STATES.filter((state) => state.name === order.usa_state)[0][

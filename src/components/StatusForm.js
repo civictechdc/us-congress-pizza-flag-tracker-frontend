@@ -7,6 +7,7 @@ const StatusForm = () => {
     id: null,
     login_office_code: "not logged in",
     current_desciption: "select a status",
+    selection: "select",
   };
   const [status, setStatus] = useState(initialStatusState);
 
@@ -23,11 +24,15 @@ const StatusForm = () => {
           <div className="form-group">
             <label htmlFor="current_desciption">Log in: </label>
             <select
-              value={status.current_desciption}
+              value={status.selection}
+              // defaultValue={"select"}            
+              // value={status.current_desciption}
               id="current_desciption"
               onChange={handleInputChange}
               name="current_desciption"
               >
+              <option value="select" key="black" hidden disabled>&nbsp;&nbsp;&nbsp;Select</option>
+              {/* Need styling advise -low priority */}
               {STATUSES && STATUSES.map((element, index) => {
                 if ((status.login_office_code === element.office_code) || 
                 (status.login_office_code === "ADMIN") || 
@@ -52,11 +57,15 @@ const StatusForm = () => {
         <div className="form-group">
           <label htmlFor="login_office_code">Log in: </label>
           <select
-              value={status.login_office_code}
+              value={status.selection}
+              // defaultValue={"select"}
+              // value={status.login_office_code}
               id="login_office_code"
               onChange={handleInputChange}
               name="login_office_code"
             >
+            <option value="select" key="blank" disabled hidden>&nbsp;&nbsp;&nbsp;Select</option>
+            {/* Need styling advise -low priority */}
             {DEPTCODES && DEPTCODES.map((code, index) => {
               return (
                 <option value={code.dept_code} key={index}>
