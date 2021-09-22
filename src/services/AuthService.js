@@ -26,7 +26,7 @@ class AuthService {
     localStorage.removeItem("user");
   }
 
-  Signup(
+  signup(
     username,
     password,
     is_admin,
