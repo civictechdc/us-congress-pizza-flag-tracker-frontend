@@ -22,9 +22,10 @@ const Order = (props) => {
   // responses from DB overwriting order.status_description, order.selection
   // initialStatusState temporary until status info integrated into response.data > initialStatusState to be folded into initialOrderState
   const initialStatusState = {
-    status_description: "*will be set by response.data once integrated with DB*",
+    status_description:
+      "*will be set by response.data once integrated with DB*",
     selection: "select",
-  }
+  };
   const [currentStatus, setCurrentStatus] = useState(initialStatusState);
 
   const getOrder = (id) => {
@@ -86,7 +87,7 @@ const Order = (props) => {
             order={currentOrder}
             status={currentStatus} // temporary until status info integrated into response.data > will then be folded into order
             setOrder={setCurrentOrder}
-            setStatus={setCurrentStatus}  // temporary until status info integrated into response.data > will then be folded into setOrder
+            setStatus={setCurrentStatus} // temporary until status info integrated into response.data > will then be folded into setOrder
             resetMessage={setMessage}
             saveOrder={updateOrder}
             updatePublished={updatePublished}

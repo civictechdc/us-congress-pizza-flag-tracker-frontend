@@ -26,6 +26,24 @@ class AuthService {
     localStorage.removeItem("user");
   }
 
+  Signup(
+    username,
+    password,
+    is_admin,
+    can_create_update_delete_orders,
+    can_update_password_for,
+    can_update_status_for
+  ) {
+    return http.post("signup", {
+      username,
+      password,
+      is_admin,
+      can_create_update_delete_orders,
+      can_update_password_for,
+      can_update_status_for,
+    });
+  }
+
   getCurrentUser() {
     return JSON.parse(localStorage.getItem("user"));
   }

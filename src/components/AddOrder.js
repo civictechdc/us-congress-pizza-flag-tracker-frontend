@@ -69,6 +69,16 @@ const AddOrder = (props) => {
     return (
       <div>
         <OrderForm order={order} setOrder={setOrder} saveOrder={saveOrder} />
+
+        <button
+          disabled={
+            !order.order_number || !order.usa_state || !order.office_code
+          }
+          onClick={saveOrder}
+          className="btn btn-success"
+        >
+          Submit
+        </button>
       </div>
     );
   }
