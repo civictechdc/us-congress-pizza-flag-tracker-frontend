@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { STATUSES, DEPTCODES } from "./Statuses.js";
 
-const Status = () => {
+const StatusForm = () => {
   const initialStatusState = {
     id: null,
     login_office_code: "not logged in",
@@ -38,7 +38,7 @@ const Status = () => {
                       #{element.sequence_num} {element.description}
                     </option>              
                   );
-                }
+                } else return (<option hidden key={index} />)
               })}
             </select>
           </div>      
@@ -57,7 +57,7 @@ const Status = () => {
               onChange={handleInputChange}
               name="login_office_code"
             >
-            {STATUSES && DEPTCODES.map((code, index) => {
+            {DEPTCODES && DEPTCODES.map((code, index) => {
               return (
                 <option value={code.dept_code} key={index}>
                   {code.dept_code}
@@ -73,4 +73,4 @@ const Status = () => {
   );
 }
 
-export default Status;
+export default StatusForm;
