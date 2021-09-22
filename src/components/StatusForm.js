@@ -31,7 +31,7 @@ const StatusForm = () => {
               onChange={handleInputChange}
               name="current_desciption"
               >
-              <option value="select" key="black" hidden disabled>&nbsp;&nbsp;&nbsp;Select</option>
+              <option value="select" key="blank" hidden disabled>&nbsp;&nbsp;&nbsp;Select</option>
               {/* Need styling advise -low priority */}
               {STATUSES && STATUSES.map((element, index) => {
                 if ((status.login_office_code === element.office_code) || 

@@ -95,7 +95,7 @@ const AddOrder = () => {
               onChange={handleUSSTATEChange}
               name="usa_state"
             >
-              <option value="select" key="black" hidden disabled>Select</option>
+              <option value="select" key="blank" hidden disabled>Select</option>
               {STATES &&
                 STATES.map((state, index) => {
                   return (
@@ -120,7 +120,7 @@ const AddOrder = () => {
               name="office_code"
               required
             >
-              <option value="select" key="black" hidden disabled>Select</option>
+              <option value="select" key="blank" hidden disabled>Select</option>
               {STATES &&
                 order.usa_state &&
                 STATES.filter((state) => state.name === order.usa_state)[0][
