@@ -4,6 +4,7 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
 import AuthService from "../services/AuthService";
+import UserService from "../services/UserService";
 
 const required = (value) => {
   if (!value) {
@@ -35,7 +36,7 @@ const vpassword = (value) => {
   }
 };
 
-export default class Signup extends Component {
+export default class AddUser extends Component {
   constructor(props) {
     super(props);
     this.handleRegister = this.handleRegister.bind(this);
@@ -69,7 +70,7 @@ export default class Signup extends Component {
     this.form.validateAll();
 
     if (this.checkBtn.context._errors.length === 0) {
-      AuthService.Signup(
+      UserService.create(
         this.state.username,
         this.state.password,
         this.state.is_admin,
