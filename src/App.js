@@ -39,11 +39,6 @@ function App() {
                 Add User
               </Link>
             </li>
-            <li className="nav-item">
-              <a href="/login" className="nav-link" onClick={logOut}>
-                Log Out
-              </a>
-            </li>
           </div>
 
           <div className="navbar-nav ml-auto">
@@ -51,6 +46,11 @@ function App() {
               <Link to={"/login"} className="nav-link">
                 Login
               </Link>
+            </li>
+            <li className="nav-item">
+              <a href="/login" className="nav-link" onClick={logOut}>
+                Log Out
+              </a>
             </li>
           </div>
         </nav>

@@ -160,7 +160,7 @@ export default class AddUser extends Component {
                 </div>
                 <div className="form-group">
                   <label htmlFor="can_update_status_for">
-                    Can update status for (ALL, SELF, NONE, or office code)
+                    Can update status for (ALL, SELF, or NONE)
                   </label>
                   <Input
                     type="text"
