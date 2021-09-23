@@ -3,6 +3,7 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
+import AuthService from "../services/AuthService";
 import UserService from "../services/UserService";
 
 const required = (value) => {
@@ -159,7 +160,7 @@ export default class AddUser extends Component {
                 </div>
                 <div className="form-group">
                   <label htmlFor="can_update_status_for">
-                    Can update status for (ALL, SELF, or NONE)
+                    Can update status for (ALL, SELF, NONE, or office code)
                   </label>
                   <Input
                     type="text"
