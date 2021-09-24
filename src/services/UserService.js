@@ -1,4 +1,3 @@
-import authHeader from "./auth-header";
 import http from "../http-common";
 
 class UserService {
