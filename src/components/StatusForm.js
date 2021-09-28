@@ -6,7 +6,7 @@ const StatusForm = () => {
   const initialStatusState = {
     id: null,
     login_office_code: "not logged in",
-    current_desciption: "select a status",
+    current_description: "select a status",
     selection: "select",
   };
   const [status, setStatus] = useState(initialStatusState);
@@ -19,17 +19,17 @@ const StatusForm = () => {
   const unLogged = (status.login_office_code === "not logged in")
     ? ""
     : <div>
-        <h6>Status: {status.current_desciption}</h6>
+        <h6>{status.current_description}</h6>
         <form>
           <div className="form-group">
-            <label htmlFor="current_desciption">Log in: </label>
+            <label htmlFor="current_description">Status: </label>
             <select
               value={status.selection}
               // defaultValue={"select"}            
-              // value={status.current_desciption}
-              id="current_desciption"
+              // value={status.current_description}
+              id="current_description"
               onChange={handleInputChange}
-              name="current_desciption"
+              name="current_description"
               >
               <option value="select" key="blank" hidden disabled>&nbsp;&nbsp;&nbsp;Select</option>
               {/* Need styling advise -low priority */}

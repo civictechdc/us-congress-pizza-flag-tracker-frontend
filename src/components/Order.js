@@ -3,6 +3,7 @@ import OrderDataService from "../services/OrderService";
 import { baseURL } from "../http-common";
 
 import { STATES } from "./states.js";
+import { STATUSES, DEPTCODES } from "./Statuses.js";
 
 const Order = (props) => {
   const initialOrderState = {
@@ -13,9 +14,19 @@ const Order = (props) => {
     order_number: "",
     office_code: "",
     usa_state: "",
+    current_description: "",
+    selection: "select",
   };
   const [currentOrder, setCurrentOrder] = useState(initialOrderState);
   const [message, setMessage] = useState("");
+
+  // responses from DB overwriting currentOrder.current_description, currentOrder.selection
+  // initialStatusState temporary until status info integrated into reponse.data
+  const initialStatusState = {
+    current_description: "*will be set by props once integrated with DB*",  // will be set by props once integrated with DB
+    selection: "select",
+  }
+  const [currentStatus, setCurrentStatus] = useState(initialStatusState);
 
   const getOrder = (id) => {
     console.log("id", id);
@@ -36,6 +47,13 @@ const Order = (props) => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCurrentOrder({ ...currentOrder, [name]: value });
+  };
+
+  // responses from DB overwriting currentOrder.current_description, currentOrder.selection
+  // handleStatusChange temporary until status info integrated into reponse.data
+  const handleStatusChange = (event) => {
+    const { name, value } = event.target;
+    setCurrentStatus({ ...currentStatus, [name]: value });
   };
 
   const updatePublished = (status) => {
@@ -115,6 +133,8 @@ const Order = (props) => {
               </select>
             </div>
 
+            <h4>{currentOrder.current_description}</h4>
+            
             <div className="form-group">
               <label htmlFor="office_code">Congressional Office</label>
               <select
@@ -146,7 +166,44 @@ const Order = (props) => {
               </select>
             </div>
 
-
+            {/* ------------------------------------------------------ */}
+            <div>Current: {currentStatus.current_description}</div>
+            <div className="form-group">
+              <label htmlFor="current_description">
+                <strong>Status: </strong>
+              </label>
+              {/* {currentOrder.published ? "Published" : "Pending"} */}
+              <select
+                value={currentStatus.selection}
+                // defaultValue={"select"}            
+                // value={currentOrder.current_description}
+                id="current_description"
+                onChange={handleStatusChange}
+                name="current_description"
+                >
+                <option value="select" key="blank" hidden disabled>&nbsp;Select</option>
+                {/* Need styling advise -low priority */}
+                {STATUSES && STATUSES.map((element, index) => {
+                  {/* if ((currentOrder.login_office_code === element.office_code) || 
+                  (currentOrder.login_office_code === "ADMIN") || 
+                  ((element.office_code === "ALL") && (currentOrder.login_office_code !== "not logged in"))
+                  ) {
+                    return (
+                      <option value={element.description} key={index}>
+                        #{element.sequence_num} {element.description}
+                      </option>              
+                    );
+                  } else return (<option hidden key={index} />)  // handle "Array.prototype.map() expects a value to be returned at the end of arrow function array-callback-return" error
+                  */}
+                  return (
+                    <option value={element.description} key={index}>
+                      #{element.sequence_num} {element.description}
+                    </option>              
+                  );
+                })}
+              </select>              
+            </div>
+            {/* ------------------------------------------------------ */}
 
             <div className="form-group">
               <label>QR Code</label>
@@ -157,12 +214,6 @@ const Order = (props) => {
               />
             </div>
 
-            <div className="form-group">
-              <label>
-                <strong>Status:</strong>
-              </label>
-              {currentOrder.published ? "Published" : "Pending"}
-            </div>
           </form>
 
           {currentOrder.published ? (
