@@ -166,7 +166,6 @@ const Order = (props) => {
               </select>
             </div>
 
-            {/* ------------------------------------------------------ */}
             <div>Current: {currentStatus.current_description}</div>
             <div className="form-group">
               <label htmlFor="current_description">
@@ -182,9 +181,10 @@ const Order = (props) => {
                 name="current_description"
                 >
                 <option value="select" key="blank" hidden disabled>&nbsp;Select</option>
-                {/* Need styling advise -low priority */}
                 {STATUSES && STATUSES.map((element, index) => {
-                  {/* if ((currentOrder.login_office_code === element.office_code) || 
+                  {/* Filter status options by logged in credintials, to be rewired to new user db --->
+
+                  if ((currentOrder.login_office_code === element.office_code) || 
                   (currentOrder.login_office_code === "ADMIN") || 
                   ((element.office_code === "ALL") && (currentOrder.login_office_code !== "not logged in"))
                   ) {
@@ -194,7 +194,8 @@ const Order = (props) => {
                       </option>              
                     );
                   } else return (<option hidden key={index} />)  // handle "Array.prototype.map() expects a value to be returned at the end of arrow function array-callback-return" error
-                  */}
+                  
+                  <--- Filter status options by logged in credintials, to be rewired to new user db */}
                   return (
                     <option value={element.description} key={index}>
                       #{element.sequence_num} {element.description}
@@ -203,7 +204,6 @@ const Order = (props) => {
                 })}
               </select>              
             </div>
-            {/* ------------------------------------------------------ */}
 
             <div className="form-group">
               <label>QR Code</label>
