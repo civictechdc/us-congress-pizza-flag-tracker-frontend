@@ -97,6 +97,13 @@ const Order = (props) => {
       });
   };
 
+  // check to disable Update button if USA State and Cong. Office don't correspond
+  let currentFound = false;
+  let currentUSState = STATES.filter((state) => state.name === currentOrder.usa_state);
+  console.log("selected USstate's districts: ", currentUSState);
+  currentFound = currentUSState[0].districts.includes(currentOrder.office_code);
+  console.log("Match selected district?", currentUSState[0].districts.includes(currentOrder.office_code));
+
   console.log(currentOrder);
   
   return (
