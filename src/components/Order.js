@@ -3,7 +3,7 @@ import OrderDataService from "../services/OrderService";
 import { baseURL } from "../http-common";
 
 import { STATES } from "./states.js";
-import { STATUSES, DEPTCODES } from "./Statuses.js";
+import { STATUSES /*, DEPTCODES */ } from "./Statuses.js";
 
 const Order = (props) => {
   const initialOrderState = {
@@ -25,6 +25,7 @@ const Order = (props) => {
   const initialStatusState = {
     current_description: "*will be set by props once integrated with DB*",  // will be set by props once integrated with DB
     selection: "select",
+    found: "",
   }
   const [currentStatus, setCurrentStatus] = useState(initialStatusState);
 
@@ -95,12 +96,15 @@ const Order = (props) => {
         console.log(e);
       });
   };
+
   console.log(currentOrder);
+  
   return (
     <div>
       {currentOrder ? (
         <div className="edit-form">
           <h4>Order</h4>
+          {currentStatus.found}
           <form>
             <div className="form-group">
               <label htmlFor="order_number">Order Number</label>
@@ -115,13 +119,19 @@ const Order = (props) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="usa_state">US State</label>
+              <div>
+                <label htmlFor="usa_state">
+                  US State: <strong>{currentOrder.usa_state}</strong>
+                </label>
+              </div>
               <select
-                value={currentOrder.usa_state}
+                value={currentStatus.selection}  // change to {currentOrder.selection} after user db integrated
+                // value={currentOrder.usa_state}
                 id="usa_state"
                 onChange={handleInputChange}
                 name="usa_state"
               >
+                <option value="select" key="blank" hidden disabled>Select</option>
                 {STATES &&
                   STATES.map((state, index) => {
                     return (
@@ -136,22 +146,20 @@ const Order = (props) => {
             <h4>{currentOrder.current_description}</h4>
             
             <div className="form-group">
-              <label htmlFor="office_code">Congressional Office</label>
+              <div>
+                <label htmlFor="office_code">
+                  Congressional Office: <strong>{currentOrder.office_code}</strong>
+                </label>
+              </div>
               <select
-                value={currentOrder.office_code}
+                value={currentStatus.selection}  // change to {currentOrder.selection} after user db integrated
+                // value={currentOrder.office_code}
                 id="office_code"
                 onChange={handleInputChange}
                 name="office_code"
                 required
               >
-                {/* {STATES &&
-                  currentOrder.usa_state &&
-                  STATES.filter(
-                    (state) => state.name === currentOrder.usa_state
-                  ).filter((d) => d) &&  (
-                 <option value={currentOrder.office_code}>
-                        {currentOrder.office_code}
-                      </option>)} */}
+                <option value="select" key="blank" hidden disabled>Select</option>
                 {STATES &&
                   currentOrder.usa_state &&
                   STATES.filter(
@@ -162,25 +170,28 @@ const Order = (props) => {
                         {district}
                       </option>
                     );
-                  })}
+                  })
+                }
               </select>
             </div>
 
-            <div>Current: {currentStatus.current_description}</div>
+            
             <div className="form-group">
-              <label htmlFor="current_description">
-                <strong>Status: </strong>
-              </label>
+              <div>
+                <label htmlFor="current_description">
+                  Status: <strong>{currentStatus.current_description}</strong>
+                </label>
+              </div>
               {/* {currentOrder.published ? "Published" : "Pending"} */}
               <select
-                value={currentStatus.selection}
+                value={currentStatus.selection}  // change to {currentOrder.selection} after user db integrated
                 // defaultValue={"select"}            
                 // value={currentOrder.current_description}
                 id="current_description"
                 onChange={handleStatusChange}
                 name="current_description"
                 >
-                <option value="select" key="blank" hidden disabled>&nbsp;Select</option>
+                <option value="select" key="blank" hidden disabled>Select</option>
                 {STATUSES && STATUSES.map((element, index) => {
                   {/* Filter status options by logged in credintials, to be rewired to new user db --->
 
