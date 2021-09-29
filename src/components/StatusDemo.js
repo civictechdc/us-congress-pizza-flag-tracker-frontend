@@ -32,7 +32,6 @@ const StatusDemo = () => {
               name="current_description"
               >
               <option value="select" key="blank" hidden disabled>&nbsp;&nbsp;&nbsp;Select</option>
-              {/* Need styling advise -low priority */}
               {STATUSES && STATUSES.map((element, index) => {
                 if ((status.login_office_code === element.office_code) || 
                 (status.login_office_code === "ADMIN") || 
@@ -67,7 +66,6 @@ const StatusDemo = () => {
               name="login_office_code"
             >
             <option value="select" key="blank" disabled hidden>&nbsp;&nbsp;&nbsp;Select</option>
-            {/* Need styling advise -low priority */}
             {DEPTCODES && DEPTCODES.map((code, index) => {
               return (
                 <option value={code.dept_code} key={index}>

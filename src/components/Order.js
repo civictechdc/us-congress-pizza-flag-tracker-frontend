@@ -13,7 +13,7 @@ const Order = (props) => {
     published: false,
     order_number: "",
     office_code: "",
-    usa_state: "AL",
+    usa_state: "AL", // need initial value for currentFound.  This is immediately overwritten by db.response.
     current_description: "",
     selection: "select",
   };
@@ -21,7 +21,7 @@ const Order = (props) => {
   const [message, setMessage] = useState("");
 
   // responses from DB overwriting currentOrder.current_description, currentOrder.selection
-  // initialStatusState temporary until status info integrated into reponse.data
+  // initialStatusState temporary until status info integrated into response.data
   const initialStatusState = {
     current_description: "*will be set by props once integrated with DB*",  // will be set by props once integrated with DB
     selection: "select",
@@ -51,7 +51,7 @@ const Order = (props) => {
   };
 
   // responses from DB overwriting currentOrder.current_description, currentOrder.selection
-  // handleStatusChange temporary until status info integrated into reponse.data
+  // handleStatusChange temporary until status info integrated into response.data
   const handleStatusChange = (event) => {
     const { name, value } = event.target;
     setCurrentStatus({ ...currentStatus, [name]: value });
@@ -99,7 +99,6 @@ const Order = (props) => {
 
   // check to disable Update button if USA State and Cong. Office don't correspond
   let currentFound = false;
-  
   let currentUSState = STATES.filter((state) => state.name === currentOrder.usa_state);
   console.log("selected USstate's districts: ", currentUSState);
   currentFound = currentUSState[0].districts.includes(currentOrder.office_code);
@@ -274,7 +273,7 @@ const Order = (props) => {
           }
           {currentFound
             ? <p />
-            : <p>State and Congressional Office must match</p>
+            : <p>State and Congressional Office must correspond</p>
           }
           <p>{message}</p>
         </div>
