@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import OrderDataService from "../services/OrderService";
 
-//const STATES = require('./states.json');
 import { STATES } from "./states.js";
 
 const AddOrder = () => {
@@ -15,7 +14,8 @@ const AddOrder = () => {
   };
   const [exceptionMessage, setExceptionMessage] = useState();
   const [order, setOrder] = useState(initialOrderState);
-  const [submitted, setSubmitted] = useState(false);
+//  const [submitted, setSubmitted] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleUSSTATEChange = (event) => {
     const { name, value } = event.target;
@@ -42,7 +42,8 @@ const AddOrder = () => {
           usa_state: response.data.usa_state,
           published: response.data.published,
         });
-        setSubmitted(true);
+        // setSubmitted(true);
+        setMessage("You submitted successfully!");
       })
       .catch((e) => {
         setExceptionMessage("You have a problem. " + e.message);
@@ -52,7 +53,8 @@ const AddOrder = () => {
 
   const newOrder = () => {
     setOrder(initialOrderState);
-    setSubmitted(false);
+    // setSubmitted(false);
+    setMessage("");
   };
   if (exceptionMessage) {
     return (
@@ -64,14 +66,7 @@ const AddOrder = () => {
 
   return (
     <div className="submit-form">
-      {submitted ? (
-        <div>
-          <h4>You submitted successfully!</h4>
-          <button className="btn btn-success" onClick={newOrder}>
-            Add
-          </button>
-        </div>
-      ) : (
+
         <div>
           <div className="form-group">
             <label htmlFor="order_number">Order Number</label>
@@ -145,8 +140,9 @@ const AddOrder = () => {
           >
             Submit
           </button>
+          <p>{message}</p>
         </div>
-      )}
+
     </div>
   );
 };
