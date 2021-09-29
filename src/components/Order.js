@@ -126,8 +126,10 @@ const Order = (props) => {
             <div className="form-group">
               <div>
                 <label htmlFor="usa_state">
-                  US State: <strong>{currentOrder.usa_state}</strong>
+                  US State: 
                 </label>
+                {" "}
+                <strong>{currentOrder.usa_state}</strong>
               </div>
               <select
                 value={currentStatus.selection}  // change to {currentOrder.selection} after user db integrated
@@ -151,8 +153,10 @@ const Order = (props) => {
             <div className="form-group">
               <div>
                 <label htmlFor="office_code">
-                  Congressional Office: <strong>{currentOrder.office_code}</strong>
+                  Congressional Office: 
                 </label>
+                {" "}
+                <strong>{currentOrder.office_code}</strong>
               </div>
               <select
                 value={currentStatus.selection}  // change to {currentOrder.selection} after user db integrated
@@ -181,8 +185,10 @@ const Order = (props) => {
             <div className="form-group">
               <div>
                 <label htmlFor="current_description">
-                  Status: <strong>{currentStatus.current_description}</strong>
+                  Status: 
                 </label>
+                {" "}
+                <strong>{currentStatus.current_description}</strong>
               </div>
               {/* {currentOrder.published ? "Published" : "Pending"} */}
               <select
@@ -219,8 +225,9 @@ const Order = (props) => {
             </div>
 
             <div className="form-group">
-              <label>QR Code</label>
-              {currentOrder.uuid}
+              <label htmlFor="uuid">QR Code:</label>
+              {" "}
+              <strong>{currentOrder.uuid}</strong>
               <img
                 src={baseURL + "/qrcode/" + currentOrder.uuid}
                 alt="QR Code"
