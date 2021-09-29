@@ -66,83 +66,103 @@ const AddOrder = () => {
 
   return (
     <div className="submit-form">
-
-        <div>
-          <div className="form-group">
-            <label htmlFor="order_number">Order Number</label>
-            <input
-              type="text"
-              className="form-control"
-              id="order_number"
-              required
-              value={order.order_number}
-              onChange={handleInputChange}
-              name="order_number"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="usa_state">US State</label>
-            <select
-              value={order.selection}
-              // value={order.usa_state}
-              id="usa_state"
-              onChange={handleUSSTATEChange}
-              name="usa_state"
-            >
-              <option value="select" key="blank" hidden disabled>Select</option>
-              {STATES &&
-                STATES.map((state, index) => {
-                  return (
-                    <option value={state.name} key={index}>
-                      {state.name}
-                    </option>
-                  );
-                })}
-            </select>
-            {/* Temp OrderState visualizer */}
-              <h4>{order.usa_state}</h4>
-            {/* Temp OrderState visualizer */}  
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="office_code">Congressional Office</label>
-            <select
-              value={order.selection}
-              // value={order.office_code}
-              id="office_code"
-              onChange={handleInputChange}
-              name="office_code"
-              required
-            >
-              <option value="select" key="blank" hidden disabled>Select</option>
-              {STATES &&
-                order.usa_state &&
-                STATES.filter((state) => state.name === order.usa_state)[0][
-                  "districts"
-                ].map((district, index) => {
-                  return (
-                    <option value={district} key={index}>
-                      {district}
-                    </option>
-                  );
-                })}
-            </select>
-            {/* Temp OrderState visualizer */}
-              <h4>{order.office_code}</h4>
-            {/* Temp OrderState visualizer */}
-          </div>
-
-          <button
-            disabled={!order.order_number || !order.usa_state || !order.office_code}
-            onClick={saveOrder}
-            className="btn btn-success"
-          >
-            Submit
-          </button>
-          <p>{message}</p>
+      <h4>Order</h4>
+      <form>
+        <div className="form-group">
+          <label htmlFor="order_number">Order Number</label>
+          <input
+            type="text"
+            className="form-control"
+            id="order_number"
+            required
+            value={order.order_number}
+            onChange={handleInputChange}
+            name="order_number"
+          />
         </div>
 
+        <div className="form-group">
+          <div>
+            <label htmlFor="usa_state">
+              US State: 
+            </label>
+            {" "}
+            <strong>
+              {order.usa_state
+                ? order.usa_state
+                : "**"
+              }
+            </strong>            
+          </div>
+          <select
+            value={order.selection}
+            // value={order.usa_state}
+            id="usa_state"
+            onChange={handleUSSTATEChange}
+            name="usa_state"
+          >
+            <option value="select" key="blank" hidden disabled>Select</option>
+            {STATES &&
+              STATES.map((state, index) => {
+                return (
+                  <option value={state.name} key={index}>
+                    {state.name}
+                  </option>
+                );
+              })}
+          </select>
+        </div>
+
+        <div className="form-group">
+          <div>
+            <label htmlFor="office_code">
+              Congressional Office: 
+            </label>
+            {" "}
+            {order.usa_state
+              ? <strong>
+                  {order.office_code
+                    ? order.office_code
+                    : "**-**"
+                  }
+                </strong>   
+              : <strong>
+                  "Please choose a US State"
+                </strong>  
+            }  
+          </div>
+          <select
+            value={order.selection}
+            // value={order.office_code}
+            id="office_code"
+            onChange={handleInputChange}
+            name="office_code"
+            required
+          >
+            <option value="select" key="blank" hidden disabled>Select</option>
+            {STATES &&
+              order.usa_state &&
+              STATES.filter((state) => state.name === order.usa_state)[0][
+                "districts"
+              ].map((district, index) => {
+                return (
+                  <option value={district} key={index}>
+                    {district}
+                  </option>
+                );
+              })}
+          </select>
+        </div>
+
+        <button
+          disabled={!order.order_number || !order.usa_state || !order.office_code}
+          onClick={saveOrder}
+          className="btn btn-success"
+        >
+          Submit
+        </button>
+        <p>{message}</p>
+      </form>
     </div>
   );
 };
