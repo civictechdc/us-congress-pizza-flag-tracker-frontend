@@ -25,7 +25,6 @@ const Order = (props) => {
   const initialStatusState = {
     current_description: "*will be set by props once integrated with DB*",  // will be set by props once integrated with DB
     selection: "select",
-    found: "",
   }
   const [currentStatus, setCurrentStatus] = useState(initialStatusState);
 
@@ -111,7 +110,6 @@ const Order = (props) => {
       {currentOrder ? (
         <div className="edit-form">
           <h4>Order</h4>
-          {currentStatus.found}
           <form>
             <div className="form-group">
               <label htmlFor="order_number">Order Number</label>
@@ -149,9 +147,7 @@ const Order = (props) => {
                   })}
               </select>
             </div>
-
-            <h4>{currentOrder.current_description}</h4>
-            
+         
             <div className="form-group">
               <div>
                 <label htmlFor="office_code">
@@ -181,7 +177,6 @@ const Order = (props) => {
                 }
               </select>
             </div>
-
             
             <div className="form-group">
               <div>

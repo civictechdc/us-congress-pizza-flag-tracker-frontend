@@ -138,7 +138,7 @@ const OrdersList = () => {
             </div>
             <div>
               <label>
-                <strong>Congressional Office:</strong>
+                <strong>QR Code:</strong>
               </label>{" "}
               {currentOrder.uuid}
             </div>
