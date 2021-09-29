@@ -47,6 +47,7 @@ const Order = (props) => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCurrentOrder({ ...currentOrder, [name]: value });
+    setMessage("");
   };
 
   // responses from DB overwriting currentOrder.current_description, currentOrder.selection
@@ -54,6 +55,7 @@ const Order = (props) => {
   const handleStatusChange = (event) => {
     const { name, value } = event.target;
     setCurrentStatus({ ...currentStatus, [name]: value });
+    setMessage("");
   };
 
   const updatePublished = (status) => {

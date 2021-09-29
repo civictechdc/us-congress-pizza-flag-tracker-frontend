@@ -14,8 +14,8 @@ const AddOrder = () => {
   };
   const [exceptionMessage, setExceptionMessage] = useState();
   const [order, setOrder] = useState(initialOrderState);
-//  const [submitted, setSubmitted] = useState(false);
-  const [message, setMessage] = useState("");
+//  const [submitted, setSubmitted] = useState(false);   <---messaging consistent across components
+  const [message, setMessage] = useState("");  
 
   const handleUSSTATEChange = (event) => {
     const { name, value } = event.target;
@@ -42,7 +42,7 @@ const AddOrder = () => {
           usa_state: response.data.usa_state,
           published: response.data.published,
         });
-        // setSubmitted(true);
+        // setSubmitted(true);   <---messaging consistent across components
         setMessage("You submitted successfully!");
       })
       .catch((e) => {
@@ -53,7 +53,7 @@ const AddOrder = () => {
 
   const newOrder = () => {
     setOrder(initialOrderState);
-    // setSubmitted(false);
+    // setSubmitted(false);   <---messaging consistent across components
     setMessage("");
   };
   if (exceptionMessage) {
