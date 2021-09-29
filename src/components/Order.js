@@ -13,7 +13,7 @@ const Order = (props) => {
     published: false,
     order_number: "",
     office_code: "",
-    usa_state: "",
+    usa_state: "AL",
     current_description: "",
     selection: "select",
   };
@@ -99,6 +99,7 @@ const Order = (props) => {
 
   // check to disable Update button if USA State and Cong. Office don't correspond
   let currentFound = false;
+  
   let currentUSState = STATES.filter((state) => state.name === currentOrder.usa_state);
   console.log("selected USstate's districts: ", currentUSState);
   currentFound = currentUSState[0].districts.includes(currentOrder.office_code);
@@ -254,13 +255,27 @@ const Order = (props) => {
             Delete
           </button>
 
-          <button
-            type="submit"
-            className="badge badge-success"
-            onClick={updateOrder}
-          >
-            Update
-          </button>
+          {currentFound
+            ? <button
+                type="submit"
+                className="badge badge-success"
+                onClick={updateOrder}
+              >
+                Update
+              </button>
+            : <button
+                type="submit"
+                className="badge badge-success"
+                onClick={updateOrder}
+                disabled
+              >
+                Update
+              </button>
+          }
+          {currentFound
+            ? <p />
+            : <p>State and Congressional Office must match</p>
+          }
           <p>{message}</p>
         </div>
       ) : (

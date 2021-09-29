@@ -5,7 +5,7 @@ import { Switch, Route, Link } from "react-router-dom";
 import AddOrder from "./components/AddOrder";
 import Order from "./components/Order";
 import OrdersList from "./components/OrdersList";
-import StatusForm from "./components/StatusForm";
+import StatusDemo from "./components/StatusDemo";
 
 function App() {
   return (<>
@@ -42,7 +42,7 @@ function App() {
           <Route exact path={["/", "/orders"]} component={OrdersList} />
           <Route exact path="/add" component={AddOrder} />
           {/* Contents of Status Route to be folded in Order component post evaluation*/}
-          <Route exact path="/status" component={StatusForm} />
+          <Route exact path="/status" component={StatusDemo} />
           <Route path="/orders/:id" component={Order} />
         </Switch>
       </div>

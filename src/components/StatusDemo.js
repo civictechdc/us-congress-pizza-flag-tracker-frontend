@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { STATUSES, DEPTCODES } from "./Statuses.js";
 
-const StatusForm = () => {
+const StatusDemo = () => {
   const initialStatusState = {
     id: null,
     login_office_code: "not logged in",
@@ -52,6 +52,8 @@ const StatusForm = () => {
 
    return (
     <div>
+      <p>Demo to display Status options filtered by User Credintials</p>
+      <p>faux Demo User Credintials to be replaced by User Database outputs</p>
       <h4>User: {status.login_office_code}</h4>
       <form>
         <div className="form-group">
@@ -82,4 +84,4 @@ const StatusForm = () => {
   );
 }
 
-export default StatusForm;
+export default StatusDemo;
