@@ -7,6 +7,8 @@ const OrdersList = () => {
   const [currentOrder, setCurrentOrder] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchTitle, setSearchTitle] = useState("");
+  const [popUpBox, setPopUpbox] = useState("none");
+  const [errorMessage, setErrorMessage] = useState("")
 
   useEffect(() => {
     retrieveOrders();
@@ -26,6 +28,9 @@ const OrdersList = () => {
       })
       .catch((e) => {
         console.log(e);
+        setPopUpbox("block");
+        setErrorMessage(e.message);
+       
       });
   };
 
@@ -48,17 +53,28 @@ const OrdersList = () => {
       })
       .catch((e) => {
         console.log(e);
+        setPopUpbox("block");
+        setErrorMessage(e.message);
       });
   };
 
   const findByOrderNumber = () => {
     OrderDataService.findByOrderNumber(searchTitle)
       .then((response) => {
-        console.log("found", response.data);
-        setOrders(response.data.orders);
+        if('error' in response.data){
+          setPopUpbox("block");
+          setErrorMessage(response.data.error);
+        }
+        else{
+          console.log("found", response.data);
+          setOrders(response.data.orders);
+        }
+        
       })
       .catch((e) => {
         console.log(e);
+         setPopUpbox("block");
+        setErrorMessage(e.message);
       });
   };
 
@@ -80,7 +96,14 @@ const OrdersList = () => {
         ))}
     </tbody>
   );
+
+  const closePopUpBox = () => {
+  setPopUpbox("none");  
+  };
+
+
   return (
+  <>
     <div className="list row">
       <div className="col-md-8">
         <div className="input-group mb-3">
@@ -164,6 +187,13 @@ const OrdersList = () => {
         )}
       </div>
     </div>
+     <div className="pop-container" 
+      style={{display: popUpBox }} >
+            <div className="pop-up" onClick={closePopUpBox}>
+              <h3>{errorMessage}</h3>
+            </div>
+          </div>
+    </>
   );
 };
 

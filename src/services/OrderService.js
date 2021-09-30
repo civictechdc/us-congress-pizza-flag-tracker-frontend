@@ -1,31 +1,31 @@
 import http from "../http-common";
 
 const getAll = () => {
-  return http.get("/orders");
+  return http.get("/api/orders");
 };
 
 const get = (uuid) => {
-  return http.get(`/orders/${uuid}`);
+  return http.get(`/api/orders/${uuid}`);
 };
 
 const create = (data) => {
-  return http.post("/orders/create", data);
+  return http.post("/api/orders/create", data);
 };
 
 const update = (id, data) => {
-  return http.put(`/orders/${id}`, data);
+  return http.put(`/api/orders/${id}`, data);
 };
 
 const remove = (id) => {
-  return http.delete(`/orders/${id}`);
+  return http.delete(`/api/orders/${id}`);
 };
 
 const removeAll = () => {
-  return http.delete(`/orders`);
+  return http.delete(`/api/orders`);
 };
 
 const findByOrderNumber = (order_number) => {
-  return http.get(`/order_num/${order_number}`);
+  return http.get(`/api/order_num/${order_number}`);
 };
 
 
