@@ -11,7 +11,7 @@ const Order = (props) => {
     description: "",
     published: false,
     order_number: "",
-    office_code: "",
+    home_office_code: "",
     usa_state: "",
   };
   const [currentOrder, setCurrentOrder] = useState(initialOrderState);
@@ -40,7 +40,7 @@ const Order = (props) => {
     var data = {
       uuid: currentOrder.uuid,
       order_number: currentOrder.order_number,
-      office_code: currentOrder.office_code,
+      home_office_code: currentOrder.home_office_code,
       published: status,
     };
 
@@ -110,12 +110,12 @@ const Order = (props) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="office_code">Congressional Office</label>
+              <label htmlFor="home_office_code">Congressional Office</label>
               <select
-                value={currentOrder.office_code}
-                id="office_code"
+                value={currentOrder.home_office_code}
+                id="home_office_code"
                 onChange={handleInputChange}
-                name="office_code"
+                name="home_office_code"
                 required
               >
                 {/* {STATES &&
@@ -123,8 +123,8 @@ const Order = (props) => {
                   STATES.filter(
                     (state) => state.name === currentOrder.usa_state
                   ).filter((d) => d) &&  (
-                 <option value={currentOrder.office_code}>
-                        {currentOrder.office_code}
+                 <option value={currentOrder.home_office_code}>
+                        {currentOrder.home_office_code}
                       </option>)} */}
                 {STATES &&
                   currentOrder.usa_state &&

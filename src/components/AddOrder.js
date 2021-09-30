@@ -8,7 +8,7 @@ const AddOrder = () => {
   const initialOrderState = {
     id: null,
     order_number: "",
-    office_code: "",
+    home_office_code: "",
     usa_state: "",
     published: false,
   };
@@ -24,7 +24,7 @@ const AddOrder = () => {
   const saveOrder = () => {
     var data = {
       order_number: order.order_number,
-      office_code: order.office_code,
+      home_office_code: order.home_office_code,
       usa_state: order.usa_state,
     };
     OrderDataService.create(data)
@@ -32,7 +32,7 @@ const AddOrder = () => {
         setOrder({
           id: response.data.id,
           order_number: response.data.order_number,
-          office_code: response.data.office_code,
+          home_office_code: response.data.home_office_code,
           usa_state: response.data.usa_state,
           published: response.data.published,
         });
@@ -99,12 +99,12 @@ const AddOrder = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="office_code">Congressional Office</label>
+            <label htmlFor="home_office_code">Congressional Office</label>
             <select
-              value={order.office_code}
-              id="office_code"
+              value={order.home_office_code}
+              id="home_office_code"
               onChange={handleInputChange}
-              name="office_code"
+              name="home_office_code"
               required
             >
               {STATES &&
@@ -123,7 +123,7 @@ const AddOrder = () => {
 
           <button
             disabled={
-              !order.order_number || !order.usa_state || !order.office_code
+              !order.order_number || !order.usa_state || !order.home_office_code
             }
             onClick={saveOrder}
             className="btn btn-success"
