@@ -1,5 +1,7 @@
 import http from "../http-common";
 
+/* remember also the api/qrcode img API*/
+
 const getAll = () => {
   return http.get("/api/orders");
 };
