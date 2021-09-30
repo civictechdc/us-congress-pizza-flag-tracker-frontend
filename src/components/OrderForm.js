@@ -1,12 +1,25 @@
 import React from "react";
 import { STATES } from "./states.js";
+import { STATUSES /*, ORGCODES */ } from "./Statuses.js";
 import { baseURL } from "../http-common";
+
 const OrderForm = (props) => {
-  const { order, setOrder, saveOrder, mode, deleteOrder } = props;
+  const { order, status, setOrder, setStatus, resetMessage, saveOrder, mode, deleteOrder } = props;
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setOrder({ ...order, [name]: value });
+    if (resetMessage) {
+      resetMessage("");
+    }
+  };
+
+  // responses from DB overwriting status values in order's state
+  // handleStatusChange temporary until status info integrated into response.data
+  const handleStatusChange = (event) => {
+    const { name, value } = event.target;
+    setStatus({ ...status, [name]: value });
+    resetMessage("");
   };
 
   return (
@@ -68,6 +81,33 @@ const OrderForm = (props) => {
 
       {mode === "edit" ? (
         <>
+          <div className="form-group">
+            <div>
+              <label htmlFor="current_description">
+                Status: 
+              </label>
+              {" "}
+              <strong>{status.current_description}</strong>
+            </div> 
+            <select
+              value={status.selection}  // change to {order.selection} after user db integrated
+              id="current_description"
+              onChange={handleStatusChange}
+              name="current_description"
+              >
+              <option value="select" key="blank" hidden disabled>Select</option>
+              {STATUSES && STATUSES.map((element, index) => {
+                /* Old Filter by DEMO Organization Code was here
+                   to be rewired to ACTUAL User Profile DB info  */
+                return (
+                  <option value={element.description} key={index}>
+                    #{element.sequence_num} {element.description}
+                  </option>              
+                );     
+              })}
+            </select>
+          </div>
+
           <div className="form-group">
             <label>QR Code</label>
             {order.uuid}
