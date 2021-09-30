@@ -203,7 +203,7 @@ const Order = (props) => {
                 >
                 <option value="select" key="blank" hidden disabled>Select</option>
                 {STATUSES && STATUSES.map((element, index) => {
-                  {/* Filter status options by logged in credintials, to be rewired to new user db --->
+                  /* Filter status options by logged in credintials, to be rewired to new user db --->
 
                   if ((currentOrder.login_office_code === element.office_code) || 
                   (currentOrder.login_office_code === "ADMIN") || 
@@ -216,7 +216,7 @@ const Order = (props) => {
                     );
                   } else return (<option hidden key={index} />)  // handle "Array.prototype.map() expects a value to be returned at the end of arrow function array-callback-return" error
                   
-                  <--- Filter status options by logged in credintials, to be rewired to new user db */}
+                  <--- Filter status options by logged in credintials, to be rewired to new user db */
                   return (
                     <option value={element.description} key={index}>
                       #{element.sequence_num} {element.description}
