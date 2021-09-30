@@ -16,7 +16,7 @@ const AddOrder = () => {
   const [order, setOrder] = useState(initialOrderState);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleUSSTATEChange = (event) => {
+  const handleUSStateChange = (event) => {
     const { name, value } = event.target;
     setOrder({ ...order, [name]: value, office_code: "" }); 
   };
@@ -103,7 +103,7 @@ const AddOrder = () => {
               value={order.selection}
               // value={order.usa_state}}
               id="usa_state"
-              onChange={handleInputChange}
+              onChange={handleUSStateChange}
               name="usa_state"
             >
               <option value="select" key="blank" hidden disabled>Select</option>  
