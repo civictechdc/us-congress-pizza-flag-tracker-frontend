@@ -1,6 +1,8 @@
 import http from "../http-common";
 import authHeader from "../services/auth-header";
 
+/* remember also the api/qrcode img API*/
+
 const getAll = () => {
   return http.get("/api/orders");
 };
