@@ -12,17 +12,17 @@ const Order = (props) => {
     order_number: "",
     home_office_code: "",
     usa_state: "",
-    // current_description: "", // to be uncommented when integrated into response.data
+    // status_description: "", // to be uncommented when integrated into response.data
     // selection: "select",  // to be uncommented when integrated into response.data
   };
   const [currentOrder, setCurrentOrder] = useState(initialOrderState);
   const [message, setMessage] = useState("");
   const mode = "edit";
 
-  // responses from DB overwriting order.current_description, order.selection
+  // responses from DB overwriting order.status_description, order.selection
   // initialStatusState temporary until status info integrated into response.data > initialStatusState to be folded into initialOrderState
   const initialStatusState = {
-    current_description: "*will be set by response.data once integrated with DB*",
+    status_description: "*will be set by response.data once integrated with DB*",
     selection: "select",
   }
   const [currentStatus, setCurrentStatus] = useState(initialStatusState);

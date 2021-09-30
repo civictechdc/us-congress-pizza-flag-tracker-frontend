@@ -83,17 +83,17 @@ const OrderForm = (props) => {
         <>
           <div className="form-group">
             <div>
-              <label htmlFor="current_description">
+              <label htmlFor="status_description">
                 Status: 
               </label>
               {" "}
-              <strong>{status.current_description}</strong>
+              <strong>{status.status_description}</strong>
             </div> 
             <select
               value={status.selection}  // change to {order.selection} after user db integrated
-              id="current_description"
+              id="status_description"
               onChange={handleStatusChange}
-              name="current_description"
+              name="status_description"
               >
               <option value="select" key="blank" hidden disabled>Select</option>
               {STATUSES && STATUSES.map((element, index) => {
