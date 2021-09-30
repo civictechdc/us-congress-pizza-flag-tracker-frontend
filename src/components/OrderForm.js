@@ -44,12 +44,12 @@ const {order, setOrder, saveOrder,mode, updatePublished, deleteOrder} = props;
         </div>
 
         <div className="form-group">
-          <label htmlFor="office_code">Congressional Office</label>
+          <label htmlFor="home_office_code">Congressional Office</label>
           <select
-            value={order.office_code}
-            id="office_code"
+            value={order.home_office_code}
+            id="home_office_code"
             onChange={handleInputChange}
-            name="office_code"
+            name="home_office_code"
             required
           >
             {STATES &&
@@ -90,7 +90,7 @@ const {order, setOrder, saveOrder,mode, updatePublished, deleteOrder} = props;
               className="btn badge-primary mr-2"
               onClick={() => updatePublished(false)}
                 disabled={
-                  !order.order_number || !order.usa_state || !order.office_code
+                  !order.order_number || !order.usa_state || !order.home_office_code
                 }
             >
               UnPublish
@@ -100,7 +100,7 @@ const {order, setOrder, saveOrder,mode, updatePublished, deleteOrder} = props;
               className="btn badge-primary mr-2"
               onClick={() => updatePublished(true)}
               disabled={
-                !order.order_number || !order.usa_state || !order.office_code
+                !order.order_number || !order.usa_state || !order.home_office_code
               }
             >
               Publish
@@ -113,7 +113,7 @@ const {order, setOrder, saveOrder,mode, updatePublished, deleteOrder} = props;
 }
         <button
           disabled={
-            !order.order_number || !order.usa_state || !order.office_code
+            !order.order_number || !order.usa_state || !order.home_office_code
           }
           onClick={saveOrder}
           className="btn btn-success"
