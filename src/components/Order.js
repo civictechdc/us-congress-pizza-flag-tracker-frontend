@@ -11,7 +11,7 @@ const Order = (props) => {
     published: false,
     order_number: "",
     home_office_code: "",
-    usa_state: "",
+    usa_state: "AL", // initial value needed to avoid undefined error in OrderForm.js districtMatchCheck; is immediately overwritten by response.data
     // status_description: "", // to be uncommented when integrated into response.data, should be set consistently in AddOrder.js and Order.js
     // selection: "select",  // to be uncommented when integrated into response.data, should be set consistently in AddOrder.js and Order.js
   };

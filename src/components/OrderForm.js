@@ -11,7 +11,7 @@ const OrderForm = (props) => {
     if (mode !== "edit" && name === "usa_state") {
       setOrder({ ...order, [name]: value, home_office_code: "" });
     } else {
-      setOrder({ ...order, [name]: value }); 
+      setOrder({ ...order, [name]: value });
     }
     if (resetMessage) {
       resetMessage("");
@@ -25,6 +25,15 @@ const OrderForm = (props) => {
     setStatus({ ...status, [name]: value });
     resetMessage("");
   };
+
+  let districtMatchCheck = true;  // putting this in Component State makes this check old state instead of what state is being updated to                                   
+  if (mode === "edit") {          // and/or exceed maximum update depth
+    let currentDistricts = STATES.filter((state) => state.name === order.usa_state);
+    console.log("Current US State's Disticts: ", currentDistricts[0].districts);
+    districtMatchCheck = currentDistricts[0].districts.includes(order.home_office_code);
+    console.log("Current Office: ", order.home_office_code);
+    console.log("Is Match: ", districtMatchCheck);
+  }
 
   return (
     <div>
@@ -164,15 +173,23 @@ const OrderForm = (props) => {
           Delete
         </button>
       )}
+
       <button
         disabled={
-          !order.order_number || !order.usa_state || !order.home_office_code
+          !order.order_number || !order.usa_state || !order.home_office_code  || !districtMatchCheck
         }
         onClick={saveOrder}
         className="btn btn-success"
-      >
+        >
         {mode === "edit" ? "Update" : "Submit"}
       </button>
+      
+      <div>
+        {!districtMatchCheck
+          ? (<p>US State and Congressional Office must correspond</p>)
+          : <></> 
+        }
+      </div>
     </div>
   );
 };

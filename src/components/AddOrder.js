@@ -21,7 +21,7 @@ const AddOrder = (props) => {
   // initialStatusState temporary until status info integrated into response.data > initialStatusState to be folded into initialOrderState
   // AddOrder doesn't deal with Status per se but contains selection element that should be consistent in AddOrder.js and Order.js
   const initialStatusState = {
-        selection: "select",
+    selection: "select",
   }
   const [currentStatus, setCurrentStatus] = useState(initialStatusState);
 
@@ -39,7 +39,7 @@ const AddOrder = (props) => {
           home_office_code: response.data.home_office_code,
           usa_state: response.data.usa_state,
           published: response.data.published,
-          // selection: "select", or selection: response.data.selection maybe?
+          // selection: response.data.selection maybe?
         });
         setSubmitted(true);
       })
