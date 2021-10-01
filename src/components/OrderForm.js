@@ -8,7 +8,11 @@ const OrderForm = (props) => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setOrder({ ...order, [name]: value });
+    if (mode !== "edit" && name === "usa_state") {
+      setOrder({ ...order, [name]: value, home_office_code: "" });
+    } else {
+      setOrder({ ...order, [name]: value }); 
+    }
     if (resetMessage) {
       resetMessage("");
     }
