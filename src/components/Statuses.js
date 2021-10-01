@@ -39,4 +39,21 @@ export const STATUSES = [{
   "status_federal_office_code": "STATE",
   "sequence_num": 8,
   "description": "Constituent notified"
+}, {
+  "id": 9,
+  "status_federal_office_code": "ALL",
+  "sequence_num": 9,
+  "description": "Order canceled"
+}]
+
+export const ORGCODES = [{  // top most organizational level meta data
+  "organization_code": "HOSS"  
+}, {
+  "organization_code": "AOC"
+}, {
+  "organization_code": "Mail Services"
+}, {
+  "organization_code": "STATE"
+}, {
+  "organization_code": "ADMIN"
 }]
