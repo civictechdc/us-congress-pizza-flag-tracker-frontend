@@ -33,6 +33,22 @@ const AddOrder = (props) => {
     };
     OrderDataService.create(data)
       .then((response) => {
+
+        /*    response.data is logging "Created One"
+              response.data.* is logging undefined
+           
+              when this code block is active > generating error:
+
+              index.js:1 Warning: A component is changing a controlled input to be uncontrolled. 
+              This is likely caused by the value changing from a defined to undefined, which 
+              should not happen. Decide between using a controlled or uncontrolled input element
+              for the lifetime of the component.
+              
+              when this code is commented out, code seems to run fine without the above error
+           
+              what purpose does this serve?
+              is it vestigial or needed for future code?
+
         setOrder({
           id: response.data.id,
           order_number: response.data.order_number,
@@ -41,6 +57,10 @@ const AddOrder = (props) => {
           published: response.data.published,
           // selection: response.data.selection // maybe?
         });
+        
+        console.log("Response Data: ", response.data);
+        */
+
         setSubmitted(true);
       })
       .catch((e) => {
