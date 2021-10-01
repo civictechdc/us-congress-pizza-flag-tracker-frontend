@@ -187,7 +187,7 @@ const OrderForm = (props) => {
       <div>
         {!districtMatchCheck
           ? (<p>US State and Congressional Office must correspond</p>)
-          : <></> 
+          : (<p>&nbsp;</p>) 
         }
       </div>
     </div>
