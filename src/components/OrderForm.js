@@ -38,13 +38,25 @@ const OrderForm = (props) => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="usa_state">US State</label>
+        <div>
+          <label htmlFor="usa_state">
+            US State: 
+          </label>
+          {" "}
+          <strong>
+            {order.usa_state
+              ? order.usa_state
+              : "**"
+            }
+          </strong>            
+        </div>
         <select
-          value={order.usa_state}
+          value={status.selection} // change to {order.selection} after user db integrated
           id="usa_state"
           onChange={handleInputChange}
           name="usa_state"
         >
+          <option value="select" key="blank" hidden disabled>Select</option> 
           {STATES &&
             STATES.map((state, index) => {
               return (
@@ -75,8 +87,7 @@ const OrderForm = (props) => {
           }  
         </div>
         <select
-          value={status.selection}
-          // value={order.home_office_code}
+          value={status.selection} // change to {order.selection} after user db integrated
           id="home_office_code"
           onChange={handleInputChange}
           name="home_office_code"
