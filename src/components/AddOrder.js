@@ -23,7 +23,7 @@ const AddOrder = (props) => {
   const initialStatusState = {
     selection: "select",
   }
-  const [currentStatus, setCurrentStatus] = useState(initialStatusState);
+  const [status, setStatus] = useState(initialStatusState);
 
   const saveOrder = () => {
     var data = {
@@ -39,7 +39,7 @@ const AddOrder = (props) => {
           home_office_code: response.data.home_office_code,
           usa_state: response.data.usa_state,
           published: response.data.published,
-          // selection: response.data.selection maybe?
+          // selection: response.data.selection // maybe?
         });
         setSubmitted(true);
       })
@@ -80,9 +80,9 @@ const AddOrder = (props) => {
       <div>
         <OrderForm
           order={order}
-          status={currentStatus} // temporary until status info integrated into response.data > will then be folded into order
+          status={status} // temporary until status info integrated into response.data > will then be folded into order
           setOrder={setOrder}
-          setStatus={setCurrentStatus}  // temporary until status info integrated into response.data > will then be folded into setOrder
+          setStatus={setStatus}  // temporary until status info integrated into response.data > will then be folded into setOrder
           saveOrder={saveOrder}
         />
       </div>

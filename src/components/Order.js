@@ -92,7 +92,7 @@ const Order = (props) => {
             status={currentStatus} // temporary until status info integrated into response.data > will then be folded into order
             setOrder={setCurrentOrder}
             setStatus={setCurrentStatus}  // temporary until status info integrated into response.data > will then be folded into setOrder
-            resetMessage={setMessage}
+            updateMessage={setMessage}
             saveOrder={updateOrder}
             updatePublished={updatePublished}
             deleteOrder={deleteOrder}
