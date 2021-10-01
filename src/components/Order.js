@@ -12,8 +12,8 @@ const Order = (props) => {
     order_number: "",
     home_office_code: "",
     usa_state: "",
-    // status_description: "", // to be uncommented when integrated into response.data
-    // selection: "select",  // to be uncommented when integrated into response.data
+    // status_description: "", // to be uncommented when integrated into response.data, should be set consistently in AddOrder.js and Order.js
+    // selection: "select",  // to be uncommented when integrated into response.data, should be set consistently in AddOrder.js and Order.js
   };
   const [currentOrder, setCurrentOrder] = useState(initialOrderState);
   const [message, setMessage] = useState("");

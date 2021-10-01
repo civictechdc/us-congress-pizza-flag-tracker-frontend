@@ -57,14 +57,32 @@ const OrderForm = (props) => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="home_office_code">Congressional Office</label>
+        <div>
+          <label htmlFor="home_office_code">
+            Congressional Office: 
+          </label>
+          {" "}
+          {order.usa_state
+            ? <strong>
+                {order.home_office_code
+                  ? order.home_office_code
+                  : "**-**"
+                }
+              </strong>   
+            : <strong>
+                Please choose a US State
+              </strong>  
+          }  
+        </div>
         <select
-          value={order.home_office_code}
+          value={status.selection}
+          // value={order.home_office_code}
           id="home_office_code"
           onChange={handleInputChange}
           name="home_office_code"
           required
         >
+          <option value="select" key="blank" hidden disabled>Select</option>
           {STATES &&
             order.usa_state &&
             STATES.filter((state) => state.name === order.usa_state)[0][

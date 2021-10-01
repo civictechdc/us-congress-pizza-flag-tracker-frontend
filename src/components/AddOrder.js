@@ -11,12 +11,19 @@ const AddOrder = (props) => {
     home_office_code: "",
     usa_state: "",
     published: false,
+    // selection: "select",  // to be uncommented when integrated into response.data, should be set consistently in AddOrder.js and Order.js
   };
-
   const [exceptionMessage, setExceptionMessage] = useState();
   const [order, setOrder] = useState(existingOrder? existingOrder: initialOrderState);
   const [submitted, setSubmitted] = useState(false);
 
+  // responses from DB overwriting order.status_description, order.selection
+  // initialStatusState temporary until status info integrated into response.data > initialStatusState to be folded into initialOrderState
+  // AddOrder doesn't deal with Status per se but contains selection element that should be consistent in AddOrder.js and Order.js
+  const initialStatusState = {
+        selection: "select",
+  }
+  const [currentStatus, setCurrentStatus] = useState(initialStatusState);
 
   const saveOrder = () => {
     var data = {
@@ -32,6 +39,7 @@ const AddOrder = (props) => {
           home_office_code: response.data.home_office_code,
           usa_state: response.data.usa_state,
           published: response.data.published,
+          // selection: "select", or selection: response.data.selection maybe?
         });
         setSubmitted(true);
       })
@@ -70,8 +78,13 @@ const AddOrder = (props) => {
     
     return (
       <div>
-      <OrderForm order={order} setOrder={setOrder} saveOrder={saveOrder}/>
-
+        <OrderForm
+          order={order}
+          status={currentStatus} // temporary until status info integrated into response.data > will then be folded into order
+          setOrder={setOrder}
+          setStatus={setCurrentStatus}  // temporary until status info integrated into response.data > will then be folded into setOrder
+          saveOrder={saveOrder}
+        />
       </div>
     );
   }
