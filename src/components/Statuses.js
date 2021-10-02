@@ -21,7 +21,7 @@ export const STATUSES = [{
     // OPTIONAL: date specified vs soon as possible
 }, {
   "id": 5,
-  "status_federal_office_code": "Mail Services",
+  "status_federal_office_code": "MAIL",  // Mail Services
   "sequence_num": 5,
   "description": "Mail Services picked up flag from AOC"
 }, {
