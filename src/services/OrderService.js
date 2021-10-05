@@ -4,31 +4,31 @@ import authHeader from "../services/auth-header";
 /* remember also the api/qrcode img API*/
 
 const getAll = () => {
-  return http.get("/api/orders");
+  return http.get("/orders");
 };
 
 const get = (uuid) => {
-  return http.get(`/api/orders/${uuid}`);
+  return http.get(`/orders/${uuid}`);
 };
 
 const create = (data) => {
-  return http.post("/api/orders/create", data);
+  return http.post("/orders/create", data);
 };
 
 const update = (id, data) => {
-  return http.put(`/api/orders/${id}`, data);
+  return http.put(`/orders/${id}`, data);
 };
 
 const remove = (id) => {
-  return http.delete(`/api/orders/${id}`);
+  return http.delete(`/orders/${id}`);
 };
 
 const removeAll = () => {
-  return http.delete(`/api/orders`);
+  return http.delete(`/orders`);
 };
 
 const findByOrderNumber = (order_number) => {
-  return http.get(`/api/order_num/${order_number}`);
+  return http.get(`/order_num/${order_number}`);
 };
 
 const orderServiceObject = {

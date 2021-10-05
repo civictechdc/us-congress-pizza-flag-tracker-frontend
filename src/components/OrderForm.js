@@ -4,7 +4,16 @@ import { STATUSES /*, ORGCODES */ } from "./Statuses.js";
 import { baseURL } from "../http-common";
 
 const OrderForm = (props) => {
-  const { order, status, setOrder, setStatus, resetMessage, saveOrder, mode, deleteOrder } = props;
+  const {
+    order,
+    status,
+    setOrder,
+    setStatus,
+    resetMessage,
+    saveOrder,
+    mode,
+    deleteOrder,
+  } = props;
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -83,28 +92,28 @@ const OrderForm = (props) => {
         <>
           <div className="form-group">
             <div>
-              <label htmlFor="status_description">
-                Status: 
-              </label>
-              {" "}
+              <label htmlFor="status_description">Status:</label>{" "}
               <strong>{status.status_description}</strong>
-            </div> 
+            </div>
             <select
-              value={status.selection}  // change to {order.selection} after user db integrated
+              value={status.selection} // change to {order.selection} after user db integrated
               id="status_description"
               onChange={handleStatusChange}
               name="status_description"
-              >
-              <option value="select" key="blank" hidden disabled>Select</option>
-              {STATUSES && STATUSES.map((element, index) => {
-                /* Old Filter by DEMO Organization Code was here
+            >
+              <option value="select" key="blank" hidden disabled>
+                Select
+              </option>
+              {STATUSES &&
+                STATUSES.map((element, index) => {
+                  /* Old Filter by DEMO Organization Code was here
                    to be rewired to ACTUAL User Profile DB info  */
-                return (
-                  <option value={element.description} key={index}>
-                    #{element.sequence_num} {element.description}
-                  </option>              
-                );     
-              })}
+                  return (
+                    <option value={element.description} key={index}>
+                      #{element.sequence_num} {element.description}
+                    </option>
+                  );
+                })}
             </select>
           </div>
 
@@ -112,7 +121,7 @@ const OrderForm = (props) => {
             <label>QR Code</label>
             {order.uuid}
             <img
-              src={baseURL + "/api/qrcode/" + order.uuid}
+              src={baseURL + "/qrcode/" + order.uuid}
               alt="QR Code"
               align="right"
             />
