@@ -5,7 +5,7 @@ export const baseURL = process.env.REACT_APP_BACKEND_API + "/api";
 //export const baseURL = "http://localhost:5000";
 console.log("BaseURL ", baseURL);
 
-export const httpSecure = () => {
+export const httpAuthenticate = () => {
   return axios.create({
     baseURL: baseURL,
     headers: {

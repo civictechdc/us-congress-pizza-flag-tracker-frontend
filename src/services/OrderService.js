@@ -1,34 +1,33 @@
-import http from "../http-common";
-import authHeader from "../services/auth-header";
+import httpAuthenticate from "../http-common";
 
 /* remember also the api/qrcode img API*/
 
 const getAll = () => {
-  return http.get("/orders");
+  return httpAuthenticate().get("/orders");
 };
 
 const get = (uuid) => {
-  return http.get(`/orders/${uuid}`);
+  return httpAuthenticate().get(`/orders/${uuid}`);
 };
 
 const create = (data) => {
-  return http.post("/orders/create", data);
+  return httpAuthenticate().post("/orders/create", data);
 };
 
 const update = (id, data) => {
-  return http.put(`/orders/${id}`, data);
+  return httpAuthenticate().put(`/orders/${id}`, data);
 };
 
 const remove = (id) => {
-  return http.delete(`/orders/${id}`);
+  return httpAuthenticate().delete(`/orders/${id}`);
 };
 
 const removeAll = () => {
-  return http.delete(`/orders`);
+  return httpAuthenticate().delete(`/orders`);
 };
 
 const findByOrderNumber = (order_number) => {
-  return http.get(`/order_num/${order_number}`);
+  return httpAuthenticate().get(`/order_num/${order_number}`);
 };
 
 const orderServiceObject = {

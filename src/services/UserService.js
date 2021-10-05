@@ -1,4 +1,4 @@
-import http from "../http-common";
+import httpAuthenticate from "../http-common";
 
 class UserService {
   create(
@@ -9,7 +9,7 @@ class UserService {
     can_update_password_for,
     can_update_status_for
   ) {
-    return http.post("users/create", {
+    return httpAuthenticate().post("users/create", {
       username,
       password,
       is_admin,
@@ -20,7 +20,7 @@ class UserService {
   }
 
   getUsers() {
-    return http.get("users");
+    return httpAuthenticate().get("users");
   }
 }
 
