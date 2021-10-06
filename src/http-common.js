@@ -1,9 +1,8 @@
 import axios from "axios";
-import getToken from "./services/auth-header";
+import AuthService from "./services/AuthService";
 
 export const baseURL = process.env.REACT_APP_BACKEND_API + "/api";
 //export const baseURL = "http://localhost:5000";
-console.log("BaseURL ", baseURL);
 
 export const httpAuthenticate = () => {
   return axios.create({
@@ -11,7 +10,7 @@ export const httpAuthenticate = () => {
     headers: {
       "Content-type": "application/json",
       "Access-Control-Allow-Origin": "*",
-      "X-Access-Tokens": getToken(),
+      "X-Access-Tokens": AuthService.getToken(),
     },
   });
 };

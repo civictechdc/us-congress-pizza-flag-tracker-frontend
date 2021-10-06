@@ -1,6 +1,14 @@
 import http from "../http-common";
 
 class AuthService {
+  getToken() {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user && user.accessToken) {
+      return user.accessToken;
+    } else {
+      return "";
+    }
+  }
   login(username, password) {
     return http
       .post(
@@ -26,26 +34,21 @@ class AuthService {
     localStorage.removeItem("user");
   }
 
-  Signup(
-    username,
-    password,
-    is_admin,
-    can_create_update_delete_orders,
-    can_update_password_for,
-    can_update_status_for
-  ) {
-    return http.post("signup", {
-      username,
-      password,
-      is_admin,
-      can_create_update_delete_orders,
-      can_update_password_for,
-      can_update_status_for,
-    });
-  }
-
   getCurrentUser() {
     return JSON.parse(localStorage.getItem("user"));
+  }
+
+  getCurrentUserName() {
+    const user = this.getCurrentUser();
+    let username;
+    if (user && user.username) {
+      username = user.username;
+    } else if (user && !user.username) {
+      username = "Undefined";
+    } else {
+      username = "Not logged in";
+    }
+    return username;
   }
 }
 

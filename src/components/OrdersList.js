@@ -62,7 +62,6 @@ const OrdersList = () => {
           setPopUpbox("block");
           setErrorMessage(response.data.error);
         } else {
-          console.log("found", response.data);
           setOrders(response.data.orders);
         }
       })

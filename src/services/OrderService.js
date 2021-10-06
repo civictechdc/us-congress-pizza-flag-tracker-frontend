@@ -1,4 +1,4 @@
-import httpAuthenticate from "../http-common";
+import { httpAuthenticate } from "../http-common";
 
 /* remember also the api/qrcode img API*/
 
