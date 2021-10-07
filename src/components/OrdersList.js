@@ -8,7 +8,7 @@ const OrdersList = () => {
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchTitle, setSearchTitle] = useState("");
   const [popUpBox, setPopUpbox] = useState("none");
-  const [errorMessage, setErrorMessage] = useState("")
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     retrieveOrders();
@@ -24,13 +24,11 @@ const OrdersList = () => {
     OrderDataService.getAll()
       .then((response) => {
         setOrders(response.data.orders);
-        console.log("debug", response.data);
       })
       .catch((e) => {
         console.log(e);
         setPopUpbox("block");
         setErrorMessage(e.message);
-       
       });
   };
 
@@ -48,7 +46,6 @@ const OrdersList = () => {
   const removeAllOrders = () => {
     OrderDataService.removeAll()
       .then((response) => {
-        console.log(response.data);
         refreshList();
       })
       .catch((e) => {
@@ -61,19 +58,16 @@ const OrdersList = () => {
   const findByOrderNumber = () => {
     OrderDataService.findByOrderNumber(searchTitle)
       .then((response) => {
-        if('error' in response.data){
+        if ("error" in response.data) {
           setPopUpbox("block");
           setErrorMessage(response.data.error);
-        }
-        else{
-          console.log("found", response.data);
+        } else {
           setOrders(response.data.orders);
         }
-        
       })
       .catch((e) => {
         console.log(e);
-         setPopUpbox("block");
+        setPopUpbox("block");
         setErrorMessage(e.message);
       });
   };
@@ -98,96 +92,97 @@ const OrdersList = () => {
   );
 
   const closePopUpBox = () => {
-  setPopUpbox("none");  
+    setPopUpbox("none");
   };
 
-
   return (
-  <>
-    <div className="list row">
-      <div className="col-md-8">
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Search by order number"
-            value={searchTitle}
-            onChange={onChangeSearchTitle}
-          />
-          <div className="input-group-append">
-            <button
-              className="btn btn-outline-secondary"
-              type="button"
-              onClick={findByOrderNumber}
-            >
-              Search
-            </button>
+    <>
+      <div className="list row">
+        <div className="col-md-8">
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search by order number"
+              value={searchTitle}
+              onChange={onChangeSearchTitle}
+            />
+            <div className="input-group-append">
+              <button
+                className="btn btn-outline-secondary"
+                type="button"
+                onClick={findByOrderNumber}
+              >
+                Search
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="col-md-6">
-        <h4>Orders List</h4>
+        <div className="col-md-6">
+          <h4>Orders List</h4>
 
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">Order Number</th>
-              <th scope="col">USA State</th>
-              <th scope="col">Congressional Office</th>
-            </tr>
-          </thead>
-          {orderTbody}
-        </table>
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">Order Number</th>
+                <th scope="col">USA State</th>
+                <th scope="col">Congressional Office</th>
+              </tr>
+            </thead>
+            {orderTbody}
+          </table>
 
-        <button className="m-3 btn btn-sm btn-danger" onClick={removeAllOrders}>
-          Remove All
-        </button>
-      </div>
-      <div className="col-md-6">
-        {currentOrder ? (
-          <div>
-            <h4>Order</h4>
+          <button
+            className="m-3 btn btn-sm btn-danger"
+            onClick={removeAllOrders}
+          >
+            Remove All
+          </button>
+        </div>
+        <div className="col-md-6">
+          {currentOrder ? (
             <div>
-              <label>
-                <strong>Order Number:</strong>
-              </label>{" "}
-              {currentOrder.order_number}
-            </div>
-            <div>
-              <label>
-                <strong>Congressional Office:</strong>
-              </label>{" "}
-              {currentOrder.home_office_code}
-            </div>
-           
-            <div>
-              <label>
-                <strong>Status:</strong>
-              </label>{" "}
-              {currentOrder.published ? "Published" : "Pending"}
-            </div>
+              <h4>Order</h4>
+              <div>
+                <label>
+                  <strong>Order Number:</strong>
+                </label>{" "}
+                {currentOrder.order_number}
+              </div>
+              <div>
+                <label>
+                  <strong>Congressional Office:</strong>
+                </label>{" "}
+                {currentOrder.home_office_code}
+              </div>
 
-            <Link
-              to={"/orders/" + currentOrder.uuid}
-              className="badge badge-warning"
-            >
-              Edit
-            </Link>
-          </div>
-        ) : (
-          <div>
-            <br />
-            <p>Please click on an order...</p>
-          </div>
-        )}
-      </div>
-    </div>
-     <div className="pop-container" 
-      style={{display: popUpBox }} >
-            <div className="pop-up" onClick={closePopUpBox}>
-              <h3>{errorMessage}</h3>
+              <div>
+                <label>
+                  <strong>Status:</strong>
+                </label>{" "}
+                {currentOrder.published ? "Published" : "Pending"}
+              </div>
+
+              <Link
+                to={"/orders/" + currentOrder.uuid}
+                className="badge badge-warning"
+              >
+                Edit
+              </Link>
             </div>
-          </div>
+          ) : (
+            <div>
+              <br />
+              <p>Please click on an order...</p>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="pop-container" style={{ display: popUpBox }}>
+        <div className="pop-up" onClick={closePopUpBox}>
+          <h3>{errorMessage}</h3>
+        </div>
+      </div>
     </>
   );
 };

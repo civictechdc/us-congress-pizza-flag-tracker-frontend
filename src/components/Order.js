@@ -22,17 +22,16 @@ const Order = (props) => {
   // responses from DB overwriting order.status_description, order.selection
   // initialStatusState temporary until status info integrated into response.data > initialStatusState to be folded into initialOrderState
   const initialStatusState = {
-    status_description: "*will be set by response.data once integrated with DB*",
+    status_description:
+      "*will be set by response.data once integrated with DB*",
     selection: "select",
-  }
+  };
   const [currentStatus, setCurrentStatus] = useState(initialStatusState);
 
   const getOrder = (id) => {
-    console.log("id", id);
     OrderDataService.get(id)
       .then((response) => {
         setCurrentOrder(response.data);
-        console.log(response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -54,7 +53,6 @@ const Order = (props) => {
     OrderDataService.update(currentOrder.uuid, data)
       .then((response) => {
         setCurrentOrder({ ...currentOrder, published: status });
-        console.log(response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -64,7 +62,6 @@ const Order = (props) => {
   const updateOrder = () => {
     OrderDataService.update(currentOrder.uuid, currentOrder)
       .then((response) => {
-        console.log(response.data);
         setMessage("The order was updated successfully!");
       })
       .catch((e) => {
@@ -75,7 +72,6 @@ const Order = (props) => {
   const deleteOrder = () => {
     OrderDataService.remove(currentOrder.uuid)
       .then((response) => {
-        console.log(response.data);
         props.history.push("/orders");
       })
       .catch((e) => {
@@ -91,7 +87,7 @@ const Order = (props) => {
             order={currentOrder}
             status={currentStatus} // temporary until status info integrated into response.data > will then be folded into order
             setOrder={setCurrentOrder}
-            setStatus={setCurrentStatus}  // temporary until status info integrated into response.data > will then be folded into setOrder
+            setStatus={setCurrentStatus} // temporary until status info integrated into response.data > will then be folded into setOrder
             resetMessage={setMessage}
             saveOrder={updateOrder}
             updatePublished={updatePublished}

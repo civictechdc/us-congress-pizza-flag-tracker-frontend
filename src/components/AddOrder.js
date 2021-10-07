@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import OrderDataService from "../services/OrderService";
-import OrderForm from './OrderForm'
+import OrderForm from "./OrderForm";
 
 const AddOrder = (props) => {
-  const {existingOrder} = props;
-  
+  const { existingOrder } = props;
+
   const initialOrderState = {
     id: null,
     order_number: "",
@@ -14,9 +14,10 @@ const AddOrder = (props) => {
   };
 
   const [exceptionMessage, setExceptionMessage] = useState();
-  const [order, setOrder] = useState(existingOrder? existingOrder: initialOrderState);
+  const [order, setOrder] = useState(
+    existingOrder ? existingOrder : initialOrderState
+  );
   const [submitted, setSubmitted] = useState(false);
-
 
   const saveOrder = () => {
     var data = {
@@ -37,7 +38,6 @@ const AddOrder = (props) => {
       })
       .catch((e) => {
         setExceptionMessage("You have a problem. " + e.message);
-        console.log("Debug exception", e);
       });
   };
 
@@ -55,7 +55,6 @@ const AddOrder = (props) => {
   }
 
   if (submitted && !existingOrder) {
-    
     return (
       <div className="submit-form">
         <div>
@@ -67,11 +66,9 @@ const AddOrder = (props) => {
       </div>
     );
   } else {
-    
     return (
       <div>
-      <OrderForm order={order} setOrder={setOrder} saveOrder={saveOrder}/>
-
+        <OrderForm order={order} setOrder={setOrder} saveOrder={saveOrder} />
       </div>
     );
   }
