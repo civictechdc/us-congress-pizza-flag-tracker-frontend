@@ -9,10 +9,10 @@ import Order from "./components/Order";
 import OrdersList from "./components/OrdersList";
 import AddUser from "./components/AddUser";
 
-let count = 0;
+//let count = 0;
 
 function App() {
-  const username = AuthService.getCurrentUserName();
+  //const username = AuthService.getCurrentUserName();
   function logOut() {
     AuthService.logout();
   }

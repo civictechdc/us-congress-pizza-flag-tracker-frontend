@@ -1,18 +1,10 @@
 import React, { useState } from "react";
 import OrderDataService from "../services/OrderService";
-<<<<<<< HEAD
 import OrderForm from "./OrderForm";
 
 const AddOrder = (props) => {
   const { existingOrder } = props;
 
-=======
-import OrderForm from './OrderForm'
-
-const AddOrder = (props) => {
-  const {existingOrder} = props;
-  
->>>>>>> main
   const initialOrderState = {
     id: null,
     order_number: "",
@@ -22,18 +14,11 @@ const AddOrder = (props) => {
   };
 
   const [exceptionMessage, setExceptionMessage] = useState();
-<<<<<<< HEAD
   const [order, setOrder] = useState(
     existingOrder ? existingOrder : initialOrderState
   );
   const [submitted, setSubmitted] = useState(false);
 
-=======
-  const [order, setOrder] = useState(existingOrder? existingOrder: initialOrderState);
-  const [submitted, setSubmitted] = useState(false);
-
-
->>>>>>> main
   const saveOrder = () => {
     var data = {
       order_number: order.order_number,
