@@ -1,5 +1,5 @@
 const devAuth = {
-    isAuthenticated: false
+    isAuthenticated: true
 }
 
 export default devAuth;

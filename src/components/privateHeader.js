@@ -1,9 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import AuthService from "./services/AuthService";
 
 
 function Privateheader(params) {
+
+    //const username = AuthService.getCurrentUserName();
+  function logOut() {
+    AuthService.logout();
+  }
+
     return(
         <>
         <header> 
@@ -22,9 +28,21 @@ function Privateheader(params) {
               Add
             </Link>
           </li>
-          <li className="nav-link">
-           Logout
-          </li>
+         <li className="nav-item">
+              <Link to={"/profile"} className="nav-link">
+                Profile
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/users/add"} className="nav-link">
+                Add User
+              </Link>
+            </li>
+            <li className="nav-item">
+              <a href="/login" className="nav-link" onClick={logOut}>
+                Log Out
+              </a>
+            </li>
         </div>
         
       </nav>
