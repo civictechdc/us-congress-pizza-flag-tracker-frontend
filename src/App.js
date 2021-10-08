@@ -3,45 +3,34 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Switch, Route } from "react-router-dom";
 
 import AddOrder from "./components/AddOrder";
-import AuthService from "./services/AuthService";
 import Login from "./components/Login";
 import EditOrder from "./components/EditOrder";
 import OrdersList from "./components/OrdersList";
 import PrivateRoute from "./components/PrivateRoute";
-import Login from "./components/Login";
-import Header from "./components/Header";
 
+import Header from "./components/Header";
+import AddUser from "./components/AddUser";
 
 function App() {
-  return (<>
-      <Header/>
+  return (
+    <>
+      <Header />
 
-          <div className="navbar-nav ml-auto">
-            <li className="nav-item">
-              <Link to={"/login"} className="nav-link">
-                Login
-              </Link>
-            </li>
-            <li className="nav-item">
-              <a href="/login" className="nav-link" onClick={logOut}>
-                Log Out
-              </a>
-            </li>
-          </div>
-        </nav>
-      </header>
-
-      <div className="container mt-3">
-        <Switch>
-          <Route exact path={["/", "/orders"]} component={OrdersList} />
-          <PrivateRoute exact path="/add">
-            <AddOrder/>
-          </PrivateRoute>
-          <Route path="/orders/:id" component={Order} />
-          <Route exact path="/login" component={Login}/>
-        </Switch>
-      </div>
-    </main>
+      <main>
+        <div className="container mt-3">
+          <Switch>
+            <Route exact path={["/", "/orders"]} component={OrdersList} />
+            <PrivateRoute exact path="/add">
+              <AddOrder />
+            </PrivateRoute>
+            <Route path="/orders/:id" component={Order} />
+            <Route exact path="/login" component={Login} />
+            <PrivateRoute exact path="/users/add">
+              <AddUser />
+            </PrivateRoute>
+          </Switch>
+        </div>
+      </main>
       {/* */}
       <footer className="footer mt-auto py-3">
         <div className="container">
