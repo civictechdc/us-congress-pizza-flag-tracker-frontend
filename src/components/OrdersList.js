@@ -59,9 +59,9 @@ const OrdersList = () => {
     OrderDataService.findByOrderNumber(searchTitle)
       .then((response) => {
         if ("error" in response.data) {
-          setPopUpbox("block");
           setErrorMessage(response.data.error);
         } else {
+          console.log("found", response.data);
           setOrders(response.data.orders);
         }
       })
@@ -71,6 +71,12 @@ const OrdersList = () => {
         setErrorMessage(e.message);
       });
   };
+
+  const clearSearch = () => {
+    refreshList();
+    setSearchTitle("");
+    setErrorMessage("")
+  } 
 
   const orderTbody = (
     <tbody className="flag-group">
@@ -129,15 +135,20 @@ const OrdersList = () => {
                 <th scope="col">Congressional Office</th>
               </tr>
             </thead>
-            {orderTbody}
+            {errorMessage ? errorMessage : orderTbody}
           </table>
-
-          <button
-            className="m-3 btn btn-sm btn-danger"
-            onClick={removeAllOrders}
-          >
-            Remove All
-          </button>
+          {errorMessage || searchTitle ? (
+            <button className="m-3 btn btn-sm btn-danger" onClick={clearSearch}>
+              Clear search
+            </button>
+          ) : (
+            <button
+              className="m-3 btn btn-sm btn-danger"
+              onClick={removeAllOrders}
+            >
+              Remove All
+            </button>
+          )}
         </div>
         <div className="col-md-6">
           {currentOrder ? (
