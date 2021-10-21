@@ -41,7 +41,6 @@ const OrderForm = (props) => {
     let currentDistricts = STATES.filter(
       (state) => state.name === order.usa_state
     );
-    console.log("Current US State's Disticts: ", currentDistricts[0].districts);
     districtMatchCheck = currentDistricts[0].districts.includes(
       order.home_office_code
     );

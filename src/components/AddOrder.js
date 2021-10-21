@@ -11,7 +11,6 @@ const AddOrder = (props) => {
     home_office_code: "",
     usa_state: "",
     published: false,
-    // selection: "select", // to be uncommented when integrated into backend response handling, should be set consistently in AddOrder.js and Order.js
   };
 
   const [exceptionMessage, setExceptionMessage] = useState();
@@ -21,7 +20,6 @@ const AddOrder = (props) => {
   const [submitted, setSubmitted] = useState(false);
 
   // responses from DB overwriting order.status_description, order.selection
-  // initialStatusState temporary until status info integrated into response.data --> initialStatusState to be folded into initialOrderState
   // AddOrder doesn't deal with Status per se but contains selection element that should be consistent in AddOrder.js and EditOrder.js for the shared subcomponent
   const initialStatusState = {
     selection: "select",
