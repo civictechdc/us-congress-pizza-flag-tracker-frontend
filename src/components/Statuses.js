@@ -65,7 +65,7 @@ export const ORGCODES = [
     organization_code: "AOC",
   },
   {
-    organization_code: "Mail Services",
+    organization_code: "MAIL",
   },
   {
     organization_code: "STATE",
