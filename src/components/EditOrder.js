@@ -15,7 +15,7 @@ const EditOrder = (props) => {
     // status_description: "", // to be uncommented when integrated into response.data, should be set consistently in AddOrder.js and EditOrder.js
     // selection: "select",  // to be uncommented when integrated into response.data, should be set consistently in AddOrder.js and EditOrder.js
   };
-  const [currentOrder, setCurrentOrder] = useState(initialOrderState);
+  const [order, setOrder] = useState(initialOrderState);
   const [message, setMessage] = useState("");
   const mode = "edit";
 
@@ -26,12 +26,12 @@ const EditOrder = (props) => {
       "*will be set by response.data once integrated with DB*",
     selection: "select",
   };
-  const [currentStatus, setCurrentStatus] = useState(initialStatusState);
+  const [status, setStatus] = useState(initialStatusState);
 
   const getOrder = (id) => {
     OrderDataService.get(id)
       .then((response) => {
-        setCurrentOrder(response.data);
+        setOrder(response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -42,25 +42,28 @@ const EditOrder = (props) => {
     getOrder(props.match.params.id);
   }, [props.match.params.id]);
 
+  /*  not in use currently
+    
   const updatePublished = (status) => {
     var data = {
-      uuid: currentOrder.uuid,
-      order_number: currentOrder.order_number,
-      home_office_code: currentOrder.home_office_code,
+      uuid: order.uuid,
+      order_number: order.order_number,
+      home_office_code: order.home_office_code,
       published: status,
     };
 
-    OrderDataService.update(currentOrder.uuid, data)
+    OrderDataService.update(order.uuid, data)
       .then((response) => {
-        setCurrentOrder({ ...currentOrder, published: status });
+        setOrder({ ...order, published: status });
       })
       .catch((e) => {
         console.log(e);
       });
   };
+  */
 
   const updateOrder = () => {
-    OrderDataService.update(currentOrder.uuid, currentOrder)
+    OrderDataService.update(order.uuid, order)
       .then((response) => {
         setMessage("The order was updated successfully!");
       })
@@ -70,7 +73,7 @@ const EditOrder = (props) => {
   };
 
   const deleteOrder = () => {
-    OrderDataService.remove(currentOrder.uuid)
+    OrderDataService.remove(order.uuid)
       .then((response) => {
         props.history.push("/orders");
       })
@@ -81,17 +84,17 @@ const EditOrder = (props) => {
 
   return (
     <div>
-      {currentOrder ? (
+      {order ? (
         <>
           <OrderForm
-            order={currentOrder}
-            status={currentStatus} // temporary until status info integrated into response.data > will then be folded into order
-            setOrder={setCurrentOrder}
-            setStatus={setCurrentStatus} // temporary until status info integrated into response.data > will then be folded into setOrder
-            updateMessage={setMessage}
-            saveOrder={updateOrder}
-            updatePublished={updatePublished}
-            deleteOrder={deleteOrder}
+            order={order}
+            status={status} // temporary until status info integrated into response.data > will then be folded into order
+            setOrderFunc={setOrder}
+            setStatusFunc={setStatus} // temporary until status info integrated into response.data > will then be folded into setOrder
+            setMessageFunc={setMessage}
+            saveOrderFunc={updateOrder}
+            // updatePublishedFunc={updatePublished} not in use currently
+            deleteOrderFunc={deleteOrder}
             mode={mode}
           />
           <p>{message}</p>

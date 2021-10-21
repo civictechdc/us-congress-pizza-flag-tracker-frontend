@@ -71,9 +71,9 @@ const AddOrder = (props) => {
         <OrderForm
           order={order}
           status={status} // temporary until status info integrated into response.data > will then be folded into order
-          setOrder={setOrder}
-          setStatus={setStatus} // temporary until status info integrated into response.data > will then be folded into setOrder
-          saveOrder={saveOrder}
+          setOrderFunc={setOrder}
+          setStatusFunc={setStatus} // temporary until status info integrated into response.data > will then be folded into setOrder
+          saveOrderFunc={saveOrder}
         />
       </div>
     );

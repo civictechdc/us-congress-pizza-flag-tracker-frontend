@@ -7,23 +7,23 @@ const OrderForm = (props) => {
   const {
     order,
     status,
-    setOrder,
-    setStatus,
-    updateMessage,
-    saveOrder,
+    setOrderFunc,
+    setStatusFunc,
+    setMessageFunc,
+    saveOrderFunc,
     mode,
-    deleteOrder,
+    deleteOrderFunc,
   } = props;
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     if (mode !== "edit" && name === "usa_state") {
-      setOrder({ ...order, [name]: value, home_office_code: "" });
+      setOrderFunc({ ...order, [name]: value, home_office_code: "" });
     } else {
-      setOrder({ ...order, [name]: value });
+      setOrderFunc({ ...order, [name]: value });
     }
-    if (updateMessage) {
-      updateMessage("Changes not saved, Press Update to save changes");
+    if (setMessageFunc) {
+      setMessageFunc("Changes not saved, Press Update to save changes");
     }
   };
 
@@ -31,8 +31,8 @@ const OrderForm = (props) => {
   // handleStatusChange temporary until status info integrated into response.data
   const handleStatusChange = (event) => {
     const { name, value } = event.target;
-    setStatus({ ...status, [name]: value });
-    updateMessage("");
+    setStatusFunc({ ...status, [name]: value });
+    // setMessageFunc("");
   };
 
   let districtMatchCheck = true; // putting this in Component State makes this check old state instead of what state is being updated to
@@ -171,7 +171,7 @@ const OrderForm = (props) => {
       ) : null}
 
       {mode === "edit" && (
-        <button className="btn badge-danger mr-2" onClick={deleteOrder}>
+        <button className="btn badge-danger mr-2" onClick={deleteOrderFunc}>
           Delete
         </button>
       )}
@@ -182,7 +182,7 @@ const OrderForm = (props) => {
           !order.home_office_code ||
           !districtMatchCheck
         }
-        onClick={saveOrder}
+        onClick={saveOrderFunc}
         className="btn btn-success"
       >
         {mode === "edit" ? "Update" : "Submit"}
