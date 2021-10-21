@@ -1,6 +1,6 @@
 import React from "react";
 import { STATES } from "./states.js";
-import { STATUSES /*, ORGCODES */ } from "./Statuses.js";
+import { STATUSES } from "./Statuses.js";
 import { baseURL } from "../http-common";
 
 const OrderForm = (props) => {
@@ -9,7 +9,7 @@ const OrderForm = (props) => {
     status,
     setOrder,
     setStatus,
-    resetMessage,
+    updateMessage,
     saveOrder,
     mode,
     deleteOrder,
@@ -17,9 +17,13 @@ const OrderForm = (props) => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setOrder({ ...order, [name]: value });
-    if (resetMessage) {
-      resetMessage("");
+    if (mode !== "edit" && name === "usa_state") {
+      setOrder({ ...order, [name]: value, home_office_code: "" });
+    } else {
+      setOrder({ ...order, [name]: value });
+    }
+    if (updateMessage) {
+      updateMessage("Changes not saved, Press Update to save changes");
     }
   };
 
@@ -28,8 +32,22 @@ const OrderForm = (props) => {
   const handleStatusChange = (event) => {
     const { name, value } = event.target;
     setStatus({ ...status, [name]: value });
-    resetMessage("");
+    updateMessage("");
   };
+
+  let districtMatchCheck = true; // putting this in Component State makes this check old state instead of what state is being updated to
+  if (mode === "edit") {
+    // and/or exceed maximum update depth error
+    let currentDistricts = STATES.filter(
+      (state) => state.name === order.usa_state
+    );
+    console.log("Current US State's Disticts: ", currentDistricts[0].districts);
+    districtMatchCheck = currentDistricts[0].districts.includes(
+      order.home_office_code
+    );
+    console.log("Current Office: ", order.home_office_code);
+    console.log("Is Match: ", districtMatchCheck);
+  }
 
   return (
     <div>
@@ -47,13 +65,19 @@ const OrderForm = (props) => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="usa_state">US State</label>
+        <div>
+          <label htmlFor="usa_state">US State:</label>{" "}
+          <strong>{order.usa_state ? order.usa_state : "**"}</strong>
+        </div>
         <select
-          value={order.usa_state}
+          value={status.selection} // change to {order.selection} after user db integrated
           id="usa_state"
           onChange={handleInputChange}
           name="usa_state"
         >
+          <option value="select" key="blank" hidden disabled>
+            Select
+          </option>
           {STATES &&
             STATES.map((state, index) => {
               return (
@@ -66,14 +90,26 @@ const OrderForm = (props) => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="home_office_code">Congressional Office</label>
+        <div>
+          <label htmlFor="home_office_code">Congressional Office:</label>{" "}
+          {order.usa_state ? (
+            <strong>
+              {order.home_office_code ? order.home_office_code : "**-**"}
+            </strong>
+          ) : (
+            <strong>Please choose a US State</strong>
+          )}
+        </div>
         <select
-          value={order.home_office_code}
+          value={status.selection} // change to {order.selection} after user db integrated
           id="home_office_code"
           onChange={handleInputChange}
           name="home_office_code"
           required
         >
+          <option value="select" key="blank" hidden disabled>
+            Select
+          </option>
           {STATES &&
             order.usa_state &&
             STATES.filter((state) => state.name === order.usa_state)[0][
@@ -142,13 +178,24 @@ const OrderForm = (props) => {
       )}
       <button
         disabled={
-          !order.order_number || !order.usa_state || !order.home_office_code
+          !order.order_number ||
+          !order.usa_state ||
+          !order.home_office_code ||
+          !districtMatchCheck
         }
         onClick={saveOrder}
         className="btn btn-success"
       >
         {mode === "edit" ? "Update" : "Submit"}
       </button>
+
+      <div>
+        {!districtMatchCheck ? (
+          <p>US State and Congressional Office must correspond</p>
+        ) : (
+          <p>&nbsp;</p>
+        )}
+      </div>
     </div>
   );
 };

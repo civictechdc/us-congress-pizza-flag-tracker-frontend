@@ -11,6 +11,7 @@ const AddOrder = (props) => {
     home_office_code: "",
     usa_state: "",
     published: false,
+    // selection: "select", // to be uncommented when integrated into backend response handling, should be set consistently in AddOrder.js and Order.js
   };
 
   const [exceptionMessage, setExceptionMessage] = useState();
@@ -18,6 +19,14 @@ const AddOrder = (props) => {
     existingOrder ? existingOrder : initialOrderState
   );
   const [submitted, setSubmitted] = useState(false);
+
+  // responses from DB overwriting order.status_description, order.selection
+  // initialStatusState temporary until status info integrated into response.data --> initialStatusState to be folded into initialOrderState
+  // AddOrder doesn't deal with Status per se but contains selection element that should be consistent in AddOrder.js and EditOrder.js for the shared subcomponent
+  const initialStatusState = {
+    selection: "select",
+  };
+  const [status, setStatus] = useState(initialStatusState);
 
   const saveOrder = () => {
     var data = {
@@ -27,13 +36,6 @@ const AddOrder = (props) => {
     };
     OrderDataService.create(data)
       .then((response) => {
-        setOrder({
-          id: response.data.id,
-          order_number: response.data.order_number,
-          home_office_code: response.data.home_office_code,
-          usa_state: response.data.usa_state,
-          published: response.data.published,
-        });
         setSubmitted(true);
       })
       .catch((e) => {
@@ -68,7 +70,13 @@ const AddOrder = (props) => {
   } else {
     return (
       <div>
-        <OrderForm order={order} setOrder={setOrder} saveOrder={saveOrder} />
+        <OrderForm
+          order={order}
+          status={status} // temporary until status info integrated into response.data > will then be folded into order
+          setOrder={setOrder}
+          setStatus={setStatus} // temporary until status info integrated into response.data > will then be folded into setOrder
+          saveOrder={saveOrder}
+        />
       </div>
     );
   }

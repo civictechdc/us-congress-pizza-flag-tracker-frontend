@@ -5,7 +5,7 @@ import { Switch, Route, Link } from "react-router-dom";
 import AddOrder from "./components/AddOrder";
 import AuthService from "./services/AuthService";
 import Login from "./components/Login";
-import Order from "./components/Order";
+import EditOrder from "./components/EditOrder";
 import OrdersList from "./components/OrdersList";
 import AddUser from "./components/AddUser";
 
@@ -64,7 +64,7 @@ function App() {
           <Switch>
             <Route exact path={["/", "/orders"]} component={OrdersList} />
             <Route exact path="/orders/add" component={AddOrder} />
-            <Route path="/orders/:id" component={Order} />
+            <Route path="/orders/:id" component={EditOrder} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/users/add" component={AddUser} />
           </Switch>

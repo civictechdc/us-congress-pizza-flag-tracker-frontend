@@ -3,7 +3,7 @@ import OrderDataService from "../services/OrderService";
 
 import OrderForm from "./OrderForm";
 
-const Order = (props) => {
+const EditOrder = (props) => {
   const initialOrderState = {
     uuid: null,
     title: "",
@@ -11,9 +11,9 @@ const Order = (props) => {
     published: false,
     order_number: "",
     home_office_code: "",
-    usa_state: "",
-    // status_description: "", // to be uncommented when integrated into response.data
-    // selection: "select",  // to be uncommented when integrated into response.data
+    usa_state: "AL", // initial value needed to avoid undefined error in OrderForm.js --> districtMatchCheck; is immediately overwritten by response.data
+    // status_description: "", // to be uncommented when integrated into response.data, should be set consistently in AddOrder.js and EditOrder.js
+    // selection: "select",  // to be uncommented when integrated into response.data, should be set consistently in AddOrder.js and EditOrder.js
   };
   const [currentOrder, setCurrentOrder] = useState(initialOrderState);
   const [message, setMessage] = useState("");
@@ -88,7 +88,7 @@ const Order = (props) => {
             status={currentStatus} // temporary until status info integrated into response.data > will then be folded into order
             setOrder={setCurrentOrder}
             setStatus={setCurrentStatus} // temporary until status info integrated into response.data > will then be folded into setOrder
-            resetMessage={setMessage}
+            updateMessage={setMessage}
             saveOrder={updateOrder}
             updatePublished={updatePublished}
             deleteOrder={deleteOrder}
@@ -106,4 +106,4 @@ const Order = (props) => {
   );
 };
 
-export default Order;
+export default EditOrder;
