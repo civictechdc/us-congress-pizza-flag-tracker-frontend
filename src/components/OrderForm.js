@@ -1,25 +1,30 @@
 import React from "react";
 import { STATES } from "./states.js";
-import { STATUSES /*, ORGCODES */ } from "./Statuses.js";
+import { STATUSES } from "./Statuses.js";
 import { baseURL } from "../http-common";
 
 const OrderForm = (props) => {
   const {
     order,
     status,
-    setOrder,
-    setStatus,
-    resetMessage,
-    saveOrder,
+    setOrderFunc,
+    setStatusFunc,
+    setMessageFunc,
+    saveOrderFunc,
     mode,
-    deleteOrder,
+    deleteOrderFunc,
   } = props;
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setOrder({ ...order, [name]: value });
-    if (resetMessage) {
-      resetMessage("");
+    if (name === "usa_state") {
+      setOrderFunc({ ...order, home_office_code: "" });
+    }
+    setOrderFunc((prevOrderFunc) => {
+      return { ...prevOrderFunc, [name]: value };
+    });
+    if (setMessageFunc) {
+      setMessageFunc("Changes not saved, Press Update to save changes");
     }
   };
 
@@ -27,9 +32,27 @@ const OrderForm = (props) => {
   // handleStatusChange temporary until status info integrated into response.data
   const handleStatusChange = (event) => {
     const { name, value } = event.target;
-    setStatus({ ...status, [name]: value });
-    resetMessage("");
+    if (setStatusFunc) {
+      setStatusFunc({ ...status, [name]: value });
+    }
+    if (setMessageFunc) {
+      setMessageFunc("Changes not saved, Press Update to save changes");
+    }
   };
+
+  // putting this in Component State makes this check old state instead of what state is being updated to
+  // and/or exceed maximum update depth error
+  let districtMatchCheck = true;
+  if (mode === "edit" && order.usa_state) {
+    let currentDistricts = STATES.filter(
+      (state) => state.name === order.usa_state
+    );
+    districtMatchCheck = currentDistricts[0].districts.includes(
+      order.home_office_code
+    );
+    console.log("Current Office: ", order.home_office_code);
+    console.log("Is Match: ", districtMatchCheck);
+  }
 
   return (
     <div>
@@ -47,13 +70,16 @@ const OrderForm = (props) => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="usa_state">US State</label>
+        <label htmlFor="usa_state">US State:</label>{" "}
         <select
-          value={order.usa_state}
+          value={order.usa_state ? order.usa_state : "select"}
           id="usa_state"
           onChange={handleInputChange}
           name="usa_state"
         >
+          <option value="select" key="blank" hidden disabled>
+            Select
+          </option>
           {STATES &&
             STATES.map((state, index) => {
               return (
@@ -66,14 +92,17 @@ const OrderForm = (props) => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="home_office_code">Congressional Office</label>
+        <label htmlFor="home_office_code">Congressional Office:</label>{" "}
         <select
-          value={order.home_office_code}
+          value={order.home_office_code ? order.home_office_code : "select"}
           id="home_office_code"
           onChange={handleInputChange}
           name="home_office_code"
           required
         >
+          <option value="select" key="blank" hidden disabled>
+            Select
+          </option>
           {STATES &&
             order.usa_state &&
             STATES.filter((state) => state.name === order.usa_state)[0][
@@ -91,12 +120,11 @@ const OrderForm = (props) => {
       {mode === "edit" ? (
         <>
           <div className="form-group">
-            <div>
-              <label htmlFor="status_description">Status:</label>{" "}
-              <strong>{status.status_description}</strong>
-            </div>
+            <label htmlFor="status_description">Status:</label>{" "}
             <select
-              value={status.selection} // change to {order.selection} after user db integrated
+              value={
+                status.status_description ? status.status_description : "select"
+              }
               id="status_description"
               onChange={handleStatusChange}
               name="status_description"
@@ -126,29 +154,34 @@ const OrderForm = (props) => {
               align="right"
             />
           </div>
-          {/* <div className="form-group">
-              <label>
-                <strong>Status:</strong>
-              </label>
-              {order.published ? "Published" : "Pending"}
-            </div> */}
         </>
       ) : null}
 
       {mode === "edit" && (
-        <button className="btn badge-danger mr-2" onClick={deleteOrder}>
+        <button className="btn badge-danger mr-2" onClick={deleteOrderFunc}>
           Delete
         </button>
       )}
       <button
         disabled={
-          !order.order_number || !order.usa_state || !order.home_office_code
+          !order.order_number ||
+          !order.usa_state ||
+          !order.home_office_code ||
+          !districtMatchCheck
         }
-        onClick={saveOrder}
+        onClick={saveOrderFunc}
         className="btn btn-success"
       >
         {mode === "edit" ? "Update" : "Submit"}
       </button>
+
+      <div>
+        {!districtMatchCheck ? (
+          <p>US State and Congressional Office must correspond</p>
+        ) : (
+          <p>&nbsp;</p>
+        )}
+      </div>
     </div>
   );
 };
