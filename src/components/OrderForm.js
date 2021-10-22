@@ -18,10 +18,11 @@ const OrderForm = (props) => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     if (name === "usa_state") {
-      setOrderFunc({ ...order, [name]: value, home_office_code: "" });
-    } else {
-      setOrderFunc({ ...order, [name]: value });
+      setOrderFunc({ ...order, home_office_code: "" });
     }
+    setOrderFunc((prevOrderFunc) => {
+      return { ...prevOrderFunc, [name]: value };
+    });
     if (setMessageFunc) {
       setMessageFunc("Changes not saved, Press Update to save changes");
     }
