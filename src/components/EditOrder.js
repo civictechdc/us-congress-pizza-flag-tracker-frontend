@@ -11,10 +11,9 @@ const EditOrder = (props) => {
     published: false,
     order_number: "",
     home_office_code: "",
-    usa_state: "AL", // initial value needed to avoid undefined error in OrderForm.js --> districtMatchCheck; is immediately overwritten by response.data
-    // status_description: "", // to be uncommented when integrated into response.data, should be set consistently in AddOrder.js and EditOrder.js
-    // selection: "select",  // to be uncommented when integrated into response.data, should be set consistently in AddOrder.js and EditOrder.js
+    usa_state: "",
   };
+
   const [order, setOrder] = useState(initialOrderState);
   const [message, setMessage] = useState("");
   const mode = "edit";
@@ -22,9 +21,7 @@ const EditOrder = (props) => {
   // responses from DB overwriting order.status_description, order.selection
   // initialStatusState temporary until status info integrated into response.data > initialStatusState to be folded into initialOrderState
   const initialStatusState = {
-    status_description:
-      "*will be set by response.data once integrated with DB*",
-    selection: "select",
+    status_description: "",
   };
   const [status, setStatus] = useState(initialStatusState);
 
@@ -41,26 +38,6 @@ const EditOrder = (props) => {
   useEffect(() => {
     getOrder(props.match.params.id);
   }, [props.match.params.id]);
-
-  /*  not in use currently
-    
-  const updatePublished = (status) => {
-    var data = {
-      uuid: order.uuid,
-      order_number: order.order_number,
-      home_office_code: order.home_office_code,
-      published: status,
-    };
-
-    OrderDataService.update(order.uuid, data)
-      .then((response) => {
-        setOrder({ ...order, published: status });
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
-  */
 
   const updateOrder = () => {
     OrderDataService.update(order.uuid, order)
@@ -93,7 +70,6 @@ const EditOrder = (props) => {
             setStatusFunc={setStatus} // temporary until status info integrated into response.data > will then be folded into setOrder
             setMessageFunc={setMessage}
             saveOrderFunc={updateOrder}
-            // updatePublishedFunc={updatePublished} not in use currently
             deleteOrderFunc={deleteOrder}
             mode={mode}
           />

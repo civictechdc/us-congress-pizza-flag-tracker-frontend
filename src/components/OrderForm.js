@@ -17,7 +17,7 @@ const OrderForm = (props) => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    if (mode !== "edit" && name === "usa_state") {
+    if (name === "usa_state") {
       setOrderFunc({ ...order, [name]: value, home_office_code: "" });
     } else {
       setOrderFunc({ ...order, [name]: value });
@@ -31,13 +31,18 @@ const OrderForm = (props) => {
   // handleStatusChange temporary until status info integrated into response.data
   const handleStatusChange = (event) => {
     const { name, value } = event.target;
-    setStatusFunc({ ...status, [name]: value });
-    // setMessageFunc("");
+    if (setStatusFunc) {
+      setStatusFunc({ ...status, [name]: value });
+    }
+    if (setMessageFunc) {
+      setMessageFunc("Changes not saved, Press Update to save changes");
+    }
   };
 
-  let districtMatchCheck = true; // putting this in Component State makes this check old state instead of what state is being updated to
-  if (mode === "edit") {
-    // and/or exceed maximum update depth error
+  // putting this in Component State makes this check old state instead of what state is being updated to
+  // and/or exceed maximum update depth error
+  let districtMatchCheck = true;
+  if (mode === "edit" && order.usa_state) {
     let currentDistricts = STATES.filter(
       (state) => state.name === order.usa_state
     );
@@ -64,12 +69,9 @@ const OrderForm = (props) => {
       </div>
 
       <div className="form-group">
-        <div>
-          <label htmlFor="usa_state">US State:</label>{" "}
-          <strong>{order.usa_state ? order.usa_state : "**"}</strong>
-        </div>
+        <label htmlFor="usa_state">US State:</label>{" "}
         <select
-          value={status.selection} // change to {order.selection} after user db integrated
+          value={order.usa_state ? order.usa_state : "select"}
           id="usa_state"
           onChange={handleInputChange}
           name="usa_state"
@@ -89,18 +91,9 @@ const OrderForm = (props) => {
       </div>
 
       <div className="form-group">
-        <div>
-          <label htmlFor="home_office_code">Congressional Office:</label>{" "}
-          {order.usa_state ? (
-            <strong>
-              {order.home_office_code ? order.home_office_code : "**-**"}
-            </strong>
-          ) : (
-            <strong>Please choose a US State</strong>
-          )}
-        </div>
+        <label htmlFor="home_office_code">Congressional Office:</label>{" "}
         <select
-          value={status.selection} // change to {order.selection} after user db integrated
+          value={order.home_office_code ? order.home_office_code : "select"}
           id="home_office_code"
           onChange={handleInputChange}
           name="home_office_code"
@@ -126,12 +119,11 @@ const OrderForm = (props) => {
       {mode === "edit" ? (
         <>
           <div className="form-group">
-            <div>
-              <label htmlFor="status_description">Status:</label>{" "}
-              <strong>{status.status_description}</strong>
-            </div>
+            <label htmlFor="status_description">Status:</label>{" "}
             <select
-              value={status.selection} // change to {order.selection} after user db integrated
+              value={
+                status.status_description ? status.status_description : "select"
+              } // change to {order.selection} after user db integrated
               id="status_description"
               onChange={handleStatusChange}
               name="status_description"
@@ -161,12 +153,6 @@ const OrderForm = (props) => {
               align="right"
             />
           </div>
-          {/* <div className="form-group">
-              <label>
-                <strong>Status:</strong>
-              </label>
-              {order.published ? "Published" : "Pending"}
-            </div> */}
         </>
       ) : null}
 

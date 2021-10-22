@@ -13,18 +13,12 @@ const AddOrder = (props) => {
     published: false,
   };
 
-  const [exceptionMessage, setExceptionMessage] = useState();
   const [order, setOrder] = useState(
     existingOrder ? existingOrder : initialOrderState
   );
+  const [exceptionMessage, setExceptionMessage] = useState();
   const [submitted, setSubmitted] = useState(false);
-
-  // responses from DB overwriting order.status_description, order.selection
-  // AddOrder doesn't deal with Status per se but contains selection element that should be consistent in AddOrder.js and EditOrder.js for the shared subcomponent
-  const initialStatusState = {
-    selection: "select",
-  };
-  const [status, setStatus] = useState(initialStatusState);
+  const mode = "add";
 
   const saveOrder = () => {
     var data = {
@@ -70,10 +64,9 @@ const AddOrder = (props) => {
       <div>
         <OrderForm
           order={order}
-          status={status} // temporary until status info integrated into response.data > will then be folded into order
           setOrderFunc={setOrder}
-          setStatusFunc={setStatus} // temporary until status info integrated into response.data > will then be folded into setOrder
           saveOrderFunc={saveOrder}
+          mode={mode}
         />
       </div>
     );
