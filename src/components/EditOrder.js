@@ -18,7 +18,7 @@ const EditOrder = (props) => {
   const [message, setMessage] = useState("");
   const mode = "edit";
 
-  // responses from DB overwriting order.status_description, order.selection
+  // responses from DB overwriting order.status_description
   // initialStatusState temporary until status info integrated into response.data > initialStatusState to be folded into initialOrderState
   const initialStatusState = {
     status_description: "",

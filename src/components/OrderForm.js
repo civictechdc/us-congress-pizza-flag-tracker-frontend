@@ -124,7 +124,7 @@ const OrderForm = (props) => {
             <select
               value={
                 status.status_description ? status.status_description : "select"
-              } // change to {order.selection} after user db integrated
+              }
               id="status_description"
               onChange={handleStatusChange}
               name="status_description"
