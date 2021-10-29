@@ -1,4 +1,5 @@
-import React from "react";
+import React, { Component } from "react";
+import Select from 'react-select'
 import { STATES } from "./states.js";
 import { STATUSES } from "./Statuses.js";
 import { baseURL } from "../http-common";
@@ -53,6 +54,12 @@ const OrderForm = (props) => {
     console.log("Current Office: ", order.home_office_code);
     console.log("Is Match: ", districtMatchCheck);
   }
+
+  const options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' }
+  ]
 
   return (
     <div>
@@ -182,6 +189,7 @@ const OrderForm = (props) => {
           <p>&nbsp;</p>
         )}
       </div>
+      <Select options={options} />
     </div>
   );
 };
