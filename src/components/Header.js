@@ -1,5 +1,5 @@
 import React from "react";
-import devAuth from "./Authenticate"
+//import devAuth from "./Authenticate"
 
 import Publicheader from "./publicHeader";
 import Privateheader from "./privateHeader";

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import devAuth from "./Authenticate"
+//mport devAuth from "./Authenticate"
 
 function PrivateRoute ({ children, ...rest }) {
 
