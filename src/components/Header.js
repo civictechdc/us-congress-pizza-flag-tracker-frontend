@@ -7,9 +7,9 @@ import Privateheader from "./privateHeader";
 
 
 function Header() {
-    let auth = devAuth.isAuthenticated
+    const user = JSON.parse(localStorage.getItem("user"));
 
-    if(auth === true){
+    if(user && user.accessToken){
         return <Privateheader />;
     }
     return <Publicheader />
