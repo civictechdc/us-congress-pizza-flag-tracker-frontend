@@ -51,9 +51,6 @@ const OrderForm = (props) => {
         value = event.target.value;
       }
          
-      console.log('Name', name);
-      console.log('Value', value);
-
       if (name === "usa_state") {
         setOrderFunc({ ...order, home_office_code: "" });
       }
@@ -89,8 +86,6 @@ const OrderForm = (props) => {
     districtMatchCheck = currentDistricts[0].districts.includes(
       order.home_office_code
     );
-    console.log("Current Office: ", order.home_office_code);
-    console.log("Is Match: ", districtMatchCheck);
   };
 
   return (
