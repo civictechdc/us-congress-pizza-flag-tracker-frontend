@@ -13,11 +13,12 @@ const AddOrder = (props) => {
     published: false,
   };
 
-  const [exceptionMessage, setExceptionMessage] = useState();
   const [order, setOrder] = useState(
     existingOrder ? existingOrder : initialOrderState
   );
+  const [exceptionMessage, setExceptionMessage] = useState();
   const [submitted, setSubmitted] = useState(false);
+  const mode = "add";
 
   const saveOrder = () => {
     var data = {
@@ -27,13 +28,6 @@ const AddOrder = (props) => {
     };
     OrderDataService.create(data)
       .then((response) => {
-        setOrder({
-          id: response.data.id,
-          order_number: response.data.order_number,
-          home_office_code: response.data.home_office_code,
-          usa_state: response.data.usa_state,
-          published: response.data.published,
-        });
         setSubmitted(true);
       })
       .catch((e) => {
@@ -68,7 +62,12 @@ const AddOrder = (props) => {
   } else {
     return (
       <div>
-        <OrderForm order={order} setOrder={setOrder} saveOrder={saveOrder} />
+        <OrderForm
+          order={order}
+          setOrderFunc={setOrder}
+          saveOrderFunc={saveOrder}
+          mode={mode}
+        />
       </div>
     );
   }

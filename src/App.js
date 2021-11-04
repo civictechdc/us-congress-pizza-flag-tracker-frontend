@@ -4,7 +4,7 @@ import { Switch, Route } from "react-router-dom";
 
 import AddOrder from "./components/AddOrder";
 import Login from "./components/Login";
-import Order from "./components/Order";
+import EditOrder from "./components/EditOrder";
 import OrdersList from "./components/OrdersList";
 import PrivateRoute from "./components/PrivateRoute";
 
@@ -25,7 +25,7 @@ function App() {
           <PrivateRoute exact path="/add">
             <AddOrder/>
           </PrivateRoute>
-          <Route path="/orders/:id" component={Order} />
+          <Route path="/orders/:id" component={EditOrder} />
           <Route exact path="/login" component={Login}/>
           <PrivateRoute exact path="/users/add">
             <AddUser/>
