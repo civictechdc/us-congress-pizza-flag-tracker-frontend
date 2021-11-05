@@ -198,7 +198,7 @@ const OrderForm = (props) => {
         </button>
       )}
 
-      {!message.checkSaved ? (
+      {mode === "edit" && !message.checkSaved ? (
         <p>Changes not saved, Press Update to save changes</p>
       ) : (
         <p>&nbsp;</p>
