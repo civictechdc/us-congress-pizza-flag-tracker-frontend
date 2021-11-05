@@ -73,15 +73,19 @@ const OrderForm = (props) => {
       name = event.target.name;
       value = event.target.value;
     }
+    setMessageFunc({ ...message, isLastChangeUSState: false});
     if (name === "usa_state") {
       setOrderFunc({ ...order, home_office_code: "" });
+      setMessageFunc((prevMessageFunc) => {
+        return { ...prevMessageFunc, isLastChangeUSState: true };
+      });
     }
     setOrderFunc((prevOrderFunc) => {
       return { ...prevOrderFunc, [name]: value };
     }); 
-    if (setMessageFunc) {
-      setMessageFunc({ ...message, checkSaved: false, whyStatus: false});
-    };
+    setMessageFunc((prevMessageFunc) => {
+      return { ...prevMessageFunc, checkSaved: false, whyStatus: false };
+    });
   };
   
   // responses from DB overwriting status values in order's state
@@ -92,7 +96,7 @@ const OrderForm = (props) => {
       setStatusFunc({ ...status, [name]: value });
     }
     if (setMessageFunc) {
-      setMessageFunc({ ...message, checkSaved: false, whyStatus: false});
+      setMessageFunc({ ...message, checkSaved: false, isLastChangeUSState: false, whyStatus: false});
     }
   };
 
@@ -117,29 +121,21 @@ const OrderForm = (props) => {
 
       <div className="form-group">
         <label htmlFor="usa_state">US State:</label>{" "}
-        {mode === "edit" && (
-          <strong>{order.usa_state ? (
-            order.usa_state
-          ) : (
-            '**'
-          )}
-          </strong> 
+        {mode === "edit" ? (
+          <Select onChange={handleInputChange} options={optionUSStates} value={{ label: order.usa_state, name: 'usa_state', value: order.usa_state }} />
+        ) : (
+          <Select onChange={handleInputChange} options={optionUSStates} />
         )}
-        <Select onChange={handleInputChange} options={optionUSStates} />
       </div>
 
       <div className="form-group">
         <label htmlFor="home_office_code">Congressional Office:</label>{" "}
-        {mode === "edit" && (
-          <strong>{order.home_office_code ? (
-            order.home_office_code
-          ) : (
-            '**-**'
-          )}
-          </strong>
-        )}
         {(order.usa_state) ? (
-          <Select onChange={handleInputChange} options={optionDistricts}  />
+          (message.isLastChangeUSState ? (
+            <Select onChange={handleInputChange} options={optionDistricts} value={null} />
+          ) : (
+            <Select onChange={handleInputChange} options={optionDistricts} value={{ label: order.home_office_code, name: 'usa_state', value: order.home_office_code }} />
+          ))
         ) : (
           <input
           type="text"
@@ -166,7 +162,6 @@ const OrderForm = (props) => {
               align="right"
             />
           </div>
-
         </>
       ) : null}
 
