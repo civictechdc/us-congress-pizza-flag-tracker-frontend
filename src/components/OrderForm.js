@@ -207,7 +207,6 @@ const OrderForm = (props) => {
       {message.whyStatus ? (
         <OrderFormValidate
           districtMatchCheck={districtMatchCheck}
-          message={message}
           order={order}
         />
       ) : (
