@@ -1,12 +1,15 @@
 import React from "react";
 import Select from 'react-select'
+import { baseURL } from "../http-common";
 import { STATES } from "./states.js";
 import { STATUSES } from "./Statuses.js";
-import { baseURL } from "../http-common";
+import OrderFormValidate from "./OrderFormValidate.js";
+import "./OrderForm.css";
 
 const OrderForm = (props) => {
   const {
     order,
+    message,
     status,
     setOrderFunc,
     setStatusFunc,
@@ -44,38 +47,6 @@ const OrderForm = (props) => {
       ))
   };
 
-  const handleInputChange = (event) => {
-      let { name, value } = event;
-      if (event.target) {
-        name = event.target.name;
-        value = event.target.value;
-      }
-         
-      if (name === "usa_state") {
-        setOrderFunc({ ...order, home_office_code: "" });
-      }
-
-      setOrderFunc((prevOrderFunc) => {
-        return { ...prevOrderFunc, [name]: value };
-      });
-      
-      if (setMessageFunc) {
-        setMessageFunc("Changes not saved, Press Update to save changes");
-      };      
-  };
-  
-  // responses from DB overwriting status values in order's state
-  // handleStatusChange temporary until status info integrated into response.data
-  const handleStatusChange = (event) => {
-    const { name, value } = event;
-    if (setStatusFunc) {
-      setStatusFunc({ ...status, [name]: value });
-    }
-    if (setMessageFunc) {
-      setMessageFunc("Changes not saved, Press Update to save changes");
-    }
-  };
-
   // putting this in Component State makes this check old state instead of what state is being updated to
   // and/or exceed maximum update depth error
   let districtMatchCheck = true;
@@ -87,6 +58,47 @@ const OrderForm = (props) => {
       order.home_office_code
     );
   };
+
+  let disableButton = false;
+  if (!order.order_number ||
+    !order.usa_state ||
+    !order.home_office_code ||
+    !districtMatchCheck) {
+    disableButton = true
+  }
+
+  const handleInputChange = (event) => {
+    let { name, value } = event;
+    if (event.target) {
+      name = event.target.name;
+      value = event.target.value;
+    }
+    if (name === "usa_state") {
+      setOrderFunc({ ...order, home_office_code: "" });
+    }
+    setOrderFunc((prevOrderFunc) => {
+      return { ...prevOrderFunc, [name]: value };
+    }); 
+    if (setMessageFunc) {
+      setMessageFunc({ ...message, checkSaved: false, whyStatus: false});
+    };
+  };
+  
+  // responses from DB overwriting status values in order's state
+  // handleStatusChange temporary until status info integrated into response.data
+  const handleStatusChange = (event) => {
+    const { name, value } = event;
+    if (setStatusFunc) {
+      setStatusFunc({ ...status, [name]: value });
+    }
+    if (setMessageFunc) {
+      setMessageFunc({ ...message, checkSaved: false, whyStatus: false});
+    }
+  };
+
+  const whyNoSave = () => {
+    setMessageFunc({ ...message, whyStatus: true});
+  }
 
   return (
     <div>
@@ -154,6 +166,7 @@ const OrderForm = (props) => {
               align="right"
             />
           </div>
+
         </>
       ) : null}
 
@@ -162,26 +175,44 @@ const OrderForm = (props) => {
           Delete
         </button>
       )}
-      <button
-        disabled={
-          !order.order_number ||
-          !order.usa_state ||
-          !order.home_office_code ||
-          !districtMatchCheck
-        }
-        onClick={saveOrderFunc}
-        className="btn btn-success"
-      >
-        {mode === "edit" ? "Update" : "Submit"}
-      </button>
 
-      <div>
-        {!districtMatchCheck ? (
-          <p>US State and Congressional Office must correspond</p>
-        ) : (
-          <p>&nbsp;</p>
-        )}
-      </div>
+      {disableButton ? (
+        <button
+          className="btn btn-success btn-why"
+          onClick={whyNoSave}
+        >
+          {mode === "edit" ? "Update" : "Submit"}
+        </button>
+      ) : (
+        <button
+          disabled={
+            !order.order_number ||
+            !order.usa_state ||
+            !order.home_office_code ||
+            !districtMatchCheck
+          }
+          onClick={saveOrderFunc}
+          className="btn btn-success"
+        >
+          {mode === "edit" ? "Update" : "Submit"}
+        </button>
+      )}
+
+      {!message.checkSaved ? (
+        <p>Changes not saved, Press Update to save changes</p>
+      ) : (
+        <p>&nbsp;</p>
+      )}
+
+      {message.whyStatus ? (
+        <OrderFormValidate
+          districtMatchCheck={districtMatchCheck}
+          message={message}
+          order={order}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 };

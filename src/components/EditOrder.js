@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import OrderDataService from "../services/OrderService";
-
 import OrderForm from "./OrderForm";
 
 const EditOrder = (props) => {
@@ -14,8 +13,15 @@ const EditOrder = (props) => {
     usa_state: "",
   };
 
+  const initialMessageState = {
+    checkSaved: true,
+    submitted: false,
+    success: "",
+    whyStatus: false,
+  };
+
   const [order, setOrder] = useState(initialOrderState);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(initialMessageState);
   const mode = "edit";
 
   // responses from DB overwriting order.status_description
@@ -42,7 +48,7 @@ const EditOrder = (props) => {
   const updateOrder = () => {
     OrderDataService.update(order.uuid, order)
       .then((response) => {
-        setMessage("The order was updated successfully!");
+        setMessage({ ...message, checkSaved: true, success: "The order was updated successfully!"});
       })
       .catch((e) => {
         console.log(e);
@@ -65,6 +71,7 @@ const EditOrder = (props) => {
         <>
           <OrderForm
             order={order}
+            message={message}
             status={status} // temporary until status info integrated into response.data > will then be folded into order
             setOrderFunc={setOrder}
             setStatusFunc={setStatus} // temporary until status info integrated into response.data > will then be folded into setOrder
@@ -73,7 +80,7 @@ const EditOrder = (props) => {
             deleteOrderFunc={deleteOrder}
             mode={mode}
           />
-          <p>{message}</p>
+          <p>{message.success}</p>
         </>
       ) : (
         <div>
