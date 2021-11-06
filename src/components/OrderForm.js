@@ -95,6 +95,7 @@ const OrderForm = (props) => {
     setMessageFunc({ ...message, whyStatus: true});
   }
 
+  // used to set Submit button className in addition to handleSave function
   let disableButton = false;
   if (!order.order_number ||
     !order.usa_state ||
