@@ -3,7 +3,6 @@ import Select from 'react-select'
 import { baseURL } from "../http-common";
 import { STATES } from "./states.js";
 import { STATUSES } from "./Statuses.js";
-import OrderFormValidate from "./OrderFormValidate.js";
 import "./OrderForm.css";
 
 const OrderForm = (props) => {
@@ -50,7 +49,7 @@ const OrderForm = (props) => {
   // putting this in Component State makes this check old state instead of what state is being updated to
   // and/or exceed maximum update depth error
   let districtMatchCheck = true;
-  if (order.usa_state) {
+  if (order.usa_state && order.home_office_code) {
     let currentDistricts = STATES.filter(
       (state) => state.name === order.usa_state
     );
@@ -58,14 +57,6 @@ const OrderForm = (props) => {
       order.home_office_code
     );
   };
-
-  let disableButton = false;
-  if (!order.order_number ||
-    !order.usa_state ||
-    !order.home_office_code ||
-    !districtMatchCheck) {
-    disableButton = true
-  }
 
   const handleInputChange = (event) => {
     let { name, value } = event;
@@ -104,6 +95,22 @@ const OrderForm = (props) => {
     setMessageFunc({ ...message, whyStatus: true});
   }
 
+  let disableButton = false;
+  if (!order.order_number ||
+    !order.usa_state ||
+    !order.home_office_code ||
+    !districtMatchCheck) {
+    disableButton = true
+  }
+
+  const handleSave = () => {
+    if (disableButton) {
+      whyNoSave();
+    } else {
+      saveOrderFunc();
+    }
+  }
+
   return (
     <div>
       <div className="form-group">
@@ -117,6 +124,11 @@ const OrderForm = (props) => {
           onChange={handleInputChange}
           name="order_number"
         />
+        {(!order.order_number && message.whyStatus) ? (
+          <p className="validation-message">Enter a valid Order Number</p>
+        ) : (
+          ""
+        )}
       </div>
 
       <div className="form-group">
@@ -125,6 +137,11 @@ const OrderForm = (props) => {
           <Select onChange={handleInputChange} options={optionUSStates} value={{ label: order.usa_state, name: 'usa_state', value: order.usa_state }} />
         ) : (
           <Select onChange={handleInputChange} options={optionUSStates} />
+        )}
+        {(!order.usa_state && message.whyStatus) ? (
+          <p className="validation-message">Pick a US State</p>
+        ) : (
+          ""
         )}
       </div>
 
@@ -140,10 +157,20 @@ const OrderForm = (props) => {
           <input
           type="text"
           className="form-control"
-          value='pick a State'
+          value='Pick a US State first...'
           readOnly="readOnly"
         />
         )}
+        {(!order.home_office_code && message.whyStatus) ? (
+          <p className="validation-message">Pick a Congressional Office</p>
+        ) : (
+          ""
+        )}
+        {(!districtMatchCheck && message.whyStatus) ? (
+          <p className="validation-message">US State and Congressional Office must correspond</p>
+        ) : (
+          ""
+        )}        
       </div>
 
       {mode === "edit" ? (
@@ -170,43 +197,19 @@ const OrderForm = (props) => {
           Delete
         </button>
       )}
-
-      {disableButton ? (
-        <button
-          className="btn btn-success btn-why"
-          onClick={whyNoSave}
-        >
-          {mode === "edit" ? "Update" : "Submit"}
-        </button>
-      ) : (
-        <button
-          disabled={
-            !order.order_number ||
-            !order.usa_state ||
-            !order.home_office_code ||
-            !districtMatchCheck
-          }
-          onClick={saveOrderFunc}
-          className="btn btn-success"
-        >
-          {mode === "edit" ? "Update" : "Submit"}
-        </button>
-      )}
+      <button
+        onClick={handleSave}
+        className={`btn btn-success ${disableButton ? "btn-why" : ""}`}
+       >
+        {mode === "edit" ? "Update" : "Submit"}
+      </button>
 
       {mode === "edit" && !message.checkSaved ? (
-        <p>Changes not saved, Press Update to save changes</p>
+        <p className="validation-message">Changes not saved, press Update to save changes</p>
       ) : (
         <p>&nbsp;</p>
       )}
 
-      {message.whyStatus ? (
-        <OrderFormValidate
-          districtMatchCheck={districtMatchCheck}
-          order={order}
-        />
-      ) : (
-        ""
-      )}
     </div>
   );
 };
