@@ -208,7 +208,7 @@ const OrderForm = (props) => {
       {mode === "edit" && !message.checkSaved ? (
         <p className="validation-message">Changes not saved, press Update to save changes</p>
       ) : (
-        <p>&nbsp;</p>
+        ""
       )}
 
     </div>
