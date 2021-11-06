@@ -15,6 +15,7 @@ const AddOrder = (props) => {
 
   const initialMessageState = {
     checkSaved: true,
+    isLastChangeUSState: false,
     submitted: false,
     success: "",
     whyStatus: false,
