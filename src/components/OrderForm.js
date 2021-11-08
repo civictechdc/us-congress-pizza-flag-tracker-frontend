@@ -1,12 +1,14 @@
 import React from "react";
 import Select from 'react-select'
+import { baseURL } from "../http-common";
 import { STATES } from "./states.js";
 import { STATUSES } from "./Statuses.js";
-import { baseURL } from "../http-common";
+import "./OrderForm.css";
 
 const OrderForm = (props) => {
   const {
     order,
+    message,
     status,
     setOrderFunc,
     setStatusFunc,
@@ -44,24 +46,37 @@ const OrderForm = (props) => {
       ))
   };
 
-  const handleInputChange = (event) => {
-      let { name, value } = event;
-      if (event.target) {
-        name = event.target.name;
-        value = event.target.value;
-      }
-         
-      if (name === "usa_state") {
-        setOrderFunc({ ...order, home_office_code: "" });
-      }
+  // putting this in Component State makes this check old state instead of what state is being updated to
+  // and/or exceed maximum update depth error
+  let districtMatchCheck = true;
+  if (order.usa_state && order.home_office_code) {
+    let currentDistricts = STATES.filter(
+      (state) => state.name === order.usa_state
+    );
+    districtMatchCheck = currentDistricts[0].districts.includes(
+      order.home_office_code
+    );
+  };
 
-      setOrderFunc((prevOrderFunc) => {
-        return { ...prevOrderFunc, [name]: value };
+  const handleInputChange = (event) => {
+    let { name, value } = event;
+    if (event.target) {
+      name = event.target.name;
+      value = event.target.value;
+    }
+    setMessageFunc({ ...message, isLastChangeUSState: false});
+    if (name === "usa_state") {
+      setOrderFunc({ ...order, home_office_code: "" });
+      setMessageFunc((prevMessageFunc) => {
+        return { ...prevMessageFunc, isLastChangeUSState: true };
       });
-      
-      if (setMessageFunc) {
-        setMessageFunc("Changes not saved, Press Update to save changes");
-      };      
+    }
+    setOrderFunc((prevOrderFunc) => {
+      return { ...prevOrderFunc, [name]: value };
+    }); 
+    setMessageFunc((prevMessageFunc) => {
+      return { ...prevMessageFunc, checkSaved: false, whyStatus: false };
+    });
   };
   
   // responses from DB overwriting status values in order's state
@@ -72,21 +87,30 @@ const OrderForm = (props) => {
       setStatusFunc({ ...status, [name]: value });
     }
     if (setMessageFunc) {
-      setMessageFunc("Changes not saved, Press Update to save changes");
+      setMessageFunc({ ...message, checkSaved: false, isLastChangeUSState: false, whyStatus: false});
     }
   };
 
-  // putting this in Component State makes this check old state instead of what state is being updated to
-  // and/or exceed maximum update depth error
-  let districtMatchCheck = true;
-  if (order.usa_state) {
-    let currentDistricts = STATES.filter(
-      (state) => state.name === order.usa_state
-    );
-    districtMatchCheck = currentDistricts[0].districts.includes(
-      order.home_office_code
-    );
-  };
+  const whyNoSave = () => {
+    setMessageFunc({ ...message, whyStatus: true});
+  }
+
+  // used to set Submit button className in addition to handleSave function
+  let disableButton = false;
+  if (!order.order_number ||
+    !order.usa_state ||
+    !order.home_office_code ||
+    !districtMatchCheck) {
+    disableButton = true
+  }
+
+  const handleSave = () => {
+    if (disableButton) {
+      whyNoSave();
+    } else {
+      saveOrderFunc();
+    }
+  }
 
   return (
     <div>
@@ -101,41 +125,53 @@ const OrderForm = (props) => {
           onChange={handleInputChange}
           name="order_number"
         />
+        {(!order.order_number && message.whyStatus) ? (
+          <p className="validation-message">Enter a valid Order Number</p>
+        ) : (
+          ""
+        )}
       </div>
 
       <div className="form-group">
         <label htmlFor="usa_state">US State:</label>{" "}
-        {mode === "edit" && (
-          <strong>{order.usa_state ? (
-            order.usa_state
-          ) : (
-            '**'
-          )}
-          </strong> 
+        {mode === "edit" ? (
+          <Select onChange={handleInputChange} options={optionUSStates} value={{ label: order.usa_state, name: 'usa_state', value: order.usa_state }} />
+        ) : (
+          <Select onChange={handleInputChange} options={optionUSStates} />
         )}
-        <Select onChange={handleInputChange} options={optionUSStates} />
+        {(!order.usa_state && message.whyStatus) ? (
+          <p className="validation-message">Pick a US State</p>
+        ) : (
+          ""
+        )}
       </div>
 
       <div className="form-group">
         <label htmlFor="home_office_code">Congressional Office:</label>{" "}
-        {mode === "edit" && (
-          <strong>{order.home_office_code ? (
-            order.home_office_code
-          ) : (
-            '**-**'
-          )}
-          </strong>
-        )}
         {(order.usa_state) ? (
-          <Select onChange={handleInputChange} options={optionDistricts}  />
+          (message.isLastChangeUSState ? (
+            <Select onChange={handleInputChange} options={optionDistricts} value={null} />
+          ) : (
+            <Select onChange={handleInputChange} options={optionDistricts} value={{ label: order.home_office_code, name: 'usa_state', value: order.home_office_code }} />
+          ))
         ) : (
           <input
           type="text"
           className="form-control"
-          value='pick a State'
+          value='Pick a US State first...'
           readOnly="readOnly"
         />
         )}
+        {(!order.home_office_code && message.whyStatus) ? (
+          <p className="validation-message">Pick a Congressional Office</p>
+        ) : (
+          ""
+        )}
+        {(!districtMatchCheck && message.whyStatus) ? (
+          <p className="validation-message">US State and Congressional Office must correspond</p>
+        ) : (
+          ""
+        )}        
       </div>
 
       {mode === "edit" ? (
@@ -163,25 +199,18 @@ const OrderForm = (props) => {
         </button>
       )}
       <button
-        disabled={
-          !order.order_number ||
-          !order.usa_state ||
-          !order.home_office_code ||
-          !districtMatchCheck
-        }
-        onClick={saveOrderFunc}
-        className="btn btn-success"
-      >
+        onClick={handleSave}
+        className={`btn btn-success ${disableButton ? "btn-why" : ""}`}
+       >
         {mode === "edit" ? "Update" : "Submit"}
       </button>
 
-      <div>
-        {!districtMatchCheck ? (
-          <p>US State and Congressional Office must correspond</p>
-        ) : (
-          <p>&nbsp;</p>
-        )}
-      </div>
+      {mode === "edit" && !message.checkSaved ? (
+        <p className="validation-message">Changes not saved, press Update to save changes</p>
+      ) : (
+        ""
+      )}
+
     </div>
   );
 };
