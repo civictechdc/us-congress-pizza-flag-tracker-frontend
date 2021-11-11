@@ -44,10 +44,11 @@ export default class AddUser extends Component {
     this.state = {
       username: "",
       password: "",
-      can_create_update_delete_orders: "",
-      can_update_password_for: "",
-      can_update_status_for: "",
-      is_admin: "",
+      office_code: "",
+      can_update_status_for: "NONE",
+      can_create_update_delete_orders: "N",
+      can_update_password_for: "NONE",
+      is_admin: "N",
       successful: false,
       message: "",
     };
@@ -72,6 +73,7 @@ export default class AddUser extends Component {
       UserService.create(
         this.state.username,
         this.state.password,
+        this.state.office_code,
         this.state.is_admin,
         this.state.can_create_update_delete_orders,
         this.state.can_update_password_for,
@@ -139,6 +141,21 @@ export default class AddUser extends Component {
                     validations={[required, vpassword]}
                   />
                 </div>
+
+                <div className="form-group">
+                  <label htmlFor="office_code">Office Code</label>
+                  <Input
+                    type="office_code"
+                    className="form-control"
+                    name="office_code"
+                    value={this.state.office_code}
+                    onChange={(e) =>
+                      this.onChangeValue("office_code", e.target.value)
+                    }
+                    validations={[required]}
+                  />
+                </div>
+
                 <div className="form-group">
                   <label htmlFor="can_update_password_for">
                     Can update password for (ALL, SELF, NONE, or office code)

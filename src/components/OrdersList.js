@@ -28,11 +28,15 @@ const OrdersList = () => {
       })
       .catch((e) => {
         console.log(e);
-        if (e.response.status === 401) {
+        if (e.response?.status === 401) {
           setErrorMessage(loginError);
         } else {
           setPopUpbox("block");
-          setErrorMessage(e.message);
+          setErrorMessage(
+            e.message +
+              "." +
+              "Check with admin if server is down or try logging out and logging in."
+          );
         }
       });
   };
@@ -200,6 +204,7 @@ const OrdersList = () => {
             )}
           </div>
         </div>
+
         <div className="pop-container" style={{ display: popUpBox }}>
           <div className="pop-up" onClick={closePopUpBox}>
             <h3>{errorMessage}</h3>
