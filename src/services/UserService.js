@@ -4,6 +4,7 @@ class UserService {
   create(
     username,
     password,
+    office_code,
     is_admin,
     can_create_update_delete_orders,
     can_update_password_for,
@@ -12,6 +13,7 @@ class UserService {
     return httpAuthenticate().post("users/create", {
       username,
       password,
+      office_code,
       is_admin,
       can_create_update_delete_orders,
       can_update_password_for,
