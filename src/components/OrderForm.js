@@ -1,5 +1,5 @@
 import React from "react";
-import Select from 'react-select'
+import Select from "react-select";
 import { baseURL } from "../http-common";
 import { STATES } from "./states.js";
 import { STATUSES } from "./Statuses.js";
@@ -20,31 +20,36 @@ const OrderForm = (props) => {
 
   let optionUSStates = [];
   if (STATES) {
-    optionUSStates = (
-      STATES.map( state => 
-        ({ label: state.name, name: 'usa_state', value: state.name })
-      ))
-  };
+    optionUSStates = STATES.map((state) => ({
+      label: state.name,
+      name: "usa_state",
+      value: state.name,
+    }));
+  }
 
   let optionDistricts = [];
   if (STATES && order.usa_state) {
-    optionDistricts = (
-      STATES.filter((state) => state.name === order.usa_state)[0][
-        "districts"
-      ].map(district => 
-        ({ label: district, name: 'home_office_code', value: district})
-      ))
-  };
+    optionDistricts = STATES.filter(
+      (state) => state.name === order.usa_state
+    )[0]["districts"].map((district) => ({
+      label: district,
+      name: "home_office_code",
+      value: district,
+    }));
+  }
 
   let optionStatuses = [];
   if (STATUSES) {
-    optionStatuses = (
-      STATUSES.map((status) => 
-          /* Old Filter by DEMO Organization Code was here
+    optionStatuses = STATUSES.map((status) =>
+      /* Old Filter by DEMO Organization Code was here
           to be rewired to ACTUAL User Profile DB info  */
-        ({ label: (`#${status.sequence_num} ${status.description}`), name: 'status', value: status.sequence_num})
-      ))
-  };
+      ({
+        label: `#${status.sequence_num} ${status.description}`,
+        name: "status",
+        value: status.sequence_num,
+      })
+    );
+  }
 
   // putting this in Component State makes this check old state instead of what state is being updated to
   // and/or exceed maximum update depth error
@@ -56,7 +61,7 @@ const OrderForm = (props) => {
     districtMatchCheck = currentDistricts[0].districts.includes(
       order.home_office_code
     );
-  };
+  }
 
   const handleInputChange = (event) => {
     let { name, value } = event;
@@ -64,7 +69,7 @@ const OrderForm = (props) => {
       name = event.target.name;
       value = event.target.value;
     }
-    setMessageFunc({ ...message, isLastChangeUSState: false});
+    setMessageFunc({ ...message, isLastChangeUSState: false });
     if (name === "usa_state") {
       setOrderFunc({ ...order, home_office_code: "" });
       setMessageFunc((prevMessageFunc) => {
@@ -73,12 +78,12 @@ const OrderForm = (props) => {
     }
     setOrderFunc((prevOrderFunc) => {
       return { ...prevOrderFunc, [name]: value };
-    }); 
+    });
     setMessageFunc((prevMessageFunc) => {
       return { ...prevMessageFunc, checkSaved: false, whyStatus: false };
     });
   };
-  
+
   // responses from DB overwriting status values in order's state
   // handleStatusChange temporary until status info integrated into response.data
   const handleStatusChange = (event) => {
@@ -87,21 +92,28 @@ const OrderForm = (props) => {
       setStatusFunc({ ...status, [name]: value });
     }
     if (setMessageFunc) {
-      setMessageFunc({ ...message, checkSaved: false, isLastChangeUSState: false, whyStatus: false});
+      setMessageFunc({
+        ...message,
+        checkSaved: false,
+        isLastChangeUSState: false,
+        whyStatus: false,
+      });
     }
   };
 
   const whyNoSave = () => {
-    setMessageFunc({ ...message, whyStatus: true});
-  }
+    setMessageFunc({ ...message, whyStatus: true });
+  };
 
   // used to set Submit button className in addition to handleSave function
   let disableButton = false;
-  if (!order.order_number ||
+  if (
+    !order.order_number ||
     !order.usa_state ||
     !order.home_office_code ||
-    !districtMatchCheck) {
-    disableButton = true
+    !districtMatchCheck
+  ) {
+    disableButton = true;
   }
 
   const handleSave = () => {
@@ -110,7 +122,7 @@ const OrderForm = (props) => {
     } else {
       saveOrderFunc();
     }
-  }
+  };
 
   return (
     <div>
@@ -125,7 +137,7 @@ const OrderForm = (props) => {
           onChange={handleInputChange}
           name="order_number"
         />
-        {(!order.order_number && message.whyStatus) ? (
+        {!order.order_number && message.whyStatus ? (
           <p className="validation-message">Enter a valid Order Number</p>
         ) : (
           ""
@@ -135,11 +147,19 @@ const OrderForm = (props) => {
       <div className="form-group">
         <label htmlFor="usa_state">US State:</label>{" "}
         {mode === "edit" ? (
-          <Select onChange={handleInputChange} options={optionUSStates} value={{ label: order.usa_state, name: 'usa_state', value: order.usa_state }} />
+          <Select
+            onChange={handleInputChange}
+            options={optionUSStates}
+            value={{
+              label: order.usa_state,
+              name: "usa_state",
+              value: order.usa_state,
+            }}
+          />
         ) : (
           <Select onChange={handleInputChange} options={optionUSStates} />
         )}
-        {(!order.usa_state && message.whyStatus) ? (
+        {!order.usa_state && message.whyStatus ? (
           <p className="validation-message">Pick a US State</p>
         ) : (
           ""
@@ -148,30 +168,44 @@ const OrderForm = (props) => {
 
       <div className="form-group">
         <label htmlFor="home_office_code">Congressional Office:</label>{" "}
-        {(order.usa_state) ? (
-          (message.isLastChangeUSState ? (
-            <Select onChange={handleInputChange} options={optionDistricts} value={null} />
+        {order.usa_state ? (
+          message.isLastChangeUSState ? (
+            <Select
+              onChange={handleInputChange}
+              options={optionDistricts}
+              value={null}
+            />
           ) : (
-            <Select onChange={handleInputChange} options={optionDistricts} value={{ label: order.home_office_code, name: 'usa_state', value: order.home_office_code }} />
-          ))
+            <Select
+              onChange={handleInputChange}
+              options={optionDistricts}
+              value={{
+                label: order.home_office_code,
+                name: "usa_state",
+                value: order.home_office_code,
+              }}
+            />
+          )
         ) : (
           <input
-          type="text"
-          className="form-control"
-          value='Pick a US State first...'
-          readOnly="readOnly"
-        />
+            type="text"
+            className="form-control"
+            value="Pick a US State first..."
+            readOnly="readOnly"
+          />
         )}
-        {(!order.home_office_code && message.whyStatus) ? (
+        {!order.home_office_code && message.whyStatus ? (
           <p className="validation-message">Pick a Congressional Office</p>
         ) : (
           ""
         )}
-        {(!districtMatchCheck && message.whyStatus) ? (
-          <p className="validation-message">US State and Congressional Office must correspond</p>
+        {!districtMatchCheck && message.whyStatus ? (
+          <p className="validation-message">
+            US State and Congressional Office must correspond
+          </p>
         ) : (
           ""
-        )}        
+        )}
       </div>
 
       {mode === "edit" ? (
@@ -185,7 +219,7 @@ const OrderForm = (props) => {
             <label>QR Code</label>
             {order.uuid}
             <img
-              src={baseURL + "/api/qrcode/" + order.uuid}
+              src={baseURL + "/qrcode/" + order.uuid}
               alt="QR Code"
               align="right"
             />
@@ -201,16 +235,17 @@ const OrderForm = (props) => {
       <button
         onClick={handleSave}
         className={`btn btn-success ${disableButton ? "btn-why" : ""}`}
-       >
+      >
         {mode === "edit" ? "Update" : "Submit"}
       </button>
 
       {mode === "edit" && !message.checkSaved ? (
-        <p className="validation-message">Changes not saved, press Update to save changes</p>
+        <p className="validation-message">
+          Changes not saved, press Update to save changes
+        </p>
       ) : (
         ""
       )}
-
     </div>
   );
 };
