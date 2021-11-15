@@ -191,6 +191,13 @@ const OrdersList = () => {
                 >
                   Edit
                 </Link>
+                {` `} 
+                <Link
+                  to={"/scan/" + currentOrder.uuid}
+                  className="badge badge-warning"
+                >
+                  Scan
+                </Link>
               </div>
             ) : (
               <div>

@@ -7,6 +7,7 @@ import Login from "./components/Login";
 import EditOrder from "./components/EditOrder";
 import OrdersList from "./components/OrdersList";
 import PrivateRoute from "./components/PrivateRoute";
+import ScanOrder from "./components/ScanOrder";
 
 import Header from "./components/Header";
 import AddUser from "./components/AddUser"
@@ -23,10 +24,11 @@ function App() {
         <Switch>
           <Route exact path={["/", "/orders"]} component={OrdersList} />
           <PrivateRoute exact path="/add">
-            <AddOrder/>
+            <AddOrder />
           </PrivateRoute>
           <Route path="/orders/:id" component={EditOrder} />
-          <Route exact path="/login" component={Login}/>
+          <Route path="/scan/:id" component={ScanOrder} />
+          <Route exact path="/login" component={Login} />
           <PrivateRoute exact path="/users/add">
             <AddUser/>
           </PrivateRoute>

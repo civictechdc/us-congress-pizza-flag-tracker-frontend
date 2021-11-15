@@ -111,99 +111,181 @@ const OrderForm = (props) => {
       saveOrderFunc();
     }
   }
+ 
+  const handleScan = () => {
+    console.log("HOSS verified as printed and scanned physical QR code")
+    // when able to send/receive status from backend, update current order.status_desc and sequence_num with next value
+    // then use saveOrderFunc to update the backend
+  }
 
   return (
     <div>
-      <div className="form-group">
-        <label htmlFor="order_number">Order Number</label>
-        <input
-          type="text"
-          className="form-control"
-          id="order_number"
-          required
-          value={order.order_number}
-          onChange={handleInputChange}
-          name="order_number"
-        />
-        {(!order.order_number && message.whyStatus) ? (
-          <p className="validation-message">Enter a valid Order Number</p>
-        ) : (
-          ""
-        )}
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="usa_state">US State:</label>{" "}
-        {mode === "edit" ? (
-          <Select onChange={handleInputChange} options={optionUSStates} value={{ label: order.usa_state, name: 'usa_state', value: order.usa_state }} />
-        ) : (
-          <Select onChange={handleInputChange} options={optionUSStates} />
-        )}
-        {(!order.usa_state && message.whyStatus) ? (
-          <p className="validation-message">Pick a US State</p>
-        ) : (
-          ""
-        )}
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="home_office_code">Congressional Office:</label>{" "}
-        {(order.usa_state) ? (
-          (message.isLastChangeUSState ? (
-            <Select onChange={handleInputChange} options={optionDistricts} value={null} />
+        {mode === "scan" 
+          ? (
+            <div className="form-group">
+              <label htmlFor="order_number">
+                Order Number:{" "} 
+                <strong>{order.order_number}</strong>
+              </label>
+            </div>
           ) : (
-            <Select onChange={handleInputChange} options={optionDistricts} value={{ label: order.home_office_code, name: 'usa_state', value: order.home_office_code }} />
-          ))
-        ) : (
-          <input
-          type="text"
-          className="form-control"
-          value='Pick a US State first...'
-          readOnly="readOnly"
-        />
-        )}
-        {(!order.home_office_code && message.whyStatus) ? (
-          <p className="validation-message">Pick a Congressional Office</p>
-        ) : (
-          ""
-        )}
-        {(!districtMatchCheck && message.whyStatus) ? (
-          <p className="validation-message">US State and Congressional Office must correspond</p>
-        ) : (
-          ""
-        )}        
-      </div>
+            <div className="form-group">
+              <label htmlFor="order_number">Order Number</label>
+              <input
+                type="text"
+                className="form-control"
+                id="order_number"
+                required
+                value={order.order_number}
+                onChange={handleInputChange}
+                name="order_number"
+              />
+              {(!order.order_number && message.whyStatus) 
+                ? <p className="validation-message">Enter a valid Order Number</p>
+                : ""
+              }
+            </div>
+          )
+        }
 
-      {mode === "edit" ? (
-        <>
+      {mode === "scan"
+        ? (
           <div className="form-group">
-            <label htmlFor="status_description">Status:</label>{" "}
-            <Select onChange={handleStatusChange} options={optionStatuses} />
+            <label htmlFor="usa_state">
+              US State:&nbsp; 
+              <strong>{order.usa_state}</strong>
+            </label>
           </div>
+        ) : (
+          <div className="form-group">
+            <label htmlFor="usa_state">US State:</label>{" "}
+            {mode === "edit" 
+              ? <Select 
+                  onChange={handleInputChange}
+                  options={optionUSStates}
+                  value={{ label: order.usa_state, name: 'usa_state', value: order.usa_state }}
+                />
+              : <Select 
+                  onChange={handleInputChange}
+                  options={optionUSStates}
+                />
+            }
+            {(!order.usa_state && message.whyStatus)
+              ? <p className="validation-message">Pick a US State</p>
+              : ""
+            }
+          </div>
+        )       
+      }
 
+      {mode === "scan"
+        ? (
           <div className="form-group">
-            <label>QR Code</label>
-            {order.uuid}
-            <img
-              src={baseURL + "/api/qrcode/" + order.uuid}
-              alt="QR Code"
-              align="right"
-            />
+            <label htmlFor="home_office_code">
+              US State:&nbsp; 
+              <strong>{order.home_office_code}</strong>
+            </label>
+          </div>          
+        ) : (
+          <div className="form-group">
+            <label htmlFor="home_office_code">Congressional Office:</label>{" "}
+            {order.usa_state 
+              ? message.isLastChangeUSState 
+                  ? <Select 
+                      onChange={handleInputChange}
+                      options={optionDistricts}
+                      value={null}
+                    />
+                  : <Select 
+                      onChange={handleInputChange}
+                      options={optionDistricts}
+                      value={{ label: order.home_office_code, name: 'usa_state', value: order.home_office_code }}
+                    />                
+              : <input
+                  type="text"
+                  className="form-control"
+                  value='Pick a US State first...'
+                  readOnly="readOnly"
+                />
+            }
+            {(!order.home_office_code && message.whyStatus) 
+              ? <p className="validation-message">Pick a Congressional Office</p>
+              : ""
+            }
+            {(!districtMatchCheck && message.whyStatus) 
+              ? <p className="validation-message">US State and Congressional Office must correspond</p>
+              : ""
+            }        
           </div>
-        </>
-      ) : null}
+        )
+      }
+
+      {mode === "edit" 
+        ? (
+          <>
+            <div className="form-group">
+              <label htmlFor="status_description">Status:</label>{" "}
+              <Select onChange={handleStatusChange} options={optionStatuses} />
+            </div>
+
+            <div className="form-group">
+              <label>QR Code</label>
+              {order.uuid}
+              <img
+                src={baseURL + "/api/qrcode/" + order.uuid}
+                alt="QR Code"
+                align="right"
+              />
+            </div>
+          </>
+        ) : null
+      }
+
+      {mode === "scan"
+        ? (
+          <>
+            <div className="form-group">
+              <label htmlFor="status_description">Current Status:</label>{" "}
+              {order.status_description
+                ? <strong>{order.status_description}</strong>                 
+                : <strong>Constituent request in</strong>
+              }
+            </div>
+            <div className="form-group">  
+              <label htmlFor="status_description">Next Status:</label>{" "}
+              {order.sequence_num
+                ? <strong>HOSS verified as printed and scanned physical QR code</strong>
+                // replace with function to find next status_desc in sequence once info is forwarded from backend                
+                : <strong>HOSS verified as printed and scanned physical QR code</strong>
+              }
+            </div>
+          </>
+        ) : null
+      }
 
       {mode === "edit" && (
         <button className="btn badge-danger mr-2" onClick={deleteOrderFunc}>
           Delete
         </button>
       )}
-      <button
-        onClick={handleSave}
-        className={`btn btn-success ${disableButton ? "btn-why" : ""}`}
-       >
-        {mode === "edit" ? "Update" : "Submit"}
-      </button>
+      
+      {(mode === "edit" || mode === "add") && (
+        <button
+          onClick={handleSave}
+          className={`btn btn-success ${disableButton ? "btn-why" : ""}`}
+        >
+          {mode === "edit" ? "Update" : "Submit"}
+        </button>
+      )}
+
+      {mode === "scan" && (
+        <button
+          onClick={handleScan}
+          className="btn btn-success"
+        >
+          {"Update Status"}
+        </button>
+      )}
 
       {mode === "edit" && !message.checkSaved ? (
         <p className="validation-message">Changes not saved, press Update to save changes</p>
