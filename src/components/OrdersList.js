@@ -87,6 +87,10 @@ const OrdersList = () => {
     setErrorMessage("");
   };
 
+  const formatDate = (dateString) => {
+    return Intl.DateTimeFormat("en-US").format(Date.parse(dateString));
+  };
+
   const orderTbody = (
     <tbody className="flag-group">
       {orders &&
@@ -101,6 +105,9 @@ const OrdersList = () => {
             <td>{order.order_number}</td>
             <td>{order.usa_state}</td>
             <td>{order.home_office_code}</td>
+            <td>{order.status.description}</td>
+            <td>{formatDate(order.created_at)}</td>
+            <td>{formatDate(order.status.updated_at)}</td>
           </tr>
         ))}
     </tbody>
@@ -136,7 +143,7 @@ const OrdersList = () => {
               </div>
             </div>
           </div>
-          <div className="col-md-6">
+          <div className="col-md-8">
             <h4>Orders List</h4>
 
             <table className="table">
@@ -145,6 +152,9 @@ const OrdersList = () => {
                   <th scope="col">Order Number</th>
                   <th scope="col">USA State</th>
                   <th scope="col">Congressional Office</th>
+                  <th scope="col">Order Status</th>
+                  <th scope="col">Date created</th>
+                  <th scope="col">Date updated</th>
                 </tr>
               </thead>
               {orderTbody}
@@ -165,7 +175,7 @@ const OrdersList = () => {
               </button>
             )}
           </div>
-          <div className="col-md-6">
+          <div className="col-md-4">
             {currentOrder ? (
               <div>
                 <h4>Order</h4>
