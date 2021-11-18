@@ -182,7 +182,7 @@ const OrderForm = (props) => {
         ? (
           <div className="form-group">
             <label htmlFor="home_office_code">
-              US State:&nbsp; 
+            Congressional Office:&nbsp; 
               <strong>{order.home_office_code}</strong>
             </label>
           </div>          
