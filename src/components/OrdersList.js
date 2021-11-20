@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import OrderDataService from "../services/OrderService";
 import { Link } from "react-router-dom";
+import { useSortableData } from "./Sort/SortHook";
+import { TableHeader } from "./TableHeader";
 
 const OrdersList = () => {
   const [orders, setOrders] = useState([]);
@@ -11,6 +13,10 @@ const OrdersList = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [sortedField, setSortedField] = useState(null);
   const [sortDir, setSortDir] = useState("asc");
+  const [sortType, setSortType] = useState("numeric");
+
+  const sortOptions = { sortedField, sortDir, sortType };
+  const sortedOrders = useSortableData(orders, sortOptions);
 
   const loginError = "You must be logged in to view this page";
 
@@ -90,41 +96,17 @@ const OrdersList = () => {
     setErrorMessage("");
   };
 
-  const SortArrows = (props) => {
-    return (
-      <span className="sortContainer">
-        <button
-          className="sortButton"
-          onClick={props.handleClick}
-          col={props.col}
-          direction=""
-        >
-          &#9650;
-        </button>
-        <button
-          className="sortButton"
-          onClick={props.handleClick}
-          col={props.col}
-        >
-          &#9660;
-        </button>
-      </span>
-    );
-  };
-
-  const handleSortClick = (e) => {
-    setSortedField(e.target.getAttribute("col"));
-    setSortDir(e.target.getAttribute("direction"));
-  };
-
   const formatDate = (dateString) => {
     return Intl.DateTimeFormat("en-US").format(Date.parse(dateString));
   };
 
+  let ordersToDisplay = [];
+  sortedOrders ? (ordersToDisplay = sortedOrders) : (ordersToDisplay = orders);
+
   const orderTbody = (
     <tbody className="flag-group">
-      {orders &&
-        orders.map((order, index) => (
+      {ordersToDisplay.length &&
+        ordersToDisplay.map((order, index) => (
           <tr
             className={
               "flag-group-item " + (index === currentIndex ? "active" : "")
@@ -177,32 +159,13 @@ const OrdersList = () => {
             <h4>Orders List</h4>
 
             <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col">
-                    Order Number{" "}
-                    {
-                      <SortArrows
-                        col="order_number"
-                        handleClick={handleSortClick}
-                      />
-                    }
-                  </th>
-                  <th scope="col">USA State{<SortArrows col="usa_state" />}</th>
-                  <th scope="col">
-                    Congressional Office{<SortArrows col="home_office_code" />}
-                  </th>
-                  <th scope="col">
-                    Order Status{<SortArrows col="status.sequence_num" />}
-                  </th>
-                  <th scope="col">
-                    Date created{<SortArrows col="created_at" />}
-                  </th>
-                  <th scope="col">
-                    Date updated{<SortArrows col="updated_at" />}
-                  </th>
-                </tr>
-              </thead>
+              <TableHeader
+                sortedField={sortedField}
+                sortDir={sortDir}
+                setSortedField={setSortedField}
+                setSortType={setSortType}
+                setSortDir={setSortDir}
+              />
               {orderTbody}
             </table>
             {errorMessage || searchTitle ? (

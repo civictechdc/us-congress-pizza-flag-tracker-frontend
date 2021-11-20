@@ -24,3 +24,7 @@
   border: none;
   padding: 0px;
 }
+
+.active {
+  color: rgb(94, 186, 125);
+}
