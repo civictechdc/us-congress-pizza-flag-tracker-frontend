@@ -9,6 +9,9 @@ const OrdersList = () => {
   const [searchTitle, setSearchTitle] = useState("");
   const [popUpBox, setPopUpbox] = useState("none");
   const [errorMessage, setErrorMessage] = useState("");
+  const [sortedField, setSortedField] = useState(null);
+  const [sortDir, setSortDir] = useState("asc");
+
   const loginError = "You must be logged in to view this page";
 
   useEffect(() => {
@@ -87,6 +90,33 @@ const OrdersList = () => {
     setErrorMessage("");
   };
 
+  const SortArrows = (props) => {
+    return (
+      <span className="sortContainer">
+        <button
+          className="sortButton"
+          onClick={props.handleClick}
+          col={props.col}
+          direction=""
+        >
+          &#9650;
+        </button>
+        <button
+          className="sortButton"
+          onClick={props.handleClick}
+          col={props.col}
+        >
+          &#9660;
+        </button>
+      </span>
+    );
+  };
+
+  const handleSortClick = (e) => {
+    setSortedField(e.target.getAttribute("col"));
+    setSortDir(e.target.getAttribute("direction"));
+  };
+
   const formatDate = (dateString) => {
     return Intl.DateTimeFormat("en-US").format(Date.parse(dateString));
   };
@@ -107,7 +137,7 @@ const OrdersList = () => {
             <td>{order.home_office_code}</td>
             <td>{order.status.description}</td>
             <td>{formatDate(order.created_at)}</td>
-            <td>{formatDate(order.status.updated_at)}</td>
+            <td>{formatDate(order.updated_at)}</td>
           </tr>
         ))}
     </tbody>
@@ -149,12 +179,28 @@ const OrdersList = () => {
             <table className="table">
               <thead>
                 <tr>
-                  <th scope="col">Order Number</th>
-                  <th scope="col">USA State</th>
-                  <th scope="col">Congressional Office</th>
-                  <th scope="col">Order Status</th>
-                  <th scope="col">Date created</th>
-                  <th scope="col">Date updated</th>
+                  <th scope="col">
+                    Order Number{" "}
+                    {
+                      <SortArrows
+                        col="order_number"
+                        handleClick={handleSortClick}
+                      />
+                    }
+                  </th>
+                  <th scope="col">USA State{<SortArrows col="usa_state" />}</th>
+                  <th scope="col">
+                    Congressional Office{<SortArrows col="home_office_code" />}
+                  </th>
+                  <th scope="col">
+                    Order Status{<SortArrows col="status.sequence_num" />}
+                  </th>
+                  <th scope="col">
+                    Date created{<SortArrows col="created_at" />}
+                  </th>
+                  <th scope="col">
+                    Date updated{<SortArrows col="updated_at" />}
+                  </th>
                 </tr>
               </thead>
               {orderTbody}
