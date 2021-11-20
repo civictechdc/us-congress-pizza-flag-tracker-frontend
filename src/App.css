@@ -14,3 +14,13 @@
   align-items: center;
   justify-content: space-around;
 }
+
+.sortContainer {
+  white-space: nowrap;
+}
+
+.sortButton {
+  background-color: transparent;
+  border: none;
+  padding: 0px;
+}
