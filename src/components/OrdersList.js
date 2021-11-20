@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import OrderDataService from "../services/OrderService";
 import { Link } from "react-router-dom";
+import styles from "../style/orders.module.css"
 
 const OrdersList = () => {
   const [orders, setOrders] = useState([]);
@@ -88,22 +89,25 @@ const OrdersList = () => {
   };
 
   const orderTbody = (
-    <tbody className="flag-group">
+    <div className={styles.flagContainer}>
       {orders &&
-        orders.map((order, index) => (
-          <tr
-            className={
-              "flag-group-item " + (index === currentIndex ? "active" : "")
-            }
+        orders.sort().map((order, index) => (
+          <div
+            className={styles.flagItem}
             onClick={() => setActiveOrder(order, index)}
             key={index}
           >
-            <td>{order.order_number}</td>
-            <td>{order.usa_state}</td>
-            <td>{order.home_office_code}</td>
-          </tr>
+            <p className={styles.orderNum}>{order.order_number}</p>
+            <p className={styles.officeCode}>{order.home_office_code}</p>
+            <div className={styles.statusGroup}>
+              <p className={styles.description}>{order.status.description}</p>
+              <p>Created On: {order.created_at}</p>
+              <p>Last Updated: {order.updated_at}</p>
+            </div>
+            
+          </div>
         ))}
-    </tbody>
+    </div>
   );
 
   const closePopUpBox = () => {
@@ -115,8 +119,8 @@ const OrdersList = () => {
   } else
     return (
       <>
-        <div className="list row">
-          <div className="col-md-8">
+        <div>
+          <div>
             <div className="input-group mb-3">
               <input
                 type="text"
@@ -136,19 +140,11 @@ const OrdersList = () => {
               </div>
             </div>
           </div>
-          <div className="col-md-6">
+          <div className="order-container">
             <h4>Orders List</h4>
 
-            <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col">Order Number</th>
-                  <th scope="col">USA State</th>
-                  <th scope="col">Congressional Office</th>
-                </tr>
-              </thead>
-              {orderTbody}
-            </table>
+             {orderTbody}
+            
             {errorMessage || searchTitle ? (
               <button
                 className="m-3 btn btn-sm btn-danger"
