@@ -94,8 +94,8 @@ const ScanOrder = (props) => {
 
     for (let i = 0; i < STATUSES.length - 1; i++) {
       if (STATUSES[i].sequence_num > currentSeq) {
-        nextId = STATUSES[i].id;
         nextDesc = STATUSES[i].description;
+        nextId = STATUSES[i].id;
         nextSeq = STATUSES[i].sequence_num;
         nextStatusFedOfficeCode = STATUSES[i].status_federal_office_code;
         i = STATUSES.length;
