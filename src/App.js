@@ -7,32 +7,32 @@ import Login from "./components/Login";
 import EditOrder from "./components/EditOrder";
 import OrdersList from "./components/OrdersList";
 import PrivateRoute from "./components/PrivateRoute";
+import ScanOrder from "./components/ScanOrder";
 
 import Header from "./components/Header";
-import AddUser from "./components/AddUser"
+import AddUser from "./components/AddUser";
 
 function App() {
+  return (
+    <>
+      <Header />
 
-
- return (<>
-      <Header/>
-
-         <main>
-
-      <div className="container mt-3">
-        <Switch>
-          <Route exact path={["/", "/orders"]} component={OrdersList} />
-          <PrivateRoute exact path="/add">
-            <AddOrder/>
-          </PrivateRoute>
-          <Route path="/orders/:id" component={EditOrder} />
-          <Route exact path="/login" component={Login}/>
-          <PrivateRoute exact path="/users/add">
-            <AddUser/>
-          </PrivateRoute>
-        </Switch>
-      </div>
-    </main>
+      <main>
+        <div className="container mt-3">
+          <Switch>
+            <Route exact path={["/", "/orders"]} component={OrdersList} />
+            <PrivateRoute exact path="/add">
+              <AddOrder />
+            </PrivateRoute>
+            <Route path="/orders/:id" component={EditOrder} />
+            <Route path="/scan/:id" component={ScanOrder} />
+            <Route exact path="/login" component={Login} />
+            <PrivateRoute exact path="/users/add">
+              <AddUser />
+            </PrivateRoute>
+          </Switch>
+        </div>
+      </main>
       {/* */}
       <footer className="footer mt-auto py-3">
         <div className="container">
