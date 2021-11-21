@@ -126,7 +126,9 @@ const ScanOrder = (props) => {
             <label htmlFor="current_status">
               Current Status:{" "}
               {order.status.description ? (
-                <strong>{order.status.description}</strong>
+                <strong>
+                  #{order.status.sequence_num} - {order.status.description}
+                </strong>
               ) : (
                 <strong>Missing status...</strong>
               )}
@@ -136,7 +138,9 @@ const ScanOrder = (props) => {
             <label htmlFor="next_status">
               Next Status:{" "}
               {STATUSES && order ? (
-                <strong>{nextSeq}</strong>
+                <strong>
+                  #{nextSeq} - {nextDesc}
+                </strong>
               ) : (
                 <strong>Missing data needed to generate next Status</strong>
               )}
