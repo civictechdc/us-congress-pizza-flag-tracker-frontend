@@ -67,7 +67,7 @@ const ScanOrder = (props) => {
       });
   };
 
-  function dynamicSort(property) {
+  const dynamicSort = (property) => {
     let sortOrder = 1;
 
     if (property[0] === "-") {
@@ -80,7 +80,7 @@ const ScanOrder = (props) => {
         a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
       return result * sortOrder;
     };
-  }
+  };
 
   let nextDesc = "";
   let nextId = null;
