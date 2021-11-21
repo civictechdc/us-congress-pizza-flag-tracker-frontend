@@ -41,32 +41,6 @@ const ScanOrder = (props) => {
     getOrder(props.match.params.id);
   }, [props.match.params.id]);
 
-  const handleUpdate = () => {
-    setOrder({
-      ...order,
-      status: {
-        description: nextDesc,
-        id: nextId,
-        sequence_num: nextSeq,
-        status_federal_office_code: nextStatusFedOfficeCode,
-      },
-    });
-  };
-
-  const updateOrder = () => {
-    OrderDataService.update(order.uuid, order)
-      .then((response) => {
-        console.log("Resp: ", response);
-        setMessage({
-          ...message,
-          success: "The order was updated successfully!",
-        });
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
-
   const dynamicSort = (property) => {
     let sortOrder = 1;
 
@@ -102,6 +76,32 @@ const ScanOrder = (props) => {
       }
     }
   }
+
+  const handleUpdate = () => {
+    setOrder({
+      ...order,
+      status: {
+        description: nextDesc,
+        id: nextId,
+        sequence_num: nextSeq,
+        status_federal_office_code: nextStatusFedOfficeCode,
+      },
+    });
+  };
+
+  const updateOrder = () => {
+    OrderDataService.update(order.uuid, order)
+      .then((response) => {
+        console.log("Resp: ", response);
+        setMessage({
+          ...message,
+          success: "The order was updated successfully!",
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   return (
     <div>
