@@ -17,7 +17,7 @@ const ScanOrder = (props) => {
       id: "",
       sequence_num: "",
       status_federal_office_code: "",
-      // tags: "", not currently received from Backend
+      // tags: "", // not currently received from Backend
     },
   };
 
@@ -61,7 +61,7 @@ const ScanOrder = (props) => {
   let nextId = null;
   let nextSeq = null;
   let nextStatusFedOfficeCode = "";
-  let nextTags = "";
+  // let nextTags = ""; // not currently received from Backend
 
   if (STATUSES && order) {
     STATUSES.sort(dynamicSort("sequence_num"));
@@ -74,8 +74,11 @@ const ScanOrder = (props) => {
         nextId = STATUSES[i].id;
         nextSeq = STATUSES[i].sequence_num;
         nextStatusFedOfficeCode = STATUSES[i].status_federal_office_code;
-        nextTags = STATUSES[i].tags;
-        i = STATUSES.length;
+        // nextTags = STATUSES[i].tags; // not currently received from Backend
+        break;
+      }
+      if (i === STATUSES.length - 2) {
+        nextDesc = "FINAL";
       }
     }
   }
@@ -138,23 +141,35 @@ const ScanOrder = (props) => {
             </label>
           </div>
           <div className="form-group">
-            <label htmlFor="next_status">
-              Next Status:{" "}
-              {STATUSES && order ? (
-                <strong>
-                  #{nextSeq} - {nextDesc}
-                </strong>
-              ) : (
-                <strong>Missing data needed to generate next Status</strong>
-              )}
-            </label>
+            {nextDesc === "FINAL" ? (
+              <label htmlFor="next_status">
+                <strong>Order Complete</strong>
+              </label>
+            ) : (
+              <label htmlFor="next_status">
+                Next Status:{" "}
+                {STATUSES && order ? (
+                  <strong>
+                    #{nextSeq} - {nextDesc}
+                  </strong>
+                ) : (
+                  <strong>Missing data needed to generate next Status</strong>
+                )}
+              </label>
+            )}
           </div>
-          <button onClick={handleUpdate} className="btn btn-success">
-            {"Update Status"}
-          </button>{" "}
-          <button onClick={updateOrder} className="btn btn-success">
-            {"Save"}
-          </button>
+          {nextDesc === "FINAL" ? (
+            ""
+          ) : (
+            <>
+              <button onClick={handleUpdate} className="btn btn-success">
+                {"Update Status"}
+              </button>{" "}
+              <button onClick={updateOrder} className="btn btn-success">
+                {"Save"}
+              </button>
+            </>
+          )}
           <p>{message.success}</p>
         </>
       ) : (
