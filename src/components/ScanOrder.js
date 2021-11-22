@@ -140,28 +140,26 @@ const ScanOrder = (props) => {
               )}
             </label>
           </div>
-          <div className="form-group">
-            {nextDesc === "FINAL" ? (
+          {nextDesc === "FINAL" ? (
+            <div className="form-group">
               <label htmlFor="next_status">
                 <strong>Order Complete</strong>
               </label>
-            ) : (
-              <label htmlFor="next_status">
-                Next Status:{" "}
-                {STATUSES && order ? (
-                  <strong>
-                    #{nextSeq} - {nextDesc}
-                  </strong>
-                ) : (
-                  <strong>Missing data needed to generate next Status</strong>
-                )}
-              </label>
-            )}
-          </div>
-          {nextDesc === "FINAL" ? (
-            ""
+            </div>
           ) : (
             <>
+              <div className="form-group">
+                <label htmlFor="next_status">
+                  Next Status:{" "}
+                  {STATUSES && order ? (
+                    <strong>
+                      #{nextSeq} - {nextDesc}
+                    </strong>
+                  ) : (
+                    <strong>Missing data needed to generate next Status</strong>
+                  )}
+                </label>
+              </div>
               <button onClick={handleUpdate} className="btn btn-success">
                 {"Update Status"}
               </button>{" "}
