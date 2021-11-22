@@ -6,7 +6,6 @@ import styles from "../style/orders.module.css"
 const OrdersList = () => {
   const [orders, setOrders] = useState([]);
   const [currentOrder, setCurrentOrder] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchTitle, setSearchTitle] = useState("");
   const [popUpBox, setPopUpbox] = useState("none");
   const [errorMessage, setErrorMessage] = useState("");
@@ -45,12 +44,12 @@ const OrdersList = () => {
   const refreshList = () => {
     retrieveOrders();
     setCurrentOrder(null);
-    setCurrentIndex(-1);
+    
   };
 
   const setActiveOrder = (order, index) => {
     setCurrentOrder(order);
-    setCurrentIndex(index);
+   
   };
 
   const removeAllOrders = () => {
@@ -91,7 +90,9 @@ const OrdersList = () => {
   const orderTbody = (
     <div className={styles.flagContainer}>
       {orders &&
-        orders.sort().map((order, index) => (
+        orders.sort(
+          
+        ).map((order, index) => (
           <div
             className={styles.flagItem}
             onClick={() => setActiveOrder(order, index)}
