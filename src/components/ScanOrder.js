@@ -50,7 +50,7 @@ const ScanOrder = (props) => {
     StatusDataService.getStatus()
       .then((response) => {
         console.log("Statuses: ", response.data);
-        // setOrders(response.data.orders);
+        // setStatuses(response.data.orders);  // to be set up in next update
       })
       .catch((e) => {
         console.log("Status Error");
