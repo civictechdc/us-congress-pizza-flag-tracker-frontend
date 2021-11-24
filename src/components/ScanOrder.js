@@ -18,6 +18,8 @@ const ScanOrder = (props) => {
       id: "",
       sequence_num: "",
       status_federal_office_code: "",
+      active_status: "",
+      status_code: "",
     },
   };
 
@@ -108,14 +110,16 @@ const ScanOrder = (props) => {
         nextStatusFedOfficeCode = statuses[i].status_federal_office_code;
         break;
       }
+      /*
       if (i === statuses.length - 2) {
         nextDesc = "FINAL";
       }
+      */
     }
   }
 
   const handleUpdate = () => {
-    setOrder({
+    const upOrder = {
       ...order,
       order_status_id: nextId,
       status: {
@@ -124,13 +128,15 @@ const ScanOrder = (props) => {
         sequence_num: nextSeq,
         status_federal_office_code: nextStatusFedOfficeCode,
       },
-    });
+    };
+    return upOrder;
   };
 
-  const updateOrder = () => {
-    OrderDataService.update(order.uuid, order)
+  const updateOrder = (upOrder) => {
+    OrderDataService.update(upOrder.uuid, upOrder)
       .then((response) => {
-        console.log("Update Resp: ", response);
+        setOrder(response.data);
+        console.log("Update Resp: ", response.data);
         setMessage({
           ...message,
           success: "The order was updated successfully!",
@@ -139,6 +145,15 @@ const ScanOrder = (props) => {
       .catch((e) => {
         console.log(e);
       });
+  };
+
+  const saveUpdate = () => {
+    const upOrder = handleUpdate();
+    updateOrder(upOrder);
+  };
+
+  const cancelOrder = () => {
+    console.log("Order Canceled");
   };
 
   const closePopUpBox = () => {
@@ -176,7 +191,7 @@ const ScanOrder = (props) => {
               )}
             </label>
           </div>
-          {nextDesc === "FINAL" ? (
+          {order.status.active_status === "CLOSED" ? (
             <div className="form-group">
               <label htmlFor="next_status">
                 <strong>Order Complete</strong>
@@ -187,7 +202,7 @@ const ScanOrder = (props) => {
               <div className="form-group">
                 <label htmlFor="next_status">
                   Next Status:{" "}
-                  {statuses && order ? (
+                  {statuses && order.status.description ? (
                     <strong>
                       #{nextSeq} - {nextDesc}
                     </strong>
@@ -196,11 +211,11 @@ const ScanOrder = (props) => {
                   )}
                 </label>
               </div>
-              <button onClick={handleUpdate} className="btn btn-success">
+              <button onClick={saveUpdate} className="btn btn-success">
                 {"Update Status"}
               </button>{" "}
-              <button onClick={updateOrder} className="btn btn-success">
-                {"Save"}
+              <button onClick={cancelOrder} className="btn btn-success">
+                {"Cancel Order"}
               </button>
             </>
           )}
