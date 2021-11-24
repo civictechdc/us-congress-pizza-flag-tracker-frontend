@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import OrderDataService from "../services/OrderService";
+import StatusDataService from "../services/StatusService";
 import { STATUSES } from "./Statuses.js";
 
 const ScanOrder = (props) => {
@@ -11,13 +12,13 @@ const ScanOrder = (props) => {
     order_number: "",
     home_office_code: "",
     usa_state: "",
+    order_status_id: "",
 
     status: {
       description: "",
       id: "",
       sequence_num: "",
       status_federal_office_code: "",
-      // tags: "", // not currently received from Backend
     },
   };
 
@@ -27,11 +28,15 @@ const ScanOrder = (props) => {
 
   const [order, setOrder] = useState(initialOrderState);
   const [message, setMessage] = useState(initialMessageState);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [popUpBox, setPopUpbox] = useState("none");
+  const loginError = "You must be logged in to view this page";
 
   const getOrder = (id) => {
     OrderDataService.get(id)
       .then((response) => {
         setOrder(response.data);
+        console.log("Get Resp: ", response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -41,6 +46,32 @@ const ScanOrder = (props) => {
   useEffect(() => {
     getOrder(props.match.params.id);
   }, [props.match.params.id]);
+
+  const retrieveStatuses = () => {
+    StatusDataService.getStatus()
+      .then((response) => {
+        console.log("Statuses: ", response.data);
+        // setStatuses(response.data.orders);  // to be set up in next update
+      })
+      .catch((e) => {
+        console.log("Status Error");
+        console.log(e);
+        if (e.response?.status === 401) {
+          setErrorMessage(loginError);
+        } else {
+          setPopUpbox("block");
+          setErrorMessage(
+            e.message +
+              "." +
+              "Check with admin if server is down or try logging out and logging in."
+          );
+        }
+      });
+  };
+
+  useEffect(() => {
+    retrieveStatuses();
+  }, []);
 
   const dynamicSort = (property) => {
     let sortOrder = 1;
@@ -61,7 +92,6 @@ const ScanOrder = (props) => {
   let nextId = null;
   let nextSeq = null;
   let nextStatusFedOfficeCode = "";
-  // let nextTags = ""; // not currently received from Backend
 
   if (STATUSES && order) {
     STATUSES.sort(dynamicSort("sequence_num"));
@@ -74,7 +104,6 @@ const ScanOrder = (props) => {
         nextId = STATUSES[i].id;
         nextSeq = STATUSES[i].sequence_num;
         nextStatusFedOfficeCode = STATUSES[i].status_federal_office_code;
-        // nextTags = STATUSES[i].tags; // not currently received from Backend
         break;
       }
       if (i === STATUSES.length - 2) {
@@ -86,6 +115,7 @@ const ScanOrder = (props) => {
   const handleUpdate = () => {
     setOrder({
       ...order,
+      order_status_id: nextId,
       status: {
         description: nextDesc,
         id: nextId,
@@ -98,7 +128,7 @@ const ScanOrder = (props) => {
   const updateOrder = () => {
     OrderDataService.update(order.uuid, order)
       .then((response) => {
-        console.log("Resp: ", response);
+        console.log("Update Resp: ", response);
         setMessage({
           ...message,
           success: "The order was updated successfully!",
@@ -107,6 +137,10 @@ const ScanOrder = (props) => {
       .catch((e) => {
         console.log(e);
       });
+  };
+
+  const closePopUpBox = () => {
+    setPopUpbox("none");
   };
 
   return (
@@ -176,6 +210,11 @@ const ScanOrder = (props) => {
           <p>Please click on an order...</p>
         </div>
       )}
+      <div className="pop-container" style={{ display: popUpBox }}>
+        <div className="pop-up" onClick={closePopUpBox}>
+          <h3>{errorMessage}</h3>
+        </div>
+      </div>
     </div>
   );
 };
