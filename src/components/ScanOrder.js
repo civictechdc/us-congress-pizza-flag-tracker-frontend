@@ -18,7 +18,6 @@ const ScanOrder = (props) => {
       id: "",
       sequence_num: "",
       status_federal_office_code: "",
-      // tags: "", // not currently received from Backend
     },
   };
 
@@ -92,7 +91,6 @@ const ScanOrder = (props) => {
   let nextId = null;
   let nextSeq = null;
   let nextStatusFedOfficeCode = "";
-  // let nextTags = ""; // not currently received from Backend
 
   if (STATUSES && order) {
     STATUSES.sort(dynamicSort("sequence_num"));
@@ -105,7 +103,6 @@ const ScanOrder = (props) => {
         nextId = STATUSES[i].id;
         nextSeq = STATUSES[i].sequence_num;
         nextStatusFedOfficeCode = STATUSES[i].status_federal_office_code;
-        // nextTags = STATUSES[i].tags; // not currently received from Backend
         break;
       }
       if (i === STATUSES.length - 2) {
