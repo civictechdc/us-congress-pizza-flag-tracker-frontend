@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import OrderDataService from "../services/OrderService";
 import StatusDataService from "../services/StatusService";
-import { STATUSES } from "./Statuses.js";
 
 const ScanOrder = (props) => {
   const initialOrderState = {
@@ -28,6 +27,7 @@ const ScanOrder = (props) => {
 
   const [order, setOrder] = useState(initialOrderState);
   const [message, setMessage] = useState(initialMessageState);
+  const [statuses, setStatuses] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [popUpBox, setPopUpbox] = useState("none");
   const loginError = "You must be logged in to view this page";
@@ -50,8 +50,8 @@ const ScanOrder = (props) => {
   const retrieveStatuses = () => {
     StatusDataService.getStatus()
       .then((response) => {
-        console.log("Statuses: ", response.data);
-        // setStatuses(response.data.orders);  // to be set up in next update
+        setStatuses(response.data.statuses);
+        console.log(response.data.statuses);
       })
       .catch((e) => {
         console.log("Status Error");
@@ -70,8 +70,10 @@ const ScanOrder = (props) => {
   };
 
   useEffect(() => {
-    retrieveStatuses();
-  }, []);
+    if (statuses.length === 0) {
+      retrieveStatuses();
+    }
+  }, [statuses]);
 
   const dynamicSort = (property) => {
     let sortOrder = 1;
@@ -93,20 +95,20 @@ const ScanOrder = (props) => {
   let nextSeq = null;
   let nextStatusFedOfficeCode = "";
 
-  if (STATUSES && order) {
-    STATUSES.sort(dynamicSort("sequence_num"));
+  if (statuses && order) {
+    statuses.sort(dynamicSort("sequence_num"));
 
     const currentSeq = order.status.sequence_num;
 
-    for (let i = 0; i < STATUSES.length - 1; i++) {
-      if (STATUSES[i].sequence_num > currentSeq) {
-        nextDesc = STATUSES[i].description;
-        nextId = STATUSES[i].id;
-        nextSeq = STATUSES[i].sequence_num;
-        nextStatusFedOfficeCode = STATUSES[i].status_federal_office_code;
+    for (let i = 0; i < statuses.length - 1; i++) {
+      if (statuses[i].sequence_num > currentSeq) {
+        nextDesc = statuses[i].description;
+        nextId = statuses[i].id;
+        nextSeq = statuses[i].sequence_num;
+        nextStatusFedOfficeCode = statuses[i].status_federal_office_code;
         break;
       }
-      if (i === STATUSES.length - 2) {
+      if (i === statuses.length - 2) {
         nextDesc = "FINAL";
       }
     }
@@ -185,7 +187,7 @@ const ScanOrder = (props) => {
               <div className="form-group">
                 <label htmlFor="next_status">
                   Next Status:{" "}
-                  {STATUSES && order ? (
+                  {statuses && order ? (
                     <strong>
                       #{nextSeq} - {nextDesc}
                     </strong>
