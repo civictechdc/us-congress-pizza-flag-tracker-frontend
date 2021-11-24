@@ -12,6 +12,7 @@ const ScanOrder = (props) => {
     order_number: "",
     home_office_code: "",
     usa_state: "",
+    order_status_id: "",
 
     status: {
       description: "",
@@ -35,7 +36,7 @@ const ScanOrder = (props) => {
     OrderDataService.get(id)
       .then((response) => {
         setOrder(response.data);
-        console.log("Resp: ", response.data);
+        console.log("Get Resp: ", response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -114,6 +115,7 @@ const ScanOrder = (props) => {
   const handleUpdate = () => {
     setOrder({
       ...order,
+      order_status_id: nextId,
       status: {
         description: nextDesc,
         id: nextId,
@@ -126,7 +128,7 @@ const ScanOrder = (props) => {
   const updateOrder = () => {
     OrderDataService.update(order.uuid, order)
       .then((response) => {
-        console.log("Resp: ", response);
+        console.log("Update Resp: ", response);
         setMessage({
           ...message,
           success: "The order was updated successfully!",
