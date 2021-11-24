@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import OrderDataService from "../services/OrderService";
 import { Link } from "react-router-dom";
+import { useSortableData } from "./Sort/SortHook";
+import { TableHeader } from "./TableHeader";
 
 const OrdersList = () => {
   const [orders, setOrders] = useState([]);
@@ -9,6 +11,13 @@ const OrdersList = () => {
   const [searchTitle, setSearchTitle] = useState("");
   const [popUpBox, setPopUpbox] = useState("none");
   const [errorMessage, setErrorMessage] = useState("");
+  const [sortedField, setSortedField] = useState(null);
+  const [sortDir, setSortDir] = useState("asc");
+  const [sortType, setSortType] = useState("numeric");
+
+  const sortOptions = { sortedField, sortDir, sortType };
+  const sortedOrders = useSortableData(orders, sortOptions);
+
   const loginError = "You must be logged in to view this page";
 
   useEffect(() => {
@@ -87,10 +96,17 @@ const OrdersList = () => {
     setErrorMessage("");
   };
 
+  const formatDate = (dateString) => {
+    return Intl.DateTimeFormat("en-US").format(Date.parse(dateString));
+  };
+
+  let ordersToDisplay = [];
+  sortedOrders ? (ordersToDisplay = sortedOrders) : (ordersToDisplay = orders);
+
   const orderTbody = (
     <tbody className="flag-group">
-      {orders &&
-        orders.map((order, index) => (
+      {ordersToDisplay.length &&
+        ordersToDisplay.map((order, index) => (
           <tr
             className={
               "flag-group-item " + (index === currentIndex ? "active" : "")
@@ -101,6 +117,9 @@ const OrdersList = () => {
             <td>{order.order_number}</td>
             <td>{order.usa_state}</td>
             <td>{order.home_office_code}</td>
+            <td>{order.status.description}</td>
+            <td>{formatDate(order.created_at)}</td>
+            <td>{formatDate(order.updated_at)}</td>
           </tr>
         ))}
     </tbody>
@@ -136,17 +155,17 @@ const OrdersList = () => {
               </div>
             </div>
           </div>
-          <div className="col-md-6">
+          <div className="col-md-8">
             <h4>Orders List</h4>
 
             <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col">Order Number</th>
-                  <th scope="col">USA State</th>
-                  <th scope="col">Congressional Office</th>
-                </tr>
-              </thead>
+              <TableHeader
+                sortedField={sortedField}
+                sortDir={sortDir}
+                setSortedField={setSortedField}
+                setSortType={setSortType}
+                setSortDir={setSortDir}
+              />
               {orderTbody}
             </table>
             {errorMessage || searchTitle ? (
@@ -165,7 +184,7 @@ const OrdersList = () => {
               </button>
             )}
           </div>
-          <div className="col-md-6">
+          <div className="col-md-4">
             {currentOrder ? (
               <div>
                 <h4>Order</h4>
