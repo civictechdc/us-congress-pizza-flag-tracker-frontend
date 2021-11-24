@@ -214,11 +214,11 @@ const ScanOrder = (props) => {
               <button onClick={saveUpdate} className="btn btn-success">
                 {"Update Status"}
               </button>{" "}
-              <button onClick={cancelOrder} className="btn btn-success">
-                {"Cancel Order"}
-              </button>
             </>
           )}
+          <button onClick={cancelOrder} className="btn btn-success">
+            {"Cancel Order"}
+          </button>
           <p>{message.success}</p>
         </>
       ) : (
