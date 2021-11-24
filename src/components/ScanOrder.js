@@ -142,83 +142,78 @@ const ScanOrder = (props) => {
   };
 
   return (
-    <>
-      <div>
-        {order ? (
-          <>
+    <div>
+      {order ? (
+        <>
+          <div className="form-group">
+            <label htmlFor="order_number">
+              Order Number: <strong>{order.order_number}</strong>
+            </label>
+          </div>
+          <div className="form-group">
+            <label htmlFor="usa_state">
+              US State: <strong>{order.usa_state}</strong>
+            </label>
+          </div>
+          <div className="form-group">
+            <label htmlFor="home_office_code">
+              Congressional Office: <strong>{order.home_office_code}</strong>
+            </label>
+          </div>
+          <div className="form-group">
+            <label htmlFor="current_status">
+              Current Status:{" "}
+              {order.status.description ? (
+                <strong>
+                  #{order.status.sequence_num} - {order.status.description}
+                </strong>
+              ) : (
+                <strong>Missing status...</strong>
+              )}
+            </label>
+          </div>
+          {nextDesc === "FINAL" ? (
             <div className="form-group">
-              <label htmlFor="order_number">
-                Order Number: <strong>{order.order_number}</strong>
+              <label htmlFor="next_status">
+                <strong>Order Complete</strong>
               </label>
             </div>
-            <div className="form-group">
-              <label htmlFor="usa_state">
-                US State: <strong>{order.usa_state}</strong>
-              </label>
-            </div>
-            <div className="form-group">
-              <label htmlFor="home_office_code">
-                Congressional Office: <strong>{order.home_office_code}</strong>
-              </label>
-            </div>
-            <div className="form-group">
-              <label htmlFor="current_status">
-                Current Status:{" "}
-                {order.status.description ? (
-                  <strong>
-                    #{order.status.sequence_num} - {order.status.description}
-                  </strong>
-                ) : (
-                  <strong>Missing status...</strong>
-                )}
-              </label>
-            </div>
-            {nextDesc === "FINAL" ? (
+          ) : (
+            <>
               <div className="form-group">
                 <label htmlFor="next_status">
-                  <strong>Order Complete</strong>
+                  Next Status:{" "}
+                  {STATUSES && order ? (
+                    <strong>
+                      #{nextSeq} - {nextDesc}
+                    </strong>
+                  ) : (
+                    <strong>Missing data needed to generate next Status</strong>
+                  )}
                 </label>
               </div>
-            ) : (
-              <>
-                <div className="form-group">
-                  <label htmlFor="next_status">
-                    Next Status:{" "}
-                    {STATUSES && order ? (
-                      <strong>
-                        #{nextSeq} - {nextDesc}
-                      </strong>
-                    ) : (
-                      <strong>
-                        Missing data needed to generate next Status
-                      </strong>
-                    )}
-                  </label>
-                </div>
-                <button onClick={handleUpdate} className="btn btn-success">
-                  {"Update Status"}
-                </button>{" "}
-                <button onClick={updateOrder} className="btn btn-success">
-                  {"Save"}
-                </button>
-              </>
-            )}
-            <p>{message.success}</p>
-          </>
-        ) : (
-          <div>
-            <br />
-            <p>Please click on an order...</p>
-          </div>
-        )}
-      </div>
-
+              <button onClick={handleUpdate} className="btn btn-success">
+                {"Update Status"}
+              </button>{" "}
+              <button onClick={updateOrder} className="btn btn-success">
+                {"Save"}
+              </button>
+            </>
+          )}
+          <p>{message.success}</p>
+        </>
+      ) : (
+        <div>
+          <br />
+          <p>Please click on an order...</p>
+        </div>
+      )}
       <div className="pop-container" style={{ display: popUpBox }}>
         <div className="pop-up" onClick={closePopUpBox}>
           <h3>{errorMessage}</h3>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
