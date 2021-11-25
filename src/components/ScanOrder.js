@@ -39,10 +39,10 @@ const ScanOrder = (props) => {
     OrderDataService.get(id)
       .then((response) => {
         setOrder(response.data);
-        console.log("Get Resp: ", response.data);
+        console.log("Get Order: ", response.data);
       })
       .catch((e) => {
-        console.log(e);
+        console.log("Get Order Error: ", e);
       });
   };
 
@@ -54,11 +54,9 @@ const ScanOrder = (props) => {
     StatusDataService.getStatus()
       .then((response) => {
         setStatuses(response.data.statuses);
-        console.log(response.data.statuses);
       })
       .catch((e) => {
-        console.log("Status Error");
-        console.log(e);
+        console.log("Get Status Error: ", e);
         if (e.response?.status === 401) {
           setErrorMessage(loginError);
         } else {
@@ -86,7 +84,6 @@ const ScanOrder = (props) => {
 
   if (statuses && order) {
     sortedStatuses = numSort(statuses, "sequence_num", "asc");
-    console.log("Sorted: ", sortedStatuses);
 
     const currentSeq = order.status.sequence_num;
 
@@ -126,7 +123,7 @@ const ScanOrder = (props) => {
         });
       })
       .catch((e) => {
-        console.log(e);
+        console.log("Update Status Error: ", e);
       });
   };
 
