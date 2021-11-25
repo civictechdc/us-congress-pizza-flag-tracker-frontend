@@ -19,7 +19,7 @@ export const useSortableData = (orders, options) => {
   return sortedOrders;
 };
 
-const alphaSort = (sortableOrders, sortedField, sortDir) => {
+export const alphaSort = (sortableOrders, sortedField, sortDir) => {
   sortableOrders.sort((a, b) => {
     if (a[sortedField] < b[sortedField]) {
       return sortDir === "asc" ? -1 : 1;
@@ -32,7 +32,7 @@ const alphaSort = (sortableOrders, sortedField, sortDir) => {
   return sortableOrders;
 };
 
-const numSort = (sortableOrders, sortedField, sortDir) => {
+export const numSort = (sortableOrders, sortedField, sortDir) => {
   sortableOrders.sort((a, b) => {
     if (Number(a[sortedField]) < Number(b[sortedField])) {
       return sortDir === "asc" ? -1 : 1;

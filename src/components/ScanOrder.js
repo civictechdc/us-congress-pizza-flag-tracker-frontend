@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import OrderDataService from "../services/OrderService";
 import StatusDataService from "../services/StatusService";
+import { numSort } from "./Sort/SortHook";
 
 const ScanOrder = (props) => {
   const initialOrderState = {
@@ -77,44 +78,26 @@ const ScanOrder = (props) => {
     }
   }, [statuses]);
 
-  const dynamicSort = (property) => {
-    let sortOrder = 1;
-
-    if (property[0] === "-") {
-      sortOrder = -1;
-      property = property.substr(1);
-    }
-
-    return function (a, b) {
-      let result =
-        a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
-      return result * sortOrder;
-    };
-  };
-
   let nextDesc = "";
   let nextId = null;
   let nextSeq = null;
   let nextStatusFedOfficeCode = "";
+  let sortedStatuses = [];
 
   if (statuses && order) {
-    statuses.sort(dynamicSort("sequence_num"));
+    sortedStatuses = numSort(statuses, "sequence_num", "asc");
+    console.log("Sorted: ", sortedStatuses);
 
     const currentSeq = order.status.sequence_num;
 
-    for (let i = 0; i < statuses.length - 1; i++) {
-      if (statuses[i].sequence_num > currentSeq) {
-        nextDesc = statuses[i].description;
-        nextId = statuses[i].id;
-        nextSeq = statuses[i].sequence_num;
-        nextStatusFedOfficeCode = statuses[i].status_federal_office_code;
+    for (let i = 0; i < sortedStatuses.length - 1; i++) {
+      if (sortedStatuses[i].sequence_num > currentSeq) {
+        nextDesc = sortedStatuses[i].description;
+        nextId = sortedStatuses[i].id;
+        nextSeq = sortedStatuses[i].sequence_num;
+        nextStatusFedOfficeCode = sortedStatuses[i].status_federal_office_code;
         break;
       }
-      /*
-      if (i === statuses.length - 2) {
-        nextDesc = "FINAL";
-      }
-      */
     }
   }
 
