@@ -141,7 +141,7 @@ const ScanOrder = (props) => {
   };
 
   return (
-    <div>
+    <>
       {order ? (
         <>
           <div className="form-group">
@@ -202,17 +202,17 @@ const ScanOrder = (props) => {
           <p>{message.success}</p>
         </>
       ) : (
-        <div>
+        <>
           <br />
           <p>Please click on an order...</p>
-        </div>
+        </>
       )}
       <div className="pop-container" style={{ display: popUpBox }}>
         <div className="pop-up" onClick={closePopUpBox}>
           <h3>{errorMessage}</h3>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

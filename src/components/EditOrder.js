@@ -49,7 +49,11 @@ const EditOrder = (props) => {
   const updateOrder = () => {
     OrderDataService.update(order.uuid, order)
       .then((response) => {
-        setMessage({ ...message, checkSaved: true, success: "The order was updated successfully!"});
+        setMessage({
+          ...message,
+          checkSaved: true,
+          success: "The order was updated successfully!",
+        });
       })
       .catch((e) => {
         console.log(e);
@@ -67,7 +71,7 @@ const EditOrder = (props) => {
   };
 
   return (
-    <div>
+    <>
       {order ? (
         <>
           <OrderForm
@@ -84,12 +88,12 @@ const EditOrder = (props) => {
           <p>{message.success}</p>
         </>
       ) : (
-        <div>
+        <>
           <br />
           <p>Please click on an order...</p>
-        </div>
+        </>
       )}
-    </div>
+    </>
   );
 };
 
