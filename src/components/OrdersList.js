@@ -3,6 +3,7 @@ import OrderDataService from "../services/OrderService";
 import { Link } from "react-router-dom";
 import { useSortableData } from "./Sort/SortHook";
 import { TableHeader } from "./TableHeader";
+import AuthService from "../services/AuthService";
 
 const OrdersList = () => {
   const [orders, setOrders] = useState([]);
@@ -31,23 +32,12 @@ const OrdersList = () => {
   };
 
   const retrieveOrders = () => {
-    OrderDataService.getAll()
-      .then((response) => {
+    const serviceCall = () => {
+      return OrderDataService.getAll().then((response) => {
         setOrders(response.data.orders);
-      })
-      .catch((e) => {
-        console.log(e);
-        if (e.response?.status === 401) {
-          setErrorMessage(loginError);
-        } else {
-          setPopUpbox("block");
-          setErrorMessage(
-            e.message +
-              "." +
-              "Check with admin if server is down or try logging out and logging in."
-          );
-        }
       });
+    };
+    amazingFunction(serviceCall, setErrorMessage, loginError, setPopUpbox);
   };
 
   const refreshList = () => {
@@ -74,20 +64,19 @@ const OrdersList = () => {
   };
 
   const findByOrderNumber = () => {
-    OrderDataService.findByOrderNumber(searchTitle)
-      .then((response) => {
-        if ("error" in response.data) {
-          setErrorMessage(response.data.error);
-        } else {
-          console.log("found", response.data);
-          setOrders(response.data.orders);
+    const serviceCall = () => {
+      return OrderDataService.findByOrderNumber(searchTitle).then(
+        (response) => {
+          if ("error" in response.data) {
+            setErrorMessage(response.data.error);
+          } else {
+            console.log("found", response.data);
+            setOrders(response.data.orders);
+          }
         }
-      })
-      .catch((e) => {
-        console.log(e);
-        setPopUpbox("block");
-        setErrorMessage(e.message);
-      });
+      );
+    };
+    amazingFunction(serviceCall, setErrorMessage, loginError, setPopUpbox);
   };
 
   const clearSearch = () => {
@@ -242,3 +231,29 @@ const OrdersList = () => {
 };
 
 export default OrdersList;
+
+function amazingFunction(
+  serviceCall,
+  setErrorMessage,
+  loginError,
+  setPopUpbox
+) {
+  serviceCall().catch((e) => {
+    if (e.response?.status === 401) {
+      if (e.response?.data?.refreshedToken) {
+        AuthService.updateToken(e.response.data.refreshedToken);
+        serviceCall();
+      } else {
+        setErrorMessage(loginError);
+      }
+      // setErrorMessage(loginError);
+    } else {
+      setPopUpbox("block");
+      setErrorMessage(
+        e.message +
+          "." +
+          "Check with admin if server is down or try logging out and logging in."
+      );
+    }
+  });
+}

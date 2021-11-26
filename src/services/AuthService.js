@@ -50,6 +50,13 @@ class AuthService {
     }
     return username;
   }
+
+  updateToken(newToken) {
+    const user = JSON.parse(localStorage.getItem("user"));
+    user["accessToken"] = newToken;
+    console.log("new user is: ", user);
+    localStorage.setItem("user", JSON.stringify(user));
+  }
 }
 
 export default new AuthService();
