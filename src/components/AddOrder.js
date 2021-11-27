@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import OrderDataService from "../services/OrderService";
 import OrderForm from "./OrderForm";
+import AuthService from "../services/AuthService";
 
 const AddOrder = (props) => {
   const { existingOrder } = props;
@@ -25,7 +26,7 @@ const AddOrder = (props) => {
     existingOrder ? existingOrder : initialOrderState
   );
   const [exceptionMessage, setExceptionMessage] = useState();
-  const [message, setMessage] = useState(initialMessageState);  
+  const [message, setMessage] = useState(initialMessageState);
   const mode = "add";
 
   const saveOrder = () => {
@@ -34,18 +35,21 @@ const AddOrder = (props) => {
       home_office_code: order.home_office_code,
       usa_state: order.usa_state,
     };
-    OrderDataService.create(data)
-      .then((response) => {
-        setMessage({ ...message, checkSaved: true, submitted: true});
-      })
-      .catch((e) => {
-        setExceptionMessage("You have a problem. " + e.message);
+    const serviceCall = () => {
+      return OrderDataService.create(data).then((response) => {
+        setMessage({ ...message, checkSaved: true, submitted: true });
       });
+    };
+    try {
+      AuthService.refreshTokenWrapperFunction(serviceCall);
+    } catch (e) {
+      setExceptionMessage("You have a problem. " + e.message);
+    }
   };
 
   const newOrder = () => {
     setOrder(initialOrderState);
-    setMessage(initialMessageState)
+    setMessage(initialMessageState);
   };
 
   if (exceptionMessage) {

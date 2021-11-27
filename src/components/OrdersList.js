@@ -21,7 +21,29 @@ const OrdersList = () => {
 
   const loginError = "You must be logged in to view this page";
 
+  const retrieveOrders = () => {
+    const serviceCall = () => {
+      return OrderDataService.getAll().then((response) => {
+        setOrders(response.data.orders);
+      });
+    };
+    try {
+      AuthService.refreshTokenWrapperFunction(serviceCall);
+    } catch (e) {
+      setErrorMessage(e.message);
+      setPopUpbox("block");
+    }
+  };
+
   useEffect(() => {
+    const retrieveOrders = () => {
+      const serviceCall = () => {
+        return OrderDataService.getAll().then((response) => {
+          setOrders(response.data.orders);
+        });
+      };
+      AuthService.refreshTokenWrapperFunction(serviceCall);
+    };
     retrieveOrders();
   }, []);
 
@@ -29,15 +51,6 @@ const OrdersList = () => {
     const searchTitle = e.target.value;
     console.log(e);
     setSearchTitle(searchTitle);
-  };
-
-  const retrieveOrders = () => {
-    const serviceCall = () => {
-      return OrderDataService.getAll().then((response) => {
-        setOrders(response.data.orders);
-      });
-    };
-    amazingFunction(serviceCall, setErrorMessage, loginError, setPopUpbox);
   };
 
   const refreshList = () => {
@@ -52,15 +65,12 @@ const OrdersList = () => {
   };
 
   const removeAllOrders = () => {
-    OrderDataService.removeAll()
-      .then((response) => {
+    const serviceCall = () => {
+      return OrderDataService.removeAll().then((response) => {
         refreshList();
-      })
-      .catch((e) => {
-        console.log(e);
-        setPopUpbox("block");
-        setErrorMessage(e.message);
       });
+    };
+    AuthService.refreshTokenWrapperFunction(serviceCall);
   };
 
   const findByOrderNumber = () => {
@@ -76,7 +86,11 @@ const OrdersList = () => {
         }
       );
     };
-    amazingFunction(serviceCall, setErrorMessage, loginError, setPopUpbox);
+    try {
+      AuthService.refreshTokenWrapperFunction(serviceCall);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const clearSearch = () => {
@@ -231,29 +245,3 @@ const OrdersList = () => {
 };
 
 export default OrdersList;
-
-function amazingFunction(
-  serviceCall,
-  setErrorMessage,
-  loginError,
-  setPopUpbox
-) {
-  serviceCall().catch((e) => {
-    if (e.response?.status === 401) {
-      if (e.response?.data?.refreshedToken) {
-        AuthService.updateToken(e.response.data.refreshedToken);
-        serviceCall();
-      } else {
-        setErrorMessage(loginError);
-      }
-      // setErrorMessage(loginError);
-    } else {
-      setPopUpbox("block");
-      setErrorMessage(
-        e.message +
-          "." +
-          "Check with admin if server is down or try logging out and logging in."
-      );
-    }
-  });
-}
