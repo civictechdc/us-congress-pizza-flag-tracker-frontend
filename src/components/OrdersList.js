@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import OrderDataService from "../services/OrderService";
 import { Link } from "react-router-dom";
 import styles from "../style/orders.module.css"
+import { useSortableData } from "./Sort/SortHook";
 
 const OrdersList = () => {
   const [orders, setOrders] = useState([]);
@@ -9,6 +10,13 @@ const OrdersList = () => {
   const [searchTitle, setSearchTitle] = useState("");
   const [popUpBox, setPopUpbox] = useState("none");
   const [errorMessage, setErrorMessage] = useState("");
+  const [sortedField, setSortedField] = useState(null);
+  const [sortDir, setSortDir] = useState("asc");
+  const [sortType, setSortType] = useState("numeric");
+
+  const sortOptions = { sortedField, sortDir, sortType };
+  const sortedOrders = useSortableData(orders, sortOptions);
+
   const loginError = "You must be logged in to view this page";
 
   useEffect(() => {
@@ -87,12 +95,17 @@ const OrdersList = () => {
     setErrorMessage("");
   };
 
+  const formatDate = (dateString) => {
+    return Intl.DateTimeFormat("en-US").format(Date.parse(dateString));
+  };
+
+  let ordersToDisplay = [];
+  sortedOrders ? (ordersToDisplay = sortedOrders) : (ordersToDisplay = orders);
+
   const orderTbody = (
     <div className={styles.flagContainer}>
-      {orders &&
-        orders.sort(
-          
-        ).map((order, index) => (
+      {ordersToDisplay.length &&
+        ordersToDisplay.map((order, index) => (
           <div
             className={styles.flagItem}
             onClick={() => setActiveOrder(order, index)}
@@ -162,7 +175,7 @@ const OrdersList = () => {
               </button>
             )}
           </div>
-          <div className="col-md-6">
+          <div className="col-md-4">
             {currentOrder ? (
               <div>
                 <h4>Order</h4>
@@ -191,6 +204,14 @@ const OrdersList = () => {
                   className="badge badge-warning"
                 >
                   Edit
+                </Link>
+
+                {` `}
+                <Link
+                  to={"/scan/" + currentOrder.uuid}
+                  className="badge badge-warning"
+                >
+                  Scan
                 </Link>
               </div>
             ) : (
