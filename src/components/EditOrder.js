@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import OrderDataService from "../services/OrderService";
+import AuthService from "../services/AuthService";
 import OrderForm from "./OrderForm";
 
 const EditOrder = (props) => {
@@ -33,13 +34,16 @@ const EditOrder = (props) => {
   const [status, setStatus] = useState(initialStatusState);
 
   const getOrder = (id) => {
-    OrderDataService.get(id)
-      .then((response) => {
+    const serviceCall = () => {
+      return OrderDataService.get(id).then((response) => {
         setOrder(response.data);
-      })
-      .catch((e) => {
-        console.log(e);
       });
+    };
+    try {
+      AuthService.refreshTokenWrapperFunction(serviceCall);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
@@ -47,23 +51,34 @@ const EditOrder = (props) => {
   }, [props.match.params.id]);
 
   const updateOrder = () => {
-    OrderDataService.update(order.uuid, order)
-      .then((response) => {
-        setMessage({ ...message, checkSaved: true, success: "The order was updated successfully!"});
-      })
-      .catch((e) => {
-        console.log(e);
+    const serviceCall = () => {
+      return OrderDataService.update(order.uuid, order).then((response) => {
+        console.log(response);
+        setMessage({
+          ...message,
+          checkSaved: true,
+          success: "The order was updated successfully!",
+        });
       });
+    };
+    try {
+      AuthService.refreshTokenWrapperFunction(serviceCall);
+    } catch (e) {
+      console.log(`error occurred while updating order: ${e}`);
+    }
   };
 
   const deleteOrder = () => {
-    OrderDataService.remove(order.uuid)
-      .then((response) => {
+    const serviceCall = () => {
+      return OrderDataService.remove(order.uuid).then((response) => {
         props.history.push("/orders");
-      })
-      .catch((e) => {
-        console.log(e);
       });
+    };
+    try {
+      AuthService.refreshTokenWrapperFunction(serviceCall);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
