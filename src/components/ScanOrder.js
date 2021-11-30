@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import AuthService from "../services/AuthService";
 import OrderDataService from "../services/OrderService";
 import StatusDataService from "../services/StatusService";
 import { numSort } from "./Sort/SortHook";
@@ -36,14 +37,20 @@ const ScanOrder = (props) => {
   const loginError = "You must be logged in to view this page";
 
   const getOrder = (id) => {
-    OrderDataService.get(id)
-      .then((response) => {
+    const serviceCall = () => {
+      return OrderDataService.get(id).then((response) => {
         setOrder(response.data);
         console.log("Get Order: ", response.data);
       })
       .catch((e) => {
         console.log("Get Order Error: ", e);
       });
+    };
+    try {
+      AuthService.refreshTokenWrapperFunction(serviceCall);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
@@ -51,23 +58,27 @@ const ScanOrder = (props) => {
   }, [props.match.params.id]);
 
   const retrieveStatuses = () => {
-    StatusDataService.getStatus()
-      .then((response) => {
+    const serviceCall = () => {
+      return StatusDataService.getStatus().then((response) => {
+        console.log("Statuses: ", response.data);
         setStatuses(response.data.statuses);
-      })
-      .catch((e) => {
-        console.log("Get Status Error: ", e);
-        if (e.response?.status === 401) {
-          setErrorMessage(loginError);
-        } else {
-          setPopUpbox("block");
-          setErrorMessage(
-            e.message +
-              "." +
-              "Check with admin if server is down or try logging out and logging in."
-          );
-        }
       });
+    };
+    try {
+      AuthService.refreshTokenWrapperFunction(serviceCall);
+    } catch (e) {
+      console.log("Get Status Error: ", e);
+      if (e.response?.status === 401) {
+        setErrorMessage(loginError);
+      } else {
+        setPopUpbox("block");
+        setErrorMessage(
+          e.message +
+            "." +
+            "Check with admin if server is down or try logging out and logging in."
+        );
+      }
+    }
   };
 
   useEffect(() => {
@@ -113,18 +124,21 @@ const ScanOrder = (props) => {
   };
 
   const updateOrder = (upOrder) => {
-    OrderDataService.update(upOrder.uuid, upOrder)
-      .then((response) => {
+    const serviceCall = () => {
+      return OrderDataService.update(upOrder.uuid, upOrder).then((response) => {
         setOrder(response.data);
-        console.log("Update Resp: ", response.data);
+        console.log("Update Resp: ", response);
         setMessage({
           ...message,
           success: "The order was updated successfully!",
         });
-      })
-      .catch((e) => {
-        console.log("Update Status Error: ", e);
       });
+    };
+    try {
+      AuthService.refreshTokenWrapperFunction(serviceCall);
+    } catch (e) {
+      console.log("Update Status Error: ", e);
+    }
   };
 
   const saveUpdate = () => {

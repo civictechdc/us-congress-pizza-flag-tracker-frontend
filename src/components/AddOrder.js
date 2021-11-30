@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import AuthService from "../services/AuthService";
 import OrderDataService from "../services/OrderService";
 import OrderForm from "./OrderForm";
 
@@ -34,13 +35,16 @@ const AddOrder = (props) => {
       home_office_code: order.home_office_code,
       usa_state: order.usa_state,
     };
-    OrderDataService.create(data)
-      .then((response) => {
+    const serviceCall = () => {
+      return OrderDataService.create(data).then((response) => {
         setMessage({ ...message, checkSaved: true, submitted: true });
-      })
-      .catch((e) => {
-        setExceptionMessage("You have a problem. " + e.message);
       });
+    };
+    try {
+      AuthService.refreshTokenWrapperFunction(serviceCall);
+    } catch (e) {
+      setExceptionMessage("You have a problem. " + e.message);
+    }
   };
 
   const newOrder = () => {

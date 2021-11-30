@@ -3,6 +3,7 @@ import OrderDataService from "../services/OrderService";
 import { Link } from "react-router-dom";
 import { useSortableData } from "./Sort/SortHook";
 import { TableHeader } from "./TableHeader";
+import AuthService from "../services/AuthService";
 
 const OrdersList = () => {
   const [orders, setOrders] = useState([]);
@@ -20,7 +21,29 @@ const OrdersList = () => {
 
   const loginError = "You must be logged in to view this page";
 
+  const retrieveOrders = () => {
+    const serviceCall = () => {
+      return OrderDataService.getAll().then((response) => {
+        setOrders(response.data.orders);
+      });
+    };
+    try {
+      AuthService.refreshTokenWrapperFunction(serviceCall);
+    } catch (e) {
+      setErrorMessage(e.message);
+      setPopUpbox("block");
+    }
+  };
+
   useEffect(() => {
+    const retrieveOrders = () => {
+      const serviceCall = () => {
+        return OrderDataService.getAll().then((response) => {
+          setOrders(response.data.orders);
+        });
+      };
+      AuthService.refreshTokenWrapperFunction(serviceCall);
+    };
     retrieveOrders();
   }, []);
 
@@ -28,26 +51,6 @@ const OrdersList = () => {
     const searchTitle = e.target.value;
     console.log(e);
     setSearchTitle(searchTitle);
-  };
-
-  const retrieveOrders = () => {
-    OrderDataService.getAll()
-      .then((response) => {
-        setOrders(response.data.orders);
-      })
-      .catch((e) => {
-        console.log(e);
-        if (e.response?.status === 401) {
-          setErrorMessage(loginError);
-        } else {
-          setPopUpbox("block");
-          setErrorMessage(
-            e.message +
-              "." +
-              "Check with admin if server is down or try logging out and logging in."
-          );
-        }
-      });
   };
 
   const refreshList = () => {
@@ -62,32 +65,32 @@ const OrdersList = () => {
   };
 
   const removeAllOrders = () => {
-    OrderDataService.removeAll()
-      .then((response) => {
+    const serviceCall = () => {
+      return OrderDataService.removeAll().then((response) => {
         refreshList();
-      })
-      .catch((e) => {
-        console.log(e);
-        setPopUpbox("block");
-        setErrorMessage(e.message);
       });
+    };
+    AuthService.refreshTokenWrapperFunction(serviceCall);
   };
 
   const findByOrderNumber = () => {
-    OrderDataService.findByOrderNumber(searchTitle)
-      .then((response) => {
-        if ("error" in response.data) {
-          setErrorMessage(response.data.error);
-        } else {
-          console.log("found", response.data);
-          setOrders(response.data.orders);
+    const serviceCall = () => {
+      return OrderDataService.findByOrderNumber(searchTitle).then(
+        (response) => {
+          if ("error" in response.data) {
+            setErrorMessage(response.data.error);
+          } else {
+            console.log("found", response.data);
+            setOrders(response.data.orders);
+          }
         }
-      })
-      .catch((e) => {
-        console.log(e);
-        setPopUpbox("block");
-        setErrorMessage(e.message);
-      });
+      );
+    };
+    try {
+      AuthService.refreshTokenWrapperFunction(serviceCall);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const clearSearch = () => {
