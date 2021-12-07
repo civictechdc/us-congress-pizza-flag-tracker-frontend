@@ -1,44 +1,65 @@
-import React, { Component } from "react";
-import AuthService from "../services/auth.service";
+import React from "react";
+import AuthService from "../services/AuthService";
 
-export default class Profile extends Component {
-  constructor(props) {
-    super(props);
+const Profile = (props) => {
+  const currentUser = AuthService.getCurrentUser();
+  console.log(currentUser);
 
-    this.state = {
-      currentUser: AuthService.getCurrentUser()
-    };
-  }
+  const roles = Object.fromEntries(
+    Object.entries(currentUser).filter(([key]) =>
+      [
+        "can_create_update_delete_orders",
+        "can_update_password_for",
+        "can_update_status_for",
+        "is_admin",
+      ].includes(key)
+    )
+  );
 
-  render() {
-    const { currentUser } = this.state;
+  return (
+    <div className="container">
+      <header className="jumbotron">
+        <h3>
+          <strong>{currentUser.username}</strong> Profile
+        </h3>
+      </header>
+      <p>
+        <strong>Token:</strong> {currentUser.accessToken.substring(0, 20)} ...{" "}
+        {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
+      </p>
+      <p>
+        <strong>Id:</strong> {currentUser.id}
+      </p>
+      <p>
+        <strong>Email:</strong> {currentUser.email}
+      </p>
+      <strong>Authorities:</strong>
+      <ul>
+        {roles &&
+          Object.entries(roles).map((role, index) => {
+            switch (role[0]) {
+              case "can_create_update_delete_orders":
+                return (
+                  <li key={index}>
+                    Can create, update, and delete orders: {role[1]}
+                  </li>
+                );
 
-    return (
-      <div className="container">
-        <header className="jumbotron">
-          <h3>
-            <strong>{currentUser.username}</strong> Profile
-          </h3>
-        </header>
-        <p>
-          <strong>Token:</strong>{" "}
-          {currentUser.accessToken.substring(0, 20)} ...{" "}
-          {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
-        </p>
-        <p>
-          <strong>Id:</strong>{" "}
-          {currentUser.id}
-        </p>
-        <p>
-          <strong>Email:</strong>{" "}
-          {currentUser.email}
-        </p>
-        <strong>Authorities:</strong>
-        <ul>
-          {currentUser.roles &&
-            currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
-        </ul>
-      </div>
-    );
-  }
-}
+              case "can_update_password_for":
+                return <li key={index}>Can update password for: {role[1]}</li>;
+
+              case "can_update_status_for":
+                return <li key={index}>Can update status for: {role[1]}</li>;
+
+              case "is_admin":
+                return <li key={index}>Admin: {role[1]}</li>;
+
+              default:
+                return false;
+            }
+          })}
+      </ul>
+    </div>
+  );
+};
+export default Profile;
