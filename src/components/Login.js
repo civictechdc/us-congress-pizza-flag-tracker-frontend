@@ -31,20 +31,24 @@ const Login = (props) => {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    AuthService.login(username, password).then(
-      () => {
-        props.history.push("/");
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        setMessage(resMessage);
-      }
-    );
+    const serviceCall = () => {
+      return AuthService.login(username, password).then(
+        () => {
+          props.history.push("/");
+          props.history.go();
+        },
+        (error) => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+          setMessage(resMessage);
+        }
+      );
+    };
+    AuthService.refreshTokenWrapperFunction(serviceCall);
   };
 
   return (
