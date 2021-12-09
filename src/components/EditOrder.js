@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import OrderDataService from "../services/OrderService";
 import AuthService from "../services/AuthService";
+import OrderDataService from "../services/OrderService";
 import OrderForm from "./OrderForm";
 
 const EditOrder = (props) => {
@@ -82,7 +82,7 @@ const EditOrder = (props) => {
   };
 
   return (
-    <div>
+    <>
       {order ? (
         <>
           <OrderForm
@@ -99,12 +99,12 @@ const EditOrder = (props) => {
           <p>{message.success}</p>
         </>
       ) : (
-        <div>
+        <>
           <br />
           <p>Please click on an order...</p>
-        </div>
+        </>
       )}
-    </div>
+    </>
   );
 };
 

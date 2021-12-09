@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import AuthService from "../services/AuthService";
 import OrderDataService from "../services/OrderService";
 import OrderForm from "./OrderForm";
-import AuthService from "../services/AuthService";
 
 const AddOrder = (props) => {
   const { existingOrder } = props;
@@ -63,17 +63,15 @@ const AddOrder = (props) => {
   if (message.submitted && !existingOrder) {
     return (
       <div className="submit-form">
-        <div>
-          <h4>You submitted successfully!</h4>
-          <button className="btn btn-success" onClick={newOrder}>
-            Add a new order
-          </button>
-        </div>
+        <h4>You submitted successfully!</h4>
+        <button className="btn btn-success" onClick={newOrder}>
+          Add a new order
+        </button>
       </div>
     );
   } else {
     return (
-      <div>
+      <>
         <OrderForm
           order={order}
           message={message}
@@ -82,7 +80,7 @@ const AddOrder = (props) => {
           saveOrderFunc={saveOrder}
           mode={mode}
         />
-      </div>
+      </>
     );
   }
 };

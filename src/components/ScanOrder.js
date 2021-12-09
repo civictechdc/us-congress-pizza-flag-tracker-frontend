@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
+import AuthService from "../services/AuthService";
 import OrderDataService from "../services/OrderService";
 import StatusDataService from "../services/StatusService";
-import { STATUSES } from "./Statuses.js";
-import AuthService from "../services/AuthService";
+import { numSort } from "./Sort/SortHook";
 
 const ScanOrder = (props) => {
   const initialOrderState = {
@@ -20,6 +20,8 @@ const ScanOrder = (props) => {
       id: "",
       sequence_num: "",
       status_federal_office_code: "",
+      active_status: "",
+      status_code: "",
     },
   };
 
@@ -29,6 +31,7 @@ const ScanOrder = (props) => {
 
   const [order, setOrder] = useState(initialOrderState);
   const [message, setMessage] = useState(initialMessageState);
+  const [statuses, setStatuses] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [popUpBox, setPopUpbox] = useState("none");
   const loginError = "You must be logged in to view this page";
@@ -37,7 +40,10 @@ const ScanOrder = (props) => {
     const serviceCall = () => {
       return OrderDataService.get(id).then((response) => {
         setOrder(response.data);
-        console.log("Get Resp: ", response.data);
+        console.log("Get Order: ", response.data);
+      })
+      .catch((e) => {
+        console.log("Get Order Error: ", e);
       });
     };
     try {
@@ -55,14 +61,13 @@ const ScanOrder = (props) => {
     const serviceCall = () => {
       return StatusDataService.getStatus().then((response) => {
         console.log("Statuses: ", response.data);
-        // setStatuses(response.data.orders);  // to be set up in next update
+        setStatuses(response.data.statuses);
       });
     };
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
     } catch (e) {
-      console.log("Status Error");
-      console.log(e);
+      console.log("Get Status Error: ", e);
       if (e.response?.status === 401) {
         setErrorMessage(loginError);
       } else {
@@ -77,50 +82,35 @@ const ScanOrder = (props) => {
   };
 
   useEffect(() => {
-    retrieveStatuses();
-  }, []);
-
-  const dynamicSort = (property) => {
-    let sortOrder = 1;
-
-    if (property[0] === "-") {
-      sortOrder = -1;
-      property = property.substr(1);
+    if (statuses.length === 0) {
+      retrieveStatuses();
     }
-
-    return function (a, b) {
-      let result =
-        a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
-      return result * sortOrder;
-    };
-  };
+  }, [statuses]);
 
   let nextDesc = "";
   let nextId = null;
   let nextSeq = null;
   let nextStatusFedOfficeCode = "";
+  let sortedStatuses = [];
 
-  if (STATUSES && order) {
-    STATUSES.sort(dynamicSort("sequence_num"));
+  if (statuses && order) {
+    sortedStatuses = numSort(statuses, "sequence_num", "asc");
 
     const currentSeq = order.status.sequence_num;
 
-    for (let i = 0; i < STATUSES.length - 1; i++) {
-      if (STATUSES[i].sequence_num > currentSeq) {
-        nextDesc = STATUSES[i].description;
-        nextId = STATUSES[i].id;
-        nextSeq = STATUSES[i].sequence_num;
-        nextStatusFedOfficeCode = STATUSES[i].status_federal_office_code;
+    for (let i = 0; i < sortedStatuses.length - 1; i++) {
+      if (sortedStatuses[i].sequence_num > currentSeq) {
+        nextDesc = sortedStatuses[i].description;
+        nextId = sortedStatuses[i].id;
+        nextSeq = sortedStatuses[i].sequence_num;
+        nextStatusFedOfficeCode = sortedStatuses[i].status_federal_office_code;
         break;
-      }
-      if (i === STATUSES.length - 2) {
-        nextDesc = "FINAL";
       }
     }
   }
 
   const handleUpdate = () => {
-    setOrder({
+    const upOrder = {
       ...order,
       order_status_id: nextId,
       status: {
@@ -129,12 +119,14 @@ const ScanOrder = (props) => {
         sequence_num: nextSeq,
         status_federal_office_code: nextStatusFedOfficeCode,
       },
-    });
+    };
+    return upOrder;
   };
 
-  const updateOrder = () => {
+  const updateOrder = (upOrder) => {
     const serviceCall = () => {
-      return OrderDataService.update(order.uuid, order).then((response) => {
+      return OrderDataService.update(upOrder.uuid, upOrder).then((response) => {
+        setOrder(response.data);
         console.log("Update Resp: ", response);
         setMessage({
           ...message,
@@ -142,12 +134,20 @@ const ScanOrder = (props) => {
         });
       });
     };
-
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
     } catch (e) {
-      console.log(e);
+      console.log("Update Status Error: ", e);
     }
+  };
+
+  const saveUpdate = () => {
+    const upOrder = handleUpdate();
+    updateOrder(upOrder);
+  };
+
+  const cancelOrder = () => {
+    console.log("Order Canceled");
   };
 
   const closePopUpBox = () => {
@@ -155,7 +155,7 @@ const ScanOrder = (props) => {
   };
 
   return (
-    <div>
+    <>
       {order ? (
         <>
           <div className="form-group">
@@ -185,7 +185,7 @@ const ScanOrder = (props) => {
               )}
             </label>
           </div>
-          {nextDesc === "FINAL" ? (
+          {order.status.active_status === "CLOSED" ? (
             <div className="form-group">
               <label htmlFor="next_status">
                 <strong>Order Complete</strong>
@@ -196,7 +196,7 @@ const ScanOrder = (props) => {
               <div className="form-group">
                 <label htmlFor="next_status">
                   Next Status:{" "}
-                  {STATUSES && order ? (
+                  {statuses && order.status.description ? (
                     <strong>
                       #{nextSeq} - {nextDesc}
                     </strong>
@@ -205,28 +205,28 @@ const ScanOrder = (props) => {
                   )}
                 </label>
               </div>
-              <button onClick={handleUpdate} className="btn btn-success">
+              <button onClick={saveUpdate} className="btn btn-success">
                 {"Update Status"}
               </button>{" "}
-              <button onClick={updateOrder} className="btn btn-success">
-                {"Save"}
-              </button>
             </>
           )}
+          <button onClick={cancelOrder} className="btn btn-success">
+            {"Cancel Order"}
+          </button>
           <p>{message.success}</p>
         </>
       ) : (
-        <div>
+        <>
           <br />
           <p>Please click on an order...</p>
-        </div>
+        </>
       )}
       <div className="pop-container" style={{ display: popUpBox }}>
         <div className="pop-up" onClick={closePopUpBox}>
           <h3>{errorMessage}</h3>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
