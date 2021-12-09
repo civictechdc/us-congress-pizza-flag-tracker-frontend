@@ -4,18 +4,8 @@ import { httpAuthenticate } from "../http-common";
 
 /* remember also the api/qrcode img API*/
 
-const http2 = (func) => {
-  const retval = func();
-  console.log("debug", retval);
-  return retval;
-};
-
 const getAll = () => {
-  const requestFunc = () => {
-    return httpAuthenticate().get("/orders");
-  };
-
-  return http2(requestFunc);
+  return httpAuthenticate().get("/orders");
 };
 
 const get = (uuid) => {
