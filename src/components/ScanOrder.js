@@ -25,26 +25,22 @@ const ScanOrder = (props) => {
     },
   };
 
-  const initialMessageState = {
-    success: "",
-  };
-
   const [order, setOrder] = useState(initialOrderState);
-  const [message, setMessage] = useState(initialMessageState);
+  const [message, setMessage] = useState("");
   const [statuses, setStatuses] = useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [popUpBox, setPopUpbox] = useState("none");
+  const [popUpBox, setPopUpBox] = useState("none");
   const loginError = "You must be logged in to view this page";
 
   const getOrder = (id) => {
     const serviceCall = () => {
-      return OrderDataService.get(id).then((response) => {
-        setOrder(response.data);
-        console.log("Get Order: ", response.data);
-      })
-      .catch((e) => {
-        console.log("Get Order Error: ", e);
-      });
+      return OrderDataService.get(id)
+        .then((response) => {
+          setOrder(response.data);
+          console.log("Get Order: ", response.data);
+        })
+        .catch((e) => {
+          console.log("Get Order Error: ", e);
+        });
     };
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
@@ -69,10 +65,10 @@ const ScanOrder = (props) => {
     } catch (e) {
       console.log("Get Status Error: ", e);
       if (e.response?.status === 401) {
-        setErrorMessage(loginError);
+        setMessage(loginError);
       } else {
-        setPopUpbox("block");
-        setErrorMessage(
+        setPopUpBox("block");
+        setMessage(
           e.message +
             "." +
             "Check with admin if server is down or try logging out and logging in."
@@ -128,16 +124,15 @@ const ScanOrder = (props) => {
       return OrderDataService.update(upOrder.uuid, upOrder).then((response) => {
         setOrder(response.data);
         console.log("Update Resp: ", response);
-        setMessage({
-          ...message,
-          success: "The order was updated successfully!",
-        });
+        setPopUpBox("block");
+        setMessage("The order was updated successfully!");
       });
     };
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
     } catch (e) {
-      console.log("Update Status Error: ", e);
+      setPopUpBox("block");
+      setMessage("Update Status Error: ", e);
     }
   };
 
@@ -151,7 +146,7 @@ const ScanOrder = (props) => {
   };
 
   const closePopUpBox = () => {
-    setPopUpbox("none");
+    setPopUpBox("none");
   };
 
   return (
@@ -205,15 +200,30 @@ const ScanOrder = (props) => {
                   )}
                 </label>
               </div>
-              <button onClick={saveUpdate} className="btn btn-success">
-                {"Update Status"}
-              </button>{" "}
+              {order.status.description ? (
+                <button onClick={saveUpdate} className="btn btn-success">
+                  {"Update Status"}
+                </button>
+              ) : (
+                <button
+                  onClick={saveUpdate}
+                  className="btn btn-success"
+                  disabled
+                >
+                  {"Update Status"}
+                </button>
+              )}{" "}
             </>
           )}
-          <button onClick={cancelOrder} className="btn btn-success">
-            {"Cancel Order"}
-          </button>
-          <p>{message.success}</p>
+          {order.status.description ? (
+            <button onClick={cancelOrder} className="btn btn-success">
+              {"Cancel Order"}
+            </button>
+          ) : (
+            <button onClick={cancelOrder} className="btn btn-success" disabled>
+              {"Cancel Order"}
+            </button>
+          )}
         </>
       ) : (
         <>
@@ -223,7 +233,7 @@ const ScanOrder = (props) => {
       )}
       <div className="pop-container" style={{ display: popUpBox }}>
         <div className="pop-up" onClick={closePopUpBox}>
-          <h3>{errorMessage}</h3>
+          <h3>{message}</h3>
         </div>
       </div>
     </>
