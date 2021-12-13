@@ -56,7 +56,7 @@ const ScanOrder = (props) => {
   const retrieveStatuses = () => {
     const serviceCall = () => {
       return StatusDataService.getStatus().then((response) => {
-        console.log("Statuses: ", response.data);
+        console.log("Statuses: ", response.data.statuses);
         setStatuses(response.data.statuses);
       });
     };
@@ -106,7 +106,7 @@ const ScanOrder = (props) => {
   }
 
   const handleUpdate = () => {
-    const upOrder = {
+    const updatedOrder = {
       ...order,
       order_status_id: nextId,
       status: {
@@ -116,17 +116,19 @@ const ScanOrder = (props) => {
         status_federal_office_code: nextStatusFedOfficeCode,
       },
     };
-    return upOrder;
+    return updatedOrder;
   };
 
-  const updateOrder = (upOrder) => {
+  const updateOrder = (updatedOrder) => {
     const serviceCall = () => {
-      return OrderDataService.update(upOrder.uuid, upOrder).then((response) => {
-        setOrder(response.data);
-        console.log("Update Resp: ", response);
-        setPopUpBox("block");
-        setMessage("The order was updated successfully!");
-      });
+      return OrderDataService.update(updatedOrder.uuid, updatedOrder).then(
+        (response) => {
+          setOrder(response.data);
+          console.log("Update Resp: ", response);
+          setPopUpBox("block");
+          setMessage("The order was updated successfully!");
+        }
+      );
     };
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
@@ -137,8 +139,8 @@ const ScanOrder = (props) => {
   };
 
   const saveUpdate = () => {
-    const upOrder = handleUpdate();
-    updateOrder(upOrder);
+    const updatedOrder = handleUpdate();
+    updateOrder(updatedOrder);
   };
 
   const cancelOrder = () => {
