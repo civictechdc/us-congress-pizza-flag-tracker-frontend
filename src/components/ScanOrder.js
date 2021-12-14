@@ -87,19 +87,49 @@ const ScanOrder = (props) => {
   let nextId = null;
   let nextSeq = null;
   let nextStatusFedOfficeCode = "";
+  let nextActiveStatus = "";
+  let nextStatusCode = "";
+
+  let cancelDesc = "";
+  let cancelId = "";
+  let cancelSeq = null;
+  let cancelStatusFedOfficeCode = "";
+  let cancelActiveStatus = "";
+  let cancelStatusCode = "";
+
   let sortedStatuses = [];
+  let lifeCycle = [];
 
   if (statuses && order) {
     sortedStatuses = numSort(statuses, "sequence_num", "asc");
+    lifeCycle = sortedStatuses.slice();
+
+    // ideally backend should only have one Cancel status otherwise this will only catch the last one
+    // prevents Cancel statuses from becoming Next Status / removes Cancel from normal lifecycle
+
+    for (let i = 0; i < sortedStatuses.length; i++) {
+      if (sortedStatuses[i].active_status === "CANCELED") {
+        cancelDesc = sortedStatuses[i].description;
+        cancelId = sortedStatuses[i].id;
+        cancelSeq = sortedStatuses[i].sequence_num;
+        cancelStatusFedOfficeCode =
+          sortedStatuses[i].status_federal_office_code;
+        cancelActiveStatus = sortedStatuses[i].active_status;
+        cancelStatusCode = sortedStatuses[i].status_code;
+        lifeCycle.splice(i, 1);
+      }
+    }
 
     const currentSeq = order.status.sequence_num;
 
-    for (let i = 0; i < sortedStatuses.length - 1; i++) {
-      if (sortedStatuses[i].sequence_num > currentSeq) {
-        nextDesc = sortedStatuses[i].description;
-        nextId = sortedStatuses[i].id;
-        nextSeq = sortedStatuses[i].sequence_num;
-        nextStatusFedOfficeCode = sortedStatuses[i].status_federal_office_code;
+    for (let i = 0; i < lifeCycle.length; i++) {
+      if (lifeCycle[i].sequence_num > currentSeq) {
+        nextDesc = lifeCycle[i].description;
+        nextId = lifeCycle[i].id;
+        nextSeq = lifeCycle[i].sequence_num;
+        nextStatusFedOfficeCode = lifeCycle[i].status_federal_office_code;
+        nextActiveStatus = lifeCycle[i].active_status;
+        nextStatusCode = lifeCycle[i].status_code;
         break;
       }
     }
@@ -114,6 +144,24 @@ const ScanOrder = (props) => {
         id: nextId,
         sequence_num: nextSeq,
         status_federal_office_code: nextStatusFedOfficeCode,
+        active_status: nextActiveStatus,
+        status_code: nextStatusCode,
+      },
+    };
+    return updatedOrder;
+  };
+
+  const handleCancel = () => {
+    const updatedOrder = {
+      ...order,
+      order_status_id: cancelId,
+      status: {
+        description: cancelDesc,
+        id: cancelId,
+        sequence_num: cancelSeq,
+        status_federal_office_code: cancelStatusFedOfficeCode,
+        active_status: cancelActiveStatus,
+        status_code: cancelStatusCode,
       },
     };
     return updatedOrder;
@@ -144,7 +192,8 @@ const ScanOrder = (props) => {
   };
 
   const cancelOrder = () => {
-    console.log("Order Canceled");
+    const updatedOrder = handleCancel();
+    updateOrder(updatedOrder);
   };
 
   const closePopUpBox = () => {
@@ -190,41 +239,68 @@ const ScanOrder = (props) => {
             </div>
           ) : (
             <>
-              <div className="form-group">
-                <label htmlFor="next_status">
-                  Next Status:{" "}
-                  {statuses && order.status.description ? (
-                    <strong>
-                      #{nextSeq} - {nextDesc}
-                    </strong>
-                  ) : (
-                    <strong>Missing data needed to generate next Status</strong>
-                  )}
-                </label>
-              </div>
-              {order.status.description ? (
-                <button onClick={saveUpdate} className="btn btn-success">
-                  {"Update Status"}
-                </button>
+              {order.status.active_status === "CANCELED" ? (
+                <>
+                  <div className="form-group">
+                    <label htmlFor="next_status">
+                      <strong>
+                        Contact Admin with Edit permissions if you need to
+                        uncancel
+                      </strong>
+                    </label>
+                  </div>
+                </>
               ) : (
-                <button
-                  onClick={saveUpdate}
-                  className="btn btn-success"
-                  disabled
-                >
-                  {"Update Status"}
-                </button>
+                <>
+                  <div className="form-group">
+                    <label htmlFor="next_status">
+                      Next Status:{" "}
+                      {statuses && order.status.description ? (
+                        <strong>
+                          #{nextSeq} - {nextDesc}
+                        </strong>
+                      ) : (
+                        <strong>
+                          Missing data needed to generate next Status
+                        </strong>
+                      )}
+                    </label>
+                  </div>
+                  {order.status.description ? (
+                    <button onClick={saveUpdate} className="btn btn-success">
+                      {"Update Status"}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={saveUpdate}
+                      className="btn btn-success"
+                      disabled
+                    >
+                      {"Update Status"}
+                    </button>
+                  )}
+                </>
               )}{" "}
             </>
           )}
-          {order.status.description ? (
-            <button onClick={cancelOrder} className="btn btn-success">
-              {"Cancel Order"}
-            </button>
+          {order.status.description === "Order canceled" ? (
+            <></>
           ) : (
-            <button onClick={cancelOrder} className="btn btn-success" disabled>
-              {"Cancel Order"}
-            </button>
+            <>
+              {order.status.description ? (
+                <button onClick={cancelOrder} className="btn btn-success">
+                  {"Cancel Order"}
+                </button>
+              ) : (
+                <button
+                  onClick={cancelOrder}
+                  className="btn btn-success"
+                  disabled
+                >
+                  {"Cancel Order"}
+                </button>
+              )}
+            </>
           )}
         </>
       ) : (
