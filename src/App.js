@@ -18,7 +18,7 @@ function App() {
       <Header />
 
       <main>
-        <div className="container mt-3">
+        <div className="mainContainer">
           <Switch>
             <Route exact path={["/", "/orders"]} component={OrdersList} />
             <PrivateRoute exact path="/add">

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import OrderDataService from "../services/OrderService";
 import { Link } from "react-router-dom";
 import styles from "../style/orders.module.css"
-import { useSortableData } from "./Sort/SortHook";
+//import { useSortableData } from "./Sort/SortHook";
 
 const OrdersList = () => {
   const [orders, setOrders] = useState([]);
@@ -10,12 +10,12 @@ const OrdersList = () => {
   const [searchTitle, setSearchTitle] = useState("");
   const [popUpBox, setPopUpbox] = useState("none");
   const [errorMessage, setErrorMessage] = useState("");
-  const [sortedField, setSortedField] = useState(null);
-  const [sortDir, setSortDir] = useState("asc");
-  const [sortType, setSortType] = useState("numeric");
+ // const [sortedField, setSortedField] = useState(null);
+ // const [sortDir, setSortDir] = useState("asc");
+ // const [sortType, setSortType] = useState("numeric");
 
-  const sortOptions = { sortedField, sortDir, sortType };
-  const sortedOrders = useSortableData(orders, sortOptions);
+  //const sortOptions = { sortedField, sortDir, sortType };
+  //const sortedOrders = useSortableData(orders, sortOptions);
 
   const loginError = "You must be logged in to view this page";
 
@@ -95,17 +95,16 @@ const OrdersList = () => {
     setErrorMessage("");
   };
 
-  const formatDate = (dateString) => {
-    return Intl.DateTimeFormat("en-US").format(Date.parse(dateString));
-  };
+ 
 
-  let ordersToDisplay = [];
-  sortedOrders ? (ordersToDisplay = sortedOrders) : (ordersToDisplay = orders);
+  //let ordersToDisplay = [];
+ // sortedOrders ? (ordersToDisplay = sortedOrders) : (ordersToDisplay = orders);
 
   const orderTbody = (
     <div className={styles.flagContainer}>
-      {ordersToDisplay.length &&
-        ordersToDisplay.map((order, index) => (
+      {orders &&
+        orders.map((order, index) => (
+          <>
           <div
             className={styles.flagItem}
             onClick={() => setActiveOrder(order, index)}
@@ -115,11 +114,39 @@ const OrdersList = () => {
             <p className={styles.officeCode}>{order.home_office_code}</p>
             <div className={styles.statusGroup}>
               <p className={styles.description}>{order.status.description}</p>
-              <p>Created On: {order.created_at}</p>
-              <p>Last Updated: {order.updated_at}</p>
             </div>
             
           </div>
+          <div className={styles.mobileStatus}> 
+            {currentOrder ?(
+            
+              <div>
+                <p>Created on: {currentOrder.created_at}</p>
+                <p>Last Updated: {currentOrder.updated_at}</p>
+
+                <Link
+                  to={"/orders/" + currentOrder.uuid}
+                  className="badge badge-warning"
+                >
+                  Edit
+                </Link>
+
+                {` `}
+                <Link
+                  to={"/scan/" + currentOrder.uuid}
+                  className="badge badge-warning"
+                >
+                  Scan
+                </Link>
+              </div>  ):(
+              <div>
+                
+              </div>
+            )}
+          </div>
+          
+          
+          </>
         ))}
     </div>
   );
@@ -128,12 +155,10 @@ const OrdersList = () => {
     setPopUpbox("none");
   };
 
-  if (errorMessage === loginError) {
-    return errorMessage;
-  } else
+  
     return (
       <>
-        <div>
+        
           <div>
             <div className="input-group mb-3">
               <input
@@ -154,50 +179,18 @@ const OrdersList = () => {
               </div>
             </div>
           </div>
-          <div className="order-container">
-            <h4>Orders List</h4>
+          <h4>Orders List</h4>
 
-             {orderTbody}
+          <div className={styles.orderContainer}>
             
-            {errorMessage || searchTitle ? (
-              <button
-                className="m-3 btn btn-sm btn-danger"
-                onClick={clearSearch}
-              >
-                Clear search
-              </button>
-            ) : (
-              <button
-                className="m-3 btn btn-sm btn-danger"
-                onClick={removeAllOrders}
-              >
-                Remove All
-              </button>
-            )}
-          </div>
-          <div className="col-md-4">
-            {currentOrder ? (
-              <div>
-                <h4>Order</h4>
-                <div>
-                  <label>
-                    <strong>Order Number:</strong>
-                  </label>{" "}
-                  {currentOrder.order_number}
-                </div>
-                <div>
-                  <label>
-                    <strong>Congressional Office:</strong>
-                  </label>{" "}
-                  {currentOrder.home_office_code}
-                </div>
+             {orderTbody}
 
-                <div>
-                  <label>
-                    <strong>Status:</strong>
-                  </label>{" "}
-                  {currentOrder.published ? "Published" : "Pending"}
-                </div>
+             <div className={styles.statusContainer}>
+            {currentOrder ? (
+              <div className={styles.statusItemContainer}>
+                <p>Order: {currentOrder.order_number}</p>
+                 <p>Created on: {currentOrder.created_at}</p>
+                <p>Last Updated: {currentOrder.updated_at}</p>
 
                 <Link
                   to={"/orders/" + currentOrder.uuid}
@@ -220,8 +213,27 @@ const OrdersList = () => {
                 <p>Please click on an order...</p>
               </div>
             )}
+           </div>
           </div>
-        </div>
+            
+            {errorMessage || searchTitle ? (
+              <button
+                className="m-3 btn btn-sm btn-danger"
+                onClick={clearSearch}
+              >
+                Clear search
+              </button>
+            ) : (
+              <button
+                className="m-3 btn btn-sm btn-danger"
+                onClick={removeAllOrders}
+              >
+                Remove All
+              </button>
+            )}
+          
+          
+        
 
         <div className="pop-container" style={{ display: popUpBox }}>
           <div className="pop-up" onClick={closePopUpBox}>
