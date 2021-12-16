@@ -86,8 +86,6 @@ const ScanOrder = (props) => {
   }, [statuses]);
 
   const user = JSON.parse(localStorage.getItem("user"));
-  // console.log("User: ", user);
-  // console.log("Perm: ", user.can_update_status_for)
 
   let nextDesc = "";
   let nextId = null;
@@ -168,9 +166,6 @@ const ScanOrder = (props) => {
   if (nextPermission === "MAIL" && allowMAIL === "yes") allowUpdate = "yes";
 
   if (nextPermission === "STAFF" && allowSTAFF === "yes") allowUpdate = "yes";
-
-  //  console.log("next Perm: ", nextPermission)
-  //  console.log("Allow: ", allowUpdate)
 
   const handleUpdate = () => {
     const updatedOrder = {
