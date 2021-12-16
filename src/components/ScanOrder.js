@@ -26,7 +26,10 @@ const ScanOrder = (props) => {
   };
 
   const [order, setOrder] = useState(initialOrderState);
+  const [oldOrder, setOldOrder] = useState(initialOrderState);
   const [message, setMessage] = useState("");
+  const [resolve, setResolve] = useState("");
+  const [revert, setRevert] = useState("");
   const [statuses, setStatuses] = useState([]);
   const [popUpBox, setPopUpBox] = useState("none");
   const loginError = "You must be logged in to view this page";
@@ -36,16 +39,16 @@ const ScanOrder = (props) => {
       return OrderDataService.get(id)
         .then((response) => {
           setOrder(response.data);
-          console.log("Get Order: ", response.data);
+          setOldOrder(response.data);
         })
         .catch((e) => {
-          console.log("Get Order Error: ", e);
+          setMessage(e);
         });
     };
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
     } catch (e) {
-      console.log(e);
+      setMessage(e);
     }
   };
 
@@ -56,14 +59,13 @@ const ScanOrder = (props) => {
   const retrieveStatuses = () => {
     const serviceCall = () => {
       return StatusDataService.getStatus().then((response) => {
-        console.log("Statuses: ", response.data.statuses);
         setStatuses(response.data.statuses);
       });
     };
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
     } catch (e) {
-      console.log("Get Status Error: ", e);
+      setMessage(e);
       if (e.response?.status === 401) {
         setMessage(loginError);
       } else {
@@ -90,13 +92,6 @@ const ScanOrder = (props) => {
   let nextActiveStatus = "";
   let nextStatusCode = "";
 
-  let cancelDesc = "";
-  let cancelId = "";
-  let cancelSeq = null;
-  let cancelStatusFedOfficeCode = "";
-  let cancelActiveStatus = "";
-  let cancelStatusCode = "";
-
   let sortedStatuses = [];
   let lifeCycle = [];
 
@@ -104,18 +99,11 @@ const ScanOrder = (props) => {
     sortedStatuses = numSort(statuses, "sequence_num", "asc");
     lifeCycle = sortedStatuses.slice();
 
-    // ideally backend should only have one Cancel status otherwise this will only catch the last one
-    // prevents Cancel statuses from becoming Next Status / removes Cancel from normal lifecycle
+    // Ideally backend should only have one Cancel status otherwise this will only catch the last one.
+    // Prevents Cancel statuses from becoming Next Status / removes Cancel from normal lifecycle
 
     for (let i = 0; i < sortedStatuses.length; i++) {
       if (sortedStatuses[i].active_status === "CANCELED") {
-        cancelDesc = sortedStatuses[i].description;
-        cancelId = sortedStatuses[i].id;
-        cancelSeq = sortedStatuses[i].sequence_num;
-        cancelStatusFedOfficeCode =
-          sortedStatuses[i].status_federal_office_code;
-        cancelActiveStatus = sortedStatuses[i].active_status;
-        cancelStatusCode = sortedStatuses[i].status_code;
         lifeCycle.splice(i, 1);
       }
     }
@@ -151,28 +139,11 @@ const ScanOrder = (props) => {
     return updatedOrder;
   };
 
-  const handleCancel = () => {
-    const updatedOrder = {
-      ...order,
-      order_status_id: cancelId,
-      status: {
-        description: cancelDesc,
-        id: cancelId,
-        sequence_num: cancelSeq,
-        status_federal_office_code: cancelStatusFedOfficeCode,
-        active_status: cancelActiveStatus,
-        status_code: cancelStatusCode,
-      },
-    };
-    return updatedOrder;
-  };
-
   const updateOrder = (updatedOrder) => {
     const serviceCall = () => {
       return OrderDataService.update(updatedOrder.uuid, updatedOrder).then(
         (response) => {
           setOrder(response.data);
-          console.log("Update Resp: ", response);
           setPopUpBox("block");
           setMessage("The order was updated successfully!");
         }
@@ -189,11 +160,18 @@ const ScanOrder = (props) => {
   const saveUpdate = () => {
     const updatedOrder = handleUpdate();
     updateOrder(updatedOrder);
+    setResolve("yes");
+    setRevert("yes");
   };
 
-  const cancelOrder = () => {
-    const updatedOrder = handleCancel();
-    updateOrder(updatedOrder);
+  const declineUpdate = () => {
+    setResolve("yes");
+  };
+
+  const revertUpdate = () => {
+    setOrder(oldOrder);
+    setResolve("");
+    setRevert("");
   };
 
   const closePopUpBox = () => {
@@ -252,55 +230,69 @@ const ScanOrder = (props) => {
                 </>
               ) : (
                 <>
-                  <div className="form-group">
-                    <label htmlFor="next_status">
-                      Next Status:{" "}
-                      {statuses && order.status.description ? (
-                        <strong>
-                          #{nextSeq} - {nextDesc}
-                        </strong>
-                      ) : (
-                        <strong>
-                          Missing data needed to generate next Status
-                        </strong>
-                      )}
-                    </label>
-                  </div>
-                  {order.status.description ? (
-                    <button onClick={saveUpdate} className="btn btn-success">
-                      {"Update Status"}
-                    </button>
+                  {revert || resolve ? (
+                    <></>
                   ) : (
-                    <button
-                      onClick={saveUpdate}
-                      className="btn btn-success"
-                      disabled
-                    >
-                      {"Update Status"}
-                    </button>
+                    <div className="form-group">
+                      <label htmlFor="next_status">
+                        Next Status:{" "}
+                        {statuses && order.status.description ? (
+                          <strong>
+                            #{nextSeq} - {nextDesc}
+                          </strong>
+                        ) : (
+                          <strong>
+                            Missing data needed to generate next Status
+                          </strong>
+                        )}
+                      </label>
+                    </div>
+                  )}
+                  {resolve ? (
+                    <></>
+                  ) : (
+                    <>
+                      {statuses && order.status.description ? (
+                        <>
+                          <button
+                            onClick={saveUpdate}
+                            className="btn btn-success"
+                          >
+                            {"Update Status"}
+                          </button>{" "}
+                          <button
+                            onClick={declineUpdate}
+                            className="btn btn-success"
+                          >
+                            {"Decline Update"}
+                          </button>
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                    </>
                   )}
                 </>
-              )}{" "}
-            </>
-          )}
-          {order.status.description === "Order canceled" ? (
-            <></>
-          ) : (
-            <>
-              {order.status.description ? (
-                <button onClick={cancelOrder} className="btn btn-success">
-                  {"Cancel Order"}
-                </button>
-              ) : (
-                <button
-                  onClick={cancelOrder}
-                  className="btn btn-success"
-                  disabled
-                >
-                  {"Cancel Order"}
-                </button>
               )}
             </>
+          )}
+          {revert ? (
+            <>
+              <div className="form-group">
+                <label htmlFor="prior_status">
+                  Prior Status:{" "}
+                  <strong>
+                    #{oldOrder.status.sequence_num} -{" "}
+                    {oldOrder.status.description}
+                  </strong>
+                </label>
+              </div>
+              <button onClick={revertUpdate} className="btn btn-success">
+                {"Revert Update"}
+              </button>
+            </>
+          ) : (
+            <></>
           )}
         </>
       ) : (
