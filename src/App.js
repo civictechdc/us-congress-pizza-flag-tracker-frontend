@@ -8,6 +8,7 @@ import EditOrder from "./components/EditOrder";
 import OrdersList from "./components/OrdersList";
 import PrivateRoute from "./components/PrivateRoute";
 import ScanOrder from "./components/ScanOrder";
+import Profile from "./components/Profile";
 
 import Header from "./components/Header";
 import AddUser from "./components/AddUser";
@@ -26,6 +27,9 @@ function App() {
             </PrivateRoute>
             <Route path="/orders/:id" component={EditOrder} />
             <Route path="/scan/:id" component={ScanOrder} />
+            <PrivateRoute exact path="/profile">
+              <Profile />
+            </PrivateRoute>
             <Route exact path="/login" component={Login} />
             <PrivateRoute exact path="/users/add">
               <AddUser />

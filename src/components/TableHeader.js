@@ -53,7 +53,7 @@ export const TableHeader = (props) => {
           Order Status
           {
             <SortArrows
-              col="order_status"
+              col="order_status_id"
               handleClick={handleSortClick}
               sorttype="numeric"
               sortedField={sortedField}
