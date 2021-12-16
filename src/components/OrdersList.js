@@ -19,7 +19,7 @@ const OrdersList = () => {
   //const sortOptions = { sortedField, sortDir, sortType };
   //const sortedOrders = useSortableData(orders, sortOptions);
 
-  const loginError = "You must be logged in to view this page";
+ 
 
   const retrieveOrders = () => {
     const serviceCall = () => {
