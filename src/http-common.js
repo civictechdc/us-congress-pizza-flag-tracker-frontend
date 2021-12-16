@@ -1,7 +1,7 @@
 import axios from "axios";
 import AuthService from "./services/AuthService";
 
-export const baseURL = process.env.REACT_APP_BACKEND_API + "/api";
+export const baseURL = getBaseUrl();
 //export const baseURL = "http://localhost:5000";
 
 export const httpAuthenticate = () => {
@@ -22,3 +22,13 @@ export default axios.create({
     "Access-Control-Allow-Origin": "*",
   },
 });
+
+function getBaseUrl() {
+  const appUrl = window.location.origin;
+  console.log("URL", appUrl);
+  const isGitpodUrl = appUrl.startsWith("https://3000");
+  const originUrl = isGitpodUrl
+    ? "https://5000" + appUrl.substr(12)
+    : process.env.REACT_APP_BACKEND_API;
+  return originUrl + "/api";
+}

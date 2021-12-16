@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import AuthService from "../services/AuthService";
 import OrderDataService from "../services/OrderService";
 import OrderForm from "./OrderForm";
 
@@ -25,7 +26,7 @@ const AddOrder = (props) => {
     existingOrder ? existingOrder : initialOrderState
   );
   const [exceptionMessage, setExceptionMessage] = useState();
-  const [message, setMessage] = useState(initialMessageState);  
+  const [message, setMessage] = useState(initialMessageState);
   const mode = "add";
 
   const saveOrder = () => {
@@ -34,18 +35,21 @@ const AddOrder = (props) => {
       home_office_code: order.home_office_code,
       usa_state: order.usa_state,
     };
-    OrderDataService.create(data)
-      .then((response) => {
-        setMessage({ ...message, checkSaved: true, submitted: true});
-      })
-      .catch((e) => {
-        setExceptionMessage("You have a problem. " + e.message);
+    const serviceCall = () => {
+      return OrderDataService.create(data).then((response) => {
+        setMessage({ ...message, checkSaved: true, submitted: true });
       });
+    };
+    try {
+      AuthService.refreshTokenWrapperFunction(serviceCall);
+    } catch (e) {
+      setExceptionMessage("You have a problem. " + e.message);
+    }
   };
 
   const newOrder = () => {
     setOrder(initialOrderState);
-    setMessage(initialMessageState)
+    setMessage(initialMessageState);
   };
 
   if (exceptionMessage) {
@@ -59,17 +63,15 @@ const AddOrder = (props) => {
   if (message.submitted && !existingOrder) {
     return (
       <div className="submit-form">
-        <div>
-          <h4>You submitted successfully!</h4>
-          <button className="btn btn-success" onClick={newOrder}>
-            Add a new order
-          </button>
-        </div>
+        <h4>You submitted successfully!</h4>
+        <button className="btn btn-success" onClick={newOrder}>
+          Add a new order
+        </button>
       </div>
     );
   } else {
     return (
-      <div>
+      <>
         <OrderForm
           order={order}
           message={message}
@@ -78,7 +80,7 @@ const AddOrder = (props) => {
           saveOrderFunc={saveOrder}
           mode={mode}
         />
-      </div>
+      </>
     );
   }
 };

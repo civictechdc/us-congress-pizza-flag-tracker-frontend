@@ -125,7 +125,7 @@ const OrderForm = (props) => {
   };
 
   return (
-    <div>
+    <>
       <div className="form-group">
         <label htmlFor="order_number">Order Number</label>
         <input
@@ -246,7 +246,7 @@ const OrderForm = (props) => {
       ) : (
         ""
       )}
-    </div>
+    </>
   );
 };
 

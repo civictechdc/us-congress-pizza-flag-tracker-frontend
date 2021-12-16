@@ -31,9 +31,10 @@ const Login = (props) => {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    AuthService.login(username, password).then(
+    return AuthService.login(username, password).then(
       () => {
         props.history.push("/");
+        props.history.go();
       },
       (error) => {
         const resMessage =
