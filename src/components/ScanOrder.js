@@ -19,7 +19,7 @@ const ScanOrder = (props) => {
       description: "",
       id: "",
       sequence_num: "",
-      status_federal_office_code: "",
+      permission: "",
       active_status: "",
       status_code: "",
     },
@@ -42,13 +42,13 @@ const ScanOrder = (props) => {
           setOldOrder(response.data);
         })
         .catch((e) => {
-          setMessage(e);
+          console.log(e);
         });
     };
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
     } catch (e) {
-      setMessage(e);
+      console.log(e);
     }
   };
 
@@ -65,11 +65,11 @@ const ScanOrder = (props) => {
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
     } catch (e) {
-      setMessage(e);
+      setPopUpBox("block");
+      console.log(e);
       if (e.response?.status === 401) {
         setMessage(loginError);
       } else {
-        setPopUpBox("block");
         setMessage(
           e.message +
             "." +
@@ -85,10 +85,14 @@ const ScanOrder = (props) => {
     }
   }, [statuses]);
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  // console.log("User: ", user);
+  // console.log("Perm: ", user.can_update_status_for)
+
   let nextDesc = "";
   let nextId = null;
   let nextSeq = null;
-  let nextStatusFedOfficeCode = "";
+  let nextPermission = "";
   let nextActiveStatus = "";
   let nextStatusCode = "";
 
@@ -115,13 +119,58 @@ const ScanOrder = (props) => {
         nextDesc = lifeCycle[i].description;
         nextId = lifeCycle[i].id;
         nextSeq = lifeCycle[i].sequence_num;
-        nextStatusFedOfficeCode = lifeCycle[i].status_federal_office_code;
+        nextPermission = lifeCycle[i].permission;
         nextActiveStatus = lifeCycle[i].active_status;
         nextStatusCode = lifeCycle[i].status_code;
         break;
       }
     }
   }
+
+  let allowHOSS = "";
+  let allowAOC = "";
+  let allowMAIL = "";
+  let allowSTAFF = "";
+
+  if (user) {
+    if (user.can_update_status_for === "HOSS") {
+      allowHOSS = "yes";
+    }
+
+    if (user.can_update_status_for === "AOC") {
+      allowAOC = "yes";
+    }
+
+    if (user.can_update_status_for === "MAIL") {
+      allowMAIL = "yes";
+    }
+
+    if (user.can_update_status_for === "STAFF") {
+      if (user.office_code === order.home_office_code) {
+        allowSTAFF = "yes";
+      }
+    }
+
+    if (user.can_update_status_for === "ALL") {
+      allowHOSS = "yes";
+      allowAOC = "yes";
+      allowMAIL = "yes";
+      allowSTAFF = "yes";
+    }
+  }
+
+  let allowUpdate = "";
+
+  if (nextPermission === "HOSS" && allowHOSS === "yes") allowUpdate = "yes";
+
+  if (nextPermission === "AOC" && allowAOC === "yes") allowUpdate = "yes";
+
+  if (nextPermission === "MAIL" && allowMAIL === "yes") allowUpdate = "yes";
+
+  if (nextPermission === "STAFF" && allowSTAFF === "yes") allowUpdate = "yes";
+
+  //  console.log("next Perm: ", nextPermission)
+  //  console.log("Allow: ", allowUpdate)
 
   const handleUpdate = () => {
     const updatedOrder = {
@@ -131,7 +180,7 @@ const ScanOrder = (props) => {
         description: nextDesc,
         id: nextId,
         sequence_num: nextSeq,
-        status_federal_office_code: nextStatusFedOfficeCode,
+        permission: nextPermission,
         active_status: nextActiveStatus,
         status_code: nextStatusCode,
       },
@@ -146,12 +195,15 @@ const ScanOrder = (props) => {
           setOrder(response.data);
           setPopUpBox("block");
           setMessage("The order was updated successfully!");
+          setResolve("yes");
+          setRevert("yes");
         }
       );
     };
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
     } catch (e) {
+      console.log(e);
       setPopUpBox("block");
       setMessage("Update Status Error: ", e);
     }
@@ -160,8 +212,6 @@ const ScanOrder = (props) => {
   const saveUpdate = () => {
     const updatedOrder = handleUpdate();
     updateOrder(updatedOrder);
-    setResolve("yes");
-    setRevert("yes");
   };
 
   const declineUpdate = () => {
@@ -172,6 +222,13 @@ const ScanOrder = (props) => {
     setOrder(oldOrder);
     setResolve("");
     setRevert("");
+  };
+
+  const refuseUpdate = () => {
+    setPopUpBox("block");
+    setMessage(
+      "Do not have permissions for either (1) this order or (2) to advance to the next status"
+    );
   };
 
   const closePopUpBox = () => {
@@ -254,12 +311,22 @@ const ScanOrder = (props) => {
                     <>
                       {statuses && order.status.description ? (
                         <>
-                          <button
-                            onClick={saveUpdate}
-                            className="btn btn-success"
-                          >
-                            {"Update Status"}
-                          </button>{" "}
+                          {allowUpdate ? (
+                            <button
+                              onClick={saveUpdate}
+                              className="btn btn-success"
+                            >
+                              {"Update Status"}
+                            </button>
+                          ) : (
+                            <button
+                              onClick={refuseUpdate}
+                              className="btn btn-success"
+                              style={{ opacity: 0.6 }}
+                            >
+                              {"Update Status"}
+                            </button>
+                          )}{" "}
                           <button
                             onClick={declineUpdate}
                             className="btn btn-success"
