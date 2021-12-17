@@ -100,7 +100,13 @@ const OrdersList = () => {
   };
 
   const formatDate = (dateString) => {
-    return Intl.DateTimeFormat("en-US").format(Date.parse(dateString));
+    /*https://github.com/w3c/respec/issues/1357#issuecomment-760913749 
+    and also remove the fractional seconds as was required */
+    const safariFix = dateString.replace(/-/g, "/").replace(/\..*/, "");
+    // console.log(dateString, safariFix, new Date(Date.parse(safariFix)))
+    return dateString !== "" && dateString !== null
+      ? Intl.DateTimeFormat("en-US").format(Date.parse(safariFix))
+      : "";
   };
 
   let ordersToDisplay = [];
