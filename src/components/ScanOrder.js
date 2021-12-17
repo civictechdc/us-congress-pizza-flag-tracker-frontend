@@ -87,6 +87,7 @@ const ScanOrder = (props) => {
   }, [statuses]);
 
   const user = JSON.parse(localStorage.getItem("user"));
+  console.log("User: ", user);
 
   let nextDesc = "";
   let nextId = null;
@@ -158,6 +159,8 @@ const ScanOrder = (props) => {
     }
   }
 
+  console.log("Allow Staff: ", allowSTAFF);
+
   let allowUpdate = "";
 
   if (nextPermission === "HOSS" && allowHOSS === "yes") allowUpdate = "yes";
@@ -167,6 +170,8 @@ const ScanOrder = (props) => {
   if (nextPermission === "MAIL" && allowMAIL === "yes") allowUpdate = "yes";
 
   if (nextPermission === "STAFF" && allowSTAFF === "yes") allowUpdate = "yes";
+
+  console.log("Allow Update: ", allowUpdate);
 
   const handleUpdate = () => {
     const updatedOrder = {
@@ -184,7 +189,7 @@ const ScanOrder = (props) => {
     return updatedOrder;
   };
 
-  const updateOrder = (updatedOrder) => {
+  const updateOrder = (updatedOrder, direction) => {
     const serviceCall = () => {
       return OrderDataService.update_status(
         updatedOrder.uuid,
@@ -193,8 +198,12 @@ const ScanOrder = (props) => {
         setOrder(response.data);
         setPopUpBox("block");
         setMessage("The order was updated successfully!");
-        setResolve("yes");
+        if (direction === "forward") setResolve("yes");
         setRevert("yes");
+        if (direction === "backward") {
+          setResolve("");
+          setRevert("");
+        }
       });
     };
     try {
@@ -206,9 +215,12 @@ const ScanOrder = (props) => {
     }
   };
 
+  let direction = "";
+
   const saveUpdate = () => {
     const updatedOrder = handleUpdate();
-    updateOrder(updatedOrder);
+    direction = "forward";
+    updateOrder(updatedOrder, direction);
   };
 
   const declineUpdate = () => {
@@ -217,8 +229,8 @@ const ScanOrder = (props) => {
 
   const revertUpdate = () => {
     setOrder(oldOrder);
-    setResolve("");
-    setRevert("");
+    direction = "backward";
+    updateOrder(oldOrder, direction);
   };
 
   const refuseUpdate = () => {
