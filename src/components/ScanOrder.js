@@ -87,7 +87,6 @@ const ScanOrder = (props) => {
   }, [statuses]);
 
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log("User: ", user);
 
   let nextDesc = "";
   let nextId = null;
