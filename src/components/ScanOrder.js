@@ -14,7 +14,6 @@ const ScanOrder = (props) => {
     home_office_code: "",
     usa_state: "",
     order_status_id: "",
-
     status: {
       description: "",
       id: "",
@@ -128,7 +127,7 @@ const ScanOrder = (props) => {
   let allowHOSS = "";
   let allowAOC = "";
   let allowMAIL = "";
-  let allowSTAFF = "";
+  let allowSTATE = "";
 
   if (user) {
     if (user.can_update_status_for === "HOSS") {
@@ -143,9 +142,9 @@ const ScanOrder = (props) => {
       allowMAIL = "yes";
     }
 
-    if (user.can_update_status_for === "STAFF") {
+    if (user.can_update_status_for === "STATE") {
       if (user.office_code === order.home_office_code) {
-        allowSTAFF = "yes";
+        allowSTATE = "yes";
       }
     }
 
@@ -153,7 +152,7 @@ const ScanOrder = (props) => {
       allowHOSS = "yes";
       allowAOC = "yes";
       allowMAIL = "yes";
-      allowSTAFF = "yes";
+      allowSTATE = "yes";
     }
   }
 
@@ -165,7 +164,7 @@ const ScanOrder = (props) => {
 
   if (nextPermission === "MAIL" && allowMAIL === "yes") allowUpdate = "yes";
 
-  if (nextPermission === "STAFF" && allowSTAFF === "yes") allowUpdate = "yes";
+  if (nextPermission === "STATE" && allowSTATE === "yes") allowUpdate = "yes";
 
   const handleUpdate = () => {
     const updatedOrder = {
@@ -185,15 +184,38 @@ const ScanOrder = (props) => {
 
   const updateOrder = (updatedOrder) => {
     const serviceCall = () => {
-      return OrderDataService.update(updatedOrder.uuid, updatedOrder).then(
-        (response) => {
-          setOrder(response.data);
-          setPopUpBox("block");
-          setMessage("The order was updated successfully!");
-          setResolve("yes");
-          setRevert("yes");
-        }
-      );
+      return OrderDataService.update_status(
+        updatedOrder.uuid,
+        updatedOrder
+      ).then((response) => {
+        setOrder(response.data);
+        setPopUpBox("block");
+        setMessage("The order was updated successfully!");
+        setResolve("yes");
+        setRevert("yes");
+      });
+    };
+    try {
+      AuthService.refreshTokenWrapperFunction(serviceCall);
+    } catch (e) {
+      console.log(e);
+      setPopUpBox("block");
+      setMessage("Update Status Error: ", e);
+    }
+  };
+
+  const revertOrder = (revertedOrder) => {
+    const serviceCall = () => {
+      return OrderDataService.revert_status(
+        revertedOrder.uuid,
+        revertedOrder
+      ).then((response) => {
+        setOrder(response.data);
+        setPopUpBox("block");
+        setMessage("The order was updated successfully!");
+        setResolve("");
+        setRevert("");
+      });
     };
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
@@ -215,8 +237,7 @@ const ScanOrder = (props) => {
 
   const revertUpdate = () => {
     setOrder(oldOrder);
-    setResolve("");
-    setRevert("");
+    revertOrder(oldOrder);
   };
 
   const refuseUpdate = () => {

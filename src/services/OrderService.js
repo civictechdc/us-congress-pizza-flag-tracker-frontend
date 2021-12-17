@@ -2,8 +2,6 @@ import { httpAuthenticate } from "../http-common";
 
 /* remember also the api/qrcode img API*/
 
-/* remember also the api/qrcode img API*/
-
 const getAll = () => {
   return httpAuthenticate().get("/orders");
 };
@@ -18,6 +16,14 @@ const create = (data) => {
 
 const update = (id, data) => {
   return httpAuthenticate().put(`/orders/${id}`, data);
+};
+
+const update_status = (id, data) => {
+  return httpAuthenticate().put(`/scan/${id}`, data);
+};
+
+const revert_status = (id, data) => {
+  return httpAuthenticate().put(`/revert/${id}`, data);
 };
 
 const remove = (id) => {
@@ -37,6 +43,8 @@ const orderServiceObject = {
   get,
   create,
   update,
+  update_status,
+  revert_status,
   remove,
   removeAll,
   findByOrderNumber,
