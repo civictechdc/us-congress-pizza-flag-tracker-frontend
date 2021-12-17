@@ -39,7 +39,6 @@ const ScanOrder = (props) => {
         .then((response) => {
           setOrder(response.data);
           setOldOrder(response.data);
-          console.log("Resp: ", response.data);
         })
         .catch((e) => {
           console.log(e);
@@ -86,7 +85,6 @@ const ScanOrder = (props) => {
   }, [statuses]);
 
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log("User: ", user);
 
   let nextDesc = "";
   let nextId = null;
@@ -158,8 +156,6 @@ const ScanOrder = (props) => {
     }
   }
 
-  console.log("Allow STATE: ", allowSTATE);
-
   let allowUpdate = "";
 
   if (nextPermission === "HOSS" && allowHOSS === "yes") allowUpdate = "yes";
@@ -169,9 +165,6 @@ const ScanOrder = (props) => {
   if (nextPermission === "MAIL" && allowMAIL === "yes") allowUpdate = "yes";
 
   if (nextPermission === "STATE" && allowSTATE === "yes") allowUpdate = "yes";
-
-  console.log("Next Permission: ", nextPermission);
-  console.log("Allow Update: ", allowUpdate);
 
   const handleUpdate = () => {
     const updatedOrder = {
