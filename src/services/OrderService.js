@@ -20,6 +20,10 @@ const update = (id, data) => {
   return httpAuthenticate().put(`/orders/${id}`, data);
 };
 
+const update_status = (id, data) => {
+  return httpAuthenticate().put(`/scan/${id}`, data);
+};
+
 const remove = (id) => {
   return httpAuthenticate().delete(`/orders/${id}`);
 };
@@ -37,6 +41,7 @@ const orderServiceObject = {
   get,
   create,
   update,
+  update_status,
   remove,
   removeAll,
   findByOrderNumber,

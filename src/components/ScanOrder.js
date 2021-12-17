@@ -40,6 +40,7 @@ const ScanOrder = (props) => {
         .then((response) => {
           setOrder(response.data);
           setOldOrder(response.data);
+          console.log("Resp: ", response.data);
         })
         .catch((e) => {
           console.log(e);
@@ -86,6 +87,7 @@ const ScanOrder = (props) => {
   }, [statuses]);
 
   const user = JSON.parse(localStorage.getItem("user"));
+  console.log("User: ", user);
 
   let nextDesc = "";
   let nextId = null;
@@ -185,15 +187,16 @@ const ScanOrder = (props) => {
 
   const updateOrder = (updatedOrder) => {
     const serviceCall = () => {
-      return OrderDataService.update(updatedOrder.uuid, updatedOrder).then(
-        (response) => {
-          setOrder(response.data);
-          setPopUpBox("block");
-          setMessage("The order was updated successfully!");
-          setResolve("yes");
-          setRevert("yes");
-        }
-      );
+      return OrderDataService.update_status(
+        updatedOrder.uuid,
+        updatedOrder
+      ).then((response) => {
+        setOrder(response.data);
+        setPopUpBox("block");
+        setMessage("The order was updated successfully!");
+        setResolve("yes");
+        setRevert("yes");
+      });
     };
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
