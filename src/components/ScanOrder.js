@@ -27,8 +27,8 @@ const ScanOrder = (props) => {
   const [order, setOrder] = useState(initialOrderState);
   const [oldOrder, setOldOrder] = useState(initialOrderState);
   const [message, setMessage] = useState("");
-  const [resolve, setResolve] = useState("");
-  const [revert, setRevert] = useState("");
+  const [resolve, setResolve] = useState("");   // Decline Update button
+  const [revert, setRevert] = useState("");     // Revert Update button
   const [statuses, setStatuses] = useState([]);
   const [popUpBox, setPopUpBox] = useState("none");
   const loginError = "You must be logged in to view this page";
@@ -90,8 +90,6 @@ const ScanOrder = (props) => {
   let nextId = null;
   let nextSeq = null;
   let nextPermission = "";
-  let nextActiveStatus = "";
-  let nextStatusCode = "";
 
   let sortedStatuses = [];
   let lifeCycle = [];
@@ -108,7 +106,9 @@ const ScanOrder = (props) => {
         lifeCycle.splice(i, 1);
       }
     }
+  };  
 
+  if (statuses && order) {
     const currentSeq = order.status.sequence_num;
 
     for (let i = 0; i < lifeCycle.length; i++) {
@@ -117,12 +117,10 @@ const ScanOrder = (props) => {
         nextId = lifeCycle[i].id;
         nextSeq = lifeCycle[i].sequence_num;
         nextPermission = lifeCycle[i].permission;
-        nextActiveStatus = lifeCycle[i].active_status;
-        nextStatusCode = lifeCycle[i].status_code;
         break;
       }
     }
-  }
+  };
 
   let allowHOSS = "";
   let allowAOC = "";
@@ -130,22 +128,20 @@ const ScanOrder = (props) => {
   let allowSTATE = "";
 
   if (user) {
-    if (user.can_update_status_for === "HOSS") {
+    if (user.can_update_status_for === "FED-HOSS") {
       allowHOSS = "yes";
     }
 
-    if (user.can_update_status_for === "AOC") {
+    if (user.can_update_status_for === "FED-AOC") {
       allowAOC = "yes";
     }
 
-    if (user.can_update_status_for === "MAIL") {
+    if (user.can_update_status_for === "FED-MAIL") {
       allowMAIL = "yes";
     }
 
-    if (user.can_update_status_for === "STATE") {
-      if (user.office_code === order.home_office_code) {
-        allowSTATE = "yes";
-      }
+    if (user.can_update_status_for === order.home_office_code) {
+      allowSTATE = "yes";
     }
 
     if (user.can_update_status_for === "ALL") {
@@ -158,40 +154,31 @@ const ScanOrder = (props) => {
 
   let allowUpdate = "";
 
-  if (nextPermission === "HOSS" && allowHOSS === "yes") allowUpdate = "yes";
+  if (nextPermission === "FED-HOSS" && allowHOSS === "yes") allowUpdate = "yes";
 
-  if (nextPermission === "AOC" && allowAOC === "yes") allowUpdate = "yes";
+  if (nextPermission === "FED-AOC" && allowAOC === "yes") allowUpdate = "yes";
 
-  if (nextPermission === "MAIL" && allowMAIL === "yes") allowUpdate = "yes";
+  if (nextPermission === "FED-MAIL" && allowMAIL === "yes") allowUpdate = "yes";
 
   if (nextPermission === "STATE" && allowSTATE === "yes") allowUpdate = "yes";
 
   const handleUpdate = () => {
-    const updatedOrder = {
+    const updatedStatus = {
       ...order,
       order_status_id: nextId,
-      status: {
-        description: nextDesc,
-        id: nextId,
-        sequence_num: nextSeq,
-        permission: nextPermission,
-        active_status: nextActiveStatus,
-        status_code: nextStatusCode,
-      },
     };
-    return updatedOrder;
+    return updatedStatus;
   };
 
-  const updateOrder = (updatedOrder) => {
+  const updateStatus = (updatedStatus) => {
     const serviceCall = () => {
       return OrderDataService.update_status(
-        updatedOrder.uuid,
-        updatedOrder
+        updatedStatus.uuid,
+        updatedStatus
       ).then((response) => {
         setOrder(response.data);
         setPopUpBox("block");
         setMessage("The order was updated successfully!");
-        setResolve("yes");
         setRevert("yes");
       });
     };
@@ -204,16 +191,15 @@ const ScanOrder = (props) => {
     }
   };
 
-  const revertOrder = (revertedOrder) => {
+  const revertStatus = (revertedStatus) => {
     const serviceCall = () => {
       return OrderDataService.revert_status(
-        revertedOrder.uuid,
-        revertedOrder
+        revertedStatus.uuid,
+        revertedStatus
       ).then((response) => {
         setOrder(response.data);
         setPopUpBox("block");
         setMessage("The order was updated successfully!");
-        setResolve("");
         setRevert("");
       });
     };
@@ -227,8 +213,8 @@ const ScanOrder = (props) => {
   };
 
   const saveUpdate = () => {
-    const updatedOrder = handleUpdate();
-    updateOrder(updatedOrder);
+    const updatedStatus = handleUpdate();
+    updateStatus(updatedStatus);
   };
 
   const declineUpdate = () => {
@@ -237,7 +223,7 @@ const ScanOrder = (props) => {
 
   const revertUpdate = () => {
     setOrder(oldOrder);
-    revertOrder(oldOrder);
+    revertStatus(oldOrder);
   };
 
   const refuseUpdate = () => {
@@ -295,87 +281,115 @@ const ScanOrder = (props) => {
                   <div className="form-group">
                     <label htmlFor="next_status">
                       <strong>
-                        Contact Admin with Edit permissions if you need to
-                        uncancel
+                        Use Edit Screen to Uncancel
                       </strong>
                     </label>
                   </div>
                 </>
               ) : (
                 <>
-                  {revert || resolve ? (
-                    <></>
-                  ) : (
-                    <div className="form-group">
-                      <label htmlFor="next_status">
-                        Next Status:{" "}
-                        {statuses && order.status.description ? (
-                          <strong>
-                            #{nextSeq} - {nextDesc}
-                          </strong>
-                        ) : (
-                          <strong>
-                            Missing data needed to generate next Status
-                          </strong>
-                        )}
-                      </label>
-                    </div>
-                  )}
                   {resolve ? (
                     <></>
                   ) : (
                     <>
-                      {statuses && order.status.description ? (
+                      {revert ? (
                         <>
-                          {allowUpdate ? (
-                            <button
-                              onClick={saveUpdate}
-                              className="btn btn-success"
-                            >
-                              {"Update Status"}
-                            </button>
-                          ) : (
-                            <button
-                              onClick={refuseUpdate}
-                              className="btn btn-success"
-                              style={{ opacity: 0.6 }}
-                            >
-                              {"Update Status"}
-                            </button>
-                          )}{" "}
+                          <div className="form-group">
+                            <label htmlFor="prior_status">
+                              Prior Status:{" "}
+                              <strong>
+                                #{oldOrder.status.sequence_num} -{" "}
+                                {oldOrder.status.description}
+                              </strong>
+                            </label>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="form-group">
+                          <label htmlFor="next_status">
+                            Next Status:{" "}
+                            {statuses && order.status.description ? (
+                              <strong>
+                                #{nextSeq} - {nextDesc}
+                              </strong>
+                            ) : (
+                              <strong>
+                                Missing data needed to generate next Status
+                              </strong>
+                            )}
+                          </label>
+                        </div>
+                      )}
+                      {revert ? (
+                        <>
+                          <button
+                            onClick={saveUpdate}
+                            className="btn btn-success"
+                            disabled
+                          >
+                            {"Update Status"}
+                          </button>
+                          {" "}
+                          <button 
+                            onClick={revertUpdate}
+                            className="btn btn-success"
+                          >
+                            {"Revert Update"}
+                          </button>
+                          {" "}
                           <button
                             onClick={declineUpdate}
                             className="btn btn-success"
+                            disabled
                           >
                             {"Decline Update"}
                           </button>
                         </>
                       ) : (
-                        <></>
-                      )}
+                        <>
+                          {statuses && order.status.description ? (
+                            <>
+                              {allowUpdate ? (
+                                <button
+                                  onClick={saveUpdate}
+                                  className="btn btn-success"
+                                >
+                                  {"Update Status"}
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={refuseUpdate}
+                                  className="btn btn-success"
+                                  style={{ opacity: 0.6 }}
+                                >
+                                  {"Update Status"}
+                                </button>
+                              )}{" "}
+                              <button 
+                                onClick={revertUpdate}
+                                className="btn btn-success"
+                                disabled
+                              >
+                                {"Revert Update"}
+                              </button>
+                              {" "}
+                              <button
+                                onClick={declineUpdate}
+                                className="btn btn-success"
+                              >
+                                {"Decline Update"}
+                              </button>
+                            </>
+                          ) : (
+                            <></>
+                          )}
+                        </>
+                      )}                
                     </>
                   )}
                 </>
               )}
             </>
-          )}
-          {revert ? (
-            <>
-              <div className="form-group">
-                <label htmlFor="prior_status">
-                  Prior Status:{" "}
-                  <strong>
-                    #{oldOrder.status.sequence_num} -{" "}
-                    {oldOrder.status.description}
-                  </strong>
-                </label>
-              </div>
-              <button onClick={revertUpdate} className="btn btn-success">
-                {"Revert Update"}
-              </button>
-            </>
-          ) : (
-            <></>
           )}
         </>
       ) : (
