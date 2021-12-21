@@ -27,11 +27,12 @@ const ScanOrder = (props) => {
   const [order, setOrder] = useState(initialOrderState);
   const [oldOrder, setOldOrder] = useState(initialOrderState);
   const [message, setMessage] = useState("");
-  const [resolve, setResolve] = useState("");   // Decline Update button
-  const [revert, setRevert] = useState("");     // Revert Update button
+  const [resolve, setResolve] = useState(""); // Decline Update button
+  const [revert, setRevert] = useState(""); // Revert Update button
   const [statuses, setStatuses] = useState([]);
   const [popUpBox, setPopUpBox] = useState("none");
   const loginError = "You must be logged in to view this page";
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const getOrder = (id) => {
     const serviceCall = () => {
@@ -84,8 +85,6 @@ const ScanOrder = (props) => {
     }
   }, [statuses]);
 
-  const user = JSON.parse(localStorage.getItem("user"));
-
   let nextDesc = "";
   let nextId = null;
   let nextSeq = null;
@@ -106,7 +105,7 @@ const ScanOrder = (props) => {
         lifeCycle.splice(i, 1);
       }
     }
-  };  
+  }
 
   if (statuses && order) {
     const currentSeq = order.status.sequence_num;
@@ -120,7 +119,7 @@ const ScanOrder = (props) => {
         break;
       }
     }
-  };
+  }
 
   let allowHOSS = "";
   let allowAOC = "";
@@ -172,7 +171,7 @@ const ScanOrder = (props) => {
 
   const updateStatus = (updatedStatus) => {
     const serviceCall = () => {
-      return OrderDataService.update_status(
+      return StatusDataService.updateStatus(
         updatedStatus.uuid,
         updatedStatus
       ).then((response) => {
@@ -193,7 +192,7 @@ const ScanOrder = (props) => {
 
   const revertStatus = (revertedStatus) => {
     const serviceCall = () => {
-      return OrderDataService.revert_status(
+      return StatusDataService.updateStatus(
         revertedStatus.uuid,
         revertedStatus
       ).then((response) => {
@@ -280,9 +279,7 @@ const ScanOrder = (props) => {
                 <>
                   <div className="form-group">
                     <label htmlFor="next_status">
-                      <strong>
-                        Use Edit Screen to Uncancel
-                      </strong>
+                      <strong>Use Edit Screen to Uncancel</strong>
                     </label>
                   </div>
                 </>
@@ -328,15 +325,13 @@ const ScanOrder = (props) => {
                             disabled
                           >
                             {"Update Status"}
-                          </button>
-                          {" "}
-                          <button 
+                          </button>{" "}
+                          <button
                             onClick={revertUpdate}
                             className="btn btn-success"
                           >
                             {"Revert Update"}
-                          </button>
-                          {" "}
+                          </button>{" "}
                           <button
                             onClick={declineUpdate}
                             className="btn btn-success"
@@ -365,14 +360,13 @@ const ScanOrder = (props) => {
                                   {"Update Status"}
                                 </button>
                               )}{" "}
-                              <button 
+                              <button
                                 onClick={revertUpdate}
                                 className="btn btn-success"
                                 disabled
                               >
                                 {"Revert Update"}
-                              </button>
-                              {" "}
+                              </button>{" "}
                               <button
                                 onClick={declineUpdate}
                                 className="btn btn-success"
@@ -384,7 +378,7 @@ const ScanOrder = (props) => {
                             <></>
                           )}
                         </>
-                      )}                
+                      )}
                     </>
                   )}
                 </>
