@@ -169,7 +169,7 @@ const ScanOrder = (props) => {
     return updatedStatus;
   };
 
-  const updateStatus = (updatedStatus) => {
+  const updateStatus = (updatedStatus, activateRevertButton) => {
     const serviceCall = () => {
       return StatusDataService.updateStatus(
         updatedStatus.uuid,
@@ -178,28 +178,12 @@ const ScanOrder = (props) => {
         setOrder(response.data);
         setPopUpBox("block");
         setMessage("The order was updated successfully!");
-        setRevert("yes");
-      });
-    };
-    try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
-    } catch (e) {
-      console.log(e);
-      setPopUpBox("block");
-      setMessage("Update Status Error: ", e);
-    }
-  };
-
-  const revertStatus = (revertedStatus) => {
-    const serviceCall = () => {
-      return StatusDataService.updateStatus(
-        revertedStatus.uuid,
-        revertedStatus
-      ).then((response) => {
-        setOrder(response.data);
-        setPopUpBox("block");
-        setMessage("The order was updated successfully!");
-        setRevert("");
+        if (activateRevertButton === "on") {
+          setRevert("yes");
+        }
+        if (activateRevertButton === "off") {
+          setRevert("");
+        }
       });
     };
     try {
@@ -213,7 +197,8 @@ const ScanOrder = (props) => {
 
   const saveUpdate = () => {
     const updatedStatus = handleUpdate();
-    updateStatus(updatedStatus);
+    const activateRevertButton = "on";
+    updateStatus(updatedStatus, activateRevertButton);
   };
 
   const declineUpdate = () => {
@@ -222,7 +207,8 @@ const ScanOrder = (props) => {
 
   const revertUpdate = () => {
     setOrder(oldOrder);
-    revertStatus(oldOrder);
+    const activateRevertButton = "off";
+    updateStatus(oldOrder, activateRevertButton);
   };
 
   const refuseUpdate = () => {
