@@ -2,8 +2,6 @@ import { httpAuthenticate } from "../http-common";
 
 /* remember also the api/qrcode img API*/
 
-/* remember also the api/qrcode img API*/
-
 const getAll = () => {
   return httpAuthenticate().get("/orders");
 };

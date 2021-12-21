@@ -14,37 +14,36 @@ const ScanOrder = (props) => {
     home_office_code: "",
     usa_state: "",
     order_status_id: "",
-
     status: {
       description: "",
       id: "",
       sequence_num: "",
-      status_federal_office_code: "",
+      permission: "",
       active_status: "",
       status_code: "",
     },
   };
 
-  const initialMessageState = {
-    success: "",
-  };
-
   const [order, setOrder] = useState(initialOrderState);
-  const [message, setMessage] = useState(initialMessageState);
+  const [oldOrder, setOldOrder] = useState(initialOrderState);
+  const [message, setMessage] = useState("");
+  const [resolve, setResolve] = useState(""); // Decline Update button
+  const [revert, setRevert] = useState(""); // Revert Update button
   const [statuses, setStatuses] = useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [popUpBox, setPopUpbox] = useState("none");
+  const [popUpBox, setPopUpBox] = useState("none");
   const loginError = "You must be logged in to view this page";
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const getOrder = (id) => {
     const serviceCall = () => {
-      return OrderDataService.get(id).then((response) => {
-        setOrder(response.data);
-        console.log("Get Order: ", response.data);
-      })
-      .catch((e) => {
-        console.log("Get Order Error: ", e);
-      });
+      return OrderDataService.get(id)
+        .then((response) => {
+          setOrder(response.data);
+          setOldOrder(response.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     };
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
@@ -60,19 +59,18 @@ const ScanOrder = (props) => {
   const retrieveStatuses = () => {
     const serviceCall = () => {
       return StatusDataService.getStatus().then((response) => {
-        console.log("Statuses: ", response.data);
         setStatuses(response.data.statuses);
       });
     };
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
     } catch (e) {
-      console.log("Get Status Error: ", e);
+      setPopUpBox("block");
+      console.log(e);
       if (e.response?.status === 401) {
-        setErrorMessage(loginError);
+        setMessage(loginError);
       } else {
-        setPopUpbox("block");
-        setErrorMessage(
+        setMessage(
           e.message +
             "." +
             "Check with admin if server is down or try logging out and logging in."
@@ -90,68 +88,138 @@ const ScanOrder = (props) => {
   let nextDesc = "";
   let nextId = null;
   let nextSeq = null;
-  let nextStatusFedOfficeCode = "";
+  let nextPermission = "";
+
   let sortedStatuses = [];
+  let lifeCycle = [];
 
   if (statuses && order) {
     sortedStatuses = numSort(statuses, "sequence_num", "asc");
+    lifeCycle = sortedStatuses.slice();
 
+    // Ideally backend should only have one Cancel status otherwise this will only catch the last one.
+    // Prevents Cancel statuses from becoming Next Status / removes Cancel from normal lifecycle
+
+    for (let i = 0; i < sortedStatuses.length; i++) {
+      if (sortedStatuses[i].active_status === "CANCELED") {
+        lifeCycle.splice(i, 1);
+      }
+    }
+  }
+
+  if (statuses && order) {
     const currentSeq = order.status.sequence_num;
 
-    for (let i = 0; i < sortedStatuses.length - 1; i++) {
-      if (sortedStatuses[i].sequence_num > currentSeq) {
-        nextDesc = sortedStatuses[i].description;
-        nextId = sortedStatuses[i].id;
-        nextSeq = sortedStatuses[i].sequence_num;
-        nextStatusFedOfficeCode = sortedStatuses[i].status_federal_office_code;
+    for (let i = 0; i < lifeCycle.length; i++) {
+      if (lifeCycle[i].sequence_num > currentSeq) {
+        nextDesc = lifeCycle[i].description;
+        nextId = lifeCycle[i].id;
+        nextSeq = lifeCycle[i].sequence_num;
+        nextPermission = lifeCycle[i].permission;
         break;
       }
     }
   }
 
+  let allowHOSS = "";
+  let allowAOC = "";
+  let allowMAIL = "";
+  let allowSTATE = "";
+
+  if (user) {
+    if (user.can_update_status_for === "FED-HOSS") {
+      allowHOSS = "yes";
+    }
+
+    if (user.can_update_status_for === "FED-AOC") {
+      allowAOC = "yes";
+    }
+
+    if (user.can_update_status_for === "FED-MAIL") {
+      allowMAIL = "yes";
+    }
+
+    if (user.can_update_status_for === order.home_office_code) {
+      allowSTATE = "yes";
+    }
+
+    if (user.can_update_status_for === "ALL") {
+      allowHOSS = "yes";
+      allowAOC = "yes";
+      allowMAIL = "yes";
+      allowSTATE = "yes";
+    }
+  }
+
+  let allowUpdate = "";
+
+  if (nextPermission === "FED-HOSS" && allowHOSS === "yes") allowUpdate = "yes";
+
+  if (nextPermission === "FED-AOC" && allowAOC === "yes") allowUpdate = "yes";
+
+  if (nextPermission === "FED-MAIL" && allowMAIL === "yes") allowUpdate = "yes";
+
+  if (nextPermission === "STATE" && allowSTATE === "yes") allowUpdate = "yes";
+
   const handleUpdate = () => {
-    const upOrder = {
+    const updatedStatus = {
       ...order,
       order_status_id: nextId,
-      status: {
-        description: nextDesc,
-        id: nextId,
-        sequence_num: nextSeq,
-        status_federal_office_code: nextStatusFedOfficeCode,
-      },
     };
-    return upOrder;
+    return updatedStatus;
   };
 
-  const updateOrder = (upOrder) => {
+  const updateStatus = (updatedStatus, activateRevertButton) => {
     const serviceCall = () => {
-      return OrderDataService.update(upOrder.uuid, upOrder).then((response) => {
+      return StatusDataService.updateStatus(
+        updatedStatus.uuid,
+        updatedStatus
+      ).then((response) => {
         setOrder(response.data);
-        console.log("Update Resp: ", response);
-        setMessage({
-          ...message,
-          success: "The order was updated successfully!",
-        });
+        setPopUpBox("block");
+        setMessage("The order was updated successfully!");
+        if (activateRevertButton === "on") {
+          setRevert("yes");
+        }
+        if (activateRevertButton === "off") {
+          setRevert("");
+        }
       });
     };
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
     } catch (e) {
-      console.log("Update Status Error: ", e);
+      console.log(e);
+      setPopUpBox("block");
+      setMessage("Update Status Error: ", e);
     }
   };
 
   const saveUpdate = () => {
-    const upOrder = handleUpdate();
-    updateOrder(upOrder);
+    const updatedStatus = handleUpdate();
+    const activateRevertButton = "on";
+    updateStatus(updatedStatus, activateRevertButton);
   };
 
-  const cancelOrder = () => {
-    console.log("Order Canceled");
+  const declineUpdate = () => {
+    setResolve("yes");
+  };
+
+  const revertUpdate = () => {
+    setOrder(oldOrder);
+    const activateRevertButton = "off";
+    updateStatus(oldOrder, activateRevertButton);
+  };
+
+  const refuseUpdate = () => {
+    setPopUpBox("block");
+    setMessage(
+      "Do not have permissions for either (1) this order or (2) to advance to the next status"
+    );
   };
 
   const closePopUpBox = () => {
-    setPopUpbox("none");
+    setPopUpBox("none");
   };
 
   return (
@@ -193,27 +261,116 @@ const ScanOrder = (props) => {
             </div>
           ) : (
             <>
-              <div className="form-group">
-                <label htmlFor="next_status">
-                  Next Status:{" "}
-                  {statuses && order.status.description ? (
-                    <strong>
-                      #{nextSeq} - {nextDesc}
-                    </strong>
+              {order.status.active_status === "CANCELED" ? (
+                <>
+                  <div className="form-group">
+                    <label htmlFor="next_status">
+                      <strong>Use Edit Screen to Uncancel</strong>
+                    </label>
+                  </div>
+                </>
+              ) : (
+                <>
+                  {resolve ? (
+                    <></>
                   ) : (
-                    <strong>Missing data needed to generate next Status</strong>
+                    <>
+                      {revert ? (
+                        <>
+                          <div className="form-group">
+                            <label htmlFor="prior_status">
+                              Prior Status:{" "}
+                              <strong>
+                                #{oldOrder.status.sequence_num} -{" "}
+                                {oldOrder.status.description}
+                              </strong>
+                            </label>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="form-group">
+                          <label htmlFor="next_status">
+                            Next Status:{" "}
+                            {statuses && order.status.description ? (
+                              <strong>
+                                #{nextSeq} - {nextDesc}
+                              </strong>
+                            ) : (
+                              <strong>
+                                Missing data needed to generate next Status
+                              </strong>
+                            )}
+                          </label>
+                        </div>
+                      )}
+                      {revert ? (
+                        <>
+                          <button
+                            onClick={saveUpdate}
+                            className="btn btn-success"
+                            disabled
+                          >
+                            {"Update Status"}
+                          </button>{" "}
+                          <button
+                            onClick={revertUpdate}
+                            className="btn btn-success"
+                          >
+                            {"Revert Update"}
+                          </button>{" "}
+                          <button
+                            onClick={declineUpdate}
+                            className="btn btn-success"
+                            disabled
+                          >
+                            {"Decline Update"}
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          {statuses && order.status.description ? (
+                            <>
+                              {allowUpdate ? (
+                                <button
+                                  onClick={saveUpdate}
+                                  className="btn btn-success"
+                                >
+                                  {"Update Status"}
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={refuseUpdate}
+                                  className="btn btn-success"
+                                  style={{ opacity: 0.6 }}
+                                >
+                                  {"Update Status"}
+                                </button>
+                              )}{" "}
+                              <button
+                                onClick={revertUpdate}
+                                className="btn btn-success"
+                                disabled
+                              >
+                                {"Revert Update"}
+                              </button>{" "}
+                              <button
+                                onClick={declineUpdate}
+                                className="btn btn-success"
+                              >
+                                {"Decline Update"}
+                              </button>
+                            </>
+                          ) : (
+                            <></>
+                          )}
+                        </>
+                      )}
+                    </>
                   )}
-                </label>
-              </div>
-              <button onClick={saveUpdate} className="btn btn-success">
-                {"Update Status"}
-              </button>{" "}
+                </>
+              )}
             </>
           )}
-          <button onClick={cancelOrder} className="btn btn-success">
-            {"Cancel Order"}
-          </button>
-          <p>{message.success}</p>
         </>
       ) : (
         <>
@@ -223,7 +380,7 @@ const ScanOrder = (props) => {
       )}
       <div className="pop-container" style={{ display: popUpBox }}>
         <div className="pop-up" onClick={closePopUpBox}>
-          <h3>{errorMessage}</h3>
+          <h3>{message}</h3>
         </div>
       </div>
     </>
