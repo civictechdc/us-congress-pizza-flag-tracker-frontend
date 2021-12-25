@@ -3,7 +3,8 @@ import OrderDataService from "../services/OrderService";
 import { Link } from "react-router-dom";
 import styles from "../style/orders.module.css"
 import AuthService from "../services/AuthService";
-//import { useSortableData } from "./Sort/SortHook";
+import { useSortableData } from "./Sort/SortHook";
+import { TableHeader } from "./TableHeader"
 
 
 const OrdersList = () => {
@@ -12,12 +13,12 @@ const OrdersList = () => {
   const [searchTitle, setSearchTitle] = useState("");
   const [popUpBox, setPopUpbox] = useState("none");
   const [errorMessage, setErrorMessage] = useState("");
- // const [sortedField, setSortedField] = useState(null);
- // const [sortDir, setSortDir] = useState("asc");
- // const [sortType, setSortType] = useState("numeric");
+  const [sortedField, setSortedField] = useState(null);
+  const [sortDir, setSortDir] = useState("asc");
+  const [sortType, setSortType] = useState("numeric");
 
-  //const sortOptions = { sortedField, sortDir, sortType };
-  //const sortedOrders = useSortableData(orders, sortOptions);
+  const sortOptions = { sortedField, sortDir, sortType };
+  const sortedOrders = useSortableData(orders, sortOptions);
 
  
 
@@ -99,15 +100,23 @@ const OrdersList = () => {
     setErrorMessage("");
   };
 
- 
+  const formatDate = (dateString) => {
+    /*https://github.com/w3c/respec/issues/1357#issuecomment-760913749 
+    and also remove the fractional seconds as was required */
+    const safariFix = dateString.replace(/-/g, "/").replace(/\..*/, "");
+    // console.log(dateString, safariFix, new Date(Date.parse(safariFix)))
+    return dateString !== "" && dateString !== null
+      ? Intl.DateTimeFormat("en-US").format(Date.parse(safariFix))
+      : "";
+  };
 
-  //let ordersToDisplay = [];
- // sortedOrders ? (ordersToDisplay = sortedOrders) : (ordersToDisplay = orders);
+  let ordersToDisplay = [];
+  sortedOrders ? (ordersToDisplay = sortedOrders) : (ordersToDisplay = orders);
 
   const orderTbody = (
     <div className={styles.flagContainer}>
-      {orders &&
-        orders.map((order, index) => (
+      {ordersToDisplay &&
+        ordersToDisplay.map((order, index) => (
           <>
           <div
             className={styles.flagItem}
@@ -118,6 +127,7 @@ const OrdersList = () => {
             <p className={styles.officeCode}>{order.home_office_code}</p>
             <div className={styles.statusGroup}>
               <p className={styles.description}>{order.status.description}</p>
+              <p className={styles.statusCode}>{order.status.status_code}</p>
             </div>
             
           </div>
@@ -125,23 +135,23 @@ const OrdersList = () => {
             {currentOrder ?(
             
               <div>
-                <p>Created on: {currentOrder.created_at}</p>
-                <p>Last Updated: {currentOrder.updated_at}</p>
+                <p><b>Created:</b> {formatDate(currentOrder.created_at)}</p>
+                <p><b>Updated:</b> {formatDate(currentOrder.updated_at)}</p>
+                  
+                    <Link
+                      to={"/orders/" + currentOrder.uuid}
+                      className="badge badge-warning"
+                    >
+                      Edit
+                    </Link>
 
-                <Link
-                  to={"/orders/" + currentOrder.uuid}
-                  className="badge badge-warning"
-                >
-                  Edit
-                </Link>
-
-                {` `}
-                <Link
-                  to={"/scan/" + currentOrder.uuid}
-                  className="badge badge-warning"
-                >
-                  Scan
-                </Link>
+                    {` `}
+                    <Link
+                      to={"/scan/" + currentOrder.uuid}
+                      className="badge badge-warning"
+                    >
+                      Scan
+                    </Link>
               </div>  ):(
               <div>
                 
@@ -183,6 +193,17 @@ const OrdersList = () => {
               </div>
             </div>
           </div>
+          <div className={styles.sortContainer}>
+            <table className="table">
+              <TableHeader
+                sortedField={sortedField}
+                sortDir={sortDir}
+                setSortedField={setSortedField}
+                setSortType={setSortType}
+                setSortDir={setSortDir}
+              />
+            </table>
+          </div>
           <h4>Orders List</h4>
 
           <div className={styles.orderContainer}>
@@ -192,24 +213,24 @@ const OrdersList = () => {
              <div className={styles.statusContainer}>
             {currentOrder ? (
               <div className={styles.statusItemContainer}>
-                <p>Order: {currentOrder.order_number}</p>
-                 <p>Created on: {currentOrder.created_at}</p>
-                <p>Last Updated: {currentOrder.updated_at}</p>
+                <p><b>Order:</b> {currentOrder.order_number}</p>
+                 <p><b>Created:</b> {formatDate(currentOrder.created_at)}</p>
+                <p><b>Updated:</b> {formatDate(currentOrder.updated_at)}</p>
+                  <div className={styles.links}>
+                    <Link
+                      to={"/orders/" + currentOrder.uuid}
+                      className="badge badge-warning"
+                    >
+                      Edit
+                    </Link>
 
-                <Link
-                  to={"/orders/" + currentOrder.uuid}
-                  className="badge badge-warning"
-                >
-                  Edit
-                </Link>
-
-                {` `}
-                <Link
-                  to={"/scan/" + currentOrder.uuid}
-                  className="badge badge-warning"
-                >
-                  Scan
-                </Link>
+                    <Link
+                      to={"/scan/" + currentOrder.uuid}
+                      className="badge badge-warning"
+                    >
+                      Scan
+                    </Link>
+                  </div>  
               </div>
             ) : (
               <div>
