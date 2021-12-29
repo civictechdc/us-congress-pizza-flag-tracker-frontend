@@ -173,8 +173,10 @@ const OrdersList = () => {
     return (
       <>
         
-          <div>
-            <div className="input-group mb-3">
+      <div className={styles.mainContainer}>
+        <h4 className={styles.title}>Orders List</h4>
+          <div className={styles.inputContainer}>
+            
               <input
                 type="text"
                 className="form-control"
@@ -182,7 +184,7 @@ const OrdersList = () => {
                 value={searchTitle}
                 onChange={onChangeSearchTitle}
               />
-              <div className="input-group-append">
+              <div className={styles.searchButton}>
                 <button
                   className="btn btn-outline-secondary"
                   type="button"
@@ -191,10 +193,8 @@ const OrdersList = () => {
                   Search
                 </button>
               </div>
-            </div>
+            
           </div>
-          <div className={styles.sortContainer}>
-            <table className="table">
               <TableHeader
                 sortedField={sortedField}
                 sortDir={sortDir}
@@ -202,43 +202,41 @@ const OrdersList = () => {
                 setSortType={setSortType}
                 setSortDir={setSortDir}
               />
-            </table>
-          </div>
-          <h4>Orders List</h4>
-
+            
           <div className={styles.orderContainer}>
             
-             {orderTbody}
+              {orderTbody}
+            
+                  <div className={styles.statusItemContainer}>
+              {currentOrder ? (
+                <div className={styles.statusItem}>
+                  <p><b>Order:</b> {currentOrder.order_number}</p>
+                  <p><b>Created:</b> {formatDate(currentOrder.created_at)}</p>
+                  <p><b>Updated:</b> {formatDate(currentOrder.updated_at)}</p>
+                    <div className={styles.links}>
+                      <Link
+                        to={"/orders/" + currentOrder.uuid}
+                        className="badge badge-warning"
+                      >
+                        Edit
+                      </Link>
 
-             <div className={styles.statusContainer}>
-            {currentOrder ? (
-              <div className={styles.statusItemContainer}>
-                <p><b>Order:</b> {currentOrder.order_number}</p>
-                 <p><b>Created:</b> {formatDate(currentOrder.created_at)}</p>
-                <p><b>Updated:</b> {formatDate(currentOrder.updated_at)}</p>
-                  <div className={styles.links}>
-                    <Link
-                      to={"/orders/" + currentOrder.uuid}
-                      className="badge badge-warning"
-                    >
-                      Edit
-                    </Link>
-
-                    <Link
-                      to={"/scan/" + currentOrder.uuid}
-                      className="badge badge-warning"
-                    >
-                      Scan
-                    </Link>
-                  </div>  
-              </div>
-            ) : (
-              <div>
-                <br />
-                <p>Please click on an order...</p>
-              </div>
-            )}
-           </div>
+                      <Link
+                        to={"/scan/" + currentOrder.uuid}
+                        className="badge badge-warning"
+                      >
+                        Scan
+                      </Link>
+                    </div>  
+                </div>
+              ) : (
+                <div className={styles.statusItem}>
+                  
+                  <p>Please click<br/> on an order...</p>
+                </div>
+              )}
+                  </div>
+          
           </div>
             
             {errorMessage || searchTitle ? (
@@ -265,6 +263,7 @@ const OrdersList = () => {
             <h3>{errorMessage}</h3>
           </div>
         </div>
+      </div>  
       </>
     );
 };
