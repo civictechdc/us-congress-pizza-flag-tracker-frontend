@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import OrderDataService from "../services/OrderService";
 import { Link } from "react-router-dom";
-import { useSortableData } from "./Sort/SortHook";
-import { TableHeader } from "./TableHeader";
+import styles from "../style/orders.module.css"
 import AuthService from "../services/AuthService";
+import { useSortableData } from "./Sort/SortHook";
+import { TableHeader } from "./TableHeader"
+
 
 const OrdersList = () => {
   const [orders, setOrders] = useState([]);
   const [currentOrder, setCurrentOrder] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchTitle, setSearchTitle] = useState("");
   const [popUpBox, setPopUpbox] = useState("none");
   const [errorMessage, setErrorMessage] = useState("");
@@ -19,7 +20,7 @@ const OrdersList = () => {
   const sortOptions = { sortedField, sortDir, sortType };
   const sortedOrders = useSortableData(orders, sortOptions);
 
-  const loginError = "You must be logged in to view this page";
+ 
 
   const retrieveOrders = () => {
     const serviceCall = () => {
@@ -56,12 +57,12 @@ const OrdersList = () => {
   const refreshList = () => {
     retrieveOrders();
     setCurrentOrder(null);
-    setCurrentIndex(-1);
+    
   };
 
   const setActiveOrder = (order, index) => {
     setCurrentOrder(order);
-    setCurrentIndex(index);
+   
   };
 
   const removeAllOrders = () => {
@@ -113,39 +114,69 @@ const OrdersList = () => {
   sortedOrders ? (ordersToDisplay = sortedOrders) : (ordersToDisplay = orders);
 
   const orderTbody = (
-    <tbody className="flag-group">
-      {ordersToDisplay.length &&
+    <div className={styles.flagContainer}>
+      {ordersToDisplay &&
         ordersToDisplay.map((order, index) => (
-          <tr
-            className={
-              "flag-group-item " + (index === currentIndex ? "active" : "")
-            }
+          <>
+          <div
+            className={styles.flagItem}
             onClick={() => setActiveOrder(order, index)}
             key={index}
           >
-            <td>{order.order_number}</td>
-            <td>{order.usa_state}</td>
-            <td>{order.home_office_code}</td>
-            <td>{order.status.description}</td>
-            <td>{formatDate(order.created_at)}</td>
-            <td>{formatDate(order.updated_at)}</td>
-          </tr>
+            <p className={styles.orderNum}>{order.order_number}</p>
+            <p className={styles.officeCode}>{order.home_office_code}</p>
+            <div className={styles.statusGroup}>
+              <p className={styles.description}>{order.status.description}</p>
+              <p className={styles.statusCode}>{order.status.status_code}</p>
+            </div>
+            
+          </div>
+          <div className={styles.mobileStatus}> 
+            {currentOrder ?(
+            
+              <div>
+                <p><b>Created:</b> {formatDate(currentOrder.created_at)}</p>
+                <p><b>Updated:</b> {formatDate(currentOrder.updated_at)}</p>
+                  
+                    <Link
+                      to={"/orders/" + currentOrder.uuid}
+                      className="badge badge-warning"
+                    >
+                      Edit
+                    </Link>
+
+                    {` `}
+                    <Link
+                      to={"/scan/" + currentOrder.uuid}
+                      className="badge badge-warning"
+                    >
+                      Scan
+                    </Link>
+              </div>  ):(
+              <div>
+                
+              </div>
+            )}
+          </div>
+          
+          
+          </>
         ))}
-    </tbody>
+    </div>
   );
 
   const closePopUpBox = () => {
     setPopUpbox("none");
   };
 
-  if (errorMessage === loginError) {
-    return errorMessage;
-  } else
+  
     return (
       <>
-        <div className="list row">
-          <div className="col-md-8">
-            <div className="input-group mb-3">
+        
+      <div className={styles.mainContainer}>
+        <h4 className={styles.title}>Orders List</h4>
+          <div className={styles.inputContainer}>
+            
               <input
                 type="text"
                 className="form-control"
@@ -153,7 +184,7 @@ const OrdersList = () => {
                 value={searchTitle}
                 onChange={onChangeSearchTitle}
               />
-              <div className="input-group-append">
+              <div className={styles.searchButton}>
                 <button
                   className="btn btn-outline-secondary"
                   type="button"
@@ -162,12 +193,8 @@ const OrdersList = () => {
                   Search
                 </button>
               </div>
-            </div>
+            
           </div>
-          <div className="col-md-8">
-            <h4>Orders List</h4>
-
-            <table className="table">
               <TableHeader
                 sortedField={sortedField}
                 sortDir={sortDir}
@@ -175,8 +202,43 @@ const OrdersList = () => {
                 setSortType={setSortType}
                 setSortDir={setSortDir}
               />
+            
+          <div className={styles.orderContainer}>
+            
               {orderTbody}
-            </table>
+            
+                  <div className={styles.statusItemContainer}>
+              {currentOrder ? (
+                <div className={styles.statusItem}>
+                  <p><b>Order:</b> {currentOrder.order_number}</p>
+                  <p><b>Created:</b> {formatDate(currentOrder.created_at)}</p>
+                  <p><b>Updated:</b> {formatDate(currentOrder.updated_at)}</p>
+                    <div className={styles.links}>
+                      <Link
+                        to={"/orders/" + currentOrder.uuid}
+                        className="badge badge-warning"
+                      >
+                        Edit
+                      </Link>
+
+                      <Link
+                        to={"/scan/" + currentOrder.uuid}
+                        className="badge badge-warning"
+                      >
+                        Scan
+                      </Link>
+                    </div>  
+                </div>
+              ) : (
+                <div className={styles.statusItem}>
+                  
+                  <p>Please click<br/> on an order...</p>
+                </div>
+              )}
+                  </div>
+          
+          </div>
+            
             {errorMessage || searchTitle ? (
               <button
                 className="m-3 btn btn-sm btn-danger"
@@ -192,60 +254,16 @@ const OrdersList = () => {
                 Remove All
               </button>
             )}
-          </div>
-          <div className="col-md-4">
-            {currentOrder ? (
-              <div>
-                <h4>Order</h4>
-                <div>
-                  <label>
-                    <strong>Order Number:</strong>
-                  </label>{" "}
-                  {currentOrder.order_number}
-                </div>
-                <div>
-                  <label>
-                    <strong>Congressional Office:</strong>
-                  </label>{" "}
-                  {currentOrder.home_office_code}
-                </div>
-
-                <div>
-                  <label>
-                    <strong>Status:</strong>
-                  </label>{" "}
-                  {currentOrder.published ? "Published" : "Pending"}
-                </div>
-
-                <Link
-                  to={"/orders/" + currentOrder.uuid}
-                  className="badge badge-warning"
-                >
-                  Edit
-                </Link>
-
-                {` `}
-                <Link
-                  to={"/scan/" + currentOrder.uuid}
-                  className="badge badge-warning"
-                >
-                  Scan
-                </Link>
-              </div>
-            ) : (
-              <div>
-                <br />
-                <p>Please click on an order...</p>
-              </div>
-            )}
-          </div>
-        </div>
+          
+          
+        
 
         <div className="pop-container" style={{ display: popUpBox }}>
           <div className="pop-up" onClick={closePopUpBox}>
             <h3>{errorMessage}</h3>
           </div>
         </div>
+      </div>  
       </>
     );
 };

@@ -1,4 +1,4 @@
-import "./App.css";
+import "./style/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Switch, Route } from "react-router-dom";
 
@@ -19,7 +19,7 @@ function App() {
       <Header />
 
       <main>
-        <div className="container mt-3">
+        <div className="mainContainer">
           <Switch>
             <Route exact path={["/", "/orders"]} component={OrdersList} />
             <PrivateRoute exact path="/add">
