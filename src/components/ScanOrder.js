@@ -214,14 +214,12 @@ const ScanOrder = (props) => {
   const refuseUpdate = () => {
     setPopUpBox("block");
     if (nextDesc == "") {
-      setMessage(
-        "Next Status is missing, check connection to server"
-      );
+      setMessage("Next Status is missing, check connection to server");
     } else {
       setMessage(
         "Do not have permissions for either (1) this order or (2) to advance to the next status"
       );
-    };
+    }
   };
 
   const closePopUpBox = () => {
