@@ -67,7 +67,7 @@ const ScanOrder = (props) => {
     } catch (e) {
       setPopUpBox("block");
       console.log(e);
-      if (e.response?.status === 401) {
+      if (e.response.status === 401) {
         setMessage(loginError);
       } else {
         setMessage(
@@ -213,9 +213,15 @@ const ScanOrder = (props) => {
 
   const refuseUpdate = () => {
     setPopUpBox("block");
-    setMessage(
-      "Do not have permissions for either (1) this order or (2) to advance to the next status"
-    );
+    if (nextDesc == "") {
+      setMessage(
+        "Next Status is missing, check connection to server"
+      );
+    } else {
+      setMessage(
+        "Do not have permissions for either (1) this order or (2) to advance to the next status"
+      );
+    };
   };
 
   const closePopUpBox = () => {
