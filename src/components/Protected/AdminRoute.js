@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect, useHistory } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import { adminControl } from './Permissions';
 
 
