@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import AuthService from "../services/AuthService";
-import OrderDataService from "../services/OrderService";
-import StatusDataService from "../services/StatusService";
-import { numSort } from "./Sort/SortHook";
+import AuthService from "../../services/AuthService";
+import OrderDataService from "../../services/OrderService";
+import StatusDataService from "../../services/StatusService";
+import { numSort } from "../Sort/SortHook";
+import { statusControl } from "../Protected/Permissions";
 
 const ScanOrder = (props) => {
   const initialOrderState = {
@@ -40,7 +41,7 @@ const ScanOrder = (props) => {
     const serviceCall = () => {
       return OrderDataService.get(id).then((response) => {
         setOrder(response.data);
-        console.log("Get Order: ", response.data);
+        
       })
       .catch((e) => {
         console.log("Get Order Error: ", e);
@@ -60,7 +61,7 @@ const ScanOrder = (props) => {
   const retrieveStatuses = () => {
     const serviceCall = () => {
       return StatusDataService.getStatus().then((response) => {
-        console.log("Statuses: ", response.data);
+       
         setStatuses(response.data.statuses);
       });
     };
@@ -124,6 +125,7 @@ const ScanOrder = (props) => {
   };
 
   const updateOrder = (upOrder) => {
+    
     const serviceCall = () => {
       return OrderDataService.update(upOrder.uuid, upOrder).then((response) => {
         setOrder(response.data);
@@ -142,12 +144,31 @@ const ScanOrder = (props) => {
   };
 
   const saveUpdate = () => {
+    let permit = statusControl()
+    //checks the user's status authorization before changing
     const upOrder = handleUpdate();
-    updateOrder(upOrder);
+    if ( permit === "ALL"){
+      updateOrder(upOrder);
+    }else if (permit === order.home_office_code){
+      updateOrder(upOrder);
+    }else{
+      setPopUpbox("block");
+      setErrorMessage("Insufficient Permission");
+    }
+    
   };
 
   const cancelOrder = () => {
-    console.log("Order Canceled");
+    let permit = statusControl()
+    //check the user's status authorization before changing
+    if (permit === "ALL"){
+      console.log("Order Canceled");
+    }else if(permit === order.home_office_code){
+      console.log("Order Canceled");
+    }else{
+      setPopUpbox("block");
+      setErrorMessage("Insufficient Permission");
+    }
   };
 
   const closePopUpBox = () => {

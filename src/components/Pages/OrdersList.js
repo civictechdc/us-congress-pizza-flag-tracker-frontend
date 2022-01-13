@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import OrderDataService from "../services/OrderService";
+import OrderDataService from "../../services/OrderService";
 import { Link } from "react-router-dom";
-import styles from "../style/orders.module.css"
-import AuthService from "../services/AuthService";
-import { useSortableData } from "./Sort/SortHook";
-import { TableHeader } from "./TableHeader"
+import styles from "../../style/orders.module.css"
+import AuthService from "../../services/AuthService";
+import { useSortableData } from "../Sort/SortHook";
+import { TableHeader } from "../TableHeader"
+
 
 
 const OrdersList = () => {
@@ -21,13 +22,13 @@ const OrdersList = () => {
   const sortedOrders = useSortableData(orders, sortOptions);
 
  
-
+//retrieve orders based on authirization level
   const retrieveOrders = () => {
-    const serviceCall = () => {
-      return OrderDataService.getAll().then((response) => {
-        setOrders(response.data.orders);
-      });
-    };
+    let serviceCall = () => {
+       return OrderDataService.getAll().then((response) => {
+          setOrders(response.data.orders);
+        });
+      };
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
     } catch (e) {
@@ -38,7 +39,7 @@ const OrdersList = () => {
 
   useEffect(() => {
     const retrieveOrders = () => {
-      const serviceCall = () => {
+      let serviceCall = () => {
         return OrderDataService.getAll().then((response) => {
           setOrders(response.data.orders);
         });
@@ -66,7 +67,7 @@ const OrdersList = () => {
   };
 
   const removeAllOrders = () => {
-    const serviceCall = () => {
+    let serviceCall = () => {
       return OrderDataService.removeAll().then((response) => {
         refreshList();
       });
@@ -75,7 +76,7 @@ const OrdersList = () => {
   };
 
   const findByOrderNumber = () => {
-    const serviceCall = () => {
+    let serviceCall = () => {  //changed from const to let to maintain best practices
       return OrderDataService.findByOrderNumber(searchTitle).then(
         (response) => {
           if ("error" in response.data) {

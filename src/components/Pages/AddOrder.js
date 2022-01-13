@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import AuthService from "../services/AuthService";
-import OrderDataService from "../services/OrderService";
-import OrderForm from "./OrderForm";
+import AuthService from "../../services/AuthService";
+import OrderDataService from "../../services/OrderService";
+import OrderForm from "../OrderForm";
 
 const AddOrder = (props) => {
   const { existingOrder } = props;

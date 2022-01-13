@@ -39,17 +39,11 @@ class AuthService {
   }
 
   getCurrentUserName() {
-    const user = this.getCurrentUser();
-    let username;
-    if (user && user.username) {
-      username = user.username;
-    } else if (user && !user.username) {
-      username = "Undefined";
-    } else {
-      username = "Not logged in";
-    }
+    const user = JSON.parse(localStorage.getItem("user"));
+    let username = user.username
+    
     return username;
-  }
+  } 
 
   updateToken(newToken) {
     const user = JSON.parse(localStorage.getItem("user"));

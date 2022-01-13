@@ -1,9 +1,9 @@
 import React from "react";
-import AuthService from "../services/AuthService";
+import AuthService from "../../services/AuthService";
 
 const Profile = (props) => {
   const currentUser = AuthService.getCurrentUser();
-  console.log(currentUser);
+  
 
   const roles = Object.fromEntries(
     Object.entries(currentUser).filter(([key]) =>
