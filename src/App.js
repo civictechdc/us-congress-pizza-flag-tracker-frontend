@@ -12,7 +12,7 @@ import FedRoute from "./components/protectedroutes/fedRoute";
 import ScanOrder from "./components/pages/scanOrder";
 import Profile from "./components/pages/profile";
 
-import Header from "./components/header";
+import Header from "./components/header/header";
 import AddUser from "./components/pages/addUser";
 
 function App() {
