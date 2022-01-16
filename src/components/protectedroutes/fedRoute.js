@@ -1,17 +1,14 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { adminControl } from './Permissions';
+import { isFed } from './permissions';
 
+function FedRoute ({ component: Component, ...rest }) {
 
-function AdminRoute ({ component: Component, ...rest }) {
-
-  //const history = useHistory()
-  
- 
-    
+   
+   
    return (
      <Route {...rest} render={ (props) => {
-         return ( adminControl() 
+         return ( isFed() 
             ? <Component {...props}/>
             :<Redirect to="/login"/>)
          
@@ -19,4 +16,4 @@ function AdminRoute ({ component: Component, ...rest }) {
    )
 }
 
-export default AdminRoute;
+export default FedRoute;

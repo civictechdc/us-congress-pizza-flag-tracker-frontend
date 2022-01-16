@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import AuthService from "../../services/AuthService";
-import OrderDataService from "../../services/OrderService";
-import StatusDataService from "../../services/StatusService";
-import { numSort } from "../Sort/SortHook";
+import AuthService from "../../services/authService";
+import OrderDataService from "../../services/orderService";
+import StatusDataService from "../../services/statusService";
+import { numSort } from "../sort/sortHook";
 
 const ScanOrder = (props) => {
   const initialOrderState = {

@@ -2,18 +2,18 @@ import "./style/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Switch, Route } from "react-router-dom";
 
-import AddOrder from "./components/Pages/AddOrder";
-import Login from "./components/Pages/Login";
-import EditOrder from "./components/Pages/EditOrder";
-import OrdersList from "./components/Pages/OrdersList";
-import UserRoute from "./components/Protected/UserRoute";
-import AdminRoute from "./components/Protected/AdminRoute";
-import FedRoute from "./components/Protected/FedRoute";
-import ScanOrder from "./components/Pages/ScanOrder";
-import Profile from "./components/Pages/Profile";
+import AddOrder from "./components/pages/addOrder";
+import Login from "./components/pages/login";
+import EditOrder from "./components/pages/editOrder";
+import OrdersList from "./components/pages/ordersList";
+import UserRoute from "./components/protectedroutes/userRoute";
+import AdminRoute from "./components/protectedroutes/adminRoute";
+import FedRoute from "./components/protectedroutes/fedRoute";
+import ScanOrder from "./components/pages/scanOrder";
+import Profile from "./components/pages/profile";
 
-import Header from "./components/Header";
-import AddUser from "./components/Pages/AddUser";
+import Header from "./components/header";
+import AddUser from "./components/pages/addUser";
 
 function App() {
   return (

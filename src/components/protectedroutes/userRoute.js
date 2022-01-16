@@ -1,14 +1,15 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { isFed } from './Permissions';
+import  { isUser } from './permissions';
 
-function FedRoute ({ component: Component, ...rest }) {
 
-   
-   
+function UserRoute ({ component: Component, ...rest }) {
+
+  
+    
    return (
      <Route {...rest} render={ (props) => {
-         return ( isFed() 
+         return ( isUser()
             ? <Component {...props}/>
             :<Redirect to="/login"/>)
          
@@ -16,4 +17,4 @@ function FedRoute ({ component: Component, ...rest }) {
    )
 }
 
-export default FedRoute;
+export default UserRoute;

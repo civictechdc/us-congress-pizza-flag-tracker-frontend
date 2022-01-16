@@ -1,15 +1,17 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import  { isUser } from './Permissions';
+import { adminControl } from './permissions';
 
 
-function UserRoute ({ component: Component, ...rest }) {
+function AdminRoute ({ component: Component, ...rest }) {
 
+  //const history = useHistory()
   
+ 
     
    return (
      <Route {...rest} render={ (props) => {
-         return ( isUser()
+         return ( adminControl() 
             ? <Component {...props}/>
             :<Redirect to="/login"/>)
          
@@ -17,4 +19,4 @@ function UserRoute ({ component: Component, ...rest }) {
    )
 }
 
-export default UserRoute;
+export default AdminRoute;
