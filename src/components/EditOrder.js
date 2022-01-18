@@ -5,13 +5,11 @@ import OrderForm from "./OrderForm";
 
 const EditOrder = (props) => {
   const initialOrderState = {
-    uuid: null,
-    title: "",
     description: "",
-    published: false,
-    order_number: "",
     home_office_code: "",
-    usa_state: "",
+    order_number: "",
+    order_status_id: "",
+    published: false,
     status: {
       active_status: "",
       created_at: "",
@@ -21,7 +19,10 @@ const EditOrder = (props) => {
       sequence_num: "",
       status_code: "",
       updated_at: "",
-    }
+    },
+    title: "",
+    usa_state: "",
+    uuid: null,
   };
 
   const initialMessageState = {
