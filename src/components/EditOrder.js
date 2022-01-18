@@ -12,6 +12,16 @@ const EditOrder = (props) => {
     order_number: "",
     home_office_code: "",
     usa_state: "",
+    status: {
+      active_status: "",
+      created_at: "",
+      description: "",
+      id: "",
+      permission: "",
+      sequence_num: "",
+      status_code: "",
+      updated_at: "",
+    }
   };
 
   const initialMessageState = {
@@ -28,10 +38,12 @@ const EditOrder = (props) => {
 
   // responses from DB overwriting order.status_description
   // initialStatusState temporary until status info integrated into response.data > initialStatusState to be folded into initialOrderState
+  /*
   const initialStatusState = {
     status_description: "",
   };
   const [status, setStatus] = useState(initialStatusState);
+  */
 
   const getOrder = (id) => {
     const serviceCall = () => {
@@ -53,7 +65,6 @@ const EditOrder = (props) => {
   const updateOrder = () => {
     const serviceCall = () => {
       return OrderDataService.update(order.uuid, order).then((response) => {
-        console.log(response);
         setMessage({
           ...message,
           checkSaved: true,
@@ -88,9 +99,9 @@ const EditOrder = (props) => {
           <OrderForm
             order={order}
             message={message}
-            status={status} // temporary until status info integrated into response.data > will then be folded into order
+            // status={status} // temporary until status info integrated into response.data > will then be folded into order
             setOrderFunc={setOrder}
-            setStatusFunc={setStatus} // temporary until status info integrated into response.data > will then be folded into setOrder
+            // setStatusFunc={setStatus} // temporary until status info integrated into response.data > will then be folded into setOrder
             setMessageFunc={setMessage}
             saveOrderFunc={updateOrder}
             deleteOrderFunc={deleteOrder}
