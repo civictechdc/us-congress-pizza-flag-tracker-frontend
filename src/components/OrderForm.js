@@ -9,9 +9,7 @@ const OrderForm = (props) => {
   const {
     order,
     message,
-    // status,
     setOrderFunc,
-    // setStatusFunc,
     setMessageFunc,
     saveOrderFunc,
     mode,

@@ -36,15 +36,6 @@ const EditOrder = (props) => {
   const [message, setMessage] = useState(initialMessageState);
   const mode = "edit";
 
-  // responses from DB overwriting order.status_description
-  // initialStatusState temporary until status info integrated into response.data > initialStatusState to be folded into initialOrderState
-  /*
-  const initialStatusState = {
-    status_description: "",
-  };
-  const [status, setStatus] = useState(initialStatusState);
-  */
-
   const getOrder = (id) => {
     const serviceCall = () => {
       return OrderDataService.get(id).then((response) => {
@@ -99,9 +90,7 @@ const EditOrder = (props) => {
           <OrderForm
             order={order}
             message={message}
-            // status={status} // temporary until status info integrated into response.data > will then be folded into order
             setOrderFunc={setOrder}
-            // setStatusFunc={setStatus} // temporary until status info integrated into response.data > will then be folded into setOrder
             setMessageFunc={setMessage}
             saveOrderFunc={updateOrder}
             deleteOrderFunc={deleteOrder}
