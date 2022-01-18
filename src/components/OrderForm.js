@@ -71,34 +71,38 @@ const OrderForm = (props) => {
     if (name === "usa_state") {
       setOrderFunc({ ...order, home_office_code: "" });
       setMessageFunc((prevMessageFunc) => {
-        return { ...prevMessageFunc, isLastChangeUSState: true};
+        return { ...prevMessageFunc, isLastChangeUSState: true };
       });
     }
     setOrderFunc((prevOrderFunc) => {
       return { ...prevOrderFunc, [name]: value };
     });
     setMessageFunc((prevMessageFunc) => {
-      return { ...prevMessageFunc, checkSaved: false, whyStatus: false};
+      return { ...prevMessageFunc, checkSaved: false, whyStatus: false };
     });
     if (name === "order_status_id") {
-      handleStatusChange(event)
+      handleStatusChange(event);
     }
   };
 
-  const handleStatusChange = (event) => {  // the backend doesn't need this but the frontend does to make select box display correctly
+  const handleStatusChange = (event) => {
+    // the backend doesn't need this but the frontend does need it to make select box display correctly
     let { name, value, label } = event;
 
-    for (let i=0; i<label.length; i++) {
+    for (let i = 0; i < label.length; i++) {
       if (label[i] === " ") {
-        let result = label.slice(i+1);
+        let result = label.slice(i + 1);
         label = result;
-        break
+        break;
       }
     }
-    
+
     setOrderFunc((prevOrderFunc) => {
-      return { ...prevOrderFunc, status: {sequence_num: value, description: label}
-    }});    
+      return {
+        ...prevOrderFunc,
+        status: { sequence_num: value, description: label },
+      };
+    });
   };
 
   const whyNoSave = () => {
@@ -212,14 +216,14 @@ const OrderForm = (props) => {
         <>
           <div className="form-group">
             <label htmlFor="status_description">Status:</label>{" "}
-            <Select 
-              onChange={handleInputChange} 
+            <Select
+              onChange={handleInputChange}
               options={optionStatuses}
               value={{
                 label: `#${order.status.sequence_num} ${order.status.description}`,
                 name: "order_status_id",
                 value: order.status.sequence_num,
-              }} 
+              }}
             />
           </div>
 
