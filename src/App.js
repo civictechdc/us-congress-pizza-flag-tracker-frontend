@@ -6,9 +6,9 @@ import AddOrder from "./components/pages/addOrder";
 import Login from "./components/pages/login";
 import EditOrder from "./components/pages/editOrder";
 import OrdersList from "./components/pages/ordersList";
-import UserRoute from "./components/protectedroutes/userRoute";
-import AdminRoute from "./components/protectedroutes/adminRoute";
-import FedRoute from "./components/protectedroutes/fedRoute";
+import UserRoute from "./components/protectedRoute/userRoute";
+import AdminRoute from "./components/protectedRoute/adminRoute";
+import FedRoute from "./components/protectedRoute/fedRoute";
 import ScanOrder from "./components/pages/scanOrder";
 import Profile from "./components/pages/profile";
 
