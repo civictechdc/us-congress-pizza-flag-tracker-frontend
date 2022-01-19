@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import  { isUser } from './Permissions';
+import  { isUser } from './permissions';
 
 
 function UserRoute ({ component: Component, ...rest }) {

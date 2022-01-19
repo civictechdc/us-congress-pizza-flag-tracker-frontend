@@ -2,8 +2,8 @@ import React from "react";
 import Select from "react-select";
 import { baseURL } from "../http-common";
 import { STATES } from "./states.js";
-import { STATUSES } from "./Statuses.js";
-import "./OrderForm.css";
+import { STATUSES } from "./statuses.js";
+import "./orderForm.css";
 
 const OrderForm = (props) => {
   const {

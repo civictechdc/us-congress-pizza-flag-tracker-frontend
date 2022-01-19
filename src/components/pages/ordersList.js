@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import OrderDataService from "../../services/OrderService";
+import OrderDataService from "../../services/orderService";
 import { Link } from "react-router-dom";
 import styles from "../../style/orders.module.css"
-import AuthService from "../../services/AuthService";
-import { useSortableData } from "../Sort/SortHook";
-import { TableHeader } from "../TableHeader"
+import AuthService from "../../services/authService";
+import { useSortableData } from "../sort/sortHook";
+import { TableHeader } from "../tableHeader"
 
 
 

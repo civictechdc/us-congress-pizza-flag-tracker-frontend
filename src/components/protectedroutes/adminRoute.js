@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { adminControl } from './Permissions';
+import { adminControl } from './permissions';
 
 
 function AdminRoute ({ component: Component, ...rest }) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { isFed } from './Permissions';
+import { isFed } from './permissions';
 
 function FedRoute ({ component: Component, ...rest }) {
 
