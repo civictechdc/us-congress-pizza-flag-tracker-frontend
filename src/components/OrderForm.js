@@ -2,7 +2,6 @@ import React from "react";
 import Select from "react-select";
 import { baseURL } from "../http-common";
 import { STATES } from "./states.js";
-import { STATUSES } from "./Statuses.js";
 import "./OrderForm.css";
 
 const OrderForm = (props) => {
@@ -14,6 +13,7 @@ const OrderForm = (props) => {
     saveOrderFunc,
     mode,
     deleteOrderFunc,
+    statuses,
   } = props;
 
   let optionUSStates = [];
@@ -37,8 +37,8 @@ const OrderForm = (props) => {
   }
 
   let optionStatuses = [];
-  if (STATUSES) {
-    optionStatuses = STATUSES.map((status) =>
+  if (statuses) {
+    optionStatuses = statuses.map((status) =>
       /* Old Filter by DEMO Organization Code was here
           to be rewired to ACTUAL User Profile DB info  */
       ({

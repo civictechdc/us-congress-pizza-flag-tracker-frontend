@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import AuthService from "../services/AuthService";
 import OrderDataService from "../services/OrderService";
+import StatusDataService from "../services/StatusService";
 import OrderForm from "./OrderForm";
+import { numSort } from "./Sort/SortHook";
 
 const EditOrder = (props) => {
   const initialOrderState = {
@@ -35,6 +37,7 @@ const EditOrder = (props) => {
 
   const [order, setOrder] = useState(initialOrderState);
   const [message, setMessage] = useState(initialMessageState);
+  const [statuses, setStatuses] = useState([]);
   const mode = "edit";
 
   const getOrder = (id) => {
@@ -53,6 +56,37 @@ const EditOrder = (props) => {
   useEffect(() => {
     getOrder(props.match.params.id);
   }, [props.match.params.id]);
+
+  const retrieveStatuses = () => {
+    const serviceCall = () => {
+      return StatusDataService.getStatus().then((response) => {
+        setStatuses(response.data.statuses);
+      });
+    };
+    try {
+      AuthService.refreshTokenWrapperFunction(serviceCall);
+    } catch (e) {
+      setPopUpBox("block");
+      console.log(e);
+      if (e.response.status === 401) {
+        setMessage(loginError);
+      } else {
+        setMessage(
+          e.message +
+            "." +
+            "Check with admin if server is down or try logging out and logging in."
+        );
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (statuses.length === 0) {
+      retrieveStatuses();
+    }
+  }, [statuses]);
+
+  const sortedStatuses = numSort(statuses, "sequence_num", "asc");
 
   const updateOrder = () => {
     const serviceCall = () => {
@@ -96,6 +130,7 @@ const EditOrder = (props) => {
             saveOrderFunc={updateOrder}
             deleteOrderFunc={deleteOrder}
             mode={mode}
+            statuses={sortedStatuses}
           />
           <p>{message.success}</p>
         </>
