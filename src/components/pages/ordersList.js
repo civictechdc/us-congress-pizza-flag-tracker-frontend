@@ -3,7 +3,7 @@ import OrderDataService from "../../service/orderService";
 import { Link } from "react-router-dom";
 import styles from "../../style/orders.module.css"
 import AuthService from "../../service/authService";
-import { useSortableData } from "../sort/sortHook";
+import { useSortableData } from "../sorting/sortHook";
 import { TableHeader } from "../tableHeader"
 
 
