@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import OrderDataService from "../../services/orderService";
+import OrderDataService from "../../service/orderService";
 import { Link } from "react-router-dom";
 import styles from "../../style/orders.module.css"
-import AuthService from "../../services/authService";
+import AuthService from "../../service/authService";
 import { useSortableData } from "../sort/sortHook";
 import { TableHeader } from "../tableHeader"
 

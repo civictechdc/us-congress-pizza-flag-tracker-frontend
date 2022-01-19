@@ -1,5 +1,5 @@
 import React from "react";
-import AuthService from "../../services/authService";
+import AuthService from "../../service/authService";
 
 const Profile = (props) => {
   const currentUser = AuthService.getCurrentUser();

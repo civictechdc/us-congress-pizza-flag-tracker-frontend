@@ -1,5 +1,5 @@
 import axios from "axios";
-import AuthService from "./services/authService";
+import AuthService from "./service/authService";
 
 export const baseURL = getBaseUrl();
 //export const baseURL = "http://localhost:5000";
