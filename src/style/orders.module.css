@@ -195,6 +195,7 @@
   .orderNum {
     order: 2;
     text-align: center;
+    font-size: 7rem;
   }
 
   .officeCode {

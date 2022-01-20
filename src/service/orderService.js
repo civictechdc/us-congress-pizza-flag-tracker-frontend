@@ -6,6 +6,7 @@ const getAll = () => {
   return httpAuthenticate().get("/orders");
 };
 
+
 const get = (uuid) => {
   return httpAuthenticate().get(`/orders/${uuid}`);
 };

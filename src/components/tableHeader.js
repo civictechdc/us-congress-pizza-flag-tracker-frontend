@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SortArrows } from "./Sort/SortArrows";
+import { SortArrows } from "./sorting/sortArrows";
 import styles from "../style/sort.module.css"
 
 export const TableHeader = (props) => {
