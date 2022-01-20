@@ -25,7 +25,7 @@ describe("Loading and logging in", () => {
 });
 
 describe("CRUD actions for superuser", () => {
-  beforeEach(() => {
+  before(() => {
     cy.request({
       method: "POST",
       url: `${Cypress.env("api_server")}/signin`,
@@ -36,8 +36,13 @@ describe("CRUD actions for superuser", () => {
       auth: { username: "FED-ADMIN", password: "FED-ADMIN-1010" },
     }).then((response) => {
       cy.setLocalStorage("user", JSON.stringify(response.body));
+      cy.saveLocalStorage();
     });
   });
+  beforeEach(() => {
+    cy.restoreLocalStorage();
+  });
+
   it("allows FED-ADMIN to create a new order ", () => {
     cy.visit("/add");
     //TODO add a name to the disabled Office input so that we can do cy.get("input[name=congressional_office]").should("be.disabled")
@@ -80,6 +85,8 @@ describe("CRUD actions for superuser", () => {
     cy.get(".badge-danger").click(); //there probably should be a confirmation step here both before and after deletion, SO, this test will need to be updated
     cy.get("main").wait(1000).should("not.contain", "1234567890"); //cypress docs say not to use wait but otherwise it's testing against the empty, pre-rendered table
   });
+
+  afterEach(() => {});
 });
 
 //NONE OF THE BELOW WORKS YET
