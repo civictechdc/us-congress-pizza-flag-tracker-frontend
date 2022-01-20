@@ -1,17 +1,30 @@
 import React, { useState, useEffect } from "react";
 import AuthService from "../services/AuthService";
 import OrderDataService from "../services/OrderService";
+import StatusDataService from "../services/StatusService";
 import OrderForm from "./OrderForm";
+import { numSort } from "./Sort/SortHook";
 
 const EditOrder = (props) => {
   const initialOrderState = {
-    uuid: null,
-    title: "",
     description: "",
-    published: false,
-    order_number: "",
     home_office_code: "",
+    order_number: "",
+    order_status_id: "",
+    published: false,
+    status: {
+      active_status: "",
+      created_at: "",
+      description: "",
+      id: "",
+      permission: "",
+      sequence_num: "",
+      status_code: "",
+      updated_at: "",
+    },
+    title: "",
     usa_state: "",
+    uuid: null,
   };
 
   const initialMessageState = {
@@ -24,14 +37,8 @@ const EditOrder = (props) => {
 
   const [order, setOrder] = useState(initialOrderState);
   const [message, setMessage] = useState(initialMessageState);
+  const [statuses, setStatuses] = useState([]);
   const mode = "edit";
-
-  // responses from DB overwriting order.status_description
-  // initialStatusState temporary until status info integrated into response.data > initialStatusState to be folded into initialOrderState
-  const initialStatusState = {
-    status_description: "",
-  };
-  const [status, setStatus] = useState(initialStatusState);
 
   const getOrder = (id) => {
     const serviceCall = () => {
@@ -50,10 +57,40 @@ const EditOrder = (props) => {
     getOrder(props.match.params.id);
   }, [props.match.params.id]);
 
+  const retrieveStatuses = () => {
+    const serviceCall = () => {
+      return StatusDataService.getStatus().then((response) => {
+        setStatuses(response.data.statuses);
+      });
+    };
+    try {
+      AuthService.refreshTokenWrapperFunction(serviceCall);
+    } catch (e) {
+      setPopUpBox("block");
+      console.log(e);
+      if (e.response.status === 401) {
+        setMessage(loginError);
+      } else {
+        setMessage(
+          e.message +
+            "." +
+            "Check with admin if server is down or try logging out and logging in."
+        );
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (statuses.length === 0) {
+      retrieveStatuses();
+    }
+  }, [statuses]);
+
+  const sortedStatuses = numSort(statuses, "sequence_num", "asc");
+
   const updateOrder = () => {
     const serviceCall = () => {
       return OrderDataService.update(order.uuid, order).then((response) => {
-        console.log(response);
         setMessage({
           ...message,
           checkSaved: true,
@@ -88,13 +125,12 @@ const EditOrder = (props) => {
           <OrderForm
             order={order}
             message={message}
-            status={status} // temporary until status info integrated into response.data > will then be folded into order
             setOrderFunc={setOrder}
-            setStatusFunc={setStatus} // temporary until status info integrated into response.data > will then be folded into setOrder
             setMessageFunc={setMessage}
             saveOrderFunc={updateOrder}
             deleteOrderFunc={deleteOrder}
             mode={mode}
+            statuses={sortedStatuses}
           />
           <p>{message.success}</p>
         </>

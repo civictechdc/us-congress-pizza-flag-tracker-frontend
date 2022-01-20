@@ -2,20 +2,18 @@ import React from "react";
 import Select from "react-select";
 import { baseURL } from "../http-common";
 import { STATES } from "./states.js";
-import { STATUSES } from "./Statuses.js";
 import "./OrderForm.css";
 
 const OrderForm = (props) => {
   const {
     order,
     message,
-    status,
     setOrderFunc,
-    setStatusFunc,
     setMessageFunc,
     saveOrderFunc,
     mode,
     deleteOrderFunc,
+    statuses,
   } = props;
 
   let optionUSStates = [];
@@ -39,13 +37,13 @@ const OrderForm = (props) => {
   }
 
   let optionStatuses = [];
-  if (STATUSES) {
-    optionStatuses = STATUSES.map((status) =>
+  if (statuses) {
+    optionStatuses = statuses.map((status) =>
       /* Old Filter by DEMO Organization Code was here
           to be rewired to ACTUAL User Profile DB info  */
       ({
         label: `#${status.sequence_num} ${status.description}`,
-        name: "status",
+        name: "order_status_id",
         value: status.sequence_num,
       })
     );
@@ -69,7 +67,7 @@ const OrderForm = (props) => {
       name = event.target.name;
       value = event.target.value;
     }
-    setMessageFunc({ ...message, isLastChangeUSState: false });
+    setMessageFunc({ ...message, isLastChangeUSState: false, success: "" });
     if (name === "usa_state") {
       setOrderFunc({ ...order, home_office_code: "" });
       setMessageFunc((prevMessageFunc) => {
@@ -82,23 +80,29 @@ const OrderForm = (props) => {
     setMessageFunc((prevMessageFunc) => {
       return { ...prevMessageFunc, checkSaved: false, whyStatus: false };
     });
+    if (name === "order_status_id") {
+      handleStatusChange(event);
+    }
   };
 
-  // responses from DB overwriting status values in order's state
-  // handleStatusChange temporary until status info integrated into response.data
   const handleStatusChange = (event) => {
-    const { name, value } = event;
-    if (setStatusFunc) {
-      setStatusFunc({ ...status, [name]: value });
+    // the backend doesn't need this but the frontend does need it to make select box display correctly
+    let { name, value, label } = event;
+
+    for (let i = 0; i < label.length; i++) {
+      if (label[i] === " ") {
+        let result = label.slice(i + 1);
+        label = result;
+        break;
+      }
     }
-    if (setMessageFunc) {
-      setMessageFunc({
-        ...message,
-        checkSaved: false,
-        isLastChangeUSState: false,
-        whyStatus: false,
-      });
-    }
+
+    setOrderFunc((prevOrderFunc) => {
+      return {
+        ...prevOrderFunc,
+        status: { sequence_num: value, description: label },
+      };
+    });
   };
 
   const whyNoSave = () => {
@@ -181,7 +185,7 @@ const OrderForm = (props) => {
               options={optionDistricts}
               value={{
                 label: order.home_office_code,
-                name: "usa_state",
+                name: "home_office_code",
                 value: order.home_office_code,
               }}
             />
@@ -212,7 +216,15 @@ const OrderForm = (props) => {
         <>
           <div className="form-group">
             <label htmlFor="status_description">Status:</label>{" "}
-            <Select onChange={handleStatusChange} options={optionStatuses} />
+            <Select
+              onChange={handleInputChange}
+              options={optionStatuses}
+              value={{
+                label: `#${order.status.sequence_num} ${order.status.description}`,
+                name: "order_status_id",
+                value: order.status.sequence_num,
+              }}
+            />
           </div>
 
           <div className="form-group">
