@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import AuthService from "../services/AuthService";
-import OrderDataService from "../services/OrderService";
-import StatusDataService from "../services/StatusService";
-import { numSort } from "./Sort/SortHook";
+import AuthService from "../../service/authService";
+import OrderDataService from "../../service/orderService";
+import StatusDataService from "../../service/statusService";
+import { numSort } from "../sorting/sortHook";
 
 const ScanOrder = (props) => {
   const initialOrderState = {
@@ -67,7 +67,7 @@ const ScanOrder = (props) => {
     } catch (e) {
       setPopUpBox("block");
       console.log(e);
-      if (e.response.status === 401) {
+      if (e.response?.status === 401) {
         setMessage(loginError);
       } else {
         setMessage(
@@ -213,13 +213,9 @@ const ScanOrder = (props) => {
 
   const refuseUpdate = () => {
     setPopUpBox("block");
-    if (nextDesc == "") {
-      setMessage("Next Status is missing, check connection to server");
-    } else {
-      setMessage(
-        "Do not have permissions for either (1) this order or (2) to advance to the next status"
-      );
-    }
+    setMessage(
+      "Do not have permissions for either (1) this order or (2) to advance to the next status"
+    );
   };
 
   const closePopUpBox = () => {
