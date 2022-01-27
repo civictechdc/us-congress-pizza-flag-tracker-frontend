@@ -26,19 +26,9 @@ describe("Loading and logging in", () => {
 
 describe("CRUD actions for superuser", () => {
   before(() => {
-    cy.request({
-      method: "POST",
-      url: `${Cypress.env("api_server")}/signin`,
-      headers: {
-        "Content-type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      auth: { username: "FED-ADMIN", password: "FED-ADMIN-1010" },
-    }).then((response) => {
-      cy.setLocalStorage("user", JSON.stringify(response.body));
-      cy.saveLocalStorage();
-    });
+    cy.login("FED-ADMIN", "FED-ADMIN-1010");
   });
+
   beforeEach(() => {
     cy.restoreLocalStorage();
   });
@@ -85,36 +75,4 @@ describe("CRUD actions for superuser", () => {
     cy.get(".badge-danger").click(); //there probably should be a confirmation step here both before and after deletion, SO, this test will need to be updated
     cy.get("main").wait(1000).should("not.contain", "1234567890"); //cypress docs say not to use wait but otherwise it's testing against the empty, pre-rendered table
   });
-
-  afterEach(() => {});
 });
-
-//NONE OF THE BELOW WORKS YET
-
-// describe("CRUD actions for state", () => {
-//   beforeEach(() => {
-//     cy.request({
-//       method: "POST",
-//       url: `${Cypress.env("api_server")}/signin`,
-//       headers: {
-//         "Content-type": "application/json",
-//         "Access-Control-Allow-Origin": "*",
-//       },
-//       auth: { username: "TN-07", password: "TN-07-1010" },
-//     }).then((response) => {
-//       cy.setLocalStorage("user", JSON.stringify(response.body));
-//     });
-//   });
-//   it("does not allow state user to create a new order ", () => {
-//     cy.visit("/add");
-//     //TODO add a name to the disabled Office input so that we can do cy.get("input[name=congressional_office]").should("be.disabled")
-//     cy.get("input[name=order_number]").type("1234567890");
-//     cy.get("input[id=react-select-3-input]").type(`CO{enter}`);
-//     // cy.get("input[id=react-select-5-input]").click().find('[id*="5-option"]').eq(1).should("equal","CO-01").type("CO-01");
-//     //I'd like the above test to work but I'm having trouble getting Cypress to work with the react-selector. As a compromise/stopgap we use the below instead:
-//     cy.get("input[id=react-select-5-input]").click().type(`CO-01{enter}`);
-//     cy.get(".btn").click();
-//     //should look for response 401 forbidden, which should be sent from the backend
-//   });
-
-// });
