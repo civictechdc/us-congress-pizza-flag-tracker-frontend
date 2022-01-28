@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import AuthService from "../../service/authService";
-import OrderDataService from "../../service/orderService";
-import StatusDataService from "../../service/statusService";
-import OrderForm from "../orderForm";
-import { numSort } from "../sorting/sortHook";
+import AuthService from "../service/authService";
+import OrderDataService from "../service/orderService";
+import StatusDataService from "../service/statusService";
+import OrderForm from "../components/orderForm";
+import { numSort } from "../components/sorting/sortHook";
 
 const EditOrder = (props) => {
   const initialOrderState = {
