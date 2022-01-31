@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import OrderDataService from "../../service/orderService";
 import { Link } from "react-router-dom";
-import styles from "../../style/orders.module.css"
+import styles from "../../style/orders.module.css";
 import AuthService from "../../service/authService";
 import { useSortableData } from "../sorting/sortHook";
-import { TableHeader } from "../tableHeader"
-
-
+import { TableHeader } from "../tableHeader";
 
 const OrdersList = () => {
   const [orders, setOrders] = useState([]);
@@ -21,14 +19,13 @@ const OrdersList = () => {
   const sortOptions = { sortedField, sortDir, sortType };
   const sortedOrders = useSortableData(orders, sortOptions);
 
- 
-//retrieve orders based on authirization level
+  //retrieve orders based on authirization level
   const retrieveOrders = () => {
     let serviceCall = () => {
-       return OrderDataService.getAll().then((response) => {
-          setOrders(response.data.orders);
-        });
-      };
+      return OrderDataService.getAll().then((response) => {
+        setOrders(response.data.orders);
+      });
+    };
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
     } catch (e) {
@@ -58,12 +55,10 @@ const OrdersList = () => {
   const refreshList = () => {
     retrieveOrders();
     setCurrentOrder(null);
-    
   };
 
   const setActiveOrder = (order, index) => {
     setCurrentOrder(order);
-   
   };
 
   const removeAllOrders = () => {
@@ -76,7 +71,8 @@ const OrdersList = () => {
   };
 
   const findByOrderNumber = () => {
-    let serviceCall = () => {  //changed from const to let to maintain best practices
+    let serviceCall = () => {
+      //changed from const to let to maintain best practices
       return OrderDataService.findByOrderNumber(searchTitle).then(
         (response) => {
           if ("error" in response.data) {
@@ -119,48 +115,47 @@ const OrdersList = () => {
       {ordersToDisplay &&
         ordersToDisplay.map((order, index) => (
           <>
-          <div
-            className={styles.flagItem}
-            onClick={() => setActiveOrder(order, index)}
-            key={index}
-          >
-            <p className={styles.orderNum}>{order.order_number}</p>
-            <p className={styles.officeCode}>{order.home_office_code}</p>
-            <div className={styles.statusGroup}>
-              <p className={styles.description}>{order.status.description}</p>
-              <p className={styles.statusCode}>{order.status.status_code}</p>
-            </div>
-            
-          </div>
-          <div className={styles.mobileStatus}> 
-            {currentOrder ?(
-            
-              <div>
-                <p><b>Created:</b> {formatDate(currentOrder.created_at)}</p>
-                <p><b>Updated:</b> {formatDate(currentOrder.updated_at)}</p>
-                  
-                    <Link
-                      to={"/orders/" + currentOrder.uuid}
-                      className="badge badge-warning"
-                    >
-                      Edit
-                    </Link>
-
-                    {` `}
-                    <Link
-                      to={"/scan/" + currentOrder.uuid}
-                      className="badge badge-warning"
-                    >
-                      Scan
-                    </Link>
-              </div>  ):(
-              <div>
-                
+            <div
+              className={styles.flagItem}
+              onClick={() => setActiveOrder(order, index)}
+              key={index}
+            >
+              <p className={styles.orderNum}>{order.order_number}</p>
+              <p className={styles.officeCode}>{order.home_office_code}</p>
+              <div className={styles.statusGroup}>
+                <p className={styles.description}>{order.status.description}</p>
+                <p className={styles.statusCode}>{order.status.status_code}</p>
               </div>
-            )}
-          </div>
-          
-          
+            </div>
+            <div className={styles.mobileStatus}>
+              {currentOrder ? (
+                <div>
+                  <p>
+                    <b>Created:</b> {formatDate(currentOrder.created_at)}
+                  </p>
+                  <p>
+                    <b>Updated:</b> {formatDate(currentOrder.updated_at)}
+                  </p>
+
+                  <Link
+                    to={"/orders/" + currentOrder.uuid}
+                    className="badge badge-warning"
+                  >
+                    Edit
+                  </Link>
+
+                  {` `}
+                  <Link
+                    to={"/print/" + currentOrder.uuid}
+                    className="badge badge-warning"
+                  >
+                    Print
+                  </Link>
+                </div>
+              ) : (
+                <div></div>
+              )}
+            </div>
           </>
         ))}
     </div>
@@ -170,103 +165,99 @@ const OrdersList = () => {
     setPopUpbox("none");
   };
 
-  
-    return (
-      <>
-        
+  return (
+    <>
       <div className={styles.mainContainer}>
         <h4 className={styles.title}>Orders List</h4>
-          <div className={styles.inputContainer}>
-            
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Search by order number"
-                value={searchTitle}
-                onChange={onChangeSearchTitle}
-              />
-              <div className={styles.searchButton}>
-                <button
-                  className="btn btn-outline-secondary"
-                  type="button"
-                  onClick={findByOrderNumber}
-                >
-                  Search
-                </button>
-              </div>
-            
+        <div className={styles.inputContainer}>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search by order number"
+            value={searchTitle}
+            onChange={onChangeSearchTitle}
+          />
+          <div className={styles.searchButton}>
+            <button
+              className="btn btn-outline-secondary"
+              type="button"
+              onClick={findByOrderNumber}
+            >
+              Search
+            </button>
           </div>
-              <TableHeader
-                sortedField={sortedField}
-                sortDir={sortDir}
-                setSortedField={setSortedField}
-                setSortType={setSortType}
-                setSortDir={setSortDir}
-              />
-            
-          <div className={styles.orderContainer}>
-            
-              {orderTbody}
-            
-                  <div className={styles.statusItemContainer}>
-              {currentOrder ? (
-                <div className={styles.statusItem}>
-                  <p><b>Order:</b> {currentOrder.order_number}</p>
-                  <p><b>Created:</b> {formatDate(currentOrder.created_at)}</p>
-                  <p><b>Updated:</b> {formatDate(currentOrder.updated_at)}</p>
-                    <div className={styles.links}>
-                      <Link
-                        to={"/orders/" + currentOrder.uuid}
-                        className="badge badge-warning"
-                      >
-                        Edit
-                      </Link>
+        </div>
+        <TableHeader
+          sortedField={sortedField}
+          sortDir={sortDir}
+          setSortedField={setSortedField}
+          setSortType={setSortType}
+          setSortDir={setSortDir}
+        />
 
-                      <Link
-                        to={"/scan/" + currentOrder.uuid}
-                        className="badge badge-warning"
-                      >
-                        Scan
-                      </Link>
-                    </div>  
+        <div className={styles.orderContainer}>
+          {orderTbody}
+
+          <div className={styles.statusItemContainer}>
+            {currentOrder ? (
+              <div className={styles.statusItem}>
+                <p>
+                  <b>Order:</b> {currentOrder.order_number}
+                </p>
+                <p>
+                  <b>Created:</b> {formatDate(currentOrder.created_at)}
+                </p>
+                <p>
+                  <b>Updated:</b> {formatDate(currentOrder.updated_at)}
+                </p>
+                <div className={styles.links}>
+                  <Link
+                    to={"/orders/" + currentOrder.uuid}
+                    className="badge badge-warning"
+                  >
+                    Edit
+                  </Link>
+
+                  <Link
+                    to={"/print/" + currentOrder.uuid}
+                    className="badge badge-warning"
+                  >
+                    Print
+                  </Link>
                 </div>
-              ) : (
-                <div className={styles.statusItem}>
-                  
-                  <p>Please click<br/> on an order...</p>
-                </div>
-              )}
-                  </div>
-          
-          </div>
-            
-            {errorMessage || searchTitle ? (
-              <button
-                className="m-3 btn btn-sm btn-danger"
-                onClick={clearSearch}
-              >
-                Clear search
-              </button>
+              </div>
             ) : (
-              <button
-                className="m-3 btn btn-sm btn-danger"
-                onClick={removeAllOrders}
-              >
-                Remove All
-              </button>
+              <div className={styles.statusItem}>
+                <p>
+                  Please click
+                  <br /> on an order...
+                </p>
+              </div>
             )}
-          
-          
-        
+          </div>
+        </div>
+
+        {errorMessage || searchTitle ? (
+          <button className="m-3 btn btn-sm btn-danger" onClick={clearSearch}>
+            Clear search
+          </button>
+        ) : (
+          <button
+            className="m-3 btn btn-sm btn-danger"
+            onClick={removeAllOrders}
+          >
+            Remove All
+          </button>
+        )}
 
         <div className="pop-container" style={{ display: popUpBox }}>
           <div className="pop-up" onClick={closePopUpBox}>
             <h3>{errorMessage}</h3>
           </div>
         </div>
-      </div>  
-      </>
-    );
+      </div>
+    </>
+  );
 };
 
 export default OrdersList;

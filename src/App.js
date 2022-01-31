@@ -9,6 +9,7 @@ import OrdersList from "./components/pages/ordersList";
 import UserRoute from "./components/protectedRoute/userRoute";
 import AdminRoute from "./components/protectedRoute/adminRoute";
 import FedRoute from "./components/protectedRoute/fedRoute";
+import PrintOrder from "./components/pages/printOrder";
 import ScanOrder from "./components/pages/scanOrder";
 import Profile from "./components/pages/profile";
 
@@ -24,13 +25,13 @@ function App() {
         <div className="mainContainer">
           <Switch>
             <Route exact path="/login" component={Login} />
-            <UserRoute exact path={["/", "/orders"]} component={OrdersList}/>
-            <UserRoute path="/scan/:id" component={ScanOrder}/>
-            <UserRoute exact path="/profile" component={Profile}/>
-            <AdminRoute path="/orders/:id" component={EditOrder}/>
-            <AdminRoute exact path="/users/add" component={AddUser}/>
-            <FedRoute exact path="/add" component={AddOrder}/>
-
+            <UserRoute exact path={["/", "/orders"]} component={OrdersList} />
+            <UserRoute path="/print/:id" component={PrintOrder} />
+            <UserRoute path="/scan/:id" component={ScanOrder} />
+            <UserRoute exact path="/profile" component={Profile} />
+            <AdminRoute path="/orders/:id" component={EditOrder} />
+            <AdminRoute exact path="/users/add" component={AddUser} />
+            <FedRoute exact path="/add" component={AddOrder} />
           </Switch>
         </div>
       </main>
