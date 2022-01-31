@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { baseURL } from "../../http-common";
+import React, { useState, useEffect, useRef } from "react";
+import ReactToPrint from "react-to-print";
 import AuthService from "../../service/authService";
 import OrderDataService from "../../service/orderService";
+import QrCode from "./qrCode";
 import "./printOrder.css";
 
 const PrintOrder = (props) => {
@@ -25,6 +26,7 @@ const PrintOrder = (props) => {
   };
 
   const [order, setOrder] = useState(initialOrderState);
+  const componentRef = useRef();
 
   const getOrder = (id) => {
     const serviceCall = () => {
@@ -49,33 +51,11 @@ const PrintOrder = (props) => {
 
   return (
     <>
-      <div className="form-group">
-        <label htmlFor="order_number">
-          Order Number: <strong>{order.order_number}</strong>
-        </label>
-      </div>
-      <div className="form-group">
-        <label htmlFor="usa_state">
-          US State: <strong>{order.usa_state}</strong>
-        </label>
-      </div>
-      <div className="form-group">
-        <label htmlFor="home_office_code">
-          Congressional Office: <strong>{order.home_office_code}</strong>
-        </label>
-      </div>
-      <div className="form-group">
-        <label>
-          QR Code: <strong>{order.uuid}</strong>
-        </label>
-      </div>
-      <div className="form-group">
-        <img
-          src={baseURL + "/qrcode/" + order.uuid}
-          alt="QR Code"
-          class="center"
-        />
-      </div>
+      <QrCode ref={componentRef} order={order} />
+      <ReactToPrint
+        trigger={() => <button className="center">Print this out!</button>}
+        content={() => componentRef.current}
+      />
     </>
   );
 };

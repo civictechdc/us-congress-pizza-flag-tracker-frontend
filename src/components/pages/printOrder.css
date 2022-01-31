@@ -1,6 +1,7 @@
 .center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-  }
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  margin-left: auto;
+  margin-right: auto;
+}
