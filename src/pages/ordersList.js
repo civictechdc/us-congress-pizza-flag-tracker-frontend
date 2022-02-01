@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import OrderDataService from "../service/orderService";
 import { Link } from "react-router-dom";
-import styles from "../style/orders.module.css"
+import styles from "../style/orders.module.css";
 import AuthService from "../service/authService";
 import { useSortableData } from "../components/sorting/sortHook";
-import { TableHeader } from "../components/tableHeader"
+import { TableHeader } from "../components/tableHeader";
 import Gauge from "../components/gauge";
 
 const OrdersList = () => {
@@ -127,33 +127,36 @@ const OrdersList = () => {
                 <p className={styles.description}>{order.status.description}</p>
                 <p className={styles.statusCode}>{order.status.status_code}</p>
               </div>
+              <div className={styles.gaugeContainer}>
+                <Gauge props={order.status.id} />
+              </div>
             </div>
-            <div className={styles.gaugeContainer}>
-              <Gauge props={order.status.id}/>
-            </div>
-            <div className={styles.mobileStatus}> 
-              {currentOrder ?(
+            <div className={styles.mobileStatus}>
+              {currentOrder ? (
                 <div>
-                  <p><b>Created:</b> {formatDate(currentOrder.created_at)}</p>
-                  <p><b>Updated:</b> {formatDate(currentOrder.updated_at)}</p>
-                    <Link
-                      to={"/orders/" + currentOrder.uuid}
-                      className="badge badge-warning"
-                    >
-                      Edit
-                    </Link>
-                    {` `}
-                    <Link
-                      to={"/scan/" + currentOrder.uuid}
-                      className="badge badge-warning"
-                    >
-                      Scan
-                    </Link>
-                </div>  ):(
-                  <>
-                  </>
-                )
-              }
+                  <p>
+                    <b>Created:</b> {formatDate(currentOrder.created_at)}
+                  </p>
+                  <p>
+                    <b>Updated:</b> {formatDate(currentOrder.updated_at)}
+                  </p>
+                  <Link
+                    to={"/orders/" + currentOrder.uuid}
+                    className="badge badge-warning"
+                  >
+                    Edit
+                  </Link>
+                  {` `}
+                  <Link
+                    to={"/print/" + currentOrder.uuid}
+                    className="badge badge-warning"
+                  >
+                    Print
+                  </Link>
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           </>
         ))}

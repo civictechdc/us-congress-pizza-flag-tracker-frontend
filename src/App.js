@@ -11,8 +11,7 @@ import AdminRoute from "./components/protectedRoute/adminRoute";
 import FedRoute from "./components/protectedRoute/fedRoute";
 import ScanOrder from "./pages/scanOrder";
 import Profile from "./pages/profile";
-import PrintOrder from "./components/pages/printOrder";
-
+import PrintOrder from "./pages/printOrder";
 
 import Header from "./components/header/header";
 import AddUser from "./pages/addUser";

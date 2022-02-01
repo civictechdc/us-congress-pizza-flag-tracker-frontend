@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react";
-import { baseURL } from "../../http-common";
+import { baseURL } from "../http-common";
 
 const QrCode = forwardRef((props, ref) => {
   const { order } = props;
