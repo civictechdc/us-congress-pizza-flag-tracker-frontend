@@ -179,7 +179,7 @@ const OrdersList = () => {
       <>
         
       <div className={styles.mainContainer}>
-        <h4 className={styles.title}>Orders List</h4>
+        <h4 className={styles.title}>Orders</h4>
           <div className={styles.inputContainer}>
             
               <input

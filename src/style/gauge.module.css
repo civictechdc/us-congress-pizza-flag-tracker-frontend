@@ -1,44 +1,47 @@
 .gauge {
-    width: 80%;
+    width: 85%;
     height: 80%;
     display: flex;
     border-radius: 1%;
 }
 
 .gaugeItem {
-    width: 10%;
+    width: 8%;
+    margin-right: 1em;
     border-radius: 5px;
     background-color: blue;
-    box-shadow: inset 5px -5px 10px 2px rgba(0, 0, 116, 0.705),
-        2px 2px 10px 3px rgba(0, 0, 0, 0.596);
+    border-top: rgb(2, 2, 189) solid 1em;
+    border-left: rgb(1, 1, 128) solid 1em;
+    box-shadow: -10px 2px 10px 0px rgba(0, 0, 0, 0.596);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.gaugeItem:nth-child(n+4):nth-child(-n+6){
-    width: 14%;
-}
-
-.gaugeItem:nth-child(7){
-    width: 16%;
-}
-
 .gaugeItem:last-child {
-    width: 16%;
-    box-shadow: 0px 0px 20px 5px rgba(132, 132, 248, 0.986),
-        inset 5px -5px 10px 2px rgba(0, 0, 116, 0.705);
+    width: 20%;
+    box-shadow: 0px 0px 20px 5px rgba(132, 132, 248, 0.986);
     transform: scale(1.1);
     text-shadow: 0px 0px 15px white,
         0px 0px 15px rgba(132, 132, 248, 0.986);
-
-
-
-
 }
 
+.gaugeItem:nth-child(n+1):nth-child(-n+4) {
+    width: 8%;
+}
+
+.gaugeItem:nth-child(n+5):nth-child(-n+6) {
+    width: 15%;
+}
+
+.gaugeItem:nth-child(7) {
+    width: 20%;
+}
+
+
+
 .gaugeNumber {
-    font-size: 3rem;
+    font-size: 2.8rem;
     color: white;
 
 }
@@ -47,9 +50,11 @@
     width: 80%;
     height: 80%;
     border-radius: 5px;
+    border-top-right-radius: 10px;
     background-color: red;
-    box-shadow: 0px 0px 20px 5px rgba(241, 106, 106, 0.822),
-        inset 5px -5px 10px 2px rgba(126, 6, 6, 0.76);
+    border-left: rgba(126, 6, 6, 0.76) solid 1em;
+    border-top: rgba(182, 10, 10, 0.76) solid 1em;
+    box-shadow: -10px 2px 10px 0px rgba(0, 0, 0, 0.596);
     text-align: center;
 }
 
@@ -84,6 +89,7 @@
     }
 
     .gaugeNumber {
-        font-size: 2rem;
+        font-size: 1.5rem;
+        margin-top: .3em;
     }
 }

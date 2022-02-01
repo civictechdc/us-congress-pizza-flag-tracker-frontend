@@ -20,8 +20,8 @@ function App() {
     <>
       <Header />
 
-      <main>
-        <div className="mainContainer">
+      <main className="mainContainer">
+        
           <Switch>
             <Route exact path="/login" component={Login} />
             <UserRoute exact path={["/", "/orders"]} component={OrdersList}/>
@@ -32,22 +32,22 @@ function App() {
             <FedRoute exact path="/add" component={AddOrder}/>
 
           </Switch>
-        </div>
+        
       </main>
       {/* */}
-      <footer className="footer mt-auto py-3">
-        <div className="container">
-          <span className="text-muted">
-            <div className="mt-3 ml-3">
+      <footer className="footer-container">
+        
+          <p className="text-muted">
+            
               A project of <a href="https://codefordc.org">Code for DC</a>
               .&nbsp;
               <a href="https://github.com/codefordc/us-congress-pizza-flag-tracker-frontend/">
                 Open Source on GitHub
               </a>
               . Hosted by <a href="https://netlify.com/">Netlify</a>
-            </div>
-          </span>
-        </div>
+            
+          </p>
+        
       </footer>
     </>
   );

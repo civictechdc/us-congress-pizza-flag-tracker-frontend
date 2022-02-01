@@ -1,0 +1,14 @@
+.profileContainer {
+    width: 50vw;
+    position: relative;
+    left: 25vw;
+    top: 10vh;
+    padding: 2em;
+
+    box-shadow: rgba(0, 0, 0, 0.3) -40px 2px 20px, rgba(0, 0, 0, 0.22) -40px 2px 12px;
+    border-left: rgba(128, 128, 128, 0.753) solid .8em;
+    border-top: rgba(128, 128, 128, 0.527) solid .8em;
+    border-radius: 5px;
+    transform: skewY(-5deg);
+
+}

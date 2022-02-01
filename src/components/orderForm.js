@@ -2,7 +2,7 @@ import React from "react";
 import Select from "react-select";
 import { baseURL } from "../http-common";
 import { STATES } from "./states.js";
-import "./orderForm.css";
+import styles from "../style/orderForm.module.css"
 
 const OrderForm = (props) => {
   const {
@@ -130,6 +130,8 @@ const OrderForm = (props) => {
 
   return (
     <>
+      <div className={styles.formContainer}>
+        <h1 className={styles.title}>Add Order</h1>
       <div className="form-group">
         <label htmlFor="order_number">Order Number</label>
         <input
@@ -258,6 +260,7 @@ const OrderForm = (props) => {
       ) : (
         ""
       )}
+      </div>
     </>
   );
 };

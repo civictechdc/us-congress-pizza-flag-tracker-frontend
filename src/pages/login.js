@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
+import styles from "../style/login.module.css";
 
 import AuthService from "../service/authService";
 
@@ -49,7 +50,8 @@ const Login = (props) => {
   };
 
   return (
-    <div className="col-md-12">
+    <div className={styles.loginContainer}>
+      <h1 className={styles.title}>Login</h1>
       <div className="card card-container">
         <Form onSubmit={handleLogin}>
           <div className="form-group">
