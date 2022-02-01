@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import OrderDataService from "../../service/orderService";
+import OrderDataService from "../service/orderService";
 import { Link } from "react-router-dom";
-import styles from "../../style/orders.module.css"
-import AuthService from "../../service/authService";
-import { useSortableData } from "../sorting/sortHook";
-import { TableHeader } from "../tableHeader"
+import styles from "../style/orders.module.css"
+import AuthService from "../service/authService";
+import { useSortableData } from "../components/sorting/sortHook";
+import { TableHeader } from "../components/tableHeader"
+import Gauge from "../components/gauge";
 
 
 
@@ -130,6 +131,9 @@ const OrdersList = () => {
               <p className={styles.description}>{order.status.description}</p>
               <p className={styles.statusCode}>{order.status.status_code}</p>
             </div>
+            <div className={styles.gaugeContainer}>
+              <Gauge props={order.status.id}/>
+            </div>
             
           </div>
           <div className={styles.mobileStatus}> 
@@ -159,7 +163,7 @@ const OrdersList = () => {
               </div>
             )}
           </div>
-          
+         
           
           </>
         ))}
