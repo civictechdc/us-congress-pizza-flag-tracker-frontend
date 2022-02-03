@@ -234,8 +234,9 @@ const OrderForm = (props) => {
             {order.uuid}
             <img
               src={baseURL + "/qrcode/" + order.uuid}
+              className={styles.qrImage}
               alt="QR Code"
-              align="right"
+              align="center"
             />
           </div>
         </>
