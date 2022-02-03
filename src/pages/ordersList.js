@@ -148,6 +148,13 @@ const OrdersList = () => {
                   </Link>
                   {` `}
                   <Link
+                    to={"/scan/" + currentOrder.uuid}
+                    className="badge badge-warning"
+                  >
+                    Scan
+                  </Link>
+                  {` `}
+                  <Link
                     to={"/print/" + currentOrder.uuid}
                     className="badge badge-warning"
                   >
@@ -219,7 +226,14 @@ const OrdersList = () => {
                   >
                     Edit
                   </Link>
-
+                  {` `}
+                  <Link
+                    to={"/scan/" + currentOrder.uuid}
+                    className="badge badge-warning"
+                  >
+                    Scan
+                  </Link>
+                  {` `}
                   <Link
                     to={"/print/" + currentOrder.uuid}
                     className="badge badge-warning"
