@@ -24,6 +24,13 @@ class UserService {
   getUsers() {
     return httpAuthenticate().get("users");
   }
+
+  updateOwnPassword({ newPassword, oldPassword }) {
+    const data = { new_password: newPassword, old_password: oldPassword };
+    return httpAuthenticate().post("/users/self/update/password", {
+      data,
+    });
+  }
 }
 
 export default new UserService();

@@ -1,9 +1,9 @@
 import React from "react";
 import AuthService from "../service/authService";
+import PasswordUpdate from "../components/passwordUpdate";
 
 const Profile = (props) => {
   const currentUser = AuthService.getCurrentUser();
-  
 
   const roles = Object.fromEntries(
     Object.entries(currentUser).filter(([key]) =>
@@ -59,6 +59,10 @@ const Profile = (props) => {
             }
           })}
       </ul>
+      <p>
+        <strong>Update password:</strong>
+        <PasswordUpdate />
+      </p>
     </div>
   );
 };
