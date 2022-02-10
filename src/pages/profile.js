@@ -59,10 +59,9 @@ const Profile = (props) => {
             }
           })}
       </ul>
-      <p>
-        <strong>Update password:</strong>
-        <PasswordUpdate />
-      </p>
+      <br />
+      <strong>Update password:</strong>
+      <PasswordUpdate />
     </div>
   );
 };
