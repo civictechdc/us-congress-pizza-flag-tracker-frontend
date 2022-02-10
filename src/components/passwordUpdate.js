@@ -50,7 +50,8 @@ const PasswordUpdate = () => {
             } else {
               setMessage("An error occurred: " + response.statusText);
             }
-          });
+          })
+          .catch((err) => setMessage(""));
       };
       try {
         AuthService.refreshTokenWrapperFunction(serviceCall);
