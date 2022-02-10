@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import ReactToPrint from "react-to-print";
 import AuthService from "../service/authService";
 import OrderDataService from "../service/orderService";
-import QrCode from "./qrCode";
+import QrCode from "../components/qrCode";
 import "../style/printOrder.css";
 
 const PrintOrder = (props) => {
