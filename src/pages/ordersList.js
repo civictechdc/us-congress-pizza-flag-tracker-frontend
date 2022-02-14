@@ -62,15 +62,6 @@ const OrdersList = () => {
     setCurrentOrder(order);
   };
 
-  const removeAllOrders = () => {
-    let serviceCall = () => {
-      return OrderDataService.removeAll().then((response) => {
-        refreshList();
-      });
-    };
-    AuthService.refreshTokenWrapperFunction(serviceCall);
-  };
-
   const findByOrderNumber = () => {
     let serviceCall = () => {
       //changed from const to let to maintain best practices
@@ -258,12 +249,7 @@ const OrdersList = () => {
             Clear search
           </button>
         ) : (
-          <button
-            className="m-3 btn btn-sm btn-danger"
-            onClick={removeAllOrders}
-          >
-            Remove All
-          </button>
+          <></>
         )}
 
         <div className="pop-container" style={{ display: popUpBox }}>
