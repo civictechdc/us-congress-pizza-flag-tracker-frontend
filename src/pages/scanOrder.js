@@ -34,9 +34,6 @@ const ScanOrder = (props) => {
   const loginError = "You must be logged in to view this page";
   const user = JSON.parse(localStorage.getItem("user"));
 
-  console.log("User: ", user)
-  console.log("Home Office Code: ", order.home_office_code)
-
   const getOrder = (id) => {
     const serviceCall = () => {
       return OrderDataService.get(id)
@@ -54,6 +51,8 @@ const ScanOrder = (props) => {
       console.log(e);
     }
   };
+
+  console.log("Order: ", order)
 
   useEffect(() => {
     getOrder(props.match.params.id);
@@ -130,24 +129,21 @@ const ScanOrder = (props) => {
   let allowSTATE = "";
 
   if (user) {
-    if (user.can_update_status_for === "FED-HOSS") {
+    if (user.office_code === "FED-HOSS") {
       allowHOSS = "yes";
     }
 
-    if (user.can_update_status_for === "FED-AOC") {
+    if (user.office_code === "FED-AOC") {
       allowAOC = "yes";
     }
 
-    if (user.can_update_status_for === "FED-MAIL") {
+    if (user.office_code === "FED-MAIL") {
       allowMAIL = "yes";
     }
 
     if (user.office_code === order.home_office_code) {
       allowSTATE = "yes";
     }
-
-    console.log("Allow State: ", allowSTATE)
-    console.log("Next Permission: ", nextPermission)
 
     if (user.can_update_status_for === "ALL") {
       allowHOSS = "yes";
