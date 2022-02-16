@@ -52,8 +52,6 @@ const ScanOrder = (props) => {
     }
   };
 
-  console.log("Order: ", order)
-
   useEffect(() => {
     getOrder(props.match.params.id);
   }, [props.match.params.id]);
