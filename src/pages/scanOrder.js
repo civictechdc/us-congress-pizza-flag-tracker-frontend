@@ -129,19 +129,19 @@ const ScanOrder = (props) => {
   let allowSTATE = "";
 
   if (user) {
-    if (user.office_code === "FED-HOSS") {
+    if (user.can_update_status_for === "FED-HOSS") {
       allowHOSS = "yes";
     }
 
-    if (user.office_code === "FED-AOC") {
+    if (user.can_update_status_for === "FED-AOC") {
       allowAOC = "yes";
     }
 
-    if (user.office_code === "FED-MAIL") {
+    if (user.can_update_status_for === "FED-MAIL") {
       allowMAIL = "yes";
     }
 
-    if (user.office_code === order.home_office_code) {
+    if (user.can_update_status_for === order.home_office_code) {
       allowSTATE = "yes";
     }
 
