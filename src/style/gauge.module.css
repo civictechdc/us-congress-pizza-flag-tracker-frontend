@@ -6,14 +6,17 @@
 }
 
 .gaugeItem {
-    width: 8%;
+    width: 15%;
     margin-right: 1em;
     border-radius: 5px;
+    color: white;
     background-color: blue;
     border-top: rgb(2, 2, 189) solid 1em;
     border-left: rgb(1, 1, 128) solid 1em;
     box-shadow: -10px 2px 10px 0px rgba(0, 0, 0, 0.596);
+
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
@@ -26,23 +29,36 @@
         0px 0px 15px rgba(132, 132, 248, 0.986);
 }
 
-.gaugeItem:nth-child(n+1):nth-child(-n+4) {
-    width: 8%;
+.gaugeItem:nth-child(n+1):nth-child(-n+2) {
+    width: 15%;
+    background-color: red;
+    border-left: rgba(126, 6, 6, 0.76) solid 1em;
+    border-top: rgba(182, 10, 10, 0.76) solid 1em;
 }
 
-.gaugeItem:nth-child(n+5):nth-child(-n+6) {
+.gaugeItem:nth-child(n+3):nth-child(-n+4) {
     width: 15%;
+    background-color: white;
+    border-top: rgb(180, 177, 177) solid 1em;
+    border-left: rgba(116, 116, 116, 0.952) solid 1em;
+    color: black;
 }
 
 .gaugeItem:nth-child(7) {
-    width: 20%;
+    width: 15%;
 }
 
 
 
 .gaugeNumber {
     font-size: 2.8rem;
-    color: white;
+
+
+}
+
+.gaugeCode {
+    font-size: 1rem;
+    text-align: center;
 
 }
 
@@ -51,15 +67,20 @@
     height: 80%;
     border-radius: 5px;
     border-top-right-radius: 10px;
+
     background-color: red;
     border-left: rgba(126, 6, 6, 0.76) solid 1em;
     border-top: rgba(182, 10, 10, 0.76) solid 1em;
     box-shadow: -10px 2px 10px 0px rgba(0, 0, 0, 0.596);
-    text-align: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }
 
 .cancel {
-    width: 100%;
+    width: 50%;
     font-size: 3rem;
     color: white;
     text-shadow: 0px 0px 15px white,
@@ -68,10 +89,32 @@
 
 }
 
-.meter {
-    width: 70vw;
-    height: 7vh;
+.gaugeDone {
+    width: 80%;
+    height: 80%;
+    border-radius: 5px;
+    border-top-right-radius: 10px;
+
+    background-color: green;
+    border-left: rgba(4, 78, 4, 0.774) solid 1em;
+    border-top: rgba(9, 112, 9, 0.753) solid 1em;
+    box-shadow: -10px 2px 10px 0px rgba(0, 0, 0, 0.596);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+.done {
+    width: 50%;
+    font-size: 3rem;
+    color: white;
+    text-shadow: 0px 0px 15px white,
+        0px 0px 15px rgba(132, 132, 248, 0.986);
+
+
+}
+
 
 
 /*====================================================
@@ -91,5 +134,9 @@
     .gaugeNumber {
         font-size: 1.5rem;
         margin-top: .3em;
+    }
+
+    .gaugeCode {
+        font-size: .5rem;
     }
 }

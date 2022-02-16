@@ -37,16 +37,6 @@ function App() {
       {/* */}
       <footer className="footer-container">
         
-          <p className="text-muted">
-            
-              A project of <a href="https://codefordc.org">Code for DC</a>
-              .&nbsp;
-              <a href="https://github.com/codefordc/us-congress-pizza-flag-tracker-frontend/">
-                Open Source on GitHub
-              </a>
-              . Hosted by <a href="https://netlify.com/">Netlify</a>
-            
-          </p>
         
       </footer>
     </>
