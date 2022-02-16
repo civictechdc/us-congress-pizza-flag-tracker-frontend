@@ -34,6 +34,9 @@ const ScanOrder = (props) => {
   const loginError = "You must be logged in to view this page";
   const user = JSON.parse(localStorage.getItem("user"));
 
+  console.log("User: ", user)
+  console.log("Home Office Code: ", order.home_office_code)
+
   const getOrder = (id) => {
     const serviceCall = () => {
       return OrderDataService.get(id)
@@ -139,9 +142,12 @@ const ScanOrder = (props) => {
       allowMAIL = "yes";
     }
 
-    if (user.can_update_status_for === order.home_office_code) {
+    if (user.office_code === order.home_office_code) {
       allowSTATE = "yes";
     }
+
+    console.log("Allow State: ", allowSTATE)
+    console.log("Next Permission: ", nextPermission)
 
     if (user.can_update_status_for === "ALL") {
       allowHOSS = "yes";
