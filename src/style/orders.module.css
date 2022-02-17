@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: skewY(-10deg);
+  transform: skewY(-5deg);
 }
 
 .orderContainer {

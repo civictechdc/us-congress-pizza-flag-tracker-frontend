@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import OrderDataService from "../service/orderService";
 import { Link } from "react-router-dom";
-import styles from "../style/orders.module.css"
+import styles from "../style/orders.module.css";
 import AuthService from "../service/authService";
 import { useSortableData } from "../components/sorting/sortHook";
-import { TableHeader } from "../components/tableHeader"
+import { TableHeader } from "../components/tableHeader";
 import Gauge from "../components/gauge";
-
-
 
 const OrdersList = () => {
   const [orders, setOrders] = useState([]);
@@ -22,14 +20,13 @@ const OrdersList = () => {
   const sortOptions = { sortedField, sortDir, sortType };
   const sortedOrders = useSortableData(orders, sortOptions);
 
- 
-//retrieve orders based on authirization level
+  //retrieve orders based on authirization level
   const retrieveOrders = () => {
     let serviceCall = () => {
-       return OrderDataService.getAll().then((response) => {
-          setOrders(response.data.orders);
-        });
-      };
+      return OrderDataService.getAll().then((response) => {
+        setOrders(response.data.orders);
+      });
+    };
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
     } catch (e) {
@@ -59,7 +56,6 @@ const OrdersList = () => {
   const refreshList = () => {
     retrieveOrders();
     setCurrentOrder(null);
-    
   };
 
   const setActiveOrder = (order, index) => {
@@ -82,7 +78,8 @@ const OrdersList = () => {
   };
 
   const findByOrderNumber = () => {
-    let serviceCall = () => {  //changed from const to let to maintain best practices
+    let serviceCall = () => {
+      //changed from const to let to maintain best practices
       return OrderDataService.findByOrderNumber(searchTitle).then(
         (response) => {
           if ("error" in response.data) {
@@ -165,6 +162,12 @@ const OrdersList = () => {
                     >
                       Scan
                     </Link>
+                     <Link
+                    to={"/print/" + currentOrder.uuid}
+                    className="badge badge-warning"
+                  >
+                    Print
+                  </Link>
                    </div>
                 
                   
@@ -192,10 +195,8 @@ const OrdersList = () => {
     setPopUpbox("none");
   };
 
-  
-    return (
-      <>
-        
+  return (
+    <>
       <div className={styles.mainContainer}>
         <h4 className={styles.title}>Orders</h4>
           <div className={styles.inputContainer}>
@@ -244,25 +245,31 @@ const OrdersList = () => {
                 Clear search
               </button>
             ) : (
-              <button
-                className="m-3 btn btn-sm btn-danger"
-                onClick={removeAllOrders}
-              >
-                Remove All
-              </button>
+              <div className={styles.statusItem}>
+                <p>
+                  Please click
+                  <br /> on an order...
+                </p>
+              </div>
             )}
-          
-          
-        
+          </div>
+       
+
+        {errorMessage || searchTitle ? (
+          <button className="m-3 btn btn-sm btn-danger" onClick={clearSearch}>
+            Clear search
+          </button>
+        ) : (
+          <></>
+        )}
 
         <div className="pop-container" style={{ display: popUpBox }}>
           <div className="pop-up" onClick={closePopUpBox}>
             <h3>{errorMessage}</h3>
           </div>
         </div>
-      </div>  
-      </>
-    );
+    </>
+  );
 };
 
 export default OrdersList;

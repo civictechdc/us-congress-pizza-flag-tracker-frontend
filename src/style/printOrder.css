@@ -1,0 +1,7 @@
+.center {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  margin-left: auto;
+  margin-right: auto;
+}

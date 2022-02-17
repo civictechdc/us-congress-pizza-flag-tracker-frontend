@@ -11,6 +11,7 @@ import AdminRoute from "./components/protectedRoute/adminRoute";
 import FedRoute from "./components/protectedRoute/fedRoute";
 import ScanOrder from "./pages/scanOrder";
 import Profile from "./pages/profile";
+import PrintOrder from "./pages/printOrder";
 
 import Header from "./components/header/header";
 import AddUser from "./pages/addUser";
@@ -24,13 +25,13 @@ function App() {
         
           <Switch>
             <Route exact path="/login" component={Login} />
-            <UserRoute exact path={["/", "/orders"]} component={OrdersList}/>
-            <UserRoute path="/scan/:id" component={ScanOrder}/>
-            <UserRoute exact path="/profile" component={Profile}/>
-            <AdminRoute path="/orders/:id" component={EditOrder}/>
-            <AdminRoute exact path="/users/add" component={AddUser}/>
-            <FedRoute exact path="/add" component={AddOrder}/>
-
+            <UserRoute exact path={["/", "/orders"]} component={OrdersList} />
+            <UserRoute path="/print/:id" component={PrintOrder} />
+            <UserRoute path="/scan/:id" component={ScanOrder} />
+            <UserRoute exact path="/profile" component={Profile} />
+            <AdminRoute path="/orders/:id" component={EditOrder} />
+            <AdminRoute exact path="/users/add" component={AddUser} />
+            <FedRoute exact path="/add" component={AddOrder} />
           </Switch>
         
       </main>

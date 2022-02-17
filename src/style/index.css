@@ -57,3 +57,7 @@ code {
   justify-content: space-around;
   align-items: center;
 }
+
+.badge {
+  margin: 1px;
+}
