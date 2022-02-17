@@ -1,0 +1,43 @@
+.loginContainer {
+    width: 40vw;
+    min-height: 30vh;
+    position: relative;
+    left: 30vw;
+    top: 10vh;
+    padding: 2em;
+
+    box-shadow: rgba(0, 0, 0, 0.3) -40px 2px 20px, rgba(0, 0, 0, 0.22) -40px 2px 12px;
+    border-left: rgba(128, 128, 128, 0.753) solid .8em;
+    border-top: rgba(128, 128, 128, 0.527) solid .8em;
+    border-radius: 5px;
+    transform: skewY(-5deg);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+}
+
+.title {
+    width: 100%;
+    margin-bottom: .5em;
+    font-size: 6rem;
+    text-align: center;
+}
+
+
+/*====================================================
+  ==                                                ==
+  ==                                                ==
+  ==             Mobile Styling                     ==
+  ==                                                ==
+  ==                                                ==
+  ====================================================*/
+
+@media only screen and (max-width: 600px) {
+
+    .title {
+        font-size: 4rem;
+    }
+
+}

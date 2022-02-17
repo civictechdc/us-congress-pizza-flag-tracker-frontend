@@ -1,0 +1,55 @@
+.btn-why {
+  opacity: .6;
+}
+
+.validation-message {
+  color: #FF0000;
+  font-weight: bold;
+}
+
+.formContainer {
+  position: relative;
+  left: 25vw;
+  top: 10vh;
+  width: 50vw;
+  
+  padding: 2em;
+
+  box-shadow: rgba(0, 0, 0, 0.3) -40px 2px 20px, rgba(0, 0, 0, 0.22) -40px 2px 12px;
+  border-left: rgba(128, 128, 128, 0.753) solid .8em;
+  border-top: rgba(128, 128, 128, 0.527) solid .8em;
+  border-radius: 5px;
+
+  display: flex;
+  flex-direction: column;
+  row-gap: 3em;
+  transform: skewY(-5deg);
+
+}
+
+.title {
+  font-size: 6rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.qrImage{
+  width: 50%;
+  height: 30%;
+}
+
+/*====================================================
+  ==                                                ==
+  ==                                                ==
+  ==             Mobile Styling                     ==
+  ==                                                ==
+  ==                                                ==
+  ====================================================*/
+
+@media only screen and (max-width: 600px) {
+
+  .title {
+    font-size: 4rem;
+  }
+
+}

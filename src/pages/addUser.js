@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
+import styles from "../style/addUser.module.css"
 
 import UserService from "../service/userService";
 
@@ -104,7 +105,8 @@ export default class AddUser extends Component {
 
   render() {
     return (
-      <div className="col-md-12">
+      <div className={styles.addContainer}>
+        <h1 className={styles.title}>Add New User</h1>
         <div className="card card-container">
           <Form
             onSubmit={this.handleRegister}

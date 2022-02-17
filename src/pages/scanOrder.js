@@ -3,6 +3,7 @@ import AuthService from "../service/authService";
 import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 import { numSort } from "../components/sorting/sortHook";
+import styles from "../style/scanOrder.module.css"
 
 const ScanOrder = (props) => {
   const initialOrderState = {
@@ -223,7 +224,9 @@ const ScanOrder = (props) => {
   };
 
   return (
-    <>
+    <> 
+    <div className={styles.scanContainer}>
+      <h1 className={styles.title}>Scan</h1>
       {order ? (
         <>
           <div className="form-group">
@@ -383,6 +386,8 @@ const ScanOrder = (props) => {
           <h3>{message}</h3>
         </div>
       </div>
+
+    </div>  
     </>
   );
 };
