@@ -1,6 +1,7 @@
 import { useState } from "react";
 import userService from "../service/userService";
 import AuthService from "../service/authService";
+import { handleError } from "./handleError";
 
 const PasswordUpdate = () => {
   const [oldPassword, setOldPassword] = useState("");
@@ -51,13 +52,13 @@ const PasswordUpdate = () => {
               setMessage("An error occurred: " + response.statusText);
             }
           })
-          .catch((err) => setMessage(""));
+          .catch((err) => handleError(err, setMessage));
       };
       try {
         AuthService.refreshTokenWrapperFunction(serviceCall);
       } catch (e) {
         console.log(`error occurred while updating password: ${e}`);
-        setMessage("");
+        handleError(e, setMessage);
       }
     } else {
       setMessage("New passwords must match!");

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
+import { handleError } from "../components/handleError";
 import styles from "../style/login.module.css";
 
 import AuthService from "../service/authService";
@@ -38,13 +39,7 @@ const Login = (props) => {
         props.history.go();
       },
       (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        setMessage(resMessage);
+        handleError(error, setMessage);
       }
     );
   };

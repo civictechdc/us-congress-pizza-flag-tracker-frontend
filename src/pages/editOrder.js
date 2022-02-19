@@ -4,6 +4,7 @@ import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 import OrderForm from "../components/orderForm";
 import { numSort } from "../components/sorting/sortHook";
+import { handleError } from "../components/handleError";
 
 const EditOrder = (props) => {
   const initialOrderState = {
@@ -49,7 +50,7 @@ const EditOrder = (props) => {
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
     } catch (e) {
-      console.log(e);
+      handleError(e, setMessage);
     }
   };
 
@@ -68,15 +69,7 @@ const EditOrder = (props) => {
     } catch (e) {
       setPopUpBox("block");
       console.log(e);
-      if (e.response.status === 401) {
-        setMessage(loginError);
-      } else {
-        setMessage(
-          e.message +
-            "." +
-            "Check with admin if server is down or try logging out and logging in."
-        );
-      }
+      handleError(e, setMessage);
     }
   };
 
@@ -101,7 +94,7 @@ const EditOrder = (props) => {
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
     } catch (e) {
-      console.log(`error occurred while updating order: ${e}`);
+      handleError(e, setMessage);
     }
   };
 
@@ -114,7 +107,7 @@ const EditOrder = (props) => {
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
     } catch (e) {
-      console.log(e);
+      handleError(e, setMessage);
     }
   };
 
