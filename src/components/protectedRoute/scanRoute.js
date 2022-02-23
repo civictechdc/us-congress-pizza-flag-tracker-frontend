@@ -1,13 +1,12 @@
-import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { isFed, orderControl } from "./permissions";
+import { userOffice, statusControl } from "./permissions";
 
-function FedRoute({ component: Component, ...rest }) {
+function ScanRoute({ component: Component, ...rest }) {
   return (
     <Route
       {...rest}
       render={(props) => {
-        return isFed() && orderControl() ? (
+        return statusControl() === "All" || statusControl() == userOffice() ? (
           <Component {...props} />
         ) : (
           <Redirect to="/orders" />
@@ -17,4 +16,4 @@ function FedRoute({ component: Component, ...rest }) {
   );
 }
 
-export default FedRoute;
+export default ScanRoute;

@@ -1,140 +1,127 @@
 //check if user is logged in and has a token
 
-    export function isUser()  {  
+export function isUser() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (user !== null) {
+    const token = user.accessToken;
 
-        const user = JSON.parse(localStorage.getItem("user"));
-        if(user !== null){
-            const token = user.accessToken;
-
-            if(user && token){
-                return true;
-            }
-            else{
-                return false;
-            }
-        }else{
-            return false
-        }
+    if (user && token) {
+      return true;
+    } else {
+      return false;
     }
+  } else {
+    return false;
+  }
+}
 
-    //check admin status
+//check admin status
 
-    export function adminControl() {
+export function adminControl() {
+  const user = JSON.parse(localStorage.getItem("user"));
 
-        const user = JSON.parse(localStorage.getItem("user"));
-        
-        if(user !== null){
-            const admin = user.is_admin;
-            console.log(admin)
+  if (user !== null) {
+    const admin = user.is_admin;
+    console.log(admin);
 
-            if(admin === "Y"){
-                return true;
-            }else {
-                return false
-            }
-        }else{
-            return false
-        }
+    if (admin === "Y") {
+      return true;
+    } else {
+      return false;
     }
+  } else {
+    return false;
+  }
+}
 
-    //get user office
-    export function userOffice() {
+//get user office
+export function userOffice() {
+  const user = JSON.parse(localStorage.getItem("user"));
 
-        const user = JSON.parse(localStorage.getItem("user"));
+  if (user !== null) {
+    const officeCode = user.office_code;
+    return officeCode;
+  } else {
+    return "none";
+  }
+}
 
-        if(user !== null){
-        const officeCode = user.office_code;
-         return officeCode
-        }else{
-            return "none"
-        }
+//check what statuses can user update
+export function statusControl() {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (user !== null) {
+    const officeCode = user.office_code;
+    const statusAuth = user.can_update_status_for;
+
+    switch (statusAuth) {
+      case "ALL":
+        return "ALL";
+      case "office_code":
+        return officeCode;
+      default:
+        return "NONE";
     }
+  } else {
+    return "NONE";
+  }
+}
 
-    //check what statuses can user update
-    export function statusControl() {
+//check is user cane create orders
+export function orderControl() {
+  const user = JSON.parse(localStorage.getItem("user"));
 
-        const user = JSON.parse(localStorage.getItem("user"));
+  if (user !== null) {
+    const orderAuth = user.can_create_update_delete_orders;
 
-        if(user !== null){
-            const officeCode = user.office_code;
-            const statusAuth = user.can_update_status_for;
-
-            switch(statusAuth){
-                case "ALL":
-                    return "ALL";
-                case "office_code":
-                    return officeCode
-                default:
-                    return "NONE";
-                        
-            }
-        }else{
-            return "NONE"
-        }
+    if (orderAuth === "Y") {
+      return true;
+    } else {
+      return false;
     }
+  } else {
+    return false;
+  }
+}
 
-    //check is user cane create orders
-    export function orderControl() {
+//check whose password the user can change
+export function passwordControl() {
+  const user = JSON.parse(localStorage.getItem("user"));
 
-        const user = JSON.parse(localStorage.getItem("user"));
-        
-        if(user !== null){
-            const orderAuth = user.can_create_update_delete_orders;
+  if (user !== null) {
+    const officeCode = user.office_code;
+    const passwordAuth = user.can_update_password_for;
 
-            if(orderAuth === "Y"){
-                return true;
-            }else {
-                return false
-            }
-        }else{
-            return false
-        }
+    switch (passwordAuth) {
+      case "ALL":
+        return "ALL";
+      case "SELF":
+        return "SELF";
+      case "office_code":
+        return officeCode;
+      default:
+        return "NONE";
     }
+  } else {
+    return;
+  }
+}
 
-    //check whose password the user can change
-    export function passwordControl() {
+//check if user is fed account
+export function isFed() {
+  const user = JSON.parse(localStorage.getItem("user"));
 
-        const user = JSON.parse(localStorage.getItem("user"));
+  if (user !== null) {
+    const officeCode = user.office_code;
 
-        if(user !== null){
-            const officeCode = user.office_code;
-            const passwordAuth = user.can_update_password_for;
+    let prefix = officeCode;
 
-            switch(passwordAuth){
-                case "ALL":
-                    return "ALL";
-                case "SELF":
-                    return "SELF";
-                case "office_code":
-                    return officeCode;
-                default:
-                    return "NONE"
-
-
-            }
-        }else{
-            return 
-        }
+    if (prefix.includes("FED")) {
+      return true;
+    } else {
+      return false;
     }
-
-    //check if user is fed account
-    export function isFed() {
-
-        const user = JSON.parse(localStorage.getItem("user"));
-
-        if(user !== null){
-            const officeCode = user.office_code;
-            
-            let prefix = officeCode
-
-            if (prefix.includes('FED')){
-                return true
-            }else{
-                return false
-            }
-        }else{
-            return false
-        }
-    }
-
-   
+  } else {
+    return false;
+  }
+}
