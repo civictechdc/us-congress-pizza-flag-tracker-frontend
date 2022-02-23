@@ -145,14 +145,6 @@ const ScanOrder = (props) => {
     skip = "true";
   }
 
-  console.log("Desc: ", skipDesc)
-  console.log("Id: ", skipId)
-  console.log("Seq: ", skipSeq)
-  console.log("Permission: ", skipPermission)
-  console.log("User: ", user)
-  console.log("Order: ", order)
-  console.log("Skip? ", skip)
-
   let allowHOSS = "";
   let allowAOC = "";
   let allowMAIL = "";
