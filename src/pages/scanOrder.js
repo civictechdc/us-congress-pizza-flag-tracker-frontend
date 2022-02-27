@@ -4,7 +4,8 @@ import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 import { numSort } from "../components/sorting/sortHook";
 import styles from "../style/scanOrder.module.css";
-import { handleError } from "../components/handleError";
+import handleError from "../components/handleError";
+import { set } from "cypress/types/lodash";
 
 const ScanOrder = (props) => {
   const initialOrderState = {
@@ -44,13 +45,13 @@ const ScanOrder = (props) => {
           setOldOrder(response.data);
         })
         .catch((e) => {
-          handleError(e, setMessage);
+          console.log(e);
         });
     };
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall);
     } catch (e) {
-      handleError(e, setMessage);
+      console.log(e);
     }
   };
 
@@ -69,6 +70,7 @@ const ScanOrder = (props) => {
     } catch (e) {
       setPopUpBox("block");
       console.log(e);
+
       handleError(e, setMessage);
     }
   };
@@ -207,9 +209,7 @@ const ScanOrder = (props) => {
 
   const refuseUpdate = () => {
     setPopUpBox("block");
-    setMessage(
-      "Do not have permissions for either (1) this order or (2) to advance to the next status"
-    );
+    handleError(e, setMessage);
   };
 
   const closePopUpBox = () => {
