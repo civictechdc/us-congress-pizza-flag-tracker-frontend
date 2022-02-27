@@ -4,7 +4,7 @@ import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 import { numSort } from "../components/sorting/sortHook";
 import styles from "../style/scanOrder.module.css";
-import handleError from "../components/handleError";
+import { handleError } from "../components/handleError";
 
 const ScanOrder = (props) => {
   const initialOrderState = {
