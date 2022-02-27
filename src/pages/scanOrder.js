@@ -5,7 +5,6 @@ import StatusDataService from "../service/statusService";
 import { numSort } from "../components/sorting/sortHook";
 import styles from "../style/scanOrder.module.css";
 import handleError from "../components/handleError";
-import { set } from "cypress/types/lodash";
 
 const ScanOrder = (props) => {
   const initialOrderState = {
