@@ -132,7 +132,7 @@ const ScanOrder = (props) => {
       if (lifeCycle[i].permission == "FED-MAIL") {
         skipDesc = lifeCycle[i].description;
         skipId = lifeCycle[i].id;
-        skipSeq = lifeCskipPermission
+        skipSeq = lifeCycle[i].sequence_num;
         skipPermission = lifeCycle[i].permission;
         break;
       }
