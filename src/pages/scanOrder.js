@@ -95,6 +95,8 @@ const ScanOrder = (props) => {
   let nextPermission = "";
   let skipPermission = "";
 
+  console.log("Order: ", order)
+
   let sortedStatuses = [];
   let lifeCycle = [];
   let skip = "";
@@ -131,7 +133,7 @@ const ScanOrder = (props) => {
     const currentSeq = order.status.sequence_num;
 
     for (let i = 0; i < lifeCycle.length; i++) {
-      if (lifeCycle[i].permission == "STATE") {
+      if (lifeCycle[i].permission == "FED-MAIL") {
         skipDesc = lifeCycle[i].description;
         skipId = lifeCycle[i].id;
         skipSeq = lifeCycle[i].sequence_num;
@@ -141,7 +143,7 @@ const ScanOrder = (props) => {
     }
   }
 
-  if ((order.home_office_code === user.office_code) && (order.status.status_code === "AOC_FLOWN")) {
+  if (( user.office_code === "FED-MAIL" ) && (order.status.status_code === "AOC_RECEIVED")) {
     skip = "true";
   }
 
