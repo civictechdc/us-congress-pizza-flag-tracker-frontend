@@ -95,8 +95,6 @@ const ScanOrder = (props) => {
   let nextPermission = "";
   let skipPermission = "";
 
-  console.log("Order: ", order)
-
   let sortedStatuses = [];
   let lifeCycle = [];
   let skip = "";
@@ -130,13 +128,11 @@ const ScanOrder = (props) => {
   }
 
   if (statuses && order) {
-    const currentSeq = order.status.sequence_num;
-
     for (let i = 0; i < lifeCycle.length; i++) {
       if (lifeCycle[i].permission == "FED-MAIL") {
         skipDesc = lifeCycle[i].description;
         skipId = lifeCycle[i].id;
-        skipSeq = lifeCycle[i].sequence_num;
+        skipSeq = lifeCskipPermission
         skipPermission = lifeCycle[i].permission;
         break;
       }
@@ -156,19 +152,15 @@ const ScanOrder = (props) => {
     if (user.can_update_status_for === "FED-HOSS") {
       allowHOSS = "yes";
     }
-
     if (user.can_update_status_for === "FED-AOC") {
       allowAOC = "yes";
     }
-
     if (user.can_update_status_for === "FED-MAIL") {
       allowMAIL = "yes";
     }
-
     if (user.can_update_status_for === order.home_office_code) {
       allowSTATE = "yes";
     }
-
     if (user.can_update_status_for === "ALL") {
       allowHOSS = "yes";
       allowAOC = "yes";
@@ -180,11 +172,8 @@ const ScanOrder = (props) => {
   let allowUpdate = "";
 
   if (nextPermission === "FED-HOSS" && allowHOSS === "yes") allowUpdate = "yes";
-
   if (nextPermission === "FED-AOC" && allowAOC === "yes") allowUpdate = "yes";
-
   if (nextPermission === "FED-MAIL" && allowMAIL === "yes") allowUpdate = "yes";
-
   if (nextPermission === "STATE" && allowSTATE === "yes") allowUpdate = "yes";
 
   const handleUpdate = () => {
