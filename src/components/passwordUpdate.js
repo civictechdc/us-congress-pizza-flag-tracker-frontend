@@ -52,15 +52,16 @@ const PasswordUpdate = () => {
             }
           })
           .catch((err) => {
-            setMessage(err.response.data.error);
-            console.log(err.response);
-            console.log(JSON.stringify(err));
+            setMessage(
+              err.response.data.error ||
+                err.response.toString() ||
+                err.toString()
+            );
           });
       };
       try {
         AuthService.refreshTokenWrapperFunction(serviceCall);
       } catch (e) {
-        console.log(`error occurred while updating password: ${e}`);
         setMessage("An error occurred. Please try logging out and back in.");
       }
     } else {
