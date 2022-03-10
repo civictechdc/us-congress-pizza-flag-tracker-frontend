@@ -435,18 +435,20 @@ const ScanOrder = (props) => {
                         <>
                           {statuses && order.status.description ? (
                             <>
-                              {allowUpdate ? (
+                              {skip ? (
                                 <button
-                                  onClick={saveUpdate}
+                                  onClick={skipUpdate}
                                   className="btn btn-success"
                                 >
                                   {"Update Status"}
                                 </button>
+                              
+                              
                               ) : (
                                 <>  
-                                  {skip ? (
+                                  {allowUpdate ? (
                                     <button
-                                      onClick={skipUpdate}
+                                      onClick={saveUpdate}
                                       className="btn btn-success"
                                     >
                                       {"Update Status"}
