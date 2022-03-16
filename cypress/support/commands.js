@@ -15,3 +15,18 @@ Cypress.Commands.add("login", (username, password) => {
     cy.saveLocalStorage();
   });
 });
+
+Cypress.Commands.add("clickFirstOrder", () => {
+  cy.get("div[class*=orders_flagItem]:first-child").click();
+  cy.get("div[class*=orders_mobileStatus]").wait(500).should("be.visible");
+});
+
+Cypress.Commands.add("checkForScanButton", () => {
+  cy.contains("Scan").click();
+  cy.url().should("include", "/scan/");
+});
+
+Cypress.Commands.add("updateStatus", () => {
+  cy.contains("Update Status").click();
+  cy.get("div[class=pop-up]").should("be.visible").click();
+});

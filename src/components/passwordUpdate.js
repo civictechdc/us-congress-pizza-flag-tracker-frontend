@@ -70,13 +70,18 @@ const PasswordUpdate = () => {
               setMessage("An error occurred: " + response.statusText);
             }
           })
-          .catch((err) => setMessage(""));
+          .catch((err) => {
+            setMessage(
+              err.response.data.error ||
+                err.response.toString() ||
+                err.toString()
+            );
+          });
       };
       try {
         AuthService.refreshTokenWrapperFunction(serviceCall);
       } catch (e) {
-        console.log(`error occurred while updating password: ${e}`);
-        setMessage("");
+        setMessage("An error occurred. Please try logging out and back in.");
       }
     } else {
       setMessage("New passwords must match!");

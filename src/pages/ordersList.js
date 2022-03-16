@@ -244,15 +244,6 @@ const OrdersList = () => {
           </div>
         )}
       </div>
-
-      {errorMessage || searchTitle ? (
-        <button className="m-3 btn btn-sm btn-danger" onClick={clearSearch}>
-          Clear search
-        </button>
-      ) : (
-        <></>
-      )}
-
       <div className="pop-container" style={{ display: popUpBox }}>
         <div className="pop-up" onClick={closePopUpBox}>
           <h3>{errorMessage}</h3>
