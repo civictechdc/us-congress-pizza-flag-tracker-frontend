@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import AuthService from "../../service/authService";
-import { orderControl } from "../protectedRoute/permissions";
+import { orderControl, adminControl } from "../protectedRoute/permissions";
 
 function Privateheader(params) {
   function logOut() {
@@ -35,11 +35,16 @@ function Privateheader(params) {
                 Profile
               </Link>
             </li>
-            <li className="nav-item">
-              <Link to={"/users/add"} className="nav-link">
-                Add User
-              </Link>
-            </li>
+            {adminControl() ? (
+              <li className="nav-item">
+                <Link to={"/users/add"} className="nav-link">
+                  Add User
+                </Link>
+              </li>
+            ) : (
+              <div></div>
+            )}
+
             <li className="nav-item">
               <a href="/login" className="nav-link" onClick={logOut}>
                 Log Out

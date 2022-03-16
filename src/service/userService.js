@@ -31,6 +31,13 @@ class UserService {
       data,
     });
   }
+
+  updateOthersPassword({ username, newPassword }) {
+    const data = { username: username, new_password: newPassword };
+    return httpAuthenticate().post("/users/admin/update/password", {
+      data,
+    });
+  }
 }
 
 export default new UserService();

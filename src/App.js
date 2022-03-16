@@ -10,6 +10,7 @@ import ScanOrder from "./pages/scanOrder";
 import Profile from "./pages/profile";
 import PrintOrder from "./pages/printOrder";
 import AddUser from "./pages/addUser";
+import Password from "./pages/updatePassword";
 
 import UserRoute from "./components/protectedRoute/userRoute";
 import ScanRoute from "./components/protectedRoute/scanRoute";
@@ -25,6 +26,7 @@ function App() {
       <main className="mainContainer">
         <Switch>
           <Route exact path="/login" component={Login} />
+          <UserRoute path="/updatepassword" component={Password} />
           <UserRoute exact path={["/", "/orders"]} component={OrdersList} />
           <UserRoute path="/print/:id" component={PrintOrder} />
           <UserRoute exact path="/profile" component={Profile} />
