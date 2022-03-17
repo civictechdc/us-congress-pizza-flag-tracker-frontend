@@ -165,7 +165,7 @@ const OrdersList = () => {
                       <Link
                         to={{
                           pathname: "/scan/" + currentOrder.uuid,
-                          state: { order: currentOrder.home_office_code },
+                          state: { orderOfficeCheck: currentOrder.home_office_code },
                         }} // sends order office to route for checking
                         className="badge badge-warning"
                       >

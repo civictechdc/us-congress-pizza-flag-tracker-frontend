@@ -4,10 +4,10 @@ import { userOffice, statusControl } from "./permissions";
 
 function ScanRoute({ component: Component, ...rest }) {
   const location = useLocation();
-  const orderNum = location.state.order;
+  const orderOfficeCheckValue = location.state.orderOfficeCheck;
 
   const allow = () => {
-    if (statusControl() == "ALL" || orderNum) {
+    if (statusControl() == "ALL" || orderOfficeCheckValue) {
       return true;
     } else {
       return false;
