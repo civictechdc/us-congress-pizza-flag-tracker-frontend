@@ -59,13 +59,14 @@ const OrdersList = () => {
   };
 
   const setActiveOrder = (order, index) => {
-    if(currentOrder == null || currentOrder.order_number !== order.order_number){
-        setCurrentOrder(order, index);
-    }else{
-      setCurrentOrder(null)
+    if (
+      currentOrder == null ||
+      currentOrder.order_number !== order.order_number
+    ) {
+      setCurrentOrder(order, index);
+    } else {
+      setCurrentOrder(null);
     }
-    
-   
   };
 
   const removeAllOrders = () => {
@@ -122,70 +123,69 @@ const OrdersList = () => {
       {ordersToDisplay &&
         ordersToDisplay.map((order, index) => (
           <>
-          <div
-            className={styles.flagItem}
-            onClick={() => setActiveOrder(order, index)}
-            key={index}
-          >
-            <p className={styles.orderNum}>{order.order_number}</p>
-            <p className={styles.officeCode}>{order.home_office_code}</p>
-          
-            <div className={styles.gaugeContainer}>
-              
-              <Gauge status={order.status.id} code={order.status.status_code.replace(/_/g, " ")}/>
+            <div
+              className={styles.flagItem}
+              onClick={() => setActiveOrder(order, index)}
+              key={index}
+            >
+              <p className={styles.orderNum}>{order.order_number}</p>
+              <p className={styles.officeCode}>{order.home_office_code}</p>
+
+              <div className={styles.gaugeContainer}>
+                <Gauge
+                  status={order.status.id}
+                  code={order.status.status_code.replace(/_/g, " ")}
+                />
+              </div>
             </div>
-            
-          </div>
-          <div > 
-            {currentOrder  ?(  // checks for null value
-              currentOrder.order_number == order.order_number ?(
-                <div className={styles.mobileStatus}>
-                   <div className={styles.statusItem}>
-                     <p className={styles.description}>
-                       {currentOrder.status.description}
-                     </p>
-                   </div>
-                   <div className={styles.statusItem}>
-                    <p><b>Created:</b> {formatDate(currentOrder.created_at)}</p>
-                    <p><b>Updated:</b> {formatDate(currentOrder.updated_at)}</p>
-                   </div>
-                   <div className={styles.statusItem}>
-                     <Link
-                      to={"/orders/" + currentOrder.uuid}
-                      className="badge badge-warning"
-                    >
-                      Edit
-                    </Link>
-                    <Link
-                      to={"/scan/" + currentOrder.uuid}
-                      className="badge badge-warning"
-                    >
-                      Scan
-                    </Link>
-                     <Link
-                    to={"/print/" + currentOrder.uuid}
-                    className="badge badge-warning"
-                  >
-                    Print
-                  </Link>
-                   </div>
-                
-                  
-                    
-              </div> 
-              ):(
-                <div style={{ width:0}}>
-                
-              </div>
-              )
-              ):(
-              <div style={{ borderTop: "none"}}>
-                
-              </div>
-            )}
-          </div>
-         
-          
+            <div>
+              {currentOrder ? ( // checks for null value
+                currentOrder.order_number == order.order_number ? (
+                  <div className={styles.mobileStatus}>
+                    <div className={styles.statusItem}>
+                      <p className={styles.description}>
+                        {currentOrder.status.description}
+                      </p>
+                    </div>
+                    <div className={styles.statusItem}>
+                      <p>
+                        <b>Created:</b> {formatDate(currentOrder.created_at)}
+                      </p>
+                      <p>
+                        <b>Updated:</b> {formatDate(currentOrder.updated_at)}
+                      </p>
+                    </div>
+                    <div className={styles.statusItem}>
+                      <Link
+                        to={"/orders/" + currentOrder.uuid}
+                        className="badge badge-warning"
+                      >
+                        Edit
+                      </Link>
+                      <Link
+                        to={{
+                          pathname: "/scan/" + currentOrder.uuid,
+                          state: { orderOfficeCheck: currentOrder.home_office_code },
+                        }} // sends order office to route for checking
+                        className="badge badge-warning"
+                      >
+                        Scan
+                      </Link>
+                      <Link
+                        to={"/print/" + currentOrder.uuid}
+                        className="badge badge-warning"
+                      >
+                        Print
+                      </Link>
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{ width: 0 }}></div>
+                )
+              ) : (
+                <div style={{ borderTop: "none" }}></div>
+              )}
+            </div>
           </>
         ))}
     </div>
@@ -199,75 +199,56 @@ const OrdersList = () => {
     <>
       <div className={styles.mainContainer}>
         <h4 className={styles.title}>Orders</h4>
-          <div className={styles.inputContainer}>
-            
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Search by order number"
-                value={searchTitle}
-                onChange={onChangeSearchTitle}
-              />
-              <div className={styles.searchButton}>
-                <button
-                  className="btn btn-outline-secondary"
-                  type="button"
-                  onClick={findByOrderNumber}
-                >
-                  Search
-                </button>
-              </div>
-            
+        <div className={styles.inputContainer}>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search by order number"
+            value={searchTitle}
+            onChange={onChangeSearchTitle}
+          />
+          <div className={styles.searchButton}>
+            <button
+              className="btn btn-outline-secondary"
+              type="button"
+              onClick={findByOrderNumber}
+            >
+              Search
+            </button>
           </div>
-              <TableHeader
-                sortedField={sortedField}
-                sortDir={sortDir}
-                setSortedField={setSortedField}
-                setSortType={setSortType}
-                setSortDir={setSortDir}
-              />
-            
-          <div className={styles.orderContainer}>
-            
-              {orderTbody}
-            
-                  <div className={styles.statusItemContainer}>
-              
-                  </div>
-          
-          </div>
-            
-            {errorMessage || searchTitle ? (
-              <button
-                className="m-3 btn btn-sm btn-danger"
-                onClick={clearSearch}
-              >
-                Clear search
-              </button>
-            ) : (
-              <div className={styles.statusItem}>
-                <p>
-                  Please click
-                  <br /> on an order...
-                </p>
-              </div>
-            )}
-          </div>
-       
+        </div>
+        <TableHeader
+          sortedField={sortedField}
+          sortDir={sortDir}
+          setSortedField={setSortedField}
+          setSortType={setSortType}
+          setSortDir={setSortDir}
+        />
+
+        <div className={styles.orderContainer}>
+          {orderTbody}
+
+          <div className={styles.statusItemContainer}></div>
+        </div>
 
         {errorMessage || searchTitle ? (
           <button className="m-3 btn btn-sm btn-danger" onClick={clearSearch}>
             Clear search
           </button>
         ) : (
-          <></>
-        )}
-
-        <div className="pop-container" style={{ display: popUpBox }}>
-          <div className="pop-up" onClick={closePopUpBox}>
-            <h3>{errorMessage}</h3>
+          <div className={styles.statusItem}>
+            <p>
+              Please click
+              <br /> on an order...
+            </p>
           </div>
+        )}
+      </div>
+      <div className="pop-container" style={{ display: popUpBox }}>
+        <div className="pop-up" onClick={closePopUpBox}>
+          <h3>{errorMessage}</h3>
         </div>
+      </div>
     </>
   );
 };
