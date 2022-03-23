@@ -252,7 +252,6 @@ const ScanOrder = (props) => {
   };
 
   return (
-    <> 
     <div className={styles.scanContainer}>
       <h1 className={styles.title}>Scan</h1>
       {order ? (
@@ -501,9 +500,7 @@ const ScanOrder = (props) => {
           <h3>{message}</h3>
         </div>
       </div>
-
     </div>  
-    </>
   );
 };
 
