@@ -143,6 +143,9 @@ const ScanOrder = (props) => {
     skip = "true";
   }
 
+  console.log(skip);
+  console.log(revert);
+
   let allowHOSS = "";
   let allowAOC = "";
   let allowMAIL = "";
@@ -277,7 +280,7 @@ const ScanOrder = (props) => {
               {order.status.description ? (
                 <strong>
                   #{order.status.sequence_num} - {order.status.description}
-                </strong>
+                </strong>  
               ) : (
                 <strong>Missing status...</strong>
               )}
@@ -345,17 +348,12 @@ const ScanOrder = (props) => {
                       {revert ? (
                         <>
                           <div className="form-group">
-                            <label htmlFor="next_status">
-                              Next Status:{" "}
-                              {statuses && order.status.description ? (
-                                <strong>
-                                  #{nextSeq} - {nextDesc}
-                                </strong>
-                              ) : (
-                                <strong>
-                                  Missing data needed to generate next Status
-                                </strong>
-                              )}
+                            <label htmlFor="prior_status">
+                              Prior Status:{" "}
+                              <strong>
+                                #{oldOrder.status.sequence_num} -{" "}
+                                {oldOrder.status.description}
+                              </strong>
                             </label>
                           </div>
                         </>
@@ -442,8 +440,7 @@ const ScanOrder = (props) => {
                               {skip ? (
                                 <button
                                   onClick={skipUpdate}
-                                  className="btn btn-success"
-                                  disabled
+                                  className="btn btn-success"                                  
                                 >
                                   {"Update Status"}
                                 </button>                           
