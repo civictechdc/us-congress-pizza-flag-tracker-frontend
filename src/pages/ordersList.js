@@ -158,22 +158,24 @@ const OrdersList = () => {
                     <div className={styles.statusItem}>
                       <Link
                         to={"/orders/" + currentOrder.uuid}
-                        className="badge badge-warning"
+                        className={styles.orderLinks}
                       >
                         Edit
                       </Link>
                       <Link
                         to={{
                           pathname: "/scan/" + currentOrder.uuid,
-                          state: { orderOfficeCheck: currentOrder.home_office_code },
+                          state: {
+                            orderOfficeCheck: currentOrder.home_office_code,
+                          },
                         }} // sends order office to route for checking
-                        className="badge badge-warning"
+                        className={styles.orderLinks}
                       >
                         Scan
                       </Link>
                       <Link
                         to={"/print/" + currentOrder.uuid}
-                        className="badge badge-warning"
+                        className={styles.orderLinks}
                       >
                         Print
                       </Link>

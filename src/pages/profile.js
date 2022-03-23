@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../style/profile.module.css"
+import styles from "../style/profile.module.css";
 import AuthService from "../service/authService";
 import PasswordUpdate from "../components/passwordUpdate";
 
@@ -19,12 +19,12 @@ const Profile = (props) => {
 
   return (
     <div className={styles.profileContainer}>
-      <div className="jumbotron">
+      <div className={styles.jumbotron}>
         <h3>
-          <strong>{currentUser.username}</strong> 
+          <strong>{currentUser.username}</strong>
         </h3>
       </div>
-      
+
       <p>
         <strong>Id:</strong> {currentUser.id}
       </p>

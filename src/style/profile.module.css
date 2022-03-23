@@ -12,3 +12,12 @@
     transform: skewY(-5deg);
 
 }
+
+@media only screen and (max-width: 800px) {
+
+    .profileContainer {
+        width: 80vw;
+        left: 10vw;
+    }
+
+}
