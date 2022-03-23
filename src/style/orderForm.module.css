@@ -29,8 +29,7 @@
 
 .title {
   font-size: 6rem;
-  margin-left: auto;
-  margin-right: auto;
+  text-align: center;
 }
 
 .qrImage{
@@ -47,6 +46,11 @@
   ====================================================*/
 
 @media only screen and (max-width: 600px) {
+
+  .formContainer{
+    width: 70vw;
+    left: 15vw;
+  }
 
   .title {
     font-size: 4rem;
