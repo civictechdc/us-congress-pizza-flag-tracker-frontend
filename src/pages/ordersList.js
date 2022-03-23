@@ -163,7 +163,12 @@ const OrdersList = () => {
                         Edit
                       </Link>
                       <Link
-                        to={"/scan/" + currentOrder.uuid}
+                        to={{
+                          pathname: "/scan/" + currentOrder.uuid,
+                          state: {
+                            orderOfficeCheck: currentOrder.home_office_code,
+                          },
+                        }} // sends order office to route for checking
                         className={styles.orderLinks}
                       >
                         Scan
@@ -241,15 +246,6 @@ const OrdersList = () => {
           </div>
         )}
       </div>
-
-      {errorMessage || searchTitle ? (
-        <button className="m-3 btn btn-sm btn-danger" onClick={clearSearch}>
-          Clear search
-        </button>
-      ) : (
-        <></>
-      )}
-
       <div className="pop-container" style={{ display: popUpBox }}>
         <div className="pop-up" onClick={closePopUpBox}>
           <h3>{errorMessage}</h3>
