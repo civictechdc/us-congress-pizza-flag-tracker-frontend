@@ -87,12 +87,17 @@ const ScanOrder = (props) => {
   }, [statuses]);
 
   let nextDesc = "";
+  let skipDesc = "";
   let nextId = null;
+  let skipId = null;  
   let nextSeq = null;
+  let skipSeq = null;  
   let nextPermission = "";
+  let skipPermission = "";
 
   let sortedStatuses = [];
   let lifeCycle = [];
+  let skip = "";
 
   if (statuses && order) {
     sortedStatuses = numSort(statuses, "sequence_num", "asc");
@@ -122,6 +127,25 @@ const ScanOrder = (props) => {
     }
   }
 
+  if (statuses && order) {
+    for (let i = 0; i < lifeCycle.length; i++) {
+      if (lifeCycle[i].permission == "FED-MAIL") {
+        skipDesc = lifeCycle[i].description;
+        skipId = lifeCycle[i].id;
+        skipSeq = lifeCycle[i].sequence_num;
+        skipPermission = lifeCycle[i].permission;
+        break;
+      }
+    }
+  }
+
+  if (( user.office_code === "FED-MAIL" ) && (order.status.status_code === "AOC_RECEIVED")) {
+    skip = "true";
+  }
+
+  console.log(skip);
+  console.log(revert);
+
   let allowHOSS = "";
   let allowAOC = "";
   let allowMAIL = "";
@@ -131,19 +155,15 @@ const ScanOrder = (props) => {
     if (user.can_update_status_for === "FED-HOSS") {
       allowHOSS = "yes";
     }
-
     if (user.can_update_status_for === "FED-AOC") {
       allowAOC = "yes";
     }
-
     if (user.can_update_status_for === "FED-MAIL") {
       allowMAIL = "yes";
     }
-
     if (user.can_update_status_for === order.home_office_code) {
       allowSTATE = "yes";
     }
-
     if (user.can_update_status_for === "ALL") {
       allowHOSS = "yes";
       allowAOC = "yes";
@@ -155,11 +175,8 @@ const ScanOrder = (props) => {
   let allowUpdate = "";
 
   if (nextPermission === "FED-HOSS" && allowHOSS === "yes") allowUpdate = "yes";
-
   if (nextPermission === "FED-AOC" && allowAOC === "yes") allowUpdate = "yes";
-
   if (nextPermission === "FED-MAIL" && allowMAIL === "yes") allowUpdate = "yes";
-
   if (nextPermission === "STATE" && allowSTATE === "yes") allowUpdate = "yes";
 
   const handleUpdate = () => {
@@ -169,6 +186,14 @@ const ScanOrder = (props) => {
     };
     return updatedStatus;
   };
+
+  const handleSkip = () => {
+    const updatedStatus = {
+      ...order,
+      order_status_id: skipId,
+    };
+    return updatedStatus;
+  }
 
   const updateStatus = (updatedStatus, activateRevertButton) => {
     const serviceCall = () => {
@@ -219,175 +244,264 @@ const ScanOrder = (props) => {
     );
   };
 
+  const skipUpdate = () => {
+    const updatedStatus = handleSkip();
+    const activateRevertButton = "on";
+    updateStatus(updatedStatus, activateRevertButton);
+  };
+
   const closePopUpBox = () => {
     setPopUpBox("none");
   };
 
   return (
-    <>
-      <div className={styles.scanContainer}>
-        <h1 className={styles.title}>Scan</h1>
-        {order ? (
-          <>
-            <div className="form-group">
-              <label htmlFor="order_number">
-                Order Number: <strong>{order.order_number}</strong>
-              </label>
-            </div>
-            <div className="form-group">
-              <label htmlFor="usa_state">
-                US State: <strong>{order.usa_state}</strong>
-              </label>
-            </div>
-            <div className="form-group">
-              <label htmlFor="home_office_code">
-                Congressional Office: <strong>{order.home_office_code}</strong>
-              </label>
-            </div>
-            <div className="form-group">
-              <label htmlFor="current_status">
-                Current Status:{" "}
-                {order.status.description ? (
-                  <strong>
-                    #{order.status.sequence_num} - {order.status.description}
-                  </strong>
-                ) : (
-                  <strong>Missing status...</strong>
-                )}
-              </label>
-            </div>
-            {order.status.active_status === "CLOSED" ? (
+    <div className={styles.scanContainer}>
+      <h1 className={styles.title}>Scan</h1>
+      {order ? (
+        <>
+          <div className="form-group">
+            <label htmlFor="order_number">
+              Order Number: <strong>{order.order_number}</strong>
+            </label>
+          </div>
+          <div className="form-group">
+            <label htmlFor="usa_state">
+              US State: <strong>{order.usa_state}</strong>
+            </label>
+          </div>
+          <div className="form-group">
+            <label htmlFor="home_office_code">
+              Congressional Office: <strong>{order.home_office_code}</strong>
+            </label>
+          </div>
+          <div className="form-group">
+            <label htmlFor="current_status">
+              Current Status:{" "}
+              {order.status.description ? (
+                <strong>
+                  #{order.status.sequence_num} - {order.status.description}
+                </strong>  
+              ) : (
+                <strong>Missing status...</strong>
+              )}
+            </label>
+          </div>
+          {order.status.active_status === "CLOSED" ? (
+            <>
               <div className="form-group">
                 <label htmlFor="next_status">
                   <strong>Order Complete</strong>
                 </label>
               </div>
-            ) : (
-              <>
-                {order.status.active_status === "CANCELED" ? (
-                  <>
-                    <div className="form-group">
-                      <label htmlFor="next_status">
-                        <strong>Use Edit Screen to Uncancel</strong>
-                      </label>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    {resolve ? (
-                      <></>
-                    ) : (
-                      <>
-                        {revert ? (
-                          <>
-                            <div className="form-group">
-                              <label htmlFor="prior_status">
-                                Prior Status:{" "}
-                                <strong>
-                                  #{oldOrder.status.sequence_num} -{" "}
-                                  {oldOrder.status.description}
-                                </strong>
-                              </label>
-                            </div>
-                          </>
-                        ) : (
+            
+              {revert ? (
+                <>
+                  <div className="form-group">
+                    <label htmlFor="prior_status">
+                      Prior Status:{" "}
+                      <strong>
+                        #{oldOrder.status.sequence_num} -{" "}
+                        {oldOrder.status.description}
+                      </strong>
+                    </label>
+                  </div>
+                  <button
+                    onClick={saveUpdate}
+                    className="btn btn-success"
+                    disabled
+                  >
+                    {"Update Status"}
+                  </button>{" "}
+                  <button
+                    onClick={revertUpdate}
+                    className="btn btn-success"
+                  >
+                    {"Revert Update"}
+                  </button>{" "}
+                  <button
+                    onClick={declineUpdate}
+                    className="btn btn-success"
+                    disabled
+                  >
+                    {"Decline Update"}
+                  </button>
+                </>                
+              ) : (<></>)}
+                       
+            </>
+          ) : (
+            <>
+              {order.status.active_status === "CANCELED" ? (
+                <>
+                  <div className="form-group">
+                    <label htmlFor="next_status">
+                      <strong>Use Edit Screen to Uncancel</strong>
+                    </label>
+                  </div>
+                </>
+              ) : (
+                <>
+                  {resolve ? (
+                    <></>
+                  ) : (
+                    <>
+                      {revert ? (
+                        <>
                           <div className="form-group">
-                            <label htmlFor="next_status">
-                              Next Status:{" "}
-                              {statuses && order.status.description ? (
-                                <strong>
-                                  #{nextSeq} - {nextDesc}
-                                </strong>
-                              ) : (
-                                <strong>
-                                  Missing data needed to generate next Status
-                                </strong>
-                              )}
+                            <label htmlFor="prior_status">
+                              Prior Status:{" "}
+                              <strong>
+                                #{oldOrder.status.sequence_num} -{" "}
+                                {oldOrder.status.description}
+                              </strong>
                             </label>
                           </div>
-                        )}
-                        {revert ? (
-                          <>
-                            <button
-                              onClick={saveUpdate}
-                              className="btn btn-success"
-                              disabled
-                            >
-                              {"Update Status"}
-                            </button>{" "}
-                            <button
-                              onClick={revertUpdate}
-                              className="btn btn-success"
-                            >
-                              {"Revert Update"}
-                            </button>{" "}
-                            <button
-                              onClick={declineUpdate}
-                              className="btn btn-success"
-                              disabled
-                            >
-                              {"Decline Update"}
-                            </button>
-                          </>
-                        ) : (
-                          <>
-                            {statuses && order.status.description ? (
-                              <>
-                                {allowUpdate ? (
-                                  <button
-                                    onClick={saveUpdate}
-                                    className="btn btn-success"
-                                  >
-                                    {"Update Status"}
-                                  </button>
+                        </>
+                      ) : (
+                        <>
+                          {skip ? (
+                            <>
+                              <div className="form-group">
+                                <label htmlFor="next_status">
+                                  Next Status:{" "}
+                                  {statuses && order.status.description ? (
+                                    <strong>
+                                      #{nextSeq} - {nextDesc}
+                                    </strong>
+                                  ) : (
+                                    <strong>
+                                      Missing data needed to generate next Status
+                                    </strong>
+                                  )}
+                                </label>
+                              </div>
+                              <div className="form-group">
+                                <label htmlFor="skip">
+                                  Hit Update to skip Mail Office.  Status will be:{" "}
+                                  <div>
+                                  {statuses && order.status.description ? (
+                                    <strong>
+                                      #{skipSeq} - {skipDesc}
+                                    </strong>
+                                  ) : (
+                                    <strong>
+                                      Missing data needed to generate next Status
+                                    </strong>
+                                  )}
+                                  </div>
+                                </label>
+                              </div>
+                            </>
+                          ) : (
+                            <div className="form-group">
+                              <label htmlFor="next_status">
+                                Next Status:{" "}
+                                {statuses && order.status.description ? (
+                                  <strong>
+                                    #{nextSeq} - {nextDesc}
+                                  </strong>
                                 ) : (
-                                  <button
-                                    onClick={refuseUpdate}
-                                    className="btn btn-success"
-                                    style={{ opacity: 0.6 }}
-                                  >
-                                    {"Update Status"}
-                                  </button>
-                                )}{" "}
+                                  <strong>
+                                    Missing data needed to generate next Status
+                                  </strong>
+                                )}
+                              </label>
+                            </div>
+                          )}
+                        </>
+                      )}
+                      {revert ? (
+                        <>
+                          <button
+                            onClick={saveUpdate}
+                            className="btn btn-success"
+                            disabled
+                          >
+                            {"Update Status"}
+                          </button>{" "}
+                          <button
+                            onClick={revertUpdate}
+                            className="btn btn-success"
+                          >
+                            {"Revert Update"}
+                          </button>{" "}
+                          <button
+                            onClick={declineUpdate}
+                            className="btn btn-success"
+                            disabled
+                          >
+                            {"Decline Update"}
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          {statuses && order.status.description ? (
+                            <>
+                              {skip ? (
                                 <button
-                                  onClick={revertUpdate}
-                                  className="btn btn-success"
-                                  disabled
+                                  onClick={skipUpdate}
+                                  className="btn btn-success"                                  
                                 >
-                                  {"Revert Update"}
-                                </button>{" "}
-                                <button
-                                  onClick={declineUpdate}
-                                  className="btn btn-success"
-                                >
-                                  {"Decline Update"}
-                                </button>
-                              </>
-                            ) : (
-                              <></>
-                            )}
-                          </>
-                        )}
-                      </>
-                    )}
-                  </>
-                )}
-              </>
-            )}
-          </>
-        ) : (
-          <>
-            <br />
-            <p>Please click on an order...</p>
-          </>
-        )}
-        <div className="pop-container" style={{ display: popUpBox }}>
-          <div className="pop-up" onClick={closePopUpBox}>
-            <h3>{message}</h3>
-          </div>
+                                  {"Update Status"}
+                                </button>                           
+                              ) : (
+                                <>  
+                                  {allowUpdate ? (
+                                    <button
+                                      onClick={saveUpdate}
+                                      className="btn btn-success"
+                                    >
+                                      {"Update Status"}
+                                    </button>
+                                  ) : (
+                                    <button
+                                      onClick={refuseUpdate}
+                                      className="btn btn-success"
+                                      style={{ opacity: 0.6 }}
+                                    >
+                                      {"Update Status"}
+                                    </button>
+                                  )}
+                                </>
+                              )}{" "}
+                              <button
+                                onClick={revertUpdate}
+                                className="btn btn-success"
+                                disabled
+                              >
+                                {"Revert Update"}
+                              </button>{" "}
+                              <button
+                                onClick={declineUpdate}
+                                className="btn btn-success"
+                              >
+                                {"Decline Update"}
+                              </button>
+                            </>
+                          ) : (
+                            <></>
+                          )}
+                        </>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+            </>
+          )}
+        </>
+      ) : (
+        <>
+          <br />
+          <p>Please click on an order...</p>
+        </>
+      )}
+      <div className="pop-container" style={{ display: popUpBox }}>
+        <div className="pop-up" onClick={closePopUpBox}>
+          <h3>{message}</h3>
         </div>
       </div>
-    </>
+    </div>  
   );
 };
 
