@@ -3,7 +3,7 @@ import AuthService from "../service/authService";
 import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 import { numSort } from "../components/sorting/sortHook";
-import styles from "../style/scanOrder.module.css"
+import styles from "../style/scanOrder.module.css";
 
 const ScanOrder = (props) => {
   const initialOrderState = {
@@ -68,7 +68,7 @@ const ScanOrder = (props) => {
     } catch (e) {
       setPopUpBox("block");
       console.log(e);
-      if (e.response?.status === 401) {
+      if (e.response.status === 401) {
         setMessage(loginError);
       } else {
         setMessage(
@@ -345,12 +345,17 @@ const ScanOrder = (props) => {
                       {revert ? (
                         <>
                           <div className="form-group">
-                            <label htmlFor="prior_status">
-                              Prior Status:{" "}
-                              <strong>
-                                #{oldOrder.status.sequence_num} -{" "}
-                                {oldOrder.status.description}
-                              </strong>
+                            <label htmlFor="next_status">
+                              Next Status:{" "}
+                              {statuses && order.status.description ? (
+                                <strong>
+                                  #{nextSeq} - {nextDesc}
+                                </strong>
+                              ) : (
+                                <strong>
+                                  Missing data needed to generate next Status
+                                </strong>
+                              )}
                             </label>
                           </div>
                         </>
@@ -438,11 +443,10 @@ const ScanOrder = (props) => {
                                 <button
                                   onClick={skipUpdate}
                                   className="btn btn-success"
+                                  disabled
                                 >
                                   {"Update Status"}
-                                </button>
-                              
-                              
+                                </button>                           
                               ) : (
                                 <>  
                                   {allowUpdate ? (
