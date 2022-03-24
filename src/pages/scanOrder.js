@@ -429,9 +429,9 @@ const ScanOrder = (props) => {
                               {skip ? (
                                 <button
                                   onClick={skipUpdate}
-                                  className="btn btn-success"
+                                  className={"btn btn-success"}
                                 >
-                                  {"Update Status"}
+                                  <strong>{"UPDATE STATUS"}</strong>
                                 </button>
                               ) : (
                                 <>
