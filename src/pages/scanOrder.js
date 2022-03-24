@@ -208,7 +208,7 @@ const ScanOrder = (props) => {
 
   const refuseUpdate = () => {
     setPopUpBox("block");
-    handleError(e, setMessage);
+    handleError("Do not have permissions for either (1) this order or (2) to advance to the next status", setMessage);
   };
 
   const closePopUpBox = () => {
