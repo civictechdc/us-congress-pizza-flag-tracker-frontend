@@ -1,6 +1,6 @@
 import React from "react";
 
-const UpdateStatusButtonOff = (props) => {
+const UpdateStatusButtonOn = (props) => {
   const { saveUpdateFunc } = props;
 
   const handleInput = () => {
@@ -9,11 +9,11 @@ const UpdateStatusButtonOff = (props) => {
 
   return (
     <>
-      <button onClick={handleInput} className="btn btn-success" disabled>
+      <button onClick={handleInput} className="btn btn-success">
         <strong>{"UPDATE STATUS TEST"}</strong>
       </button>
     </>
   );
 };
 
-export default UpdateStatusButtonOff;
+export default UpdateStatusButtonOn;

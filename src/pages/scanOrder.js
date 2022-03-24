@@ -5,6 +5,7 @@ import StatusDataService from "../service/statusService";
 
 import OrderInfoTop from "../components/scanOrder/orderInfoTop";
 import UpdateStatusButtonOff from "../components/scanOrder/buttons/updateStatusButtonOff";
+import UpdateStatusButtonOn from "../components/scanOrder/buttons/updateStatusButtonOn";
 
 import { numSort } from "../components/sorting/sortHook";
 import styles from "../style/scanOrder.module.css";
@@ -404,12 +405,9 @@ const ScanOrder = (props) => {
                               ) : (
                                 <>
                                   {allowUpdate ? (
-                                    <button
-                                      onClick={saveUpdate}
-                                      className="btn btn-success"
-                                    >
-                                      {"Update Status"}
-                                    </button>
+                                    <UpdateStatusButtonOn
+                                      saveUpdateFunc={saveUpdate}
+                                    />
                                   ) : (
                                     <button
                                       onClick={refuseUpdate}
