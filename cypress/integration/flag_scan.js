@@ -36,6 +36,14 @@ describe("Moving the flag from 1-8", () => {
     cy.contains("Orders").click();
     cy.clickFirstOrder();
     cy.checkForScanButton();
+  });
+
+  it("MAIL can move flag forward", () => {
+    cy.login("FED-MAIL", "FED-MAIL-1010");
+    cy.visit("/");
+    cy.clickFirstOrder();
+    cy.checkForScanButton();
+    //now, on scan page, we take the actual actions to move the flag forward
     //now, on scan page, we take the actual actions to move the flag forward
     cy.updateStatus();
     cy.contains("#5").should("be.visible");
