@@ -4,6 +4,8 @@ import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 
 import OrderInfoTop from "../components/scanOrder/orderInfoTop";
+import RevertStatusButtonOff from "../components/scanOrder/buttons/revertStatusButtonOff";
+import RevertStatusButtonOn from "../components/scanOrder/buttons/revertStatusButtonOn";
 import UpdateStatusButtonOff from "../components/scanOrder/buttons/updateStatusButtonOff";
 import UpdateStatusButtonOn from "../components/scanOrder/buttons/updateStatusButtonOn";
 
@@ -286,9 +288,7 @@ const ScanOrder = (props) => {
                     </label>
                   </div>
                   <UpdateStatusButtonOff saveUpdateFunc={saveUpdate} />{" "}
-                  <button onClick={revertUpdate} className="btn btn-success">
-                    {"Revert Update"}
-                  </button>{" "}
+                  <RevertStatusButtonOn revertUpdateFunc={revertUpdate} />{" "}
                   <button
                     onClick={declineUpdate}
                     className="btn btn-success"
@@ -377,12 +377,9 @@ const ScanOrder = (props) => {
                       {revert ? (
                         <>
                           <UpdateStatusButtonOff saveUpdateFunc={saveUpdate} />{" "}
-                          <button
-                            onClick={revertUpdate}
-                            className="btn btn-success"
-                          >
-                            {"Revert Update"}
-                          </button>{" "}
+                          <RevertStatusButtonOn
+                            revertUpdateFunc={revertUpdate}
+                          />{" "}
                           <button
                             onClick={declineUpdate}
                             className="btn btn-success"
@@ -419,13 +416,9 @@ const ScanOrder = (props) => {
                                   )}
                                 </>
                               )}{" "}
-                              <button
-                                onClick={revertUpdate}
-                                className="btn btn-success"
-                                disabled
-                              >
-                                {"Revert Update"}
-                              </button>{" "}
+                              <RevertStatusButtonOff
+                                revertUpdateFunc={revertUpdate}
+                              />{" "}
                               <button
                                 onClick={declineUpdate}
                                 className="btn btn-success"
