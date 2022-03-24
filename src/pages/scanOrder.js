@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import AuthService from "../service/authService";
 import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
+import OrderInfoTop from "../components/scanOrder/orderInfoTop";
 import { numSort } from "../components/sorting/sortHook";
 import styles from "../style/scanOrder.module.css";
 
@@ -262,11 +263,8 @@ const ScanOrder = (props) => {
       <h1 className={styles.title}>Scan</h1>
       {order ? (
         <>
-          <div className="form-group">
-            <label htmlFor="order_number">
-              Order Number: <strong>{order.order_number}</strong>
-            </label>
-          </div>
+          <OrderInfoTop order={order} />
+
           <div className="form-group">
             <label htmlFor="usa_state">
               US State: <strong>{order.usa_state}</strong>
