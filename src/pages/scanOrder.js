@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import AuthService from "../service/authService";
 import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
+
 import OrderInfoTop from "../components/scanOrder/orderInfoTop";
+import UpdateStatusButtonOff from "../components/scanOrder/buttons/updateStatusButtonOff";
+
 import { numSort } from "../components/sorting/sortHook";
 import styles from "../style/scanOrder.module.css";
 
@@ -147,9 +150,6 @@ const ScanOrder = (props) => {
     skip = "true";
   }
 
-  console.log(skip);
-  console.log(revert);
-
   let allowHOSS = "";
   let allowAOC = "";
   let allowMAIL = "";
@@ -265,29 +265,7 @@ const ScanOrder = (props) => {
         <>
           <OrderInfoTop order={order} />
 
-          <div className="form-group">
-            <label htmlFor="usa_state">
-              US State: <strong>{order.usa_state}</strong>
-            </label>
-          </div>
-          <div className="form-group">
-            <label htmlFor="home_office_code">
-              Congressional Office: <strong>{order.home_office_code}</strong>
-            </label>
-          </div>
-          <div className="form-group">
-            <label htmlFor="current_status">
-              Current Status:{" "}
-              {order.status.description ? (
-                <strong>
-                  #{order.status.sequence_num} - {order.status.description}
-                </strong>
-              ) : (
-                <strong>Missing status...</strong>
-              )}
-            </label>
-          </div>
-          {order.status.active_status === "CLOSED" ? (
+          {order.status.active_status === "CLOSED" ? ( // if Closed
             <>
               <div className="form-group">
                 <label htmlFor="next_status">
@@ -295,7 +273,7 @@ const ScanOrder = (props) => {
                 </label>
               </div>
 
-              {revert ? (
+              {revert ? ( // if Closed and Reverting
                 <>
                   <div className="form-group">
                     <label htmlFor="prior_status">
@@ -306,13 +284,7 @@ const ScanOrder = (props) => {
                       </strong>
                     </label>
                   </div>
-                  <button
-                    onClick={saveUpdate}
-                    className="btn btn-success"
-                    disabled
-                  >
-                    {"Update Status"}
-                  </button>{" "}
+                  <UpdateStatusButtonOff saveUpdateFunc={saveUpdate} />{" "}
                   <button onClick={revertUpdate} className="btn btn-success">
                     {"Revert Update"}
                   </button>{" "}
@@ -325,12 +297,14 @@ const ScanOrder = (props) => {
                   </button>
                 </>
               ) : (
+                // if Closed and Not Reverting
                 <></>
               )}
             </>
           ) : (
+            // Not Closed
             <>
-              {order.status.active_status === "CANCELED" ? (
+              {order.status.active_status === "CANCELED" ? ( // Not Closed and Cancelled
                 <>
                   <div className="form-group">
                     <label htmlFor="next_status">
@@ -339,12 +313,13 @@ const ScanOrder = (props) => {
                   </div>
                 </>
               ) : (
+                // Not Closed and Not Cancelled
                 <>
-                  {resolve ? (
+                  {resolve ? ( // Not Closed and Not Cancelled and Resolved
                     <></>
                   ) : (
                     <>
-                      {revert ? (
+                      {revert ? ( // Not Closed and Not Cancelled and Revert
                         <>
                           <div className="form-group">
                             <label htmlFor="prior_status">
@@ -358,7 +333,7 @@ const ScanOrder = (props) => {
                         </>
                       ) : (
                         <>
-                          {skip ? (
+                          {skip ? ( // Not Closed or Cancelled or Revert and Skip
                             <div className="form-group">
                               <p className={styles.skipMessage1}>
                                 If flag is not to be flown:
@@ -380,6 +355,7 @@ const ScanOrder = (props) => {
                               </p>
                             </div>
                           ) : (
+                            // Not Closed or Cancelled or Revert or Skip
                             <div className="form-group">
                               <label htmlFor="next_status">
                                 Next Status:{" "}
@@ -399,13 +375,7 @@ const ScanOrder = (props) => {
                       )}
                       {revert ? (
                         <>
-                          <button
-                            onClick={saveUpdate}
-                            className="btn btn-success"
-                            disabled
-                          >
-                            {"Update Status"}
-                          </button>{" "}
+                          <UpdateStatusButtonOff saveUpdateFunc={saveUpdate} />{" "}
                           <button
                             onClick={revertUpdate}
                             className="btn btn-success"
