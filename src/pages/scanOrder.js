@@ -9,6 +9,7 @@ import DeclineUpdateButtonOff from "../components/scanOrder/buttons/declineUpdat
 import RefuseUpdateButton from "../components/scanOrder/buttons/refuseUpdateButton";
 import RevertStatusButtonOff from "../components/scanOrder/buttons/revertStatusButtonOff";
 import RevertStatusButtonOn from "../components/scanOrder/buttons/revertStatusButtonOn";
+import SkipUpdateButton from "../components/scanOrder/buttons/skipUpdateButton";
 import UpdateStatusButtonOff from "../components/scanOrder/buttons/updateStatusButtonOff";
 import UpdateStatusButtonOn from "../components/scanOrder/buttons/updateStatusButtonOn";
 
@@ -386,12 +387,7 @@ const ScanOrder = (props) => {
                           {statuses && order.status.description ? (
                             <>
                               {skip ? (
-                                <button
-                                  onClick={skipUpdate}
-                                  className={"btn btn-success"}
-                                >
-                                  <strong>{"UPDATE STATUS"}</strong>
-                                </button>
+                                <SkipUpdateButton skipUpdateFunc={skipUpdate} />
                               ) : (
                                 <>
                                   {allowUpdate ? (
