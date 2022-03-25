@@ -151,7 +151,7 @@ const ScanOrder = (props) => {
   }
 
   if (
-    user.office_code === "FED-MAIL" &&
+    user.office_code === ("FED-MAIL" || "FED-MAIL-ADMIN") &&
     order.status.status_code === "HOSS_VERIFIED"
   ) {
     skip = "true";
@@ -304,13 +304,11 @@ const ScanOrder = (props) => {
             // Not Closed
             <>
               {order.status.active_status === "CANCELED" ? ( // if Not Closed but Cancelled
-                <>
-                  <div className="form-group">
-                    <label htmlFor="next_status">
-                      <strong>Use Edit Screen to Uncancel</strong>
-                    </label>
-                  </div>
-                </>
+                <div className="form-group">
+                  <label htmlFor="next_status">
+                    <strong>Use Edit Screen to Uncancel</strong>
+                  </label>
+                </div>
               ) : (
                 // if Not Closed and Not Cancelled
                 <>
@@ -329,51 +327,6 @@ const ScanOrder = (props) => {
                               </strong>
                             </label>
                           </div>
-                        </>
-                      ) : (
-                        <>
-                          {skip ? ( // if Not Closed and Not Cancelled and Not Reverted but Skipped
-                            <div className="form-group">
-                              <p className={styles.skipMessage1}>
-                                If flag is not to be flown:
-                              </p>
-                              <p className={styles.skipMessage2}>
-                                Hit Update to skip Architect of the Capitol.
-                              </p>
-                              <p htmlFor="skip" className={styles.skipMessage1}>
-                                Status will be:{" "}
-                                {statuses && order.status.description ? (
-                                  <strong>
-                                    #{skipSeq} - {skipDesc}
-                                  </strong>
-                                ) : (
-                                  <strong>
-                                    Missing data needed to generate next Status
-                                  </strong>
-                                )}
-                              </p>
-                            </div>
-                          ) : (
-                            // if Not Closed and Not Cancelled and Not Reverted and Not Skipped
-                            <div className="form-group">
-                              <label htmlFor="next_status">
-                                Next Status:{" "}
-                                {statuses && order.status.description ? (
-                                  <strong>
-                                    #{nextSeq} - {nextDesc}
-                                  </strong>
-                                ) : (
-                                  <strong>
-                                    Missing data needed to generate next Status
-                                  </strong>
-                                )}
-                              </label>
-                            </div>
-                          )}
-                        </>
-                      )}
-                      {revert ? (
-                        <>
                           <UpdateStatusButtonOff saveUpdateFunc={saveUpdate} />{" "}
                           <RevertStatusButtonOn
                             revertUpdateFunc={revertUpdate}
@@ -384,23 +337,33 @@ const ScanOrder = (props) => {
                         </>
                       ) : (
                         <>
-                          {statuses && order.status.description ? (
+                          {skip ? ( // if Not Closed and Not Cancelled and Not Reverted but Skipped
                             <>
-                              {skip ? (
-                                <SkipUpdateButton skipUpdateFunc={skipUpdate} />
-                              ) : (
-                                <>
-                                  {allowUpdate ? (
-                                    <UpdateStatusButtonOn
-                                      saveUpdateFunc={saveUpdate}
-                                    />
+                              <div className="form-group">
+                                <p className={styles.skipMessage1}>
+                                  If flag is not to be flown:
+                                </p>
+                                <p className={styles.skipMessage2}>
+                                  Hit Update to skip Architect of the Capitol.
+                                </p>
+                                <p
+                                  htmlFor="skip"
+                                  className={styles.skipMessage1}
+                                >
+                                  Status will be:{" "}
+                                  {statuses && order.status.description ? (
+                                    <strong>
+                                      #{skipSeq} - {skipDesc}
+                                    </strong>
                                   ) : (
-                                    <RefuseUpdateButton
-                                      refuseUpdateFunc={refuseUpdate}
-                                    />
+                                    <strong>
+                                      Missing data needed to generate next
+                                      Status
+                                    </strong>
                                   )}
-                                </>
-                              )}{" "}
+                                </p>
+                              </div>
+                              <SkipUpdateButton skipUpdateFunc={skipUpdate} />{" "}
                               <RevertStatusButtonOff
                                 revertUpdateFunc={revertUpdate}
                               />{" "}
@@ -409,7 +372,39 @@ const ScanOrder = (props) => {
                               />
                             </>
                           ) : (
-                            <></>
+                            // if Not Closed and Not Cancelled and Not Reverted and Not Skipped
+                            <>
+                              <div className="form-group">
+                                <label htmlFor="next_status">
+                                  Next Status:{" "}
+                                  {statuses && order.status.description ? (
+                                    <strong>
+                                      #{nextSeq} - {nextDesc}
+                                    </strong>
+                                  ) : (
+                                    <strong>
+                                      Missing data needed to generate next
+                                      Status
+                                    </strong>
+                                  )}
+                                </label>
+                              </div>
+                              {allowUpdate ? (
+                                <UpdateStatusButtonOn
+                                  saveUpdateFunc={saveUpdate}
+                                />
+                              ) : (
+                                <RefuseUpdateButton
+                                  refuseUpdateFunc={refuseUpdate}
+                                />
+                              )}{" "}
+                              <RevertStatusButtonOff
+                                revertUpdateFunc={revertUpdate}
+                              />{" "}
+                              <DeclineUpdateButtonOn
+                                declineUpdateFunc={declineUpdate}
+                              />
+                            </>
                           )}
                         </>
                       )}
