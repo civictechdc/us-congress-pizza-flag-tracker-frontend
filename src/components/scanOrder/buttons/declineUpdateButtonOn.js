@@ -1,19 +1,19 @@
 import React from "react";
 
-const RevertStatusButtonOn = (props) => {
-  const { revertUpdateFunc } = props;
+const DeclineUpdateButtonOn = (props) => {
+  const { declineUpdateFunc } = props;
 
   const handleInput = () => {
-    revertUpdateFunc();
+    declineUpdateFunc();
   };
 
   return (
     <>
       <button onClick={handleInput} className="btn btn-success">
-        {"Revert Update TEST"}
+        {"Decline Update TEST"}
       </button>
     </>
   );
 };
 
-export default RevertStatusButtonOn;
+export default DeclineUpdateButtonOn;

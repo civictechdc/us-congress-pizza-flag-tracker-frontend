@@ -4,6 +4,9 @@ import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 
 import OrderInfoTop from "../components/scanOrder/orderInfoTop";
+import DeclineUpdateButtonOn from "../components/scanOrder/buttons/declineUpdateButtonOn";
+import DeclineUpdateButtonOff from "../components/scanOrder/buttons/declineUpdateButtonOff";
+import RefuseUpdateButton from "../components/scanOrder/buttons/refuseUpdateButton";
 import RevertStatusButtonOff from "../components/scanOrder/buttons/revertStatusButtonOff";
 import RevertStatusButtonOn from "../components/scanOrder/buttons/revertStatusButtonOn";
 import UpdateStatusButtonOff from "../components/scanOrder/buttons/updateStatusButtonOff";
@@ -35,7 +38,7 @@ const ScanOrder = (props) => {
   const [order, setOrder] = useState(initialOrderState);
   const [oldOrder, setOldOrder] = useState(initialOrderState);
   const [message, setMessage] = useState("");
-  const [resolve, setResolve] = useState(""); // Decline Update button
+  const [decline, setDecline] = useState(""); // Decline Update button
   const [revert, setRevert] = useState(""); // Revert Update button
   const [statuses, setStatuses] = useState([]);
   const [popUpBox, setPopUpBox] = useState("none");
@@ -235,7 +238,7 @@ const ScanOrder = (props) => {
   };
 
   const declineUpdate = () => {
-    setResolve("yes");
+    setDecline("yes");
   };
 
   const revertUpdate = () => {
@@ -289,13 +292,7 @@ const ScanOrder = (props) => {
                   </div>
                   <UpdateStatusButtonOff saveUpdateFunc={saveUpdate} />{" "}
                   <RevertStatusButtonOn revertUpdateFunc={revertUpdate} />{" "}
-                  <button
-                    onClick={declineUpdate}
-                    className="btn btn-success"
-                    disabled
-                  >
-                    {"Decline Update"}
-                  </button>
+                  <DeclineUpdateButtonOff declineUpdateFunc={declineUpdate} />{" "}
                 </>
               ) : (
                 // if Closed and Not Reverting
@@ -305,7 +302,7 @@ const ScanOrder = (props) => {
           ) : (
             // Not Closed
             <>
-              {order.status.active_status === "CANCELED" ? ( // Not Closed and Cancelled
+              {order.status.active_status === "CANCELED" ? ( // if Cancelled
                 <>
                   <div className="form-group">
                     <label htmlFor="next_status">
@@ -314,13 +311,13 @@ const ScanOrder = (props) => {
                   </div>
                 </>
               ) : (
-                // Not Closed and Not Cancelled
+                // if Not Cancelled
                 <>
-                  {resolve ? ( // Not Closed and Not Cancelled and Resolved
+                  {decline ? ( // if Not Cancelled and declined
                     <></>
                   ) : (
                     <>
-                      {revert ? ( // Not Closed and Not Cancelled and Revert
+                      {revert ? ( // if Not Cancelled and Revert
                         <>
                           <div className="form-group">
                             <label htmlFor="prior_status">
@@ -334,7 +331,7 @@ const ScanOrder = (props) => {
                         </>
                       ) : (
                         <>
-                          {skip ? ( // Not Closed or Cancelled or Revert and Skip
+                          {skip ? ( // if Not Cancelled or Revert and Skip
                             <div className="form-group">
                               <p className={styles.skipMessage1}>
                                 If flag is not to be flown:
@@ -356,7 +353,7 @@ const ScanOrder = (props) => {
                               </p>
                             </div>
                           ) : (
-                            // Not Closed or Cancelled or Revert or Skip
+                            // if Not Cancelled or Revert or Skip
                             <div className="form-group">
                               <label htmlFor="next_status">
                                 Next Status:{" "}
@@ -380,13 +377,9 @@ const ScanOrder = (props) => {
                           <RevertStatusButtonOn
                             revertUpdateFunc={revertUpdate}
                           />{" "}
-                          <button
-                            onClick={declineUpdate}
-                            className="btn btn-success"
-                            disabled
-                          >
-                            {"Decline Update"}
-                          </button>
+                          <DeclineUpdateButtonOff
+                            declineUpdateFunc={declineUpdate}
+                          />{" "}
                         </>
                       ) : (
                         <>
@@ -406,25 +399,18 @@ const ScanOrder = (props) => {
                                       saveUpdateFunc={saveUpdate}
                                     />
                                   ) : (
-                                    <button
-                                      onClick={refuseUpdate}
-                                      className="btn btn-success"
-                                      style={{ opacity: 0.6 }}
-                                    >
-                                      {"Update Status"}
-                                    </button>
+                                    <RefuseUpdateButton
+                                      refuseUpdateFunc={refuseUpdate}
+                                    />
                                   )}
                                 </>
                               )}{" "}
                               <RevertStatusButtonOff
                                 revertUpdateFunc={revertUpdate}
                               />{" "}
-                              <button
-                                onClick={declineUpdate}
-                                className="btn btn-success"
-                              >
-                                {"Decline Update"}
-                              </button>
+                              <DeclineUpdateButtonOn
+                                declineUpdateFunc={declineUpdate}
+                              />
                             </>
                           ) : (
                             <></>
