@@ -10,7 +10,7 @@ const SkipUpdateButton = (props) => {
   return (
     <>
       <button onClick={handleInput} className={"btn btn-success"}>
-        <strong>{"UPDATE STATUS SKIP TEST"}</strong>
+        <strong>{"UPDATE STATUS"}</strong>
       </button>
     </>
   );

@@ -10,7 +10,7 @@ const UpdateStatusButtonOff = (props) => {
   return (
     <>
       <button onClick={handleInput} className="btn btn-success" disabled>
-        <strong>{"UPDATE STATUS TEST"}</strong>
+        <strong>{"UPDATE STATUS"}</strong>
       </button>
     </>
   );

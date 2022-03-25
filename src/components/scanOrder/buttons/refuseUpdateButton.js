@@ -14,7 +14,7 @@ const RefuseUpdateButton = (props) => {
         className="btn btn-success"
         style={{ opacity: 0.6 }}
       >
-        {"Update Status Refuse TEST"}
+        {"Update Status Refuse"}
       </button>
     </>
   );

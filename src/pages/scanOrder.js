@@ -296,12 +296,11 @@ const ScanOrder = (props) => {
                   <DeclineUpdateButtonOff declineUpdateFunc={declineUpdate} />{" "}
                 </>
               ) : (
-                // if Closed and Not Reverting
-                <></>
+                <></> // if Closed and Not Reverting
               )}
             </>
           ) : (
-            // Not Closed
+            // if Not Closed
             <>
               {order.status.active_status === "CANCELED" ? ( // if Not Closed but Cancelled
                 <div className="form-group">
@@ -310,13 +309,12 @@ const ScanOrder = (props) => {
                   </label>
                 </div>
               ) : (
-                // if Not Closed and Not Cancelled
                 <>
                   {decline ? ( // if Not Closed and Not Cancelled but Declined
                     <></>
                   ) : (
                     <>
-                      {revert ? ( // if Not Closed and Not Cancelled but Reverted
+                      {revert ? ( // if Not Closed and Not Cancelled and Not Declined but Reverted
                         <>
                           <div className="form-group">
                             <label htmlFor="prior_status">
@@ -337,7 +335,7 @@ const ScanOrder = (props) => {
                         </>
                       ) : (
                         <>
-                          {skip ? ( // if Not Closed and Not Cancelled and Not Reverted but Skipped
+                          {skip ? ( // if Not Closed and Not Cancelled and Not Declined and Not Reverted but Skipped
                             <>
                               <div className="form-group">
                                 <p className={styles.skipMessage1}>
@@ -372,7 +370,7 @@ const ScanOrder = (props) => {
                               />
                             </>
                           ) : (
-                            // if Not Closed and Not Cancelled and Not Reverted and Not Skipped
+                            // if Not Closed and Not Cancelled and Not Declined and Not Reverted and Not Skipped
                             <>
                               <div className="form-group">
                                 <label htmlFor="next_status">
