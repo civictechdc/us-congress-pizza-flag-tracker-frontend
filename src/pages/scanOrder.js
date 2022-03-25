@@ -151,7 +151,7 @@ const ScanOrder = (props) => {
 
   if (
     user.office_code === "FED-MAIL" &&
-    order.status.status_code === "AOC_RECEIVED"
+    order.status.status_code === "HOSS_VERIFIED"
   ) {
     skip = "true";
   }
@@ -302,7 +302,7 @@ const ScanOrder = (props) => {
           ) : (
             // Not Closed
             <>
-              {order.status.active_status === "CANCELED" ? ( // if Cancelled
+              {order.status.active_status === "CANCELED" ? ( // if Not Closed but Cancelled
                 <>
                   <div className="form-group">
                     <label htmlFor="next_status">
@@ -311,13 +311,13 @@ const ScanOrder = (props) => {
                   </div>
                 </>
               ) : (
-                // if Not Cancelled
+                // if Not Closed and Not Cancelled
                 <>
-                  {decline ? ( // if Not Cancelled and declined
+                  {decline ? ( // if Not Closed and Not Cancelled but Declined
                     <></>
                   ) : (
                     <>
-                      {revert ? ( // if Not Cancelled and Revert
+                      {revert ? ( // if Not Closed and Not Cancelled but Reverted
                         <>
                           <div className="form-group">
                             <label htmlFor="prior_status">
@@ -331,7 +331,7 @@ const ScanOrder = (props) => {
                         </>
                       ) : (
                         <>
-                          {skip ? ( // if Not Cancelled or Revert and Skip
+                          {skip ? ( // if Not Closed and Not Cancelled and Not Reverted but Skipped
                             <div className="form-group">
                               <p className={styles.skipMessage1}>
                                 If flag is not to be flown:
@@ -353,7 +353,7 @@ const ScanOrder = (props) => {
                               </p>
                             </div>
                           ) : (
-                            // if Not Cancelled or Revert or Skip
+                            // if Not Closed and Not Cancelled and Not Reverted and Not Skipped
                             <div className="form-group">
                               <label htmlFor="next_status">
                                 Next Status:{" "}
