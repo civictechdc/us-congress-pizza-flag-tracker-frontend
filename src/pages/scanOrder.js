@@ -97,14 +97,19 @@ const ScanOrder = (props) => {
     }
   }, [statuses]);
 
-  let nextDesc = "";
-  let skipDesc = "";
-  let nextId = null;
-  let skipId = null;
-  let nextSeq = null;
-  let skipSeq = null;
-  let nextPermission = "";
-  let skipPermission = "";
+  let nextStatus = {
+    description: "",
+    id: null,
+    sequence_num: null,
+    permission: "",
+  };
+
+  let skipStatus = {
+    description: "",
+    id: null,
+    sequence_num: null,
+    permission: "",
+  };
 
   let sortedStatuses = [];
   let lifeCycle = [];
@@ -129,10 +134,10 @@ const ScanOrder = (props) => {
 
     for (let i = 0; i < lifeCycle.length; i++) {
       if (lifeCycle[i].sequence_num > currentSeq) {
-        nextDesc = lifeCycle[i].description;
-        nextId = lifeCycle[i].id;
-        nextSeq = lifeCycle[i].sequence_num;
-        nextPermission = lifeCycle[i].permission;
+        nextStatus.description = lifeCycle[i].description;
+        nextStatus.id = lifeCycle[i].id;
+        nextStatus.sequence_num = lifeCycle[i].sequence_num;
+        nextStatus.permission = lifeCycle[i].permission;
         break;
       }
     }
@@ -141,10 +146,10 @@ const ScanOrder = (props) => {
   const calculateBypassArchitectOfCapital = () => {
     for (let i = 0; i < lifeCycle.length; i++) {
       if (lifeCycle[i].permission == "FED-MAIL") {
-        skipDesc = lifeCycle[i].description;
-        skipId = lifeCycle[i].id;
-        skipSeq = lifeCycle[i].sequence_num;
-        skipPermission = lifeCycle[i].permission;
+        skipStatus.description = lifeCycle[i].description;
+        skipStatus.id = lifeCycle[i].id;
+        skipStatus.sequence_num = lifeCycle[i].sequence_num;
+        skipStatus.permission = lifeCycle[i].permission;
         break;
       }
     }
@@ -155,8 +160,6 @@ const ScanOrder = (props) => {
     calculateNextStatus();
     calculateBypassArchitectOfCapital();
   }
-
-  console.log(order);
 
   if (
     user.office_code === ("FED-MAIL" || "FED-MAIL-ADMIN") &&
@@ -193,15 +196,19 @@ const ScanOrder = (props) => {
 
   let allowUpdate = "";
 
-  if (nextPermission === "FED-HOSS" && allowHOSS === "yes") allowUpdate = "yes";
-  if (nextPermission === "FED-AOC" && allowAOC === "yes") allowUpdate = "yes";
-  if (nextPermission === "FED-MAIL" && allowMAIL === "yes") allowUpdate = "yes";
-  if (nextPermission === "STATE" && allowSTATE === "yes") allowUpdate = "yes";
+  if (nextStatus.permission === "FED-HOSS" && allowHOSS === "yes")
+    allowUpdate = "yes";
+  if (nextStatus.permission === "FED-AOC" && allowAOC === "yes")
+    allowUpdate = "yes";
+  if (nextStatus.permission === "FED-MAIL" && allowMAIL === "yes")
+    allowUpdate = "yes";
+  if (nextStatus.permission === "STATE" && allowSTATE === "yes")
+    allowUpdate = "yes";
 
   const handleUpdate = () => {
     const updatedStatus = {
       ...order,
-      order_status_id: nextId,
+      order_status_id: nextStatus.id,
     };
     return updatedStatus;
   };
@@ -209,7 +216,7 @@ const ScanOrder = (props) => {
   const handleSkip = () => {
     const updatedStatus = {
       ...order,
-      order_status_id: skipId,
+      order_status_id: skipStatus.id,
     };
     return updatedStatus;
   };
@@ -359,7 +366,8 @@ const ScanOrder = (props) => {
                                   Status will be:{" "}
                                   {statuses && order.status.description ? (
                                     <strong>
-                                      #{skipSeq} - {skipDesc}
+                                      #{skipStatus.sequence_num} -{" "}
+                                      {skipStatus.description}
                                     </strong>
                                   ) : (
                                     <strong>
@@ -385,7 +393,8 @@ const ScanOrder = (props) => {
                                   Next Status:{" "}
                                   {statuses && order.status.description ? (
                                     <strong>
-                                      #{nextSeq} - {nextDesc}
+                                      #{nextStatus.sequence_num} -{" "}
+                                      {nextStatus.description}
                                     </strong>
                                   ) : (
                                     <strong>
