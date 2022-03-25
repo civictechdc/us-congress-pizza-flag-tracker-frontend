@@ -110,7 +110,7 @@ const ScanOrder = (props) => {
   let lifeCycle = [];
   let skip = "";
 
-  if (statuses && order) {
+  const removeCancelStatus = () => {
     sortedStatuses = numSort(statuses, "sequence_num", "asc");
     lifeCycle = sortedStatuses.slice();
 
@@ -122,9 +122,9 @@ const ScanOrder = (props) => {
         lifeCycle.splice(i, 1);
       }
     }
-  }
+  };
 
-  if (statuses && order) {
+  const calculateNextStatus = () => {
     const currentSeq = order.status.sequence_num;
 
     for (let i = 0; i < lifeCycle.length; i++) {
@@ -136,9 +136,9 @@ const ScanOrder = (props) => {
         break;
       }
     }
-  }
+  };
 
-  if (statuses && order) {
+  const calculateBypassArchitectOfCapital = () => {
     for (let i = 0; i < lifeCycle.length; i++) {
       if (lifeCycle[i].permission == "FED-MAIL") {
         skipDesc = lifeCycle[i].description;
@@ -148,7 +148,15 @@ const ScanOrder = (props) => {
         break;
       }
     }
+  };
+
+  if (statuses && order) {
+    removeCancelStatus();
+    calculateNextStatus();
+    calculateBypassArchitectOfCapital();
   }
+
+  console.log(order);
 
   if (
     user.office_code === ("FED-MAIL" || "FED-MAIL-ADMIN") &&
