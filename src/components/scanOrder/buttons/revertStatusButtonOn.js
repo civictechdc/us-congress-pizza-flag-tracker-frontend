@@ -10,7 +10,7 @@ const RevertStatusButtonOn = (props) => {
   return (
     <>
       <button onClick={handleInput} className="btn btn-success">
-        {"Revert Update"}
+        <strong>{"REVERT UPDATE"}</strong>
       </button>
     </>
   );
