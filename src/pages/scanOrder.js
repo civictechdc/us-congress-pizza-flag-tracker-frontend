@@ -4,6 +4,7 @@ import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 
 import OrderInfoTop from "../components/scanOrder/orderInfoTop";
+import OrderInfoBottomClosed from "../components/scanOrder/orderInfoBottomClosed";
 import DeclineUpdateButtonOn from "../components/scanOrder/buttons/declineUpdateButtonOn";
 import DeclineUpdateButtonOff from "../components/scanOrder/buttons/declineUpdateButtonOff";
 import RefuseUpdateButton from "../components/scanOrder/buttons/refuseUpdateButton";
@@ -288,32 +289,13 @@ const ScanOrder = (props) => {
           <OrderInfoTop order={order} />
 
           {order.status.active_status === "CLOSED" ? ( // if Closed
-            <>
-              <div className="form-group">
-                <label htmlFor="next_status">
-                  <strong>Order Complete</strong>
-                </label>
-              </div>
-
-              {revert ? ( // if Closed and Reverting
-                <>
-                  <div className="form-group">
-                    <label htmlFor="prior_status">
-                      Prior Status:{" "}
-                      <strong>
-                        #{oldOrder.status.sequence_num} -{" "}
-                        {oldOrder.status.description}
-                      </strong>
-                    </label>
-                  </div>
-                  <UpdateStatusButtonOff saveUpdateFunc={saveUpdate} />{" "}
-                  <RevertStatusButtonOn revertUpdateFunc={revertUpdate} />{" "}
-                  <DeclineUpdateButtonOff declineUpdateFunc={declineUpdate} />{" "}
-                </>
-              ) : (
-                <></> // if Closed and Not Reverting
-              )}
-            </>
+            <OrderInfoBottomClosed
+              declineUpdate={declineUpdate}
+              oldOrder={oldOrder}
+              revert={revert}
+              revertUpdate={revertUpdate}
+              saveUpdate={saveUpdate}
+            />
           ) : (
             // if Not Closed
             <>
