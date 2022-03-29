@@ -3,17 +3,8 @@ import AuthService from "../service/authService";
 import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 
-import OrderInfoTop from "../components/scanOrder/orderInfoTop";
-import OrderInfoBottomClosed from "../components/scanOrder/orderInfoBottomClosed";
-import OrderInfoBottomOpen from "../components/scanOrder/orderInfoBottomOpen";
-import DeclineUpdateButtonOn from "../components/scanOrder/buttons/declineUpdateButtonOn";
-import DeclineUpdateButtonOff from "../components/scanOrder/buttons/declineUpdateButtonOff";
-import RefuseUpdateButton from "../components/scanOrder/buttons/refuseUpdateButton";
-import RevertStatusButtonOff from "../components/scanOrder/buttons/revertStatusButtonOff";
-import RevertStatusButtonOn from "../components/scanOrder/buttons/revertStatusButtonOn";
-import SkipUpdateButton from "../components/scanOrder/buttons/skipUpdateButton";
-import UpdateStatusButtonOff from "../components/scanOrder/buttons/updateStatusButtonOff";
-import UpdateStatusButtonOn from "../components/scanOrder/buttons/updateStatusButtonOn";
+import InfoBottom from "../components/scanOrder/infoBottom";
+import InfoTop from "../components/scanOrder/infoTop";
 
 import { numSort } from "../components/sorting/sortHook";
 import styles from "../style/scanOrder.module.css";
@@ -287,34 +278,23 @@ const ScanOrder = (props) => {
       <h1 className={styles.title}>Scan</h1>
       {order ? (
         <>
-          <OrderInfoTop order={order} />
-
-          {order.status.active_status === "CLOSED" ? (
-            <OrderInfoBottomClosed
-              declineUpdate={declineUpdate}
-              oldOrder={oldOrder}
-              revert={revert}
-              revertUpdate={revertUpdate}
-              saveUpdate={saveUpdate}
-            />
-          ) : (
-            <OrderInfoBottomOpen
-              allowUpdate={allowUpdate}
-              decline={decline}
-              declineUpdate={declineUpdate}
-              nextStatus={nextStatus}
-              oldOrder={oldOrder}
-              order={order}
-              refuseUpdate={refuseUpdate}
-              revert={revert}
-              revertUpdate={revertUpdate}
-              saveUpdate={saveUpdate}
-              skip={skip}
-              skipStatus={skipStatus}
-              skipUpdate={skipUpdate}
-              statuses={statuses}
-            />
-          )}
+          <InfoTop order={order} />
+          <InfoBottom
+            allowUpdate={allowUpdate}
+            decline={decline}
+            declineUpdate={declineUpdate}
+            nextStatus={nextStatus}
+            oldOrder={oldOrder}
+            order={order}
+            refuseUpdate={refuseUpdate}
+            revert={revert}
+            revertUpdate={revertUpdate}
+            saveUpdate={saveUpdate}
+            skip={skip}
+            skipStatus={skipStatus}
+            skipUpdate={skipUpdate}
+            statuses={statuses}
+          />
         </>
       ) : (
         <>

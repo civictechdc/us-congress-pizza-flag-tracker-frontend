@@ -1,6 +1,6 @@
 import React from "react";
 
-const OrderInfoTop = (props) => {
+const InfoTop = (props) => {
   const { order } = props;
 
   return (
@@ -36,4 +36,4 @@ const OrderInfoTop = (props) => {
   );
 };
 
-export default OrderInfoTop;
+export default InfoTop;
