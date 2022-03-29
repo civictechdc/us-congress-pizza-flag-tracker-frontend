@@ -5,6 +5,7 @@ import StatusDataService from "../service/statusService";
 
 import OrderInfoTop from "../components/scanOrder/orderInfoTop";
 import OrderInfoBottomClosed from "../components/scanOrder/orderInfoBottomClosed";
+import OrderInfoBottomOpen from "../components/scanOrder/orderInfoBottomOpen";
 import DeclineUpdateButtonOn from "../components/scanOrder/buttons/declineUpdateButtonOn";
 import DeclineUpdateButtonOff from "../components/scanOrder/buttons/declineUpdateButtonOff";
 import RefuseUpdateButton from "../components/scanOrder/buttons/refuseUpdateButton";
@@ -288,7 +289,7 @@ const ScanOrder = (props) => {
         <>
           <OrderInfoTop order={order} />
 
-          {order.status.active_status === "CLOSED" ? ( // if Closed
+          {order.status.active_status === "CLOSED" ? (
             <OrderInfoBottomClosed
               declineUpdate={declineUpdate}
               oldOrder={oldOrder}
@@ -297,119 +298,22 @@ const ScanOrder = (props) => {
               saveUpdate={saveUpdate}
             />
           ) : (
-            // if Not Closed
-            <>
-              {order.status.active_status === "CANCELED" ? ( // if Not Closed but Cancelled
-                <div className="form-group">
-                  <label htmlFor="next_status">
-                    <strong>Use Edit Screen to Uncancel</strong>
-                  </label>
-                </div>
-              ) : (
-                <>
-                  {decline ? ( // if Not Closed and Not Cancelled but Declined
-                    <></>
-                  ) : (
-                    <>
-                      {revert ? ( // if Not Closed and Not Cancelled and Not Declined but Reverted
-                        <>
-                          <div className="form-group">
-                            <label htmlFor="prior_status">
-                              Prior Status:{" "}
-                              <strong>
-                                #{oldOrder.status.sequence_num} -{" "}
-                                {oldOrder.status.description}
-                              </strong>
-                            </label>
-                          </div>
-                          <UpdateStatusButtonOff saveUpdateFunc={saveUpdate} />{" "}
-                          <RevertStatusButtonOn
-                            revertUpdateFunc={revertUpdate}
-                          />{" "}
-                          <DeclineUpdateButtonOff
-                            declineUpdateFunc={declineUpdate}
-                          />{" "}
-                        </>
-                      ) : (
-                        <>
-                          {skip ? ( // if Not Closed and Not Cancelled and Not Declined and Not Reverted but Skipped
-                            <>
-                              <div className="form-group">
-                                <p className={styles.skipMessage1}>
-                                  If flag is not to be flown:
-                                </p>
-                                <p className={styles.skipMessage2}>
-                                  Hit Update to skip Architect of the Capitol.
-                                </p>
-                                <p
-                                  htmlFor="skip"
-                                  className={styles.skipMessage1}
-                                >
-                                  Status will be:{" "}
-                                  {statuses && order.status.description ? (
-                                    <strong>
-                                      #{skipStatus.sequence_num} -{" "}
-                                      {skipStatus.description}
-                                    </strong>
-                                  ) : (
-                                    <strong>
-                                      Missing data needed to generate next
-                                      Status
-                                    </strong>
-                                  )}
-                                </p>
-                              </div>
-                              <SkipUpdateButton skipUpdateFunc={skipUpdate} />{" "}
-                              <RevertStatusButtonOff
-                                revertUpdateFunc={revertUpdate}
-                              />{" "}
-                              <DeclineUpdateButtonOn
-                                declineUpdateFunc={declineUpdate}
-                              />
-                            </>
-                          ) : (
-                            // if Not Closed and Not Cancelled and Not Declined and Not Reverted and Not Skipped
-                            <>
-                              <div className="form-group">
-                                <label htmlFor="next_status">
-                                  Next Status:{" "}
-                                  {statuses && order.status.description ? (
-                                    <strong>
-                                      #{nextStatus.sequence_num} -{" "}
-                                      {nextStatus.description}
-                                    </strong>
-                                  ) : (
-                                    <strong>
-                                      Missing data needed to generate next
-                                      Status
-                                    </strong>
-                                  )}
-                                </label>
-                              </div>
-                              {allowUpdate ? (
-                                <UpdateStatusButtonOn
-                                  saveUpdateFunc={saveUpdate}
-                                />
-                              ) : (
-                                <RefuseUpdateButton
-                                  refuseUpdateFunc={refuseUpdate}
-                                />
-                              )}{" "}
-                              <RevertStatusButtonOff
-                                revertUpdateFunc={revertUpdate}
-                              />{" "}
-                              <DeclineUpdateButtonOn
-                                declineUpdateFunc={declineUpdate}
-                              />
-                            </>
-                          )}
-                        </>
-                      )}
-                    </>
-                  )}
-                </>
-              )}
-            </>
+            <OrderInfoBottomOpen
+              allowUpdate={allowUpdate}
+              decline={decline}
+              declineUpdate={declineUpdate}
+              nextStatus={nextStatus}
+              oldOrder={oldOrder}
+              order={order}
+              refuseUpdate={refuseUpdate}
+              revert={revert}
+              revertUpdate={revertUpdate}
+              saveUpdate={saveUpdate}
+              skip={skip}
+              skipStatus={skipStatus}
+              skipUpdate={skipUpdate}
+              statuses={statuses}
+            />
           )}
         </>
       ) : (
