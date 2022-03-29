@@ -1,16 +1,16 @@
 import React from "react";
-import DeclineUpdateButtonOff from "../scanOrder/buttons/declineUpdateButtonOff";
-import DeclineUpdateButtonOn from "../scanOrder/buttons/declineUpdateButtonOn";
-import RefuseUpdateButton from "../scanOrder/buttons/refuseUpdateButton";
-import RevertStatusButtonOn from "../scanOrder/buttons/revertStatusButtonOn";
-import RevertStatusButtonOff from "../scanOrder/buttons/revertStatusButtonOff";
-import SkipUpdateButton from "../scanOrder/buttons/skipUpdateButton";
-import UpdateStatusButtonOn from "../scanOrder/buttons/updateStatusButtonOn";
-import UpdateStatusButtonOff from "../scanOrder/buttons/updateStatusButtonOff";
+import DeclineUpdateButtonOff from "../buttons/declineUpdateButtonOff";
+import DeclineUpdateButtonOn from "../buttons/declineUpdateButtonOn";
+import RefuseUpdateButton from "../buttons/refuseUpdateButton";
+import RevertStatusButtonOn from "../buttons/revertStatusButtonOn";
+import RevertStatusButtonOff from "../buttons/revertStatusButtonOff";
+import SkipUpdateButton from "../buttons/skipUpdateButton";
+import UpdateStatusButtonOn from "../buttons/updateStatusButtonOn";
+import UpdateStatusButtonOff from "../buttons/updateStatusButtonOff";
 
 import styles from "../../style/scanOrder.module.css";
 
-const OrderInfoBottomOpen = (props) => {
+const OrderOpen = (props) => {
   const {
     allowUpdate,
     decline,
@@ -127,4 +127,4 @@ const OrderInfoBottomOpen = (props) => {
   );
 };
 
-export default OrderInfoBottomOpen;
+export default OrderOpen;

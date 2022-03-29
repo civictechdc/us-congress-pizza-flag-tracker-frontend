@@ -1,6 +1,6 @@
 import React from "react";
 import OrderClosed from "./InfoBottom/orderClosed";
-import OrderInfoBottomOpen from "../scanOrder/orderInfoBottomOpen";
+import OrderOpen from "./InfoBottom/orderOpen";
 
 const InfoBottom = (props) => {
   const {
@@ -31,7 +31,7 @@ const InfoBottom = (props) => {
           saveUpdate={saveUpdate}
         />
       ) : (
-        <OrderInfoBottomOpen
+        <OrderOpen
           allowUpdate={allowUpdate}
           decline={decline}
           declineUpdate={declineUpdate}
