@@ -35,6 +35,8 @@ const ScanOrder = (props) => {
   const loginError = "You must be logged in to view this page";
   const user = JSON.parse(localStorage.getItem("user"));
 
+  const showLog = () => {};
+
   const getOrder = (id) => {
     const serviceCall = () => {
       return OrderDataService.get(id)
@@ -89,9 +91,9 @@ const ScanOrder = (props) => {
   let nextDesc = "";
   let skipDesc = "";
   let nextId = null;
-  let skipId = null;  
+  let skipId = null;
   let nextSeq = null;
-  let skipSeq = null;  
+  let skipSeq = null;
   let nextPermission = "";
   let skipPermission = "";
 
@@ -139,7 +141,10 @@ const ScanOrder = (props) => {
     }
   }
 
-  if (( user.office_code === "FED-MAIL" ) && (order.status.status_code === "AOC_RECEIVED")) {
+  if (
+    user.office_code === "FED-MAIL" &&
+    order.status.status_code === "AOC_RECEIVED"
+  ) {
     skip = "true";
   }
 
@@ -193,7 +198,7 @@ const ScanOrder = (props) => {
       order_status_id: skipId,
     };
     return updatedStatus;
-  }
+  };
 
   const updateStatus = (updatedStatus, activateRevertButton) => {
     const serviceCall = () => {
@@ -280,7 +285,7 @@ const ScanOrder = (props) => {
               {order.status.description ? (
                 <strong>
                   #{order.status.sequence_num} - {order.status.description}
-                </strong>  
+                </strong>
               ) : (
                 <strong>Missing status...</strong>
               )}
@@ -293,7 +298,7 @@ const ScanOrder = (props) => {
                   <strong>Order Complete</strong>
                 </label>
               </div>
-            
+
               {revert ? (
                 <>
                   <div className="form-group">
@@ -312,10 +317,7 @@ const ScanOrder = (props) => {
                   >
                     {"Update Status"}
                   </button>{" "}
-                  <button
-                    onClick={revertUpdate}
-                    className="btn btn-success"
-                  >
+                  <button onClick={revertUpdate} className="btn btn-success">
                     {"Revert Update"}
                   </button>{" "}
                   <button
@@ -325,9 +327,10 @@ const ScanOrder = (props) => {
                   >
                     {"Decline Update"}
                   </button>
-                </>                
-              ) : (<></>)}
-                       
+                </>
+              ) : (
+                <></>
+              )}
             </>
           ) : (
             <>
@@ -370,24 +373,27 @@ const ScanOrder = (props) => {
                                     </strong>
                                   ) : (
                                     <strong>
-                                      Missing data needed to generate next Status
+                                      Missing data needed to generate next
+                                      Status
                                     </strong>
                                   )}
                                 </label>
                               </div>
                               <div className="form-group">
                                 <label htmlFor="skip">
-                                  Hit Update to skip Mail Office.  Status will be:{" "}
+                                  Hit Update to skip Mail Office. Status will
+                                  be:{" "}
                                   <div>
-                                  {statuses && order.status.description ? (
-                                    <strong>
-                                      #{skipSeq} - {skipDesc}
-                                    </strong>
-                                  ) : (
-                                    <strong>
-                                      Missing data needed to generate next Status
-                                    </strong>
-                                  )}
+                                    {statuses && order.status.description ? (
+                                      <strong>
+                                        #{skipSeq} - {skipDesc}
+                                      </strong>
+                                    ) : (
+                                      <strong>
+                                        Missing data needed to generate next
+                                        Status
+                                      </strong>
+                                    )}
                                   </div>
                                 </label>
                               </div>
@@ -410,6 +416,12 @@ const ScanOrder = (props) => {
                           )}
                         </>
                       )}
+                      <>
+                        <button onClick={showLog} className="btn btn-link">
+                          Show flag history
+                        </button>
+                      </>
+
                       {revert ? (
                         <>
                           <button
@@ -440,12 +452,12 @@ const ScanOrder = (props) => {
                               {skip ? (
                                 <button
                                   onClick={skipUpdate}
-                                  className="btn btn-success"                                  
+                                  className="btn btn-success"
                                 >
                                   {"Update Status"}
-                                </button>                           
+                                </button>
                               ) : (
-                                <>  
+                                <>
                                   {allowUpdate ? (
                                     <button
                                       onClick={saveUpdate}
@@ -501,7 +513,7 @@ const ScanOrder = (props) => {
           <h3>{message}</h3>
         </div>
       </div>
-    </div>  
+    </div>
   );
 };
 
