@@ -1,9 +1,9 @@
 import React from "react";
-import DeclineUpdateButtonOff from "../scanOrder/buttons/declineUpdateButtonOff";
-import RevertStatusButtonOn from "../scanOrder/buttons/revertStatusButtonOn";
-import UpdateStatusButtonOff from "../scanOrder/buttons/updateStatusButtonOff";
+import DeclineUpdateButtonOff from "../buttons/declineUpdateButtonOff";
+import RevertStatusButtonOn from "../buttons/revertStatusButtonOn";
+import UpdateStatusButtonOff from "../buttons/updateStatusButtonOff";
 
-const OrderInfoBottomClosed = (props) => {
+const OrderClosed = (props) => {
   const { declineUpdate, oldOrder, revert, revertUpdate, saveUpdate } = props;
 
   return (
@@ -36,4 +36,4 @@ const OrderInfoBottomClosed = (props) => {
   );
 };
 
-export default OrderInfoBottomClosed;
+export default OrderClosed;

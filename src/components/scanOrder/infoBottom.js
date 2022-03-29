@@ -1,5 +1,5 @@
 import React from "react";
-import OrderInfoBottomClosed from "../scanOrder/orderInfoBottomClosed";
+import OrderClosed from "./InfoBottom/orderClosed";
 import OrderInfoBottomOpen from "../scanOrder/orderInfoBottomOpen";
 
 const InfoBottom = (props) => {
@@ -23,7 +23,7 @@ const InfoBottom = (props) => {
   return (
     <>
       {order.status.active_status === "CLOSED" ? (
-        <OrderInfoBottomClosed
+        <OrderClosed
           declineUpdate={declineUpdate}
           oldOrder={oldOrder}
           revert={revert}
