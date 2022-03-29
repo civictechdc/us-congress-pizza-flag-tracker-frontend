@@ -30,7 +30,7 @@ const OrderOpen = (props) => {
 
   return (
     <>
-      {order.status.active_status === "CANCELED" ? ( // if Not Closed but Cancelled
+      {order.status.active_status === "CANCELED" ? (
         <div className="form-group">
           <label htmlFor="next_status">
             <strong>Use Edit Screen to Uncancel</strong>
