@@ -8,7 +8,7 @@ import SkipUpdateButton from "../buttons/skipUpdateButton";
 import UpdateStatusButtonOn from "../buttons/updateStatusButtonOn";
 import UpdateStatusButtonOff from "../buttons/updateStatusButtonOff";
 
-import styles from "../../style/scanOrder.module.css";
+import styles from "../../../style/scanOrder.module.css";
 
 const OrderOpen = (props) => {
   const {
