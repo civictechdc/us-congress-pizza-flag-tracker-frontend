@@ -1,6 +1,6 @@
 import React from "react";
-import OrderClosed from "./InfoBottom/orderClosed";
-import OrderOpen from "./InfoBottom/orderOpen";
+import OrderClosed from "./infoBottom/orderClosed";
+import OrderOpen from "./infoBottom/orderOpen";
 
 const InfoBottom = (props) => {
   const {
