@@ -48,7 +48,7 @@ const OrderNotReverted = (props) => {
           <DeclineUpdateButtonOn declineUpdateFunc={declineUpdate} />
         </>
       ) : (
-        // if Not Closed and Not Cancelled and Not Declined and Not Reverted and Not Skipped
+        // basic selection of buttons available to user when no special circumstances apply
         <>
           <div className="form-group">
             <label htmlFor="next_status">
