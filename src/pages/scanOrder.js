@@ -3,6 +3,7 @@ import AuthService from "../service/authService";
 import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 import { numSort } from "../components/sorting/sortHook";
+import { LogTable } from "../components/LogTable";
 import styles from "../style/scanOrder.module.css";
 
 const ScanOrder = (props) => {
@@ -32,10 +33,9 @@ const ScanOrder = (props) => {
   const [revert, setRevert] = useState(""); // Revert Update button
   const [statuses, setStatuses] = useState([]);
   const [popUpBox, setPopUpBox] = useState("none");
+  const [showLog, setShowLog] = useState(false);
   const loginError = "You must be logged in to view this page";
   const user = JSON.parse(localStorage.getItem("user"));
-
-  const showLog = () => {};
 
   const getOrder = (id) => {
     const serviceCall = () => {
@@ -417,9 +417,15 @@ const ScanOrder = (props) => {
                         </>
                       )}
                       <>
-                        <button onClick={showLog} className="btn btn-link">
-                          Show flag history
+                        <button
+                          onClick={() => {
+                            setShowLog(!showLog);
+                          }}
+                          className="btn btn-link"
+                        >
+                          {showLog ? "Hide" : "Show"} flag history
                         </button>
+                        {showLog && <LogTable uuid={order.uuid} />}
                       </>
 
                       {revert ? (
