@@ -1,19 +1,13 @@
 import React from "react";
-import DeclineUpdateButtonOff from "../../../buttons/declineUpdateButtonOff";
-import DeclineUpdateButtonOn from "../../../buttons/declineUpdateButtonOn";
-import RefuseUpdateButton from "../../../buttons/refuseUpdateButton";
-import RevertStatusButtonOn from "../../../buttons/revertStatusButtonOn";
-import RevertStatusButtonOff from "../../../buttons/revertStatusButtonOff";
-import SkipUpdateButton from "../../../buttons/skipUpdateButton";
-import UpdateStatusButtonOn from "../../../buttons/updateStatusButtonOn";
-import UpdateStatusButtonOff from "../../../buttons/updateStatusButtonOff";
+import OrderNotReverted from "./orderNotReverted/orderNotReverted";
 
-import styles from "../../../../../style/scanOrder.module.css";
+import DeclineUpdateButtonOff from "../../../buttons/declineUpdateButtonOff";
+import RevertStatusButtonOn from "../../../buttons/revertStatusButtonOn";
+import UpdateStatusButtonOff from "../../../buttons/updateStatusButtonOff";
 
 const OrderNotDeclined = (props) => {
   const {
     allowUpdate,
-    decline,
     declineUpdate,
     nextStatus,
     oldOrder,
@@ -30,7 +24,7 @@ const OrderNotDeclined = (props) => {
 
   return (
     <>
-      {revert ? ( // if Not Closed and Not Cancelled and Not Declined but Reverted
+      {revert ? ( // if user changes there mind and wants to undo the update they just submitted before leaving the page view
         <>
           <div className="form-group">
             <label htmlFor="prior_status">
@@ -45,56 +39,19 @@ const OrderNotDeclined = (props) => {
           <DeclineUpdateButtonOff declineUpdateFunc={declineUpdate} />{" "}
         </>
       ) : (
-        <>
-          {skip ? ( // if Not Closed and Not Cancelled and Not Declined and Not Reverted but Skipped
-            <>
-              <div className="form-group">
-                <p className={styles.skipMessage1}>
-                  If flag is not to be flown:
-                </p>
-                <p className={styles.skipMessage2}>
-                  Hit Update to skip Architect of the Capitol.
-                </p>
-                <p htmlFor="skip" className={styles.skipMessage1}>
-                  Status will be:{" "}
-                  {statuses && order.status.description ? (
-                    <strong>
-                      #{skipStatus.sequence_num} - {skipStatus.description}
-                    </strong>
-                  ) : (
-                    <strong>Missing data needed to generate next Status</strong>
-                  )}
-                </p>
-              </div>
-              <SkipUpdateButton skipUpdateFunc={skipUpdate} />{" "}
-              <RevertStatusButtonOff revertUpdateFunc={revertUpdate} />{" "}
-              <DeclineUpdateButtonOn declineUpdateFunc={declineUpdate} />
-            </>
-          ) : (
-            // if Not Closed and Not Cancelled and Not Declined and Not Reverted and Not Skipped
-            <>
-              <div className="form-group">
-                <label htmlFor="next_status">
-                  Next Status:{" "}
-                  {statuses && order.status.description ? (
-                    <strong>
-                      #{nextStatus.sequence_num} - {nextStatus.description}
-                    </strong>
-                  ) : (
-                    <strong>Missing data needed to generate next Status</strong>
-                  )}
-                </label>
-              </div>
-              {allowUpdate ? (
-                <UpdateStatusButtonOn saveUpdateFunc={saveUpdate} />
-              ) : (
-                <RefuseUpdateButton refuseUpdateFunc={refuseUpdate} />
-              )}{" "}
-              <RevertStatusButtonOff revertUpdateFunc={revertUpdate} />{" "}
-              <DeclineUpdateButtonOn declineUpdateFunc={declineUpdate} />
-            </>
-          )}
-        </>
+        <OrderNotReverted
+          allowUpdate={allowUpdate}
+          declineUpdate={declineUpdate}
+          nextStatus={nextStatus}
+          order={order}
+          refuseUpdate={refuseUpdate}
+          revertUpdate={revertUpdate}
+          saveUpdate={saveUpdate}
+          skip={skip}
+          skipStatus={skipStatus}
+          skipUpdate={skipUpdate}
+          statuses={statuses}
+        />
       )}
     </>
   );
