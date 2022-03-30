@@ -1,14 +1,4 @@
 import React from "react";
-import DeclineUpdateButtonOff from "../buttons/declineUpdateButtonOff";
-import DeclineUpdateButtonOn from "../buttons/declineUpdateButtonOn";
-import RefuseUpdateButton from "../buttons/refuseUpdateButton";
-import RevertStatusButtonOn from "../buttons/revertStatusButtonOn";
-import RevertStatusButtonOff from "../buttons/revertStatusButtonOff";
-import SkipUpdateButton from "../buttons/skipUpdateButton";
-import UpdateStatusButtonOn from "../buttons/updateStatusButtonOn";
-import UpdateStatusButtonOff from "../buttons/updateStatusButtonOff";
-
-import styles from "../../../style/scanOrder.module.css";
 import OrderNotCancelled from "./orderNotCancelled/orderNotCancelled";
 
 const OrderOpen = (props) => {
