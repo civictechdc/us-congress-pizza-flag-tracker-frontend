@@ -73,7 +73,7 @@ export const LogTable = () => {
   };
 
   return (
-    <table className="table table-striped table-bordered table-sm">
+    <table className="table  table-bordered table-sm">
       <thead className="thead-dark">
         <th>Order updated at</th>
         <th>Order ID</th>
@@ -86,12 +86,8 @@ export const LogTable = () => {
         {FAKE_TABLE_DATA.map((row, index) => {
           return (
             <tr key={row.event_uuid}>
-              <td className={compareChange("updated_at", index)}>
-                {row.updated_at}
-              </td>
-              <td className={compareChange("order_uuid", index)}>
-                {row.order_uuid}
-              </td>
+              <td>{row.updated_at}</td>
+              <td>Person who changed it</td>
               <td className={compareChange("order_number", index)}>
                 {row.order_number}
               </td>
