@@ -161,42 +161,26 @@ const ScanOrder = (props) => {
     skip = "true";
   }
 
-  let allowHOSS = "";
-  let allowAOC = "";
-  let allowMAIL = "";
-  let allowSTATE = "";
-
-  if (user) {
-    if (user.can_update_status_for === "FED-HOSS") {
-      allowHOSS = "yes";
-    }
-    if (user.can_update_status_for === "FED-AOC") {
-      allowAOC = "yes";
-    }
-    if (user.can_update_status_for === "FED-MAIL") {
-      allowMAIL = "yes";
-    }
-    if (user.can_update_status_for === order.home_office_code) {
-      allowSTATE = "yes";
-    }
-    if (user.can_update_status_for === "ALL") {
-      allowHOSS = "yes";
-      allowAOC = "yes";
-      allowMAIL = "yes";
-      allowSTATE = "yes";
-    }
-  }
-
   let allowUpdate = "";
 
-  if (nextStatus.permission === "FED-HOSS" && allowHOSS === "yes")
-    allowUpdate = "yes";
-  if (nextStatus.permission === "FED-AOC" && allowAOC === "yes")
-    allowUpdate = "yes";
-  if (nextStatus.permission === "FED-MAIL" && allowMAIL === "yes")
-    allowUpdate = "yes";
-  if (nextStatus.permission === "STATE" && allowSTATE === "yes")
-    allowUpdate = "yes";
+  const calculateAllowUpdate = () => {
+    if (nextStatus.permission === "FED-HOSS" && user.office_code === "FED-HOSS")
+      allowUpdate = "yes";
+    if (nextStatus.permission === "FED-AOC" && user.office_code === "FED-AOC")
+      allowUpdate = "yes";
+    if (nextStatus.permission === "FED-MAIL" && user.office_code === "FED-MAIL")
+      allowUpdate = "yes";
+    if (
+      nextStatus.permission === "STATE" &&
+      user.office_code === order.home_office_code
+    )
+      allowUpdate = "yes";
+    if (user.office_code === "FED-ADMIN") allowUpdate = "yes";
+  };
+
+  if (user) {
+    calculateAllowUpdate();
+  }
 
   const handleUpdate = () => {
     const updatedStatus = {
