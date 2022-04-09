@@ -6,7 +6,6 @@ const getAll = () => {
   return httpAuthenticate().get("/orders");
 };
 
-
 const get = (uuid) => {
   return httpAuthenticate().get(`/orders/${uuid}`);
 };
@@ -31,6 +30,10 @@ const findByOrderNumber = (order_number) => {
   return httpAuthenticate().get(`/order_num/${order_number}`);
 };
 
+const getOrderLog = (order_number) => {
+  return httpAuthenticate().get(`/orders/log/${order_number}`);
+};
+
 const orderServiceObject = {
   getAll,
   get,
@@ -39,5 +42,6 @@ const orderServiceObject = {
   remove,
   removeAll,
   findByOrderNumber,
+  getOrderLog,
 };
 export default orderServiceObject;
