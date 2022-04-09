@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import AuthService from "../service/authService";
 import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
+
+import InfoBottom from "../components/scanOrder/infoBottom";
+import InfoTop from "../components/scanOrder/infoTop";
+
 import { numSort } from "../components/sorting/sortHook";
 import { LogTable } from "../components/LogTable";
 import styles from "../style/scanOrder.module.css";
@@ -29,11 +33,11 @@ const ScanOrder = (props) => {
   const [order, setOrder] = useState(initialOrderState);
   const [oldOrder, setOldOrder] = useState(initialOrderState);
   const [message, setMessage] = useState("");
-  const [resolve, setResolve] = useState(""); // Decline Update button
+  const [decline, setDecline] = useState(""); // Decline Update button
   const [revert, setRevert] = useState(""); // Revert Update button
   const [statuses, setStatuses] = useState([]);
   const [popUpBox, setPopUpBox] = useState("none");
-  const [showLog, setShowLog] = useState(false);
+
   const loginError = "You must be logged in to view this page";
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -88,20 +92,25 @@ const ScanOrder = (props) => {
     }
   }, [statuses]);
 
-  let nextDesc = "";
-  let skipDesc = "";
-  let nextId = null;
-  let skipId = null;
-  let nextSeq = null;
-  let skipSeq = null;
-  let nextPermission = "";
-  let skipPermission = "";
+  let nextStatus = {
+    description: "",
+    id: null,
+    sequence_num: null,
+    permission: "",
+  };
+
+  let skipStatus = {
+    description: "",
+    id: null,
+    sequence_num: null,
+    permission: "",
+  };
 
   let sortedStatuses = [];
   let lifeCycle = [];
   let skip = "";
 
-  if (statuses && order) {
+  const removeCancelStatus = () => {
     sortedStatuses = numSort(statuses, "sequence_num", "asc");
     lifeCycle = sortedStatuses.slice();
 
@@ -113,43 +122,46 @@ const ScanOrder = (props) => {
         lifeCycle.splice(i, 1);
       }
     }
-  }
+  };
 
-  if (statuses && order) {
+  const calculateNextStatus = () => {
     const currentSeq = order.status.sequence_num;
 
     for (let i = 0; i < lifeCycle.length; i++) {
       if (lifeCycle[i].sequence_num > currentSeq) {
-        nextDesc = lifeCycle[i].description;
-        nextId = lifeCycle[i].id;
-        nextSeq = lifeCycle[i].sequence_num;
-        nextPermission = lifeCycle[i].permission;
+        nextStatus.description = lifeCycle[i].description;
+        nextStatus.id = lifeCycle[i].id;
+        nextStatus.sequence_num = lifeCycle[i].sequence_num;
+        nextStatus.permission = lifeCycle[i].permission;
         break;
       }
     }
-  }
+  };
 
-  if (statuses && order) {
+  const calculateBypassArchitectOfCapital = () => {
     for (let i = 0; i < lifeCycle.length; i++) {
       if (lifeCycle[i].permission == "FED-MAIL") {
-        skipDesc = lifeCycle[i].description;
-        skipId = lifeCycle[i].id;
-        skipSeq = lifeCycle[i].sequence_num;
-        skipPermission = lifeCycle[i].permission;
+        skipStatus.description = lifeCycle[i].description;
+        skipStatus.id = lifeCycle[i].id;
+        skipStatus.sequence_num = lifeCycle[i].sequence_num;
+        skipStatus.permission = lifeCycle[i].permission;
         break;
       }
     }
+  };
+
+  if (statuses && order) {
+    removeCancelStatus();
+    calculateNextStatus();
+    calculateBypassArchitectOfCapital();
   }
 
   if (
-    user.office_code === "FED-MAIL" &&
-    order.status.status_code === "AOC_RECEIVED"
+    user.office_code === ("FED-MAIL" || "FED-MAIL-ADMIN") &&
+    order.status.status_code === "HOSS_VERIFIED"
   ) {
     skip = "true";
   }
-
-  console.log(skip);
-  console.log(revert);
 
   let allowHOSS = "";
   let allowAOC = "";
@@ -179,15 +191,19 @@ const ScanOrder = (props) => {
 
   let allowUpdate = "";
 
-  if (nextPermission === "FED-HOSS" && allowHOSS === "yes") allowUpdate = "yes";
-  if (nextPermission === "FED-AOC" && allowAOC === "yes") allowUpdate = "yes";
-  if (nextPermission === "FED-MAIL" && allowMAIL === "yes") allowUpdate = "yes";
-  if (nextPermission === "STATE" && allowSTATE === "yes") allowUpdate = "yes";
+  if (nextStatus.permission === "FED-HOSS" && allowHOSS === "yes")
+    allowUpdate = "yes";
+  if (nextStatus.permission === "FED-AOC" && allowAOC === "yes")
+    allowUpdate = "yes";
+  if (nextStatus.permission === "FED-MAIL" && allowMAIL === "yes")
+    allowUpdate = "yes";
+  if (nextStatus.permission === "STATE" && allowSTATE === "yes")
+    allowUpdate = "yes";
 
   const handleUpdate = () => {
     const updatedStatus = {
       ...order,
-      order_status_id: nextId,
+      order_status_id: nextStatus.id,
     };
     return updatedStatus;
   };
@@ -195,7 +211,7 @@ const ScanOrder = (props) => {
   const handleSkip = () => {
     const updatedStatus = {
       ...order,
-      order_status_id: skipId,
+      order_status_id: skipStatus.id,
     };
     return updatedStatus;
   };
@@ -233,7 +249,7 @@ const ScanOrder = (props) => {
   };
 
   const declineUpdate = () => {
-    setResolve("yes");
+    setDecline("yes");
   };
 
   const revertUpdate = () => {
@@ -264,254 +280,23 @@ const ScanOrder = (props) => {
       <h1 className={styles.title}>Scan</h1>
       {order ? (
         <>
-          <div className="form-group">
-            <label htmlFor="order_number">
-              Order Number: <strong>{order.order_number}</strong>
-            </label>
-          </div>
-          <div className="form-group">
-            <label htmlFor="usa_state">
-              US State: <strong>{order.usa_state}</strong>
-            </label>
-          </div>
-          <div className="form-group">
-            <label htmlFor="home_office_code">
-              Congressional Office: <strong>{order.home_office_code}</strong>
-            </label>
-          </div>
-          <div className="form-group">
-            <label htmlFor="current_status">
-              Current Status:{" "}
-              {order.status.description ? (
-                <strong>
-                  #{order.status.sequence_num} - {order.status.description}
-                </strong>
-              ) : (
-                <strong>Missing status...</strong>
-              )}
-            </label>
-          </div>
-          {order.status.active_status === "CLOSED" ? (
-            <>
-              <div className="form-group">
-                <label htmlFor="next_status">
-                  <strong>Order Complete</strong>
-                </label>
-              </div>
-
-              {revert ? (
-                <>
-                  <div className="form-group">
-                    <label htmlFor="prior_status">
-                      Prior Status:{" "}
-                      <strong>
-                        #{oldOrder.status.sequence_num} -{" "}
-                        {oldOrder.status.description}
-                      </strong>
-                    </label>
-                  </div>
-                  <button
-                    onClick={saveUpdate}
-                    className="btn btn-success"
-                    disabled
-                  >
-                    {"Update Status"}
-                  </button>{" "}
-                  <button onClick={revertUpdate} className="btn btn-success">
-                    {"Revert Update"}
-                  </button>{" "}
-                  <button
-                    onClick={declineUpdate}
-                    className="btn btn-success"
-                    disabled
-                  >
-                    {"Decline Update"}
-                  </button>
-                </>
-              ) : (
-                <></>
-              )}
-            </>
-          ) : (
-            <>
-              {order.status.active_status === "CANCELED" ? (
-                <>
-                  <div className="form-group">
-                    <label htmlFor="next_status">
-                      <strong>Use Edit Screen to Uncancel</strong>
-                    </label>
-                  </div>
-                </>
-              ) : (
-                <>
-                  {resolve ? (
-                    <></>
-                  ) : (
-                    <>
-                      {revert ? (
-                        <>
-                          <div className="form-group">
-                            <label htmlFor="prior_status">
-                              Prior Status:{" "}
-                              <strong>
-                                #{oldOrder.status.sequence_num} -{" "}
-                                {oldOrder.status.description}
-                              </strong>
-                            </label>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          {skip ? (
-                            <>
-                              <div className="form-group">
-                                <label htmlFor="next_status">
-                                  Next Status:{" "}
-                                  {statuses && order.status.description ? (
-                                    <strong>
-                                      #{nextSeq} - {nextDesc}
-                                    </strong>
-                                  ) : (
-                                    <strong>
-                                      Missing data needed to generate next
-                                      Status
-                                    </strong>
-                                  )}
-                                </label>
-                              </div>
-                              <div className="form-group">
-                                <label htmlFor="skip">
-                                  Hit Update to skip Mail Office. Status will
-                                  be:{" "}
-                                  <div>
-                                    {statuses && order.status.description ? (
-                                      <strong>
-                                        #{skipSeq} - {skipDesc}
-                                      </strong>
-                                    ) : (
-                                      <strong>
-                                        Missing data needed to generate next
-                                        Status
-                                      </strong>
-                                    )}
-                                  </div>
-                                </label>
-                              </div>
-                            </>
-                          ) : (
-                            <div className="form-group">
-                              <label htmlFor="next_status">
-                                Next Status:{" "}
-                                {statuses && order.status.description ? (
-                                  <strong>
-                                    #{nextSeq} - {nextDesc}
-                                  </strong>
-                                ) : (
-                                  <strong>
-                                    Missing data needed to generate next Status
-                                  </strong>
-                                )}
-                              </label>
-                            </div>
-                          )}
-                        </>
-                      )}
-                      <>
-                        <button
-                          onClick={() => {
-                            setShowLog(!showLog);
-                          }}
-                          className="btn btn-link"
-                        >
-                          {showLog ? "Hide" : "Show"} flag history
-                        </button>
-                        {showLog && (
-                          <LogTable
-                            uuid={order.uuid}
-                            order_number={order.order_number}
-                          />
-                        )}
-                      </>
-
-                      {revert ? (
-                        <>
-                          <button
-                            onClick={saveUpdate}
-                            className="btn btn-success"
-                            disabled
-                          >
-                            {"Update Status"}
-                          </button>{" "}
-                          <button
-                            onClick={revertUpdate}
-                            className="btn btn-success"
-                          >
-                            {"Revert Update"}
-                          </button>{" "}
-                          <button
-                            onClick={declineUpdate}
-                            className="btn btn-success"
-                            disabled
-                          >
-                            {"Decline Update"}
-                          </button>
-                        </>
-                      ) : (
-                        <>
-                          {statuses && order.status.description ? (
-                            <>
-                              {skip ? (
-                                <button
-                                  onClick={skipUpdate}
-                                  className="btn btn-success"
-                                >
-                                  {"Update Status"}
-                                </button>
-                              ) : (
-                                <>
-                                  {allowUpdate ? (
-                                    <button
-                                      onClick={saveUpdate}
-                                      className="btn btn-success"
-                                    >
-                                      {"Update Status"}
-                                    </button>
-                                  ) : (
-                                    <button
-                                      onClick={refuseUpdate}
-                                      className="btn btn-success"
-                                      style={{ opacity: 0.6 }}
-                                    >
-                                      {"Update Status"}
-                                    </button>
-                                  )}
-                                </>
-                              )}{" "}
-                              <button
-                                onClick={revertUpdate}
-                                className="btn btn-success"
-                                disabled
-                              >
-                                {"Revert Update"}
-                              </button>{" "}
-                              <button
-                                onClick={declineUpdate}
-                                className="btn btn-success"
-                              >
-                                {"Decline Update"}
-                              </button>
-                            </>
-                          ) : (
-                            <></>
-                          )}
-                        </>
-                      )}
-                    </>
-                  )}
-                </>
-              )}
-            </>
-          )}
+          <InfoTop order={order} />
+          <InfoBottom
+            allowUpdate={allowUpdate}
+            decline={decline}
+            declineUpdate={declineUpdate}
+            nextStatus={nextStatus}
+            oldOrder={oldOrder}
+            order={order}
+            refuseUpdate={refuseUpdate}
+            revert={revert}
+            revertUpdate={revertUpdate}
+            saveUpdate={saveUpdate}
+            skip={skip}
+            skipStatus={skipStatus}
+            skipUpdate={skipUpdate}
+            statuses={statuses}
+          />
         </>
       ) : (
         <>

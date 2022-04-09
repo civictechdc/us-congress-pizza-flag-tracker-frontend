@@ -19,12 +19,18 @@
 
 }
 
+.skipMessage1 {
+    text-align: center;
+}
 
+.skipMessage2 {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
 
 .title {
     font-size: 6rem;
-
-
 }
 
 /*====================================================
