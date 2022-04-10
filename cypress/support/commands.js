@@ -27,6 +27,6 @@ Cypress.Commands.add("checkForScanButton", () => {
 });
 
 Cypress.Commands.add("updateStatus", () => {
-  cy.contains("Update Status").click();
+  cy.contains("UPDATE STATUS").click();
   cy.get("div[class=pop-up]").should("be.visible").click();
 });
