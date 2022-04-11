@@ -179,7 +179,7 @@ const ScanOrder = (props) => {
     )
       allowUpdate = "yes";
 
-    if (user.office_code === "FED-ADMIN") allowUpdate = "yes";
+    if (user.update_all_statuses === "Y") allowUpdate = "yes";
   };
 
   if (user) {
