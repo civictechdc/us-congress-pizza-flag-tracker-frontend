@@ -164,22 +164,13 @@ const ScanOrder = (props) => {
   let allowUpdate = "";
 
   const calculateAllowUpdate = () => {
-    if (nextStatus.permission === "FED-HOSS" && user.office_code === "FED-HOSS")
-      allowUpdate = "yes";
-
-    if (nextStatus.permission === "FED-AOC" && user.office_code === "FED-AOC")
-      allowUpdate = "yes";
-
-    if (nextStatus.permission === "FED-MAIL" && user.office_code === "FED-MAIL")
-      allowUpdate = "yes";
-
     if (
-      nextStatus.permission === "STATE" &&
-      user.office_code === order.home_office_code
+      nextStatus.permission === user.office_code ||
+      (nextStatus.permission === "STATE" &&
+        user.office_code === order.home_office_code) ||
+      user.update_all_statuses === "Y"
     )
       allowUpdate = "yes";
-
-    if (user.update_all_statuses === "Y") allowUpdate = "yes";
   };
 
   if (user) {
