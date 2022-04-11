@@ -164,18 +164,17 @@ const ScanOrder = (props) => {
   let allowUpdate = "";
 
   const calculateAllowUpdate = () => {
-    if (
-      nextStatus.permission === user.office_code ||
-      (nextStatus.permission === "STATE" &&
-        user.office_code === order.home_office_code) ||
-      user.update_all_statuses === "Y"
-    )
-      allowUpdate = "yes";
+    !user
+      ? void 0
+      : nextStatus.permission === user.office_code ||
+        (nextStatus.permission === "STATE" &&
+          user.office_code === order.home_office_code) ||
+        user.update_all_statuses === "Y"
+      ? (allowUpdate = "yes")
+      : void 0;
   };
 
-  if (user) {
-    calculateAllowUpdate();
-  }
+  calculateAllowUpdate();
 
   const handleUpdate = () => {
     const updatedStatus = {
