@@ -62,16 +62,6 @@ const OrderNotReverted = (props) => {
               )}
             </label>
           </div>
-          {!user ? (
-            <RefuseUpdateButton refuseUpdateFunc={refuseUpdate} />
-          ) : nextStatus.permission === user.office_code ||
-            (nextStatus.permission === "STATE" &&
-              user.office_code === order.home_office_code) ||
-            user.update_all_statuses === "Y" ? (
-            <UpdateStatusButtonOn saveUpdateFunc={saveUpdate} />
-          ) : (
-            <RefuseUpdateButton refuseUpdateFunc={refuseUpdate} />
-          )}
           {user &&
           (nextStatus.permission === user.office_code ||
             (nextStatus.permission === "STATE" &&
