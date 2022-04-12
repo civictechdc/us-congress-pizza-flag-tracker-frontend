@@ -18,6 +18,7 @@ const InfoBottom = (props) => {
     skipStatus,
     skipUpdate,
     statuses,
+    user,
   } = props;
 
   return (
@@ -46,6 +47,7 @@ const InfoBottom = (props) => {
           skipStatus={skipStatus}
           skipUpdate={skipUpdate}
           statuses={statuses}
+          user={user}
         />
       )}
     </>

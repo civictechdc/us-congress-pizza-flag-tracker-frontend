@@ -21,6 +21,7 @@ const OrderNotReverted = (props) => {
     skipStatus,
     skipUpdate,
     statuses,
+    user,
   } = props;
 
   return (

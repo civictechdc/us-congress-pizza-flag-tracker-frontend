@@ -17,6 +17,7 @@ const OrderOpen = (props) => {
     skipStatus,
     skipUpdate,
     statuses,
+    user,
   } = props;
 
   return (
@@ -43,6 +44,7 @@ const OrderOpen = (props) => {
           skipStatus={skipStatus}
           skipUpdate={skipUpdate}
           statuses={statuses}
+          user={user}
         />
       )}
     </>

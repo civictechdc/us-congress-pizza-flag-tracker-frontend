@@ -20,6 +20,7 @@ const OrderNotDeclined = (props) => {
     skipStatus,
     skipUpdate,
     statuses,
+    user,
   } = props;
 
   return (
@@ -51,6 +52,7 @@ const OrderNotDeclined = (props) => {
           skipStatus={skipStatus}
           skipUpdate={skipUpdate}
           statuses={statuses}
+          user={user}
         />
       )}
     </>

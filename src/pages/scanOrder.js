@@ -272,6 +272,7 @@ const ScanOrder = (props) => {
             skipStatus={skipStatus}
             skipUpdate={skipUpdate}
             statuses={statuses}
+            user={user}
           />
         </>
       ) : (
