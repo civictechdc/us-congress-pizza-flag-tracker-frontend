@@ -24,6 +24,19 @@ const OrderNotReverted = (props) => {
     user,
   } = props;
 
+  const getUpdateAllowed = () => {
+    !user ? (
+      <RefuseUpdateButton refuseUpdateFunc={refuseUpdate} />
+    ) : nextStatus.permission === user.office_code ||
+      (nextStatus.permission === "STATE" &&
+        user.office_code === order.home_office_code) ||
+      user.update_all_statuses === "Y" ? (
+      <UpdateStatusButtonOn saveUpdateFunc={saveUpdate} />
+    ) : (
+      <RefuseUpdateButton refuseUpdateFunc={refuseUpdate} />
+    );
+  };
+
   return (
     <>
       {skip ? ( // if user has the flag package and need to bring the order forward to their agency skipping prior agencies
@@ -63,11 +76,16 @@ const OrderNotReverted = (props) => {
               )}
             </label>
           </div>
-          {allowUpdate ? (
+          {!user ? (
+            <RefuseUpdateButton refuseUpdateFunc={refuseUpdate} />
+          ) : nextStatus.permission === user.office_code ||
+            (nextStatus.permission === "STATE" &&
+              user.office_code === order.home_office_code) ||
+            user.update_all_statuses === "Y" ? (
             <UpdateStatusButtonOn saveUpdateFunc={saveUpdate} />
           ) : (
             <RefuseUpdateButton refuseUpdateFunc={refuseUpdate} />
-          )}{" "}
+          )}
           <RevertStatusButtonOff revertUpdateFunc={revertUpdate} />{" "}
           <DeclineUpdateButtonOn declineUpdateFunc={declineUpdate} />
         </>
