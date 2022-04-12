@@ -3,7 +3,6 @@ import OrderNotDeclined from "./orderNotDeclined/orderNotDeclined";
 
 const OrderNotCancelled = (props) => {
   const {
-    allowUpdate,
     decline,
     declineUpdate,
     nextStatus,
@@ -26,7 +25,6 @@ const OrderNotCancelled = (props) => {
         <></>
       ) : (
         <OrderNotDeclined
-          allowUpdate={allowUpdate}
           declineUpdate={declineUpdate}
           nextStatus={nextStatus}
           oldOrder={oldOrder}

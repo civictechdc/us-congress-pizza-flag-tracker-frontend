@@ -161,21 +161,6 @@ const ScanOrder = (props) => {
     skip = "true";
   }
 
-  let allowUpdate = "";
-
-  const calculateAllowUpdate = () => {
-    !user
-      ? void 0
-      : nextStatus.permission === user.office_code ||
-        (nextStatus.permission === "STATE" &&
-          user.office_code === order.home_office_code) ||
-        user.update_all_statuses === "Y"
-      ? (allowUpdate = "yes")
-      : void 0;
-  };
-
-  calculateAllowUpdate();
-
   const handleUpdate = () => {
     const updatedStatus = {
       ...order,
@@ -258,7 +243,6 @@ const ScanOrder = (props) => {
         <>
           <InfoTop order={order} />
           <InfoBottom
-            allowUpdate={allowUpdate}
             decline={decline}
             declineUpdate={declineUpdate}
             nextStatus={nextStatus}

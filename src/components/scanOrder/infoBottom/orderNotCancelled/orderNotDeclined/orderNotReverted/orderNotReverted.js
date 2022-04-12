@@ -10,7 +10,6 @@ import styles from "../../../../../../style/scanOrder.module.css";
 
 const OrderNotReverted = (props) => {
   const {
-    allowUpdate,
     declineUpdate,
     nextStatus,
     order,
@@ -23,19 +22,6 @@ const OrderNotReverted = (props) => {
     statuses,
     user,
   } = props;
-
-  const getUpdateAllowed = () => {
-    !user ? (
-      <RefuseUpdateButton refuseUpdateFunc={refuseUpdate} />
-    ) : nextStatus.permission === user.office_code ||
-      (nextStatus.permission === "STATE" &&
-        user.office_code === order.home_office_code) ||
-      user.update_all_statuses === "Y" ? (
-      <UpdateStatusButtonOn saveUpdateFunc={saveUpdate} />
-    ) : (
-      <RefuseUpdateButton refuseUpdateFunc={refuseUpdate} />
-    );
-  };
 
   return (
     <>
@@ -82,6 +68,15 @@ const OrderNotReverted = (props) => {
             (nextStatus.permission === "STATE" &&
               user.office_code === order.home_office_code) ||
             user.update_all_statuses === "Y" ? (
+            <UpdateStatusButtonOn saveUpdateFunc={saveUpdate} />
+          ) : (
+            <RefuseUpdateButton refuseUpdateFunc={refuseUpdate} />
+          )}
+          {user &&
+          (nextStatus.permission === user.office_code ||
+            (nextStatus.permission === "STATE" &&
+              user.office_code === order.home_office_code) ||
+            user.update_all_statuses === "Y") ? (
             <UpdateStatusButtonOn saveUpdateFunc={saveUpdate} />
           ) : (
             <RefuseUpdateButton refuseUpdateFunc={refuseUpdate} />
