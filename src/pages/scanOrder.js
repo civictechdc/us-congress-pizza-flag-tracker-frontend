@@ -7,7 +7,7 @@ import InfoBottom from "../components/scanOrder/infoBottom";
 import InfoTop from "../components/scanOrder/infoTop";
 
 import { numSort } from "../components/sorting/sortHook";
-import { LogTable } from "../components/LogTable";
+
 import styles from "../style/scanOrder.module.css";
 
 const ScanOrder = (props) => {
@@ -37,7 +37,6 @@ const ScanOrder = (props) => {
   const [revert, setRevert] = useState(""); // Revert Update button
   const [statuses, setStatuses] = useState([]);
   const [popUpBox, setPopUpBox] = useState("none");
-
   const loginError = "You must be logged in to view this page";
   const user = JSON.parse(localStorage.getItem("user"));
 

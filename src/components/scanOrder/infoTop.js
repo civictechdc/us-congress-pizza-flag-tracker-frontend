@@ -1,5 +1,4 @@
-import { React, useState } from "react";
-import { LogTable } from "../LogTable";
+import React from "react";
 
 const InfoTop = (props) => {
   const { order } = props;
