@@ -104,12 +104,10 @@ const ScanOrder = (props) => {
     permission: "",
   };
 
-  let sortedStatuses = [];
+  let sortedStatuses = numSort(statuses, "sequence_num", "asc");
   let skip = "";
 
   const removeCancelStatus = () => {
-    sortedStatuses = numSort(statuses, "sequence_num", "asc");
-
     for (let i = 0; i < sortedStatuses.length; i++) {
       if (sortedStatuses[i].active_status === "CANCELED") {
         sortedStatuses.splice(i, 1);
@@ -119,10 +117,8 @@ const ScanOrder = (props) => {
   };
 
   const calculateNextStatus = () => {
-    const currentSeq = order.status.sequence_num;
-
     for (let i = 0; i < sortedStatuses.length; i++) {
-      if (sortedStatuses[i].sequence_num > currentSeq) {
+      if (sortedStatuses[i].sequence_num > order.status.sequence_num) {
         nextStatus.description = sortedStatuses[i].description;
         nextStatus.id = sortedStatuses[i].id;
         nextStatus.sequence_num = sortedStatuses[i].sequence_num;
