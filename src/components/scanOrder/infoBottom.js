@@ -4,7 +4,6 @@ import OrderOpen from "./infoBottom/orderOpen";
 
 const InfoBottom = (props) => {
   const {
-    allowUpdate,
     decline,
     declineUpdate,
     nextStatus,
@@ -18,6 +17,7 @@ const InfoBottom = (props) => {
     skipStatus,
     skipUpdate,
     statuses,
+    user,
   } = props;
 
   return (
@@ -32,7 +32,6 @@ const InfoBottom = (props) => {
         />
       ) : (
         <OrderOpen
-          allowUpdate={allowUpdate}
           decline={decline}
           declineUpdate={declineUpdate}
           nextStatus={nextStatus}
@@ -46,6 +45,7 @@ const InfoBottom = (props) => {
           skipStatus={skipStatus}
           skipUpdate={skipUpdate}
           statuses={statuses}
+          user={user}
         />
       )}
     </>

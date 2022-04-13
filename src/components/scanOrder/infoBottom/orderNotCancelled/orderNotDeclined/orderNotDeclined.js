@@ -7,7 +7,6 @@ import UpdateStatusButtonOff from "../../../buttons/updateStatusButtonOff";
 
 const OrderNotDeclined = (props) => {
   const {
-    allowUpdate,
     declineUpdate,
     nextStatus,
     oldOrder,
@@ -20,6 +19,7 @@ const OrderNotDeclined = (props) => {
     skipStatus,
     skipUpdate,
     statuses,
+    user,
   } = props;
 
   return (
@@ -40,7 +40,6 @@ const OrderNotDeclined = (props) => {
         </>
       ) : (
         <OrderNotReverted
-          allowUpdate={allowUpdate}
           declineUpdate={declineUpdate}
           nextStatus={nextStatus}
           order={order}
@@ -51,6 +50,7 @@ const OrderNotDeclined = (props) => {
           skipStatus={skipStatus}
           skipUpdate={skipUpdate}
           statuses={statuses}
+          user={user}
         />
       )}
     </>
