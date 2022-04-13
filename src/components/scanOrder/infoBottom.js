@@ -1,6 +1,7 @@
-import React from "react";
+import { React, useState } from "react";
 import OrderClosed from "./infoBottom/orderClosed";
 import OrderOpen from "./infoBottom/orderOpen";
+import { LogTable } from "../LogTable";
 
 const InfoBottom = (props) => {
   const {
@@ -19,6 +20,8 @@ const InfoBottom = (props) => {
     statuses,
     user,
   } = props;
+
+  const [showLog, setShowLog] = useState(false);
 
   return (
     <>
@@ -48,6 +51,19 @@ const InfoBottom = (props) => {
           user={user}
         />
       )}
+      <>
+        <button
+          onClick={() => {
+            setShowLog(!showLog);
+          }}
+          className="btn btn-link"
+        >
+          {showLog ? "Hide" : "Show"} flag history
+        </button>
+        {showLog && (
+          <LogTable uuid={order.uuid} order_number={order.order_number} />
+        )}
+      </>
     </>
   );
 };

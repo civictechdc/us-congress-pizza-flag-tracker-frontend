@@ -7,6 +7,7 @@ import InfoBottom from "../components/scanOrder/infoBottom";
 import InfoTop from "../components/scanOrder/infoTop";
 
 import { numSort } from "../components/sorting/sortHook";
+
 import styles from "../style/scanOrder.module.css";
 
 const ScanOrder = (props) => {
