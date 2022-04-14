@@ -12,7 +12,7 @@ const SkipUpdateButton = (props) => {
       <button
         onClick={handleInput}
         className={"btn btn-success"}
-        data-button-function="Skipe Enabled"
+        data-button-function="Skip Enabled"
       >
         <strong>{"UPDATE STATUS"}</strong>
       </button>
