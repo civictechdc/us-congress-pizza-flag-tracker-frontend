@@ -31,7 +31,7 @@ const findByOrderNumber = (order_number) => {
 };
 
 const getOrderLog = (order_number) => {
-  return httpAuthenticate().get(`/orders/log/${order_number}`);
+  return httpAuthenticate().get(`/orders/logs/${order_number}`);
 };
 
 const orderServiceObject = {
