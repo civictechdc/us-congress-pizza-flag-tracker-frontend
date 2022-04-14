@@ -1,34 +1,7 @@
 import { React, useEffect, useState } from "react";
-import OrderDataService from "../service/orderService";
-import AuthService from "../service/authService";
 
 export const LogTable = (props) => {
-  const order_number = props.order_number;
-
-  const getOrderLog = (order_number) => {
-    const serviceCall = () => {
-      return OrderDataService.getOrderLog(order_number)
-        .then((response) => {
-          setOrderLog(response.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    };
-    try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const [orderLog, setOrderLog] = useState();
-
-  useEffect(() => {
-    if (!orderLog) {
-      getOrderLog(order_number);
-    }
-  });
+  const orderLog = props.orderLog;
 
   return (
     <>

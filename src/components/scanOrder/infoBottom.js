@@ -1,7 +1,9 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import OrderClosed from "./infoBottom/orderClosed";
 import OrderOpen from "./infoBottom/orderOpen";
 import { LogTable } from "../LogTable";
+import OrderDataService from "../../service/orderService";
+import AuthService from "../../service/authService";
 
 const InfoBottom = (props) => {
   const {
@@ -22,6 +24,32 @@ const InfoBottom = (props) => {
   } = props;
 
   const [showLog, setShowLog] = useState(false);
+  const order_number = props.order.order_number;
+
+  const getOrderLog = (order_number) => {
+    const serviceCall = () => {
+      return OrderDataService.getOrderLog(order_number)
+        .then((response) => {
+          setOrderLog(response.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    };
+    try {
+      AuthService.refreshTokenWrapperFunction(serviceCall);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const [orderLog, setOrderLog] = useState();
+
+  useEffect(() => {
+    if (!orderLog) {
+      getOrderLog(order_number);
+    }
+  });
 
   return (
     <>
@@ -60,9 +88,7 @@ const InfoBottom = (props) => {
         >
           {showLog ? "Hide" : "Show"} flag history
         </button>
-        {showLog && (
-          <LogTable uuid={order.uuid} order_number={order.order_number} />
-        )}
+        {showLog && <LogTable uuid={order.uuid} orderLog={orderLog} />}
       </>
     </>
   );
