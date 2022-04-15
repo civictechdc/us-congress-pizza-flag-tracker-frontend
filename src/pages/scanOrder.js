@@ -10,6 +10,11 @@ import { numSort } from "../components/sorting/sortHook";
 
 import styles from "../style/scanOrder.module.css";
 
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import isDate from "date-fns/isDate";
+import parseJSON from "date-fns/parseJSON";
+import { format, parseISO } from "date-fns";
+
 const ScanOrder = (props) => {
   const initialOrderState = {
     uuid: null,
@@ -61,6 +66,33 @@ const ScanOrder = (props) => {
   useEffect(() => {
     getOrder(props.match.params.id);
   }, [props.match.params.id]);
+
+  console.log("Order: ", order);
+
+  //  let distance = formatDistanceToNow(new Date(order.updated_at))
+  //  console.log("Distance to Now: ", distance);
+
+  console.log("Update Time: ", order.updated_at);
+  const result = isDate(order.updated_at);
+  console.log("Is Date? ", result);
+  const result2 = parseJSON(order.updated_at);
+  console.log("Parse Date: ", result2);
+  const result3 = isDate(result2);
+  console.log("Is Date? ", result3);
+  const result4 = parseISO(order.updated_at);
+  console.log("ISO: ", result4);
+  const result5 = isDate(result4);
+  const result10 = Date.now();
+  console.log("Now: ", result10);
+  const result11 = Date.parse(order.updated_at);
+  console.log("Updated: ", result11);
+
+  const diff = result10 - result11;
+  console.log("Time Diff: ", diff);
+  //  const result6 = format(parseISO(result4), "MMM dd h:m a");
+  //  console.log("Formatted ISO: ", result6);
+  //  const distance = formatDistanceToNow(result6);
+  //  console.log("Distance to Now: ", distance);
 
   const retrieveStatuses = () => {
     const serviceCall = () => {
