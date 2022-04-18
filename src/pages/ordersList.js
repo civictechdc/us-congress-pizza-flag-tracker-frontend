@@ -16,15 +16,17 @@ const OrdersList = () => {
   const [sortedField, setSortedField] = useState(null);
   const [sortDir, setSortDir] = useState("asc");
   const [sortType, setSortType] = useState("numeric");
+  const [loading, setLoading] = useState(false);
 
   const sortOptions = { sortedField, sortDir, sortType };
   const sortedOrders = useSortableData(orders, sortOptions);
 
-  //retrieve orders based on authirization level
+  //retrieve orders based on authorization level
   const retrieveOrders = () => {
     let serviceCall = () => {
       return OrderDataService.getAll().then((response) => {
         setOrders(response.data.orders);
+        setLoading(false);
       });
     };
     try {
@@ -40,18 +42,20 @@ const OrdersList = () => {
       let serviceCall = () => {
         return OrderDataService.getAll().then((response) => {
           setOrders(response.data.orders);
+          setLoading(false);
         });
       };
       AuthService.refreshTokenWrapperFunction(serviceCall);
     };
     retrieveOrders();
+    setLoading(true);
   }, []);
 
-  const onChangeSearchTitle = (e) => {
+  function onChangeSearchTitle(e) {
     const searchTitle = e.target.value;
     console.log(e);
     setSearchTitle(searchTitle);
-  };
+  }
 
   const refreshList = () => {
     retrieveOrders();
@@ -89,10 +93,12 @@ const OrdersList = () => {
             console.log("found", response.data);
             setOrders(response.data.orders);
           }
+          setLoading(false);
         }
       );
     };
     try {
+      setLoading(true);
       AuthService.refreshTokenWrapperFunction(serviceCall);
     } catch (e) {
       console.log(e);
@@ -120,76 +126,78 @@ const OrdersList = () => {
 
   const orderTbody = (
     <div className={styles.flagContainer}>
-      {ordersToDisplay &&
-        ordersToDisplay.map((order, index) => (
-          <>
-            <div
-              className={styles.flagItem}
-              onClick={() => setActiveOrder(order, index)}
-              key={index}
-            >
-              <p className={styles.orderNum}>{order.order_number}</p>
-              <p className={styles.officeCode}>{order.home_office_code}</p>
+      {loading
+        ? "Loading..."
+        : ordersToDisplay &&
+          ordersToDisplay.map((order, index) => (
+            <>
+              <div
+                className={styles.flagItem}
+                onClick={() => setActiveOrder(order, index)}
+                key={index}
+              >
+                <p className={styles.orderNum}>{order.order_number}</p>
+                <p className={styles.officeCode}>{order.home_office_code}</p>
 
-              <div className={styles.gaugeContainer}>
-                <Gauge
-                  status={order.status.id}
-                  code={order.status.status_code.replace(/_/g, " ")}
-                />
+                <div className={styles.gaugeContainer}>
+                  <Gauge
+                    status={order.status.id}
+                    code={order.status.status_code.replace(/_/g, " ")}
+                  />
+                </div>
               </div>
-            </div>
-            <div>
-              {currentOrder ? ( // checks for null value
-                currentOrder.order_number == order.order_number ? (
-                  <div className={styles.mobileStatus}>
-                    <div className={styles.statusItem}>
-                      <p className={styles.description}>
-                        {currentOrder.status.description}
-                      </p>
+              <div>
+                {currentOrder ? ( // checks for null value
+                  currentOrder.order_number == order.order_number ? (
+                    <div className={styles.mobileStatus}>
+                      <div className={styles.statusItem}>
+                        <p className={styles.description}>
+                          {currentOrder.status.description}
+                        </p>
+                      </div>
+                      <div className={styles.statusItem}>
+                        <p>
+                          <b>Created:</b> {formatDate(currentOrder.created_at)}
+                        </p>
+                        <p>
+                          <b>Updated:</b> {formatDate(currentOrder.updated_at)}
+                        </p>
+                      </div>
+                      <div className={styles.statusItem}>
+                        <Link
+                          to={"/orders/" + currentOrder.uuid}
+                          className={styles.orderLinks}
+                        >
+                          Edit
+                        </Link>
+                        <Link
+                          to={{
+                            pathname: "/scan/" + currentOrder.uuid,
+                            state: {
+                              orderOfficeCheck: currentOrder.home_office_code,
+                            },
+                          }} // sends order office to route for checking
+                          className={styles.orderLinks}
+                        >
+                          Scan
+                        </Link>
+                        <Link
+                          to={"/print/" + currentOrder.uuid}
+                          className={styles.orderLinks}
+                        >
+                          Print
+                        </Link>
+                      </div>
                     </div>
-                    <div className={styles.statusItem}>
-                      <p>
-                        <b>Created:</b> {formatDate(currentOrder.created_at)}
-                      </p>
-                      <p>
-                        <b>Updated:</b> {formatDate(currentOrder.updated_at)}
-                      </p>
-                    </div>
-                    <div className={styles.statusItem}>
-                      <Link
-                        to={"/orders/" + currentOrder.uuid}
-                        className={styles.orderLinks}
-                      >
-                        Edit
-                      </Link>
-                      <Link
-                        to={{
-                          pathname: "/scan/" + currentOrder.uuid,
-                          state: {
-                            orderOfficeCheck: currentOrder.home_office_code,
-                          },
-                        }} // sends order office to route for checking
-                        className={styles.orderLinks}
-                      >
-                        Scan
-                      </Link>
-                      <Link
-                        to={"/print/" + currentOrder.uuid}
-                        className={styles.orderLinks}
-                      >
-                        Print
-                      </Link>
-                    </div>
-                  </div>
+                  ) : (
+                    <div style={{ width: 0 }}></div>
+                  )
                 ) : (
-                  <div style={{ width: 0 }}></div>
-                )
-              ) : (
-                <div style={{ borderTop: "none" }}></div>
-              )}
-            </div>
-          </>
-        ))}
+                  <div style={{ borderTop: "none" }}></div>
+                )}
+              </div>
+            </>
+          ))}
     </div>
   );
 

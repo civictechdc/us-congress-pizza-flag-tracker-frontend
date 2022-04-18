@@ -4,12 +4,14 @@ import AuthService from "../service/authService";
 
 export const LogTable = (props) => {
   const order_number = props.order_number;
+  const [loading, setLoading] = useState(false);
 
   const getOrderLog = (order_number) => {
     const serviceCall = () => {
       return OrderDataService.getOrderLog(order_number)
         .then((response) => {
           setOrderLog(response.data);
+          setLoading(false);
         })
         .catch((e) => {
           console.log(e);
@@ -26,13 +28,16 @@ export const LogTable = (props) => {
 
   useEffect(() => {
     if (!orderLog) {
+      setLoading(true);
       getOrderLog(order_number);
     }
-  });
+  }, [orderLog, order_number]);
 
   return (
     <>
-      {orderLog && (
+      {loading ? (
+        "Loading..."
+      ) : orderLog && orderLog.data ? (
         <table className="table table-striped table-bordered table-sm">
           <thead className="thead-dark">
             <tr>
@@ -59,6 +64,8 @@ export const LogTable = (props) => {
             })}
           </tbody>
         </table>
+      ) : (
+        "No data to display"
       )}
     </>
   );
