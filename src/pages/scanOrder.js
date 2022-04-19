@@ -9,11 +9,12 @@ import InfoTop from "../components/scanOrder/infoTop";
 import { numSort } from "../components/sorting/sortHook";
 
 import styles from "../style/scanOrder.module.css";
+require("dotenv").config();
 
-import formatDistanceToNow from "date-fns/formatDistanceToNow";
-import isDate from "date-fns/isDate";
-import parseJSON from "date-fns/parseJSON";
-import { format, parseISO } from "date-fns";
+// import formatDistanceToNow from 'date-fns/formatDistanceToNow'
+// import isDate from 'date-fns/isDate'
+// import parseJSON from 'date-fns/parseJSON'
+// import { format, parseISO } from 'date-fns'
 
 const ScanOrder = (props) => {
   const initialOrderState = {
@@ -73,15 +74,17 @@ const ScanOrder = (props) => {
   //  console.log("Distance to Now: ", distance);
 
   console.log("Update Time: ", order.updated_at);
-  const result = isDate(order.updated_at);
-  console.log("Is Date? ", result);
-  const result2 = parseJSON(order.updated_at);
-  console.log("Parse Date: ", result2);
-  const result3 = isDate(result2);
-  console.log("Is Date? ", result3);
-  const result4 = parseISO(order.updated_at);
-  console.log("ISO: ", result4);
-  const result5 = isDate(result4);
+
+  //  const result = isDate(order.updated_at);
+  //  console.log("Is Date? ", result);
+  //  const result2 = parseJSON(order.updated_at);
+  //  console.log("Parse Date: ", result2);
+  //  const result3 = isDate(result2);
+  //  console.log("Is Date? ", result3);
+  //  const result4 = parseISO(order.updated_at);
+  //  console.log("ISO: ", result4);
+  //  const result5 = isDate(result4);
+
   const result10 = Date.now();
   console.log("Now: ", result10);
   const result11 = Date.parse(order.updated_at);
@@ -93,6 +96,11 @@ const ScanOrder = (props) => {
   //  console.log("Formatted ISO: ", result6);
   //  const distance = formatDistanceToNow(result6);
   //  console.log("Distance to Now: ", distance);
+
+  const threshold = process.env.ORDER_COMPLETE_THRESHOLD;
+  console.log("Threshold: ", process.env.ORDER_COMPLETE_THRESHOLD);
+  console.log(process.env);
+  console.log(require("dotenv").config());
 
   const retrieveStatuses = () => {
     const serviceCall = () => {
