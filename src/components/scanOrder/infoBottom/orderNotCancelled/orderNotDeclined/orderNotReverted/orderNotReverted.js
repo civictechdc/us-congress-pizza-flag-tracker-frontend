@@ -10,7 +10,6 @@ import styles from "../../../../../../style/scanOrder.module.css";
 
 const OrderNotReverted = (props) => {
   const {
-    allowUpdate,
     declineUpdate,
     nextStatus,
     order,
@@ -21,6 +20,7 @@ const OrderNotReverted = (props) => {
     skipStatus,
     skipUpdate,
     statuses,
+    user,
   } = props;
 
   return (
@@ -62,11 +62,15 @@ const OrderNotReverted = (props) => {
               )}
             </label>
           </div>
-          {allowUpdate ? (
+          {user &&
+          (nextStatus.permission === user.office_code ||
+            (nextStatus.permission === "STATE" &&
+              user.office_code === order.home_office_code) ||
+            user.update_all_statuses === "Y") ? (
             <UpdateStatusButtonOn saveUpdateFunc={saveUpdate} />
           ) : (
             <RefuseUpdateButton refuseUpdateFunc={refuseUpdate} />
-          )}{" "}
+          )}
           <RevertStatusButtonOff revertUpdateFunc={revertUpdate} />{" "}
           <DeclineUpdateButtonOn declineUpdateFunc={declineUpdate} />
         </>

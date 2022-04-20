@@ -7,6 +7,7 @@ import InfoBottom from "../components/scanOrder/infoBottom";
 import InfoTop from "../components/scanOrder/infoTop";
 
 import { numSort } from "../components/sorting/sortHook";
+
 import styles from "../style/scanOrder.module.css";
 
 const ScanOrder = (props) => {
@@ -38,6 +39,7 @@ const ScanOrder = (props) => {
   const [popUpBox, setPopUpBox] = useState("none");
   const loginError = "You must be logged in to view this page";
   const user = JSON.parse(localStorage.getItem("user"));
+  const [loading, setLoading] = useState(false);
 
   const getOrder = (id) => {
     const serviceCall = () => {
@@ -45,6 +47,7 @@ const ScanOrder = (props) => {
         .then((response) => {
           setOrder(response.data);
           setOldOrder(response.data);
+          setLoading(false);
         })
         .catch((e) => {
           console.log(e);
@@ -58,6 +61,7 @@ const ScanOrder = (props) => {
   };
 
   useEffect(() => {
+    setLoading(true);
     getOrder(props.match.params.id);
   }, [props.match.params.id]);
 
@@ -104,45 +108,37 @@ const ScanOrder = (props) => {
     permission: "",
   };
 
-  let sortedStatuses = [];
-  let lifeCycle = [];
+  let sortedStatuses = numSort(statuses, "sequence_num", "asc");
   let skip = "";
 
   const removeCancelStatus = () => {
-    sortedStatuses = numSort(statuses, "sequence_num", "asc");
-    lifeCycle = sortedStatuses.slice();
-
-    // Ideally backend should only have one Cancel status otherwise this will only catch the last one.
-    // Prevents Cancel statuses from becoming Next Status / removes Cancel from normal lifecycle
-
     for (let i = 0; i < sortedStatuses.length; i++) {
       if (sortedStatuses[i].active_status === "CANCELED") {
-        lifeCycle.splice(i, 1);
+        sortedStatuses.splice(i, 1);
+        i--;
       }
     }
   };
 
   const calculateNextStatus = () => {
-    const currentSeq = order.status.sequence_num;
-
-    for (let i = 0; i < lifeCycle.length; i++) {
-      if (lifeCycle[i].sequence_num > currentSeq) {
-        nextStatus.description = lifeCycle[i].description;
-        nextStatus.id = lifeCycle[i].id;
-        nextStatus.sequence_num = lifeCycle[i].sequence_num;
-        nextStatus.permission = lifeCycle[i].permission;
+    for (let i = 0; i < sortedStatuses.length; i++) {
+      if (sortedStatuses[i].sequence_num > order.status.sequence_num) {
+        nextStatus.description = sortedStatuses[i].description;
+        nextStatus.id = sortedStatuses[i].id;
+        nextStatus.sequence_num = sortedStatuses[i].sequence_num;
+        nextStatus.permission = sortedStatuses[i].permission;
         break;
       }
     }
   };
 
   const calculateBypassArchitectOfCapital = () => {
-    for (let i = 0; i < lifeCycle.length; i++) {
-      if (lifeCycle[i].permission == "FED-MAIL") {
-        skipStatus.description = lifeCycle[i].description;
-        skipStatus.id = lifeCycle[i].id;
-        skipStatus.sequence_num = lifeCycle[i].sequence_num;
-        skipStatus.permission = lifeCycle[i].permission;
+    for (let i = 0; i < sortedStatuses.length; i++) {
+      if (sortedStatuses[i].permission == "FED-MAIL") {
+        skipStatus.description = sortedStatuses[i].description;
+        skipStatus.id = sortedStatuses[i].id;
+        skipStatus.sequence_num = sortedStatuses[i].sequence_num;
+        skipStatus.permission = sortedStatuses[i].permission;
         break;
       }
     }
@@ -160,43 +156,6 @@ const ScanOrder = (props) => {
   ) {
     skip = "true";
   }
-
-  let allowHOSS = "";
-  let allowAOC = "";
-  let allowMAIL = "";
-  let allowSTATE = "";
-
-  if (user) {
-    if (user.can_update_status_for === "FED-HOSS") {
-      allowHOSS = "yes";
-    }
-    if (user.can_update_status_for === "FED-AOC") {
-      allowAOC = "yes";
-    }
-    if (user.can_update_status_for === "FED-MAIL") {
-      allowMAIL = "yes";
-    }
-    if (user.can_update_status_for === order.home_office_code) {
-      allowSTATE = "yes";
-    }
-    if (user.can_update_status_for === "ALL") {
-      allowHOSS = "yes";
-      allowAOC = "yes";
-      allowMAIL = "yes";
-      allowSTATE = "yes";
-    }
-  }
-
-  let allowUpdate = "";
-
-  if (nextStatus.permission === "FED-HOSS" && allowHOSS === "yes")
-    allowUpdate = "yes";
-  if (nextStatus.permission === "FED-AOC" && allowAOC === "yes")
-    allowUpdate = "yes";
-  if (nextStatus.permission === "FED-MAIL" && allowMAIL === "yes")
-    allowUpdate = "yes";
-  if (nextStatus.permission === "STATE" && allowSTATE === "yes")
-    allowUpdate = "yes";
 
   const handleUpdate = () => {
     const updatedStatus = {
@@ -276,11 +235,12 @@ const ScanOrder = (props) => {
   return (
     <div className={styles.scanContainer}>
       <h1 className={styles.title}>Scan</h1>
-      {order ? (
+      {loading ? (
+        "Loading..."
+      ) : order ? (
         <>
           <InfoTop order={order} />
           <InfoBottom
-            allowUpdate={allowUpdate}
             decline={decline}
             declineUpdate={declineUpdate}
             nextStatus={nextStatus}
@@ -294,6 +254,7 @@ const ScanOrder = (props) => {
             skipStatus={skipStatus}
             skipUpdate={skipUpdate}
             statuses={statuses}
+            user={user}
           />
         </>
       ) : (

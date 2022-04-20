@@ -1,10 +1,10 @@
-import React from "react";
+import { React, useState } from "react";
 import OrderClosed from "./infoBottom/orderClosed";
 import OrderOpen from "./infoBottom/orderOpen";
+import { LogTable } from "../LogTable";
 
 const InfoBottom = (props) => {
   const {
-    allowUpdate,
     decline,
     declineUpdate,
     nextStatus,
@@ -18,7 +18,10 @@ const InfoBottom = (props) => {
     skipStatus,
     skipUpdate,
     statuses,
+    user,
   } = props;
+
+  const [showLog, setShowLog] = useState(false);
 
   return (
     <>
@@ -32,7 +35,6 @@ const InfoBottom = (props) => {
         />
       ) : (
         <OrderOpen
-          allowUpdate={allowUpdate}
           decline={decline}
           declineUpdate={declineUpdate}
           nextStatus={nextStatus}
@@ -46,8 +48,22 @@ const InfoBottom = (props) => {
           skipStatus={skipStatus}
           skipUpdate={skipUpdate}
           statuses={statuses}
+          user={user}
         />
       )}
+      <>
+        <button
+          onClick={() => {
+            setShowLog(!showLog);
+          }}
+          className="btn btn-link"
+        >
+          {showLog ? "Hide" : "Show"} flag history
+        </button>
+        {showLog && (
+          <LogTable uuid={order.uuid} order_number={order.order_number} />
+        )}
+      </>
     </>
   );
 };
