@@ -9,7 +9,12 @@ const UpdateStatusButtonOff = (props) => {
 
   return (
     <>
-      <button onClick={handleInput} className="btn btn-success" disabled>
+      <button
+        onClick={handleInput}
+        className="btn btn-success"
+        data-button-function="Update Disabled"
+        disabled
+      >
         {"Update Status"}
       </button>
     </>

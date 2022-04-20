@@ -9,7 +9,11 @@ const DeclineUpdateButtonOn = (props) => {
 
   return (
     <>
-      <button onClick={handleInput} className="btn btn-success">
+      <button
+        onClick={handleInput}
+        className="btn btn-success"
+        data-button-function="Decline Enabled"
+      >
         {"Decline Update"}
       </button>
     </>
