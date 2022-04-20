@@ -16,10 +16,12 @@ import ScanRoute from "./components/protectedRoute/scanRoute";
 import AdminRoute from "./components/protectedRoute/adminRoute";
 import FedRoute from "./components/protectedRoute/fedRoute";
 import Header from "./components/header/header";
+import Background from "./components/background";
 
 function App() {
   return (
     <>
+      <Background />
       <Header />
 
       <main className="mainContainer">
