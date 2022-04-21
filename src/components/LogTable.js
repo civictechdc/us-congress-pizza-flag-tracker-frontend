@@ -40,7 +40,7 @@ export const LogTable = (props) => {
     <>
       {loading ? (
         "Loading..."
-      ) : orderLog && orderLog.data ? (
+      ) : orderLog && orderLog.data.length ? (
         <table className="table table-striped table-bordered table-sm">
           <thead className="thead-dark">
             <tr>
