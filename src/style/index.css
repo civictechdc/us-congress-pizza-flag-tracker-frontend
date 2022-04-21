@@ -12,6 +12,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+li {
+  list-style-type: none;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
@@ -63,7 +67,3 @@ code {
 .badge {
   margin: 1px;
 }
-
-/* * {
-  transform: skewY(0deg) !important;
-} */
