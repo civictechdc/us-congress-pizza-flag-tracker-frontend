@@ -209,35 +209,42 @@ const ScanOrder = (props) => {
   };
 
   const revertUpdate = () => {
-    //  console.log("Order: ", order);
+    if (
+      order.status.active_status === "CLOSED" &&
+      user.update_all_statuses !== "Y"
+    ) {
+      console.log("Order: ", order);
 
-    let utcStr = new Date().toUTCString();
-    console.log("UTC Now: ", utcStr);
+      let currentTime = new Date().toUTCString();
+      console.log("UTC Now: ", currentTime);
 
-    //  console.log("Update Time: ", order.updated_at)
-    let utcUpdateTime = order.updated_at;
-    utcUpdateTime += " GMT";
-    console.log("UTC Update Time: ", utcUpdateTime);
+      let lastUpdateTime = order.updated_at;
+      lastUpdateTime += " GMT";
+      console.log("UTC Update Time: ", lastUpdateTime);
 
-    //  let result10 = Date.now();
-    //  console.log("Now: ", result10);
+      let currentTimeMS = Date.parse(currentTime);
+      console.log("Now parsed for UTC", currentTimeMS);
 
-    let utcParse = Date.parse(utcStr);
-    console.log("Now parsed for UTC", utcParse);
+      let lastUpdateTimeMS = Date.parse(lastUpdateTime);
+      console.log("Update Time parsed for UTC: ", lastUpdateTimeMS);
 
-    let result11 = Date.parse(utcUpdateTime);
-    console.log("Update Time parsed for UTC: ", result11);
+      const diff = currentTimeMS - lastUpdateTimeMS;
+      console.log("Time Diff: ", diff);
 
-    const diff = utcParse - result11;
-    console.log("Time Diff: ", diff);
+      console.log("Active Status: ", order.status.active_status);
 
-    console.log("Active Status: ", order.status.active_status);
-    if (order.status.active_status === "CLOSED") {
-      console.log("moving to closure");
+      if (diff > 5000) {
+        setPopUpBox("block");
+        setMessage(
+          "Too much time has elapsed to undo a completed order; please see an Admin"
+        );
+      } else {
+        console.log("There's still time");
+        setOrder(oldOrder);
+        const activateRevertButton = "off";
+        updateStatus(oldOrder, activateRevertButton);
+      }
     }
-    setOrder(oldOrder);
-    const activateRevertButton = "off";
-    updateStatus(oldOrder, activateRevertButton);
   };
 
   const refuseUpdate = () => {
