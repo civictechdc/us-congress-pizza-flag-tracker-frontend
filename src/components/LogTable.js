@@ -1,37 +1,40 @@
-import { React, useEffect, useState } from "react";
+import { React, useCallback, useEffect, useState } from "react";
 import OrderDataService from "../service/orderService";
 import AuthService from "../service/authService";
 
 export const LogTable = (props) => {
   const order_number = props.order_number;
   const [loading, setLoading] = useState(false);
-
-  const getOrderLog = (order_number) => {
-    const serviceCall = () => {
-      return OrderDataService.getOrderLog(order_number)
-        .then((response) => {
-          setOrderLog(response.data);
-          setLoading(false);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    };
-    try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   const [orderLog, setOrderLog] = useState();
+
+  const getOrderLog = useCallback(
+    (order_number) => {
+      const serviceCall = () => {
+        return OrderDataService.getOrderLog(order_number)
+          .then((response) => {
+            setOrderLog(response.data.orders);
+            console.log(orderLog);
+            setLoading(false);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      };
+      try {
+        AuthService.refreshTokenWrapperFunction(serviceCall);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    [orderLog]
+  );
 
   useEffect(() => {
     if (!orderLog) {
       setLoading(true);
       getOrderLog(order_number);
     }
-  }, [orderLog, order_number]);
+  }, [orderLog, order_number, getOrderLog]);
 
   return (
     <>
