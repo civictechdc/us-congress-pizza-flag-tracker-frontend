@@ -209,41 +209,40 @@ const ScanOrder = (props) => {
   };
 
   const revertUpdate = () => {
+    console.log("Order: ", order);
+
+    let currentTime = new Date().toUTCString();
+    console.log("UTC Now: ", currentTime);
+
+    let lastUpdateTime = order.updated_at;
+    lastUpdateTime += " GMT";
+    console.log("UTC Update Time: ", lastUpdateTime);
+
+    let currentTimeMS = Date.parse(currentTime);
+    console.log("Now parsed for UTC", currentTimeMS);
+
+    let lastUpdateTimeMS = Date.parse(lastUpdateTime);
+    console.log("Update Time parsed for UTC: ", lastUpdateTimeMS);
+
+    const diff = currentTimeMS - lastUpdateTimeMS;
+    console.log("Time Diff: ", diff);
+
+    console.log("Active Status: ", order.status.active_status);
+
     if (
       order.status.active_status === "CLOSED" &&
-      user.update_all_statuses !== "Y"
+      user.update_all_statuses !== "Y" &&
+      diff > 5000
     ) {
-      console.log("Order: ", order);
-
-      let currentTime = new Date().toUTCString();
-      console.log("UTC Now: ", currentTime);
-
-      let lastUpdateTime = order.updated_at;
-      lastUpdateTime += " GMT";
-      console.log("UTC Update Time: ", lastUpdateTime);
-
-      let currentTimeMS = Date.parse(currentTime);
-      console.log("Now parsed for UTC", currentTimeMS);
-
-      let lastUpdateTimeMS = Date.parse(lastUpdateTime);
-      console.log("Update Time parsed for UTC: ", lastUpdateTimeMS);
-
-      const diff = currentTimeMS - lastUpdateTimeMS;
-      console.log("Time Diff: ", diff);
-
-      console.log("Active Status: ", order.status.active_status);
-
-      if (diff > 5000) {
-        setPopUpBox("block");
-        setMessage(
-          "Too much time has elapsed to undo a completed order; please see an Admin"
-        );
-      } else {
-        console.log("There's still time");
-        setOrder(oldOrder);
-        const activateRevertButton = "off";
-        updateStatus(oldOrder, activateRevertButton);
-      }
+      setPopUpBox("block");
+      setMessage(
+        "Too much time has elapsed to undo a completed order; please see an Admin"
+      );
+    } else {
+      console.log("There's still time");
+      setOrder(oldOrder);
+      const activateRevertButton = "off";
+      updateStatus(oldOrder, activateRevertButton);
     }
   };
 
