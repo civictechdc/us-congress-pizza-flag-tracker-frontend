@@ -28,7 +28,7 @@ Cypress.Commands.add("checkForScanButton", () => {
 
 Cypress.Commands.add("updateStatus", () => {
   cy.wait(2000);
-  cy.get(".btn.btn-success").should("contain", "UPDATE STATUS").first().click();
+  cy.get("button[data-button-function='Update Enabled']").click();
   cy.wait(2000);
   cy.get("div[class=pop-up]").should("be.visible").click();
 });
