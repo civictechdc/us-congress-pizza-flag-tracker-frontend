@@ -5,7 +5,9 @@ import { userOffice, statusControl } from "./permissions";
 function ScanRoute({ component: Component, ...rest }) {
   const history = useHistory();
   const location = useLocation();
-  const orderOfficeCheckValue = location.state.orderOfficeCheck;
+  const officeCode = location.state;
+  const orderOfficeCheckValue =
+    officeCode === undefined ? "FROMQR" : location.state.orderOfficeCheck;
 
   const allow = () => {
     if (statusControl() == "ALL" || orderOfficeCheckValue) {
@@ -19,7 +21,14 @@ function ScanRoute({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={(props) => {
-        return allow() ? (
+        return orderOfficeCheckValue === "FROMQR" ? (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { destination: location.pathname, from: "QR" },
+            }}
+          />
+        ) : allow() ? (
           <Component {...props} />
         ) : (
           <Redirect to={history.goBack} />

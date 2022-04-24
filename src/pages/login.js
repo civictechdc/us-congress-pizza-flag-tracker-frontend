@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import { useLocation, useHistory, Redirect } from "react-router-dom";
+import { generatePath } from "react-router";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import styles from "../style/login.module.css";
 
 import AuthService from "../service/authService";
+import OrderDataService from "../service/orderService";
 
 const required = (value) => {
   if (!value) {
@@ -21,6 +24,9 @@ const Login = (props) => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
+  const location = useLocation();
+  const history = useHistory();
+
   const onChangeUsername = (e) => {
     setUsername(e.target.value);
   };
@@ -34,8 +40,31 @@ const Login = (props) => {
 
     return AuthService.login(username, password).then(
       () => {
-        props.history.push("/");
-        props.history.go();
+        const whereAreYouGoing = async () => {
+          if (location.state === undefined) {
+            return history.push("/");
+          } else {
+            let id = location.state.destination.slice(6);
+            let path = generatePath("/scan/:id", { id: id });
+            let serviceCall = async () => {
+              let response = await OrderDataService.get(id);
+              return response.data;
+            };
+
+            let order = await AuthService.refreshTokenWrapperFunction(
+              serviceCall
+            );
+            let orderOfficeCode =
+              order !== undefined ? order.home_office_code : "";
+            let destination = history.push(path, {
+              orderOfficeCheck: orderOfficeCode,
+            });
+
+            return destination;
+          }
+        };
+
+        whereAreYouGoing();
       },
       (error) => {
         const resMessage =
