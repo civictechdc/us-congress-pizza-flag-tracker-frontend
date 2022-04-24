@@ -9,7 +9,11 @@ const UpdateStatusButtonOn = (props) => {
 
   return (
     <>
-      <button onClick={handleInput} className="btn btn-success">
+      <button
+        onClick={handleInput}
+        className="btn btn-success"
+        data-button-function="Update Enabled"
+      >
         <strong>{"UPDATE STATUS"}</strong>
       </button>
     </>

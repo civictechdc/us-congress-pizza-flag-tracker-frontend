@@ -1,0 +1,7 @@
+.main_container {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    background-color: #75A6EF;
+    z-index: -100;
+}

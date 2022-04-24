@@ -1,14 +1,11 @@
-function Background(){
+import styles from "../style/background.module.css";
 
-
-    return(
-        <>
-            <div className="">
-                
-            </div>
-        </>
-    )
-
+function Background() {
+  return (
+    <>
+      <div className={styles.main_container}></div>
+    </>
+  );
 }
 
 export default Background;

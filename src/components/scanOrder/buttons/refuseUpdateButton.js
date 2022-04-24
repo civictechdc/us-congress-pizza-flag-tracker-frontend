@@ -12,6 +12,7 @@ const RefuseUpdateButton = (props) => {
       <button
         onClick={handleInput}
         className="btn btn-success"
+        data-button-function="Refuse Enabled"
         style={{ opacity: 0.6 }}
       >
         {"Update Status"}

@@ -9,7 +9,12 @@ const RevertStatusButtonOff = (props) => {
 
   return (
     <>
-      <button onClick={handleInput} className="btn btn-success" disabled>
+      <button
+        onClick={handleInput}
+        className="btn btn-success"
+        data-button-function="Revert Disabled"
+        disabled
+      >
         {"Revert Update"}
       </button>
     </>
