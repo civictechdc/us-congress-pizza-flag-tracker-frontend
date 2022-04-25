@@ -216,6 +216,7 @@ const ScanOrder = (props) => {
 
     let lastUpdateTime = order.updated_at;
     lastUpdateTime += " GMT";
+    lastUpdateTime = lastUpdateTime.replace(/-/g, " ");
     console.log("UTC Update Time: ", lastUpdateTime);
 
     let currentTimeMS = Date.parse(currentTime);
