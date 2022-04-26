@@ -38,9 +38,6 @@ describe("Moving the flag from 1-8", () => {
     cy.contains("#2").should("not.exist");
     cy.wait(3000);
     cy.contains("Orders").click();
-    cy.wait(3000);
-    cy.clickFirstOrder();
-    cy.checkForScanButton();
   });
 
   it("MAIL can move flag forward", () => {
@@ -54,21 +51,20 @@ describe("Moving the flag from 1-8", () => {
     cy.contains("#5").should("be.visible");
     cy.contains("#3").should("not.exist");
     cy.wait(3000);
-    cy.contains("Orders").click();
-    cy.clickFirstOrder();
-    cy.checkForScanButton();
     //now, on scan page, we take the actual actions to move the flag forward
-    cy.updateStatus();
-    cy.contains("#6").should("be.visible");
-    cy.contains("#4").should("not.exist");
-    cy.wait(3000);
   });
 
   it("Staff can move flag forward", () => {
     cy.login("AL-01", "AL-01-1010");
     cy.visit("/");
-
     cy.wait(3000);
+    cy.clickFirstOrder();
+    cy.checkForScanButton();
+    cy.updateStatus();
+    cy.contains("#6").should("be.visible");
+    cy.contains("#4").should("not.exist");
+    cy.wait(3000);
+    cy.contains("Orders").click();
     cy.clickFirstOrder();
     cy.checkForScanButton();
     //now, on scan page, we take the actual actions to move the flag forward
