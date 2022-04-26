@@ -137,8 +137,13 @@ const OrdersList = () => {
                 key={index}
               >
                 <p className={styles.orderNum}>{order.order_number}</p>
-                <p className={styles.officeCode}>{order.home_office_code}</p>
-
+                <div className={styles.constituentBox}>
+                  <p className={styles.officeCode}>{order.home_office_code}</p>
+                  <p className={styles.constituentName}>{order.person.name}</p>
+                  <p className={styles.constituentPhone}>
+                    {order.person.phone}
+                  </p>
+                </div>
                 <div className={styles.gaugeContainer}>
                   <Gauge
                     status={order.status.id}
