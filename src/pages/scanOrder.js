@@ -222,7 +222,7 @@ const ScanOrder = (props) => {
     if (
       order.status.active_status === "CLOSED" &&
       user.update_all_statuses !== "Y" &&
-      diff > 5000
+      diff > 3600000
     ) {
       setPopUpBox("block");
       setMessage(
