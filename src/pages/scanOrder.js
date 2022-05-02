@@ -39,6 +39,7 @@ const ScanOrder = (props) => {
   const [popUpBox, setPopUpBox] = useState("none");
   const loginError = "You must be logged in to view this page";
   const user = JSON.parse(localStorage.getItem("user"));
+  const [loading, setLoading] = useState(false);
 
   const getOrder = (id) => {
     const serviceCall = () => {
@@ -46,6 +47,7 @@ const ScanOrder = (props) => {
         .then((response) => {
           setOrder(response.data);
           setUnalteredOrder(response.data);
+          setLoading(false);
         })
         .catch((e) => {
           console.log(e);
@@ -59,6 +61,7 @@ const ScanOrder = (props) => {
   };
 
   useEffect(() => {
+    setLoading(true);
     getOrder(props.match.params.id);
   }, [props.match.params.id]);
 
