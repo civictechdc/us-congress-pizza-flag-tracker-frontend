@@ -31,7 +31,7 @@ const ScanOrder = (props) => {
   };
 
   const [order, setOrder] = useState(initialOrderState);
-  const [oldOrder, setOldOrder] = useState(initialOrderState);
+  const [unalteredOrder, setUnalteredOrder] = useState(initialOrderState);
   const [message, setMessage] = useState("");
   const [decline, setDecline] = useState(""); // Decline Update button
   const [revert, setRevert] = useState(""); // Revert Update button
@@ -45,7 +45,7 @@ const ScanOrder = (props) => {
       return OrderDataService.get(id)
         .then((response) => {
           setOrder(response.data);
-          setOldOrder(response.data);
+          setUnalteredOrder(response.data);
         })
         .catch((e) => {
           console.log(e);
@@ -231,9 +231,9 @@ const ScanOrder = (props) => {
         "Too much time has elapsed to undo a completed order; please see an Admin"
       );
     } else {
-      setOrder(oldOrder);
+      setOrder(unalteredOrder);
       const activateRevertButton = "off";
-      updateStatus(oldOrder, activateRevertButton);
+      updateStatus(unalteredOrder, activateRevertButton);
     }
   };
 
@@ -264,7 +264,7 @@ const ScanOrder = (props) => {
             decline={decline}
             declineUpdate={declineUpdate}
             nextStatus={nextStatus}
-            oldOrder={oldOrder}
+            unalteredOrder={unalteredOrder}
             order={order}
             refuseUpdate={refuseUpdate}
             revert={revert}

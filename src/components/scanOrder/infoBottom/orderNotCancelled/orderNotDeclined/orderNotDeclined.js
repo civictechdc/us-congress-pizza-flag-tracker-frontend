@@ -9,7 +9,7 @@ const OrderNotDeclined = (props) => {
   const {
     declineUpdate,
     nextStatus,
-    oldOrder,
+    unalteredOrder,
     order,
     refuseUpdate,
     revert,
@@ -30,7 +30,8 @@ const OrderNotDeclined = (props) => {
             <label htmlFor="prior_status">
               Prior Status:{" "}
               <strong>
-                #{oldOrder.status.sequence_num} - {oldOrder.status.description}
+                #{unalteredOrder.status.sequence_num} -{" "}
+                {unalteredOrder.status.description}
               </strong>
             </label>
           </div>
