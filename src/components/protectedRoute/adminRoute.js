@@ -1,8 +1,10 @@
 import React from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, useHistory } from "react-router-dom";
 import { adminControl } from "./permissions";
 
 function AdminRoute({ component: Component, ...rest }) {
+  const history = useHistory();
+
   return (
     <Route
       {...rest}
@@ -10,7 +12,7 @@ function AdminRoute({ component: Component, ...rest }) {
         return adminControl() ? (
           <Component {...props} />
         ) : (
-          <Redirect to="/login" />
+          <Redirect to={history.goBack} />
         );
       }}
     />

@@ -1,3 +1,5 @@
+import { getByAltText } from "@testing-library/react";
+
 describe("My First Test", () => {
   it("Does not do much!", () => {
     expect(true).to.equal(true);
@@ -12,9 +14,10 @@ describe("Loading and logging in", () => {
     cy.visit("/login");
     cy.get("input[name=username]").type("FED-ADMIN");
     cy.get("input[type=password").type(`FED-ADMIN-1010{enter}`);
-    cy.get("header").should("contain", "Add");
+    cy.visit("/");
+    cy.get("nav").should("contain", "Add");
     cy.getLocalStorage("user").should("contain", "FED-ADMIN");
-    //TODO add expectation for username being present in header--to pass this test, the header also needs the username to be present
+    cy.get("nav").should("contain", "FED-ADMIN");
   });
   it("rejects login if password is incorrect", () => {
     cy.visit("/login");
@@ -58,20 +61,21 @@ describe("CRUD actions for superuser", () => {
 
   it("allows FED-ADMIN to edit an order", () => {
     cy.visit("/orders");
-    cy.get(".flag-group-item").contains("1234567890").click(); //danger, this may break upon implementing new layout if class name changes
-    cy.get(".badge-warning").eq(0).click();
+    cy.get("p[class*='orders_orderNum']").contains("1234567890").click(); //danger, this may break upon implementing new layout if class name changes
+    cy.get("a[class*='orders_orderLinks']").eq(0).click();
     cy.get("input[id=react-select-7-input]").click().type(`CO-02{enter}`); //why is it different on the edit screen? where do these numbers in the ids come from?
     cy.get(".btn-success").click();
     cy.visit("/orders");
-    cy.get("td")
+    cy.get("p[class*='orders_orderNum']")
       .contains("1234567890")
       .next()
-      .next()
+      .children()
+      .first()
       .should("contain", "CO-02");
   });
   it("allows FED-ADMIN to delete an order", () => {
-    cy.get(".flag-group-item").contains("1234567890").click(); //danger, this may break upon implementing new layout if class name changes
-    cy.get(".badge-warning").eq(0).click();
+    cy.get("p[class*='orders_orderNum']").contains("1234567890").click(); //danger, this may break upon implementing new layout if class name changes
+    cy.get("a[class*='orders_orderLinks']").eq(0).click();
     cy.get(".badge-danger").click(); //there probably should be a confirmation step here both before and after deletion, SO, this test will need to be updated
     cy.get("main").wait(1000).should("not.contain", "1234567890"); //cypress docs say not to use wait but otherwise it's testing against the empty, pre-rendered table
   });
