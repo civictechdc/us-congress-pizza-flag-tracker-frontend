@@ -220,14 +220,14 @@ const ScanOrder = (props) => {
 
     const currentTimeMS = Date.parse(currentTime);
     const lastUpdateTimeMS = Date.parse(lastUpdateTime);
-    const diff = currentTimeMS - lastUpdateTimeMS;
+    const timeSinceUpdate = currentTimeMS - lastUpdateTimeMS;
 
     console.log(process.env.REACT_APP_THRESHOLD);
 
     if (
       order.status.active_status === "CLOSED" &&
       user.update_all_statuses !== "Y" &&
-      diff > process.env.REACT_APP_THRESHOLD
+      timeSinceUpdate > process.env.REACT_APP_THRESHOLD
     ) {
       setPopUpBox("block");
       setMessage(
