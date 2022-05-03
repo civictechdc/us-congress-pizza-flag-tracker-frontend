@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import styles from "../../style/navbar.module.css";
 import AuthService from "../../service/authService";
 import { orderControl, adminControl } from "../protectedRoute/permissions";
 
@@ -10,52 +11,51 @@ function Privateheader(params) {
 
   return (
     <>
-      <header>
-        <nav className="navbar navbar-expand navbar-dark bg-dark">
-          <a href="/orders" className="navbar-brand">
-            Flagpizza
-          </a>
-          <div className="navbar-nav mr-auto public-header">
-            <li className="nav-item">
-              <Link to={"/orders"} className="nav-link">
-                Orders
-              </Link>
-            </li>
-            <li className="nav-item">
-              {orderControl() ? (
-                <Link to={"/add"} className="nav-link">
-                  Add
-                </Link>
-              ) : (
-                <div></div>
-              )}
-            </li>
-            <li className="nav-item">
-              <Link to={"/profile"} className="nav-link">
-                Profile
-              </Link>
-            </li>
-            {adminControl() ? (
-              <li className="nav-item">
-                <Link to={"/users/add"} className="nav-link">
-                  Add User
-                </Link>
-              </li>
-            ) : (
-              <div></div>
-            )}
+      <nav className={styles.nav_container}>
+        <div className={styles.nav_group1}>
+          <h1 className={styles.nav_title}>Flagpizza</h1>
+          <li>
+            <Link to={"/orders"} className={styles.nav_item}>
+              Orders
+            </Link>
+          </li>
 
-            <li className="nav-item">
-              <a href="/login" className="nav-link" onClick={logOut}>
-                Log Out
-              </a>
+          {orderControl() ? (
+            <li>
+              <Link to={"/add"} className={styles.nav_item}>
+                Add
+              </Link>
             </li>
-            <li className="nav-item">
-              <p className="nav-link">{AuthService.getCurrentUserName()}</p>
+          ) : (
+            <div></div>
+          )}
+
+          <li>
+            <Link to={"/profile"} className={styles.nav_item}>
+              Profile
+            </Link>
+          </li>
+          {adminControl() ? (
+            <li>
+              <Link to={"/users/add"} className={styles.nav_item}>
+                Add User
+              </Link>
             </li>
-          </div>
-        </nav>
-      </header>
+          ) : (
+            <div></div>
+          )}
+        </div>
+        <div className={styles.nav_group2}>
+          <li>
+            <Link to={"/login"} onClick={logOut} className={styles.nav_logout}>
+              Log Out
+            </Link>
+          </li>
+          <li className={styles.nav_username}>
+            <p>{AuthService.getCurrentUserName()}</p>
+          </li>
+        </div>
+      </nav>
     </>
   );
 }

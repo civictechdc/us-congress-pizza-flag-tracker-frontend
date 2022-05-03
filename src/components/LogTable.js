@@ -1,38 +1,46 @@
-import { React, useEffect, useState } from "react";
+import { React, useCallback, useEffect, useState } from "react";
 import OrderDataService from "../service/orderService";
 import AuthService from "../service/authService";
 
 export const LogTable = (props) => {
   const order_number = props.order_number;
-
-  const getOrderLog = (order_number) => {
-    const serviceCall = () => {
-      return OrderDataService.getOrderLog(order_number)
-        .then((response) => {
-          setOrderLog(response.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    };
-    try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
+  const [loading, setLoading] = useState(false);
   const [orderLog, setOrderLog] = useState();
+
+  const getOrderLog = useCallback(
+    (order_number) => {
+      const serviceCall = () => {
+        return OrderDataService.getOrderLog(order_number)
+          .then((response) => {
+            setOrderLog(response.data.orders);
+            console.log(orderLog);
+            setLoading(false);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      };
+      try {
+        AuthService.refreshTokenWrapperFunction(serviceCall);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    [orderLog]
+  );
 
   useEffect(() => {
     if (!orderLog) {
+      setLoading(true);
       getOrderLog(order_number);
     }
-  });
+  }, [orderLog, order_number, getOrderLog]);
 
   return (
     <>
-      {orderLog && (
+      {loading ? (
+        "Loading..."
+      ) : orderLog && orderLog.data.length ? (
         <table className="table table-striped table-bordered table-sm">
           <thead className="thead-dark">
             <tr>
@@ -59,6 +67,8 @@ export const LogTable = (props) => {
             })}
           </tbody>
         </table>
+      ) : (
+        "No data to display"
       )}
     </>
   );

@@ -3,6 +3,7 @@ import Select from "react-select";
 import { baseURL } from "../http-common";
 import { STATES } from "./states.js";
 import styles from "../style/orderForm.module.css";
+import OrdersList from "../pages/ordersList";
 
 const OrderForm = (props) => {
   const {
@@ -136,6 +137,20 @@ const OrderForm = (props) => {
         ) : (
           <h1 className={styles.title}>Add Order</h1>
         )}
+        <div className={styles.constituentBox}>
+          {order.person === undefined ? (
+            <div></div>
+          ) : (
+            <>
+              <p className={styles.constituentName}>{order.person.name}</p>
+              <p className={styles.constituentPhone}>{order.person.phone}</p>
+              <p className={styles.constituentAddress1}>
+                {order.person.address}
+              </p>
+              <p className={styles.constituentAddress2}>{order.person.town}</p>
+            </>
+          )}
+        </div>
 
         <div className="form-group">
           <label htmlFor="order_number">Order Number</label>
