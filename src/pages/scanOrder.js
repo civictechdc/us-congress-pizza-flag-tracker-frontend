@@ -222,8 +222,6 @@ const ScanOrder = (props) => {
     const lastUpdateTimeMS = Date.parse(lastUpdateTime);
     const timeSinceUpdate = currentTimeMS - lastUpdateTimeMS;
 
-    console.log(process.env.REACT_APP_THRESHOLD);
-
     if (
       order.status.active_status === "CLOSED" &&
       user.update_all_statuses !== "Y" &&
