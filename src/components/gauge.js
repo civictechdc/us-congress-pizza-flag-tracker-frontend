@@ -1,51 +1,40 @@
-import style from "../style/gauge.module.css"
+import style from "../style/gauge.module.css";
 import React from "react";
 
 const Gauge = (props) => {
+  const statusesUpToAndIncludingCurrent = props.statuses.filter(
+    (n) => n.sequence_num <= props.status
+  );
 
-    
-    const tracker = []; 
-
-    for(let i = 1; i <= props.status; i++){
-
-        let number = i;
-        tracker.push(number)
-    }
-    
-
-    return(
-        <>  
-        {props.status < 8 ?(
-             <div className={style.gauge}>
-                {tracker.map( (number, index) => (
-                
-                        <div className={style.gaugeItem} key={index}>
-                            <p className={style.gaugeNumber}>{number}</p>
-                            {number == props.status ?(
-                                <p className={style.gaugeCode}>{props.code}</p>
-                            ):(
-                                <p></p>
-                            )}
-                        </div>
-                    
-                ))}
-            </div>
-        ) : (
-            props.status > 8 ?(
-                <div className={style.gaugeCancel}>
-                    <p className={style.cancel}>Canceled</p>
-                </div>
-            ):(
-                <div className={style.gaugeDone}>
-                    <p className={style.done}>Complete</p>
-                </div>
+  return (
+    <>
+      {props.status < 8 ? (
+        <div className={style.gauge}>
+          {statusesUpToAndIncludingCurrent.map(
+            ({ sequence_num, status_code }, index) => (
+              <div className={style.gaugeItem} key={index}>
+                {sequence_num === props.status && (
+                  <p className={style.gaugeNumber}>{sequence_num}</p>
+                )}
+                <p className={style.gaugeCode}>
+                  {sequence_num}.{" "}
+                  {status_code && status_code.replace(/_/g, " ")}
+                </p>
+              </div>
             )
-        )}
-           
-            
-           
-        </>
-    )
+          )}
+        </div>
+      ) : props.status > 8 ? (
+        <div className={style.gaugeCancel}>
+          <p className={style.cancel}>Canceled</p>
+        </div>
+      ) : (
+        <div className={style.gaugeDone}>
+          <p className={style.done}>Complete</p>
+        </div>
+      )}
+    </>
+  );
 };
 
 export default Gauge;

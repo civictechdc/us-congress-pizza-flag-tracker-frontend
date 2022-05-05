@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import OrderDataService from "../service/orderService";
+import StatusDataService from "../service/statusService";
 import { Link } from "react-router-dom";
 import styles from "../style/orders.module.css";
 import AuthService from "../service/authService";
@@ -17,6 +18,7 @@ const OrdersList = () => {
   const [sortDir, setSortDir] = useState("asc");
   const [sortType, setSortType] = useState("numeric");
   const [loading, setLoading] = useState(false);
+  const [statuses, setStatuses] = useState([]);
 
   const sortOptions = { sortedField, sortDir, sortType };
   const sortedOrders = useSortableData(orders, sortOptions);
@@ -124,6 +126,12 @@ const OrdersList = () => {
   let ordersToDisplay = [];
   sortedOrders ? (ordersToDisplay = sortedOrders) : (ordersToDisplay = orders);
 
+  useEffect(() => {
+    if (statuses.length === 0) {
+      StatusDataService.retrieveStatuses(setErrorMessage, setStatuses);
+    }
+  }, [statuses]);
+
   const orderTbody = (
     <div className={styles.flagContainer}>
       {loading
@@ -146,8 +154,8 @@ const OrdersList = () => {
                 </div>
                 <div className={styles.gaugeContainer}>
                   <Gauge
-                    status={order.status.id}
-                    code={order.status.status_code.replace(/_/g, " ")}
+                    status={order.status.sequence_num}
+                    statuses={statuses}
                   />
                 </div>
               </div>
