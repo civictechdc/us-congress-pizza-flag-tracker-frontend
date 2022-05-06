@@ -213,19 +213,20 @@ const ScanOrder = (props) => {
 
   const revertUpdate = () => {
     const currentTime = new Date().toUTCString();
+    const currentTimeInMilliSeconds = Date.parse(currentTime);
 
     let lastUpdateTime = order.updated_at;
     lastUpdateTime += " GMT";
     lastUpdateTime = lastUpdateTime.replace(/-/g, " ");
+    const lastUpdateInTimeMilliSeconds = Date.parse(lastUpdateTime);
 
-    const currentTimeMS = Date.parse(currentTime);
-    const lastUpdateTimeMS = Date.parse(lastUpdateTime);
-    const timeSinceUpdate = currentTimeMS - lastUpdateTimeMS;
+    const milliSecondsSinceUpdate =
+      currentTimeInMilliSeconds - lastUpdateInTimeMilliSeconds;
 
     if (
       order.status.active_status === "CLOSED" &&
       user.update_all_statuses !== "Y" &&
-      timeSinceUpdate >
+      milliSecondsSinceUpdate >
         (process.env.REACT_APP_THRESHOLD ||
           3600000) /* 1 hour in milliseconds */
     ) {
