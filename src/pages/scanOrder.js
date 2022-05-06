@@ -218,10 +218,10 @@ const ScanOrder = (props) => {
     let lastUpdateTime = order.updated_at;
     lastUpdateTime += " GMT";
     lastUpdateTime = lastUpdateTime.replace(/-/g, " ");
-    const lastUpdateInTimeMilliSeconds = Date.parse(lastUpdateTime);
+    const lastUpdateTimeInMilliSeconds = Date.parse(lastUpdateTime);
 
     const milliSecondsSinceUpdate =
-      currentTimeInMilliSeconds - lastUpdateInTimeMilliSeconds;
+      currentTimeInMilliSeconds - lastUpdateTimeInMilliSeconds;
 
     if (
       order.status.active_status === "CLOSED" &&
