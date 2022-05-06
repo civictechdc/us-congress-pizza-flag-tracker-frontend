@@ -6,7 +6,7 @@ const OrderOpen = (props) => {
     decline,
     declineUpdate,
     nextStatus,
-    oldOrder,
+    unalteredOrder,
     order,
     refuseUpdate,
     revert,
@@ -32,7 +32,7 @@ const OrderOpen = (props) => {
           decline={decline}
           declineUpdate={declineUpdate}
           nextStatus={nextStatus}
-          oldOrder={oldOrder}
+          unalteredOrder={unalteredOrder}
           order={order}
           refuseUpdate={refuseUpdate}
           revert={revert}

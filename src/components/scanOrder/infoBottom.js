@@ -8,7 +8,7 @@ const InfoBottom = (props) => {
     decline,
     declineUpdate,
     nextStatus,
-    oldOrder,
+    unalteredOrder,
     order,
     refuseUpdate,
     revert,
@@ -28,7 +28,7 @@ const InfoBottom = (props) => {
       {order.status.active_status === "CLOSED" ? (
         <OrderClosed
           declineUpdate={declineUpdate}
-          oldOrder={oldOrder}
+          unalteredOrder={unalteredOrder}
           revert={revert}
           revertUpdate={revertUpdate}
           saveUpdate={saveUpdate}
@@ -38,7 +38,7 @@ const InfoBottom = (props) => {
           decline={decline}
           declineUpdate={declineUpdate}
           nextStatus={nextStatus}
-          oldOrder={oldOrder}
+          unalteredOrder={unalteredOrder}
           order={order}
           refuseUpdate={refuseUpdate}
           revert={revert}

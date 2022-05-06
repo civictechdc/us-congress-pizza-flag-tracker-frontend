@@ -31,7 +31,7 @@ const ScanOrder = (props) => {
   };
 
   const [order, setOrder] = useState(initialOrderState);
-  const [oldOrder, setOldOrder] = useState(initialOrderState);
+  const [unalteredOrder, setUnalteredOrder] = useState(initialOrderState);
   const [message, setMessage] = useState("");
   const [decline, setDecline] = useState(""); // Decline Update button
   const [revert, setRevert] = useState(""); // Revert Update button
@@ -46,7 +46,7 @@ const ScanOrder = (props) => {
       return OrderDataService.get(id)
         .then((response) => {
           setOrder(response.data);
-          setOldOrder(response.data);
+          setUnalteredOrder(response.data);
           setLoading(false);
         })
         .catch((e) => {
@@ -99,6 +99,7 @@ const ScanOrder = (props) => {
     id: null,
     sequence_num: null,
     permission: "",
+    active_status: "",
   };
 
   let skipStatus = {
@@ -127,6 +128,7 @@ const ScanOrder = (props) => {
         nextStatus.id = sortedStatuses[i].id;
         nextStatus.sequence_num = sortedStatuses[i].sequence_num;
         nextStatus.permission = sortedStatuses[i].permission;
+        nextStatus.active_status = sortedStatuses[i].active_status;
         break;
       }
     }
@@ -210,9 +212,33 @@ const ScanOrder = (props) => {
   };
 
   const revertUpdate = () => {
-    setOrder(oldOrder);
-    const activateRevertButton = "off";
-    updateStatus(oldOrder, activateRevertButton);
+    const currentTime = new Date().toUTCString();
+    const currentTimeInMilliSeconds = Date.parse(currentTime);
+
+    let lastUpdateTime = order.updated_at;
+    lastUpdateTime += " GMT";
+    lastUpdateTime = lastUpdateTime.replace(/-/g, " ");
+    const lastUpdateTimeInMilliSeconds = Date.parse(lastUpdateTime);
+
+    const milliSecondsSinceUpdate =
+      currentTimeInMilliSeconds - lastUpdateTimeInMilliSeconds;
+
+    if (
+      order.status.active_status === "CLOSED" &&
+      user.update_all_statuses !== "Y" &&
+      milliSecondsSinceUpdate >
+        (process.env.REACT_APP_THRESHOLD ||
+          3600000) /* 1 hour in milliseconds */
+    ) {
+      setPopUpBox("block");
+      setMessage(
+        "Too much time has elapsed to undo a completed order; please see an Admin"
+      );
+    } else {
+      setOrder(unalteredOrder);
+      const activateRevertButton = "off";
+      updateStatus(unalteredOrder, activateRevertButton);
+    }
   };
 
   const refuseUpdate = () => {
@@ -256,7 +282,7 @@ const ScanOrder = (props) => {
             decline={decline}
             declineUpdate={declineUpdate}
             nextStatus={nextStatus}
-            oldOrder={oldOrder}
+            unalteredOrder={unalteredOrder}
             order={order}
             refuseUpdate={refuseUpdate}
             revert={revert}

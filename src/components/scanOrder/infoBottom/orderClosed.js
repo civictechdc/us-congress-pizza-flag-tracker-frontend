@@ -4,7 +4,8 @@ import RevertStatusButtonOn from "../buttons/revertStatusButtonOn";
 import UpdateStatusButtonOff from "../buttons/updateStatusButtonOff";
 
 const OrderClosed = (props) => {
-  const { declineUpdate, oldOrder, revert, revertUpdate, saveUpdate } = props;
+  const { declineUpdate, unalteredOrder, revert, revertUpdate, saveUpdate } =
+    props;
 
   return (
     // if the order was already complete before user interaction
@@ -21,7 +22,8 @@ const OrderClosed = (props) => {
             <label htmlFor="prior_status">
               Prior Status:{" "}
               <strong>
-                #{oldOrder.status.sequence_num} - {oldOrder.status.description}
+                #{unalteredOrder.status.sequence_num} -{" "}
+                {unalteredOrder.status.description}
               </strong>
             </label>
           </div>

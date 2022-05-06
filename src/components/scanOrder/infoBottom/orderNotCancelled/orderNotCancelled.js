@@ -6,7 +6,7 @@ const OrderNotCancelled = (props) => {
     decline,
     declineUpdate,
     nextStatus,
-    oldOrder,
+    unalteredOrder,
     order,
     refuseUpdate,
     revert,
@@ -27,7 +27,7 @@ const OrderNotCancelled = (props) => {
         <OrderNotDeclined
           declineUpdate={declineUpdate}
           nextStatus={nextStatus}
-          oldOrder={oldOrder}
+          unalteredOrder={unalteredOrder}
           order={order}
           refuseUpdate={refuseUpdate}
           revert={revert}
