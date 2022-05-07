@@ -13,11 +13,13 @@ jobs:
     steps:
      - name: checkout frontend
        uses: actions/checkout@v3
+       with:
+          path: main
      - name: checkout backend
        uses: actions/checkout@main
        with:
          name: codefordc/us-congress-pizza-flag-tracker
-         ref: refs/heads/release
+         path: backend
          
       # Runs a single command using the runners shell
      - name: Run a one-line script
