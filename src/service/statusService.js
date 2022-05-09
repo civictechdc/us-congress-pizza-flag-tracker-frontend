@@ -9,7 +9,7 @@ const updateStatus = (id, data) => {
   return httpAuthenticate().put(`/scan/${id}`, data);
 };
 
-const retrieveStatuses = (setMessage, setStatuses) => {
+const retrieveStatuses = (setMessage, setStatuses, setPopUpBox) => {
   const serviceCall = () => {
     return getStatus().then((response) => {
       setStatuses(response.data.statuses);
@@ -18,10 +18,10 @@ const retrieveStatuses = (setMessage, setStatuses) => {
   try {
     AuthService.refreshTokenWrapperFunction(serviceCall);
   } catch (e) {
-    // setPopUpBox("block");
+    setPopUpBox("block");
     console.log("retrieveStatuses: ", e);
     if (e.response.status === 401) {
-      setMessage(loginError);
+      setMessage("You must be logged in to view this page");
     } else {
       setMessage(
         e.message +

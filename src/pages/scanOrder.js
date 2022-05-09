@@ -37,7 +37,7 @@ const ScanOrder = (props) => {
   const [revert, setRevert] = useState(""); // Revert Update button
   const [statuses, setStatuses] = useState([]);
   const [popUpBox, setPopUpBox] = useState("none");
-  const loginError = "You must be logged in to view this page";
+  const [errorMessage, setErrorMessage] = useState("");
   const user = JSON.parse(localStorage.getItem("user"));
   const [loading, setLoading] = useState(false);
 
@@ -65,32 +65,38 @@ const ScanOrder = (props) => {
     getOrder(props.match.params.id);
   }, [props.match.params.id]);
 
-  const retrieveStatuses = () => {
-    const serviceCall = () => {
-      return StatusDataService.getStatus().then((response) => {
-        setStatuses(response.data.statuses);
-      });
-    };
-    try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
-    } catch (e) {
-      setPopUpBox("block");
-      console.log(e);
-      if (e.response.status === 401) {
-        setMessage(loginError);
-      } else {
-        setMessage(
-          e.message +
-            "." +
-            "Check with admin if server is down or try logging out and logging in."
-        );
-      }
-    }
-  };
+  // const retrieveStatuses = () => {
+  //   const serviceCall = () => {
+  //     return StatusDataService.getStatus().then((response) => {
+  //       setStatuses(response.data.statuses);
+  //     });
+  //   };
+  //   try {
+  //     AuthService.refreshTokenWrapperFunction(serviceCall);
+  //   } catch (e) {
+  //     setPopUpBox("block");
+  //     console.log(e);
+  //     if (e.response.status === 401) {
+  //       setMessage(loginError);
+  //     } else {
+  //       setMessage(
+  //         e.message +
+  //           "." +
+  //           "Check with admin if server is down or try logging out and logging in."
+  //       );
+  //     }
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (statuses.length === 0) {
+  //     retrieveStatuses();
+  //   }
+  // }, [statuses]);
 
   useEffect(() => {
     if (statuses.length === 0) {
-      retrieveStatuses();
+      StatusDataService.retrieveStatuses(setErrorMessage, setStatuses, setPopUpBox);
     }
   }, [statuses]);
 
