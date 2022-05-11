@@ -65,6 +65,7 @@ const Login = (props) => {
         };
 
         whereAreYouGoing();
+        window.location.reload();
       },
       (error) => {
         const resMessage =
