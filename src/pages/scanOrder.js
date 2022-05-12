@@ -41,28 +41,33 @@ const ScanOrder = (props) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [loading, setLoading] = useState(false);
 
-  const getOrder = (id) => {
-    const serviceCall = () => {
-      return OrderDataService.get(id)
-        .then((response) => {
-          setOrder(response.data);
-          setUnalteredOrder(response.data);
-          setLoading(false);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    };
-    try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  // const getOrder = (id) => {
+  //   const serviceCall = () => {
+  //     return OrderDataService.get(id)
+  //       .then((response) => {
+  //         setOrder(response.data);
+  //         setUnalteredOrder(response.data);
+  //         setLoading(false);
+  //       })
+  //       .catch((e) => {
+  //         console.log(e);
+  //       });
+  //   };
+  //   try {
+  //     AuthService.refreshTokenWrapperFunction(serviceCall);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   useEffect(() => {
     setLoading(true);
-    getOrder(props.match.params.id);
+    OrderDataService.getOrder(
+      props.match.params.id,
+      setOrder,
+      setUnalteredOrder,
+      setLoading
+    );
   }, [props.match.params.id]);
 
   useEffect(() => {

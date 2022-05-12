@@ -1,4 +1,5 @@
 import { httpAuthenticate } from "../http-common";
+import AuthService from "../service/authService";
 
 /* remember also the api/qrcode img API*/
 
@@ -34,6 +35,25 @@ const getOrderLog = (order_number) => {
   return httpAuthenticate().get(`/orders/logs/${order_number}`);
 };
 
+const getOrder = (id, setOrder, setUnalteredOrder, setLoading) => {
+  const serviceCall = () => {
+    return get(id)
+      .then((response) => {
+        setOrder(response.data);
+        setUnalteredOrder(response.data);
+        setLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+  try {
+    AuthService.refreshTokenWrapperFunction(serviceCall);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 const orderServiceObject = {
   getAll,
   get,
@@ -43,5 +63,6 @@ const orderServiceObject = {
   removeAll,
   findByOrderNumber,
   getOrderLog,
+  getOrder,
 };
 export default orderServiceObject;
