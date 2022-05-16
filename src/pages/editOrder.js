@@ -38,23 +38,17 @@ const EditOrder = (props) => {
   const [order, setOrder] = useState(initialOrderState);
   const [message, setMessage] = useState(initialMessageState);
   const [statuses, setStatuses] = useState([]);
+  const [loading, setLoading] = useState(false);
   const mode = "edit";
 
-  const getOrder = (id) => {
-    const serviceCall = () => {
-      return OrderDataService.get(id).then((response) => {
-        setOrder(response.data);
-      });
-    };
-    try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   useEffect(() => {
-    getOrder(props.match.params.id);
+    setLoading(true);
+    OrderDataService.getOrder(
+      props.match.params.id,
+      setOrder,
+      false,
+      setLoading
+    );
   }, [props.match.params.id]);
 
   useEffect(() => {
@@ -108,6 +102,7 @@ const EditOrder = (props) => {
             deleteOrderFunc={deleteOrder}
             mode={mode}
             statuses={sortedStatuses}
+            loading={loading}
           />
           <p>{message.success}</p>
         </>

@@ -15,6 +15,7 @@ const OrderForm = (props) => {
     mode,
     deleteOrderFunc,
     statuses,
+    loading,
   } = props;
 
   let optionUSStates = [];
@@ -137,149 +138,164 @@ const OrderForm = (props) => {
         ) : (
           <h1 className={styles.title}>Add Order</h1>
         )}
-        <div className={styles.constituentBox}>
-          {order.person === undefined ? (
-            <div></div>
-          ) : (
-            <>
-              <p className={styles.constituentName}>{order.person.name}</p>
-              <p className={styles.constituentPhone}>{order.person.phone}</p>
-              <p className={styles.constituentAddress1}>
-                {order.person.address}
-              </p>
-              <p className={styles.constituentAddress2}>{order.person.town}</p>
-            </>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="order_number">Order Number</label>
-          <input
-            type="text"
-            className="form-control"
-            id="order_number"
-            required
-            value={order.order_number}
-            onChange={handleInputChange}
-            name="order_number"
-          />
-          {!order.order_number && message.whyStatus ? (
-            <p className="validation-message">Enter a valid Order Number</p>
-          ) : (
-            ""
-          )}
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="usa_state">US State:</label>{" "}
-          {mode === "edit" ? (
-            <Select
-              onChange={handleInputChange}
-              options={optionUSStates}
-              value={{
-                label: order.usa_state,
-                name: "usa_state",
-                value: order.usa_state,
-              }}
-            />
-          ) : (
-            <Select onChange={handleInputChange} options={optionUSStates} />
-          )}
-          {!order.usa_state && message.whyStatus ? (
-            <p className="validation-message">Pick a US State</p>
-          ) : (
-            ""
-          )}
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="home_office_code">Congressional Office:</label>{" "}
-          {order.usa_state ? (
-            message.isLastChangeUSState ? (
-              <Select
-                onChange={handleInputChange}
-                options={optionDistricts}
-                value={null}
-              />
-            ) : (
-              <Select
-                onChange={handleInputChange}
-                options={optionDistricts}
-                value={{
-                  label: order.home_office_code,
-                  name: "home_office_code",
-                  value: order.home_office_code,
-                }}
-              />
-            )
-          ) : (
-            <input
-              type="text"
-              className="form-control"
-              value="Pick a US State first..."
-              readOnly="readOnly"
-            />
-          )}
-          {!order.home_office_code && message.whyStatus ? (
-            <p className="validation-message">Pick a Congressional Office</p>
-          ) : (
-            ""
-          )}
-          {!districtMatchCheck && message.whyStatus ? (
-            <p className="validation-message">
-              US State and Congressional Office must correspond
-            </p>
-          ) : (
-            ""
-          )}
-        </div>
-
-        {mode === "edit" ? (
-          <>
-            <div className="form-group">
-              <label htmlFor="status_description">Status:</label>{" "}
-              <Select
-                onChange={handleInputChange}
-                options={optionStatuses}
-                value={{
-                  label: `#${order.status.sequence_num} ${order.status.description}`,
-                  name: "order_status_id",
-                  value: order.status.sequence_num,
-                }}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>QR Code</label>
-              {order.uuid}
-              <img
-                src={baseURL + "/qrcode/" + order.uuid}
-                className={styles.qrImage}
-                alt="QR Code"
-                align="center"
-              />
-            </div>
-          </>
-        ) : null}
-
-        {mode === "edit" && (
-          <button className="btn badge-danger mr-2" onClick={deleteOrderFunc}>
-            Delete
-          </button>
-        )}
-        <button
-          onClick={handleSave}
-          className={`btn btn-success ${disableButton ? "btn-why" : ""}`}
-        >
-          {mode === "edit" ? "Update" : "Submit"}
-        </button>
-
-        {mode === "edit" && !message.checkSaved ? (
-          <p className="validation-message">
-            Changes not saved, press Update to save changes
-          </p>
+        {mode === "edit" && loading ? (
+          "Loading..."
         ) : (
-          ""
+          <>
+            <div className={styles.constituentBox}>
+              {order.person === undefined ? (
+                <div></div>
+              ) : (
+                <>
+                  <p className={styles.constituentName}>{order.person.name}</p>
+                  <p className={styles.constituentPhone}>
+                    {order.person.phone}
+                  </p>
+                  <p className={styles.constituentAddress1}>
+                    {order.person.address}
+                  </p>
+                  <p className={styles.constituentAddress2}>
+                    {order.person.town}
+                  </p>
+                </>
+              )}
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="order_number">Order Number</label>
+              <input
+                type="text"
+                className="form-control"
+                id="order_number"
+                required
+                value={order.order_number}
+                onChange={handleInputChange}
+                name="order_number"
+              />
+              {!order.order_number && message.whyStatus ? (
+                <p className="validation-message">Enter a valid Order Number</p>
+              ) : (
+                ""
+              )}
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="usa_state">US State:</label>{" "}
+              {mode === "edit" ? (
+                <Select
+                  onChange={handleInputChange}
+                  options={optionUSStates}
+                  value={{
+                    label: order.usa_state,
+                    name: "usa_state",
+                    value: order.usa_state,
+                  }}
+                />
+              ) : (
+                <Select onChange={handleInputChange} options={optionUSStates} />
+              )}
+              {!order.usa_state && message.whyStatus ? (
+                <p className="validation-message">Pick a US State</p>
+              ) : (
+                ""
+              )}
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="home_office_code">Congressional Office:</label>{" "}
+              {order.usa_state ? (
+                message.isLastChangeUSState ? (
+                  <Select
+                    onChange={handleInputChange}
+                    options={optionDistricts}
+                    value={null}
+                  />
+                ) : (
+                  <Select
+                    onChange={handleInputChange}
+                    options={optionDistricts}
+                    value={{
+                      label: order.home_office_code,
+                      name: "home_office_code",
+                      value: order.home_office_code,
+                    }}
+                  />
+                )
+              ) : (
+                <input
+                  type="text"
+                  className="form-control"
+                  value="Pick a US State first..."
+                  readOnly="readOnly"
+                />
+              )}
+              {!order.home_office_code && message.whyStatus ? (
+                <p className="validation-message">
+                  Pick a Congressional Office
+                </p>
+              ) : (
+                ""
+              )}
+              {!districtMatchCheck && message.whyStatus ? (
+                <p className="validation-message">
+                  US State and Congressional Office must correspond
+                </p>
+              ) : (
+                ""
+              )}
+            </div>
+
+            {mode === "edit" ? (
+              <>
+                <div className="form-group">
+                  <label htmlFor="status_description">Status:</label>{" "}
+                  <Select
+                    onChange={handleInputChange}
+                    options={optionStatuses}
+                    value={{
+                      label: `#${order.status.sequence_num} ${order.status.description}`,
+                      name: "order_status_id",
+                      value: order.status.sequence_num,
+                    }}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>QR Code</label>
+                  {order.uuid}
+                  <img
+                    src={baseURL + "/qrcode/" + order.uuid}
+                    className={styles.qrImage}
+                    alt="QR Code"
+                    align="center"
+                  />
+                </div>
+              </>
+            ) : null}
+
+            {mode === "edit" && (
+              <button
+                className="btn badge-danger mr-2"
+                onClick={deleteOrderFunc}
+              >
+                Delete
+              </button>
+            )}
+            <button
+              onClick={handleSave}
+              className={`btn btn-success ${disableButton ? "btn-why" : ""}`}
+            >
+              {mode === "edit" ? "Update" : "Submit"}
+            </button>
+
+            {mode === "edit" && !message.checkSaved ? (
+              <p className="validation-message">
+                Changes not saved, press Update to save changes
+              </p>
+            ) : (
+              ""
+            )}
+          </>
         )}
       </div>
     </>

@@ -40,7 +40,9 @@ const getOrder = (id, setOrder, setUnalteredOrder, setLoading) => {
     return get(id)
       .then((response) => {
         setOrder(response.data);
-        setUnalteredOrder(response.data);
+        if (setUnalteredOrder !== false) {
+          setUnalteredOrder(response.data);
+        }
         setLoading(false);
       })
       .catch((e) => {
