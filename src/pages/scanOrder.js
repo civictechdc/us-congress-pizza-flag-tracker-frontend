@@ -228,6 +228,7 @@ const ScanOrder = (props) => {
 
   return (
     <div className={styles.scanContainer}>
+      <h1 className={styles.title}>Scan</h1>
       {loading ? (
         "Loading..."
       ) : order ? (

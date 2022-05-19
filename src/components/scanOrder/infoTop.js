@@ -7,7 +7,6 @@ const InfoTop = (props) => {
 
   return (
     <>
-      <h1 className={styles.title}>Scan</h1>
       <div className={styles.constituentBox}>
         {order.person === undefined ? (
           <div></div>
