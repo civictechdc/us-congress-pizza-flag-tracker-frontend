@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import AuthService from "../service/authService";
 import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
@@ -227,19 +228,6 @@ const ScanOrder = (props) => {
 
   return (
     <div className={styles.scanContainer}>
-      <h1 className={styles.title}>Scan</h1>
-      <div className={styles.constituentBox}>
-        {order.person === undefined ? (
-          <div></div>
-        ) : (
-          <>
-            <p className={styles.constituentName}>{order.person.name}</p>
-            <p className={styles.constituentPhone}>{order.person.phone}</p>
-            <p className={styles.constituentAddress1}>{order.person.address}</p>
-            <p className={styles.constituentAddress2}>{order.person.town}</p>
-          </>
-        )}
-      </div>
       {loading ? (
         "Loading..."
       ) : order ? (
