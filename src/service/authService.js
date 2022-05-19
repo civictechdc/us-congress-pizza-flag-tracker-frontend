@@ -60,9 +60,11 @@ class AuthService {
           this.updateToken(e.response.data.refreshedToken);
           serviceCall();
         } else {
+          console.log("Auth error: ", e);
           return e;
         }
       } else {
+        console.log("Auth error: ", e);
         return e;
       }
     });

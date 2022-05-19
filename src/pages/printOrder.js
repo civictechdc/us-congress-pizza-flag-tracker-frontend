@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import ReactToPrint from "react-to-print";
-import AuthService from "../service/authService";
 import OrderDataService from "../service/orderService";
 import QrCode from "../components/qrCode";
 import "../style/printOrder.css";
@@ -26,36 +25,32 @@ const PrintOrder = (props) => {
   };
 
   const [order, setOrder] = useState(initialOrderState);
+  const [loading, setLoading] = useState(false);
   const componentRef = useRef();
 
-  const getOrder = (id) => {
-    const serviceCall = () => {
-      return OrderDataService.get(id)
-        .then((response) => {
-          setOrder(response.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    };
-    try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   useEffect(() => {
-    getOrder(props.match.params.id);
+    setLoading(true);
+    OrderDataService.getOrder(
+      props.match.params.id,
+      setOrder,
+      false,
+      setLoading
+    );
   }, [props.match.params.id]);
 
   return (
     <>
-      <QrCode ref={componentRef} order={order} />
-      <ReactToPrint
-        trigger={() => <button className="center">Print this out!</button>}
-        content={() => componentRef.current}
-      />
+      {loading ? (
+        "Loading..."
+      ) : (
+        <>
+          <QrCode ref={componentRef} order={order} />
+          <ReactToPrint
+            trigger={() => <button className="center">Print this out!</button>}
+            content={() => componentRef.current}
+          />
+        </>
+      )}
     </>
   );
 };

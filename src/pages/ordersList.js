@@ -12,7 +12,7 @@ const OrdersList = () => {
   const [orders, setOrders] = useState([]);
   const [currentOrder, setCurrentOrder] = useState(null);
   const [searchTitle, setSearchTitle] = useState("");
-  const [popUpBox, setPopUpbox] = useState("none");
+  const [popUpBox, setPopUpBox] = useState("none");
   const [errorMessage, setErrorMessage] = useState("");
   const [sortedField, setSortedField] = useState(null);
   const [sortDir, setSortDir] = useState("asc");
@@ -128,7 +128,7 @@ const OrdersList = () => {
 
   useEffect(() => {
     if (statuses.length === 0) {
-      StatusDataService.retrieveStatuses(setErrorMessage, setStatuses);
+      StatusDataService.retrieveStatuses(setErrorMessage, setStatuses, setPopUpBox);
     }
   }, [statuses]);
 
