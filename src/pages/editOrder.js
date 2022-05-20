@@ -92,20 +92,17 @@ const EditOrder = (props) => {
   return (
     <>
       {order ? (
-        <>
-          <OrderForm
-            order={order}
-            message={message}
-            setOrderFunc={setOrder}
-            setMessageFunc={setMessage}
-            saveOrderFunc={updateOrder}
-            deleteOrderFunc={deleteOrder}
-            mode={mode}
-            statuses={sortedStatuses}
-            loading={loading}
-          />
-          <p>{message.success}</p>
-        </>
+        <OrderForm
+          order={order}
+          message={message}
+          setOrderFunc={setOrder}
+          setMessageFunc={setMessage}
+          saveOrderFunc={updateOrder}
+          deleteOrderFunc={deleteOrder}
+          mode={mode}
+          statuses={sortedStatuses}
+          loading={loading}
+        />
       ) : (
         <>
           <br />

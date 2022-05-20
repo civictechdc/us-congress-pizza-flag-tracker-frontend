@@ -3,7 +3,6 @@ import Select from "react-select";
 import { baseURL } from "../http-common";
 import { STATES } from "./states.js";
 import styles from "../style/orderForm.module.css";
-import OrdersList from "../pages/ordersList";
 
 const OrderForm = (props) => {
   const {
@@ -295,6 +294,7 @@ const OrderForm = (props) => {
             ) : (
               ""
             )}
+            <p>{message.success}</p>
           </>
         )}
       </div>
