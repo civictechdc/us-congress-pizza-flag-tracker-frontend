@@ -39,6 +39,7 @@ const EditOrder = (props) => {
   const [message, setMessage] = useState(initialMessageState);
   const [statuses, setStatuses] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [popUpBox, setPopUpBox] = useState("none");
   const mode = "edit";
 
   useEffect(() => {
@@ -62,6 +63,7 @@ const EditOrder = (props) => {
   const updateOrder = () => {
     const serviceCall = () => {
       return OrderDataService.update(order.uuid, order).then((response) => {
+        setPopUpBox("block");
         setMessage({
           ...message,
           checkSaved: true,
@@ -89,6 +91,10 @@ const EditOrder = (props) => {
     }
   };
 
+  const closePopUpBox = () => {
+    setPopUpBox("none");
+  };
+
   return (
     <>
       {order ? (
@@ -109,6 +115,11 @@ const EditOrder = (props) => {
           <p>Please click on an order...</p>
         </>
       )}
+      <div className="pop-container" style={{ display: popUpBox }}>
+        <div className="pop-up" onClick={closePopUpBox}>
+          <h3>{message.success}</h3>
+        </div>
+      </div>
     </>
   );
 };

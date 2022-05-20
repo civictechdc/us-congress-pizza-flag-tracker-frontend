@@ -294,7 +294,6 @@ const OrderForm = (props) => {
             ) : (
               ""
             )}
-            <p>{message.success}</p>
           </>
         )}
       </div>
