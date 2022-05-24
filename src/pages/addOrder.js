@@ -19,7 +19,6 @@ const AddOrder = (props) => {
     isLastChangeUSState: false,
     submitted: false,
     success: "",
-    whyStatus: false,
   };
 
   const [order, setOrder] = useState(

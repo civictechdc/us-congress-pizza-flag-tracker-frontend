@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import { baseURL } from "../http-common";
 import { STATES } from "./states.js";
@@ -16,6 +16,8 @@ const OrderForm = (props) => {
     statuses,
     loading,
   } = props;
+
+  const [whyStatus, setWhyStatus] = useState(false);
 
   let optionUSStates = [];
   if (STATES) {
@@ -62,6 +64,13 @@ const OrderForm = (props) => {
     );
   }
 
+  // const initialMessageState = {
+  //   checkSaved: true,
+  //   isLastChangeUSState: false,
+  //   submitted: false,
+  //   success: "",
+  // };
+
   const handleInputChange = (event) => {
     let { name, value } = event;
     if (event.target) {
@@ -79,8 +88,9 @@ const OrderForm = (props) => {
       return { ...prevOrderFunc, [name]: value };
     });
     setMessageFunc((prevMessageFunc) => {
-      return { ...prevMessageFunc, checkSaved: false, whyStatus: false };
+      return { ...prevMessageFunc, checkSaved: false };
     });
+    setWhyStatus(false);
     if (name === "order_status_id") {
       handleStatusChange(event);
     }
@@ -107,7 +117,7 @@ const OrderForm = (props) => {
   };
 
   const whyNoSave = () => {
-    setMessageFunc({ ...message, whyStatus: true });
+    setWhyStatus(true);
   };
 
   // used to set Submit button className in addition to handleSave function
@@ -171,7 +181,7 @@ const OrderForm = (props) => {
                 onChange={handleInputChange}
                 name="order_number"
               />
-              {!order.order_number && message.whyStatus ? (
+              {!order.order_number && whyStatus ? (
                 <p className="validation-message">Enter a valid Order Number</p>
               ) : (
                 ""
@@ -193,7 +203,7 @@ const OrderForm = (props) => {
               ) : (
                 <Select onChange={handleInputChange} options={optionUSStates} />
               )}
-              {!order.usa_state && message.whyStatus ? (
+              {!order.usa_state && whyStatus ? (
                 <p className="validation-message">Pick a US State</p>
               ) : (
                 ""
@@ -228,14 +238,14 @@ const OrderForm = (props) => {
                   readOnly="readOnly"
                 />
               )}
-              {!order.home_office_code && message.whyStatus ? (
+              {!order.home_office_code && whyStatus ? (
                 <p className="validation-message">
                   Pick a Congressional Office
                 </p>
               ) : (
                 ""
               )}
-              {!districtMatchCheck && message.whyStatus ? (
+              {!districtMatchCheck && whyStatus ? (
                 <p className="validation-message">
                   US State and Congressional Office must correspond
                 </p>
@@ -287,9 +297,10 @@ const OrderForm = (props) => {
               {mode === "edit" ? "Update" : "Submit"}
             </button>
 
-            {mode === "edit" && !message.checkSaved ? (
+            {!message.checkSaved ? (
               <p className="validation-message">
-                Changes not saved, press Update to save changes
+                Changes not saved, press {mode === "edit" ? "Update" : "Submit"}{" "}
+                to save changes
               </p>
             ) : (
               ""
