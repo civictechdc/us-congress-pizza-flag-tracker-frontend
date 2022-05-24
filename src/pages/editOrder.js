@@ -30,7 +30,6 @@ const EditOrder = (props) => {
   const initialMessageState = {
     checkSaved: true,
     isLastChangeUSState: false,
-    submitted: false,
     success: "",
   };
 

@@ -67,7 +67,6 @@ const OrderForm = (props) => {
   // const initialMessageState = {
   //   checkSaved: true,
   //   isLastChangeUSState: false,
-  //   submitted: false,
   //   success: "",
   // };
 
@@ -190,19 +189,15 @@ const OrderForm = (props) => {
 
             <div className="form-group">
               <label htmlFor="usa_state">US State:</label>{" "}
-              {mode === "edit" ? (
-                <Select
-                  onChange={handleInputChange}
-                  options={optionUSStates}
-                  value={{
-                    label: order.usa_state,
-                    name: "usa_state",
-                    value: order.usa_state,
-                  }}
-                />
-              ) : (
-                <Select onChange={handleInputChange} options={optionUSStates} />
-              )}
+              <Select
+                onChange={handleInputChange}
+                options={optionUSStates}
+                value={{
+                  label: order.usa_state,
+                  name: "usa_state",
+                  value: order.usa_state,
+                }}
+              />
               {!order.usa_state && whyStatus ? (
                 <p className="validation-message">Pick a US State</p>
               ) : (
