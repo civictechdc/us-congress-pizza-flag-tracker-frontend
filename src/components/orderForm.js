@@ -181,7 +181,9 @@ const OrderForm = (props) => {
                 name="order_number"
               />
               {!order.order_number && whyStatus ? (
-                <p className="validation-message">Enter a valid Order Number</p>
+                <p className={styles.validationMessage}>
+                  Enter a valid Order Number
+                </p>
               ) : (
                 ""
               )}
@@ -199,7 +201,7 @@ const OrderForm = (props) => {
                 }}
               />
               {!order.usa_state && whyStatus ? (
-                <p className="validation-message">Pick a US State</p>
+                <p className={styles.validationMessage}>Pick a US State</p>
               ) : (
                 ""
               )}
@@ -234,14 +236,14 @@ const OrderForm = (props) => {
                 />
               )}
               {!order.home_office_code && whyStatus ? (
-                <p className="validation-message">
+                <p className={styles.validationMessage}>
                   Pick a Congressional Office
                 </p>
               ) : (
                 ""
               )}
               {!districtMatchCheck && whyStatus ? (
-                <p className="validation-message">
+                <p className={styles.validationMessage}>
                   US State and Congressional Office must correspond
                 </p>
               ) : (
@@ -293,9 +295,16 @@ const OrderForm = (props) => {
             </button>
 
             {!message.checkSaved ? (
-              <p className="validation-message">
+              <p className={styles.validationMessage}>
                 Changes not saved, press {mode === "edit" ? "Update" : "Submit"}{" "}
                 to save changes
+              </p>
+            ) : (
+              ""
+            )}
+            {whyStatus ? (
+              <p className={styles.validationMessage}>
+                Please review the highlighted errors:
               </p>
             ) : (
               ""
