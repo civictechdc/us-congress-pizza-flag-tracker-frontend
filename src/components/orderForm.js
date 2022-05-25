@@ -64,19 +64,18 @@ const OrderForm = (props) => {
     );
   }
 
-  // const initialMessageState = {
-  //   checkSaved: true,
-  //   isLastChangeUSState: false,
-  //   success: "",
-  // };
-
   const handleInputChange = (event) => {
     let { name, value } = event;
     if (event.target) {
       name = event.target.name;
       value = event.target.value;
     }
-    setMessageFunc({ ...message, isLastChangeUSState: false, success: "" });
+    setMessageFunc({
+      ...message,
+      isLastChangeUSState: false,
+      text: "",
+      checkSaved: false,
+    });
     if (name === "usa_state") {
       setOrderFunc({ ...order, home_office_code: "" });
       setMessageFunc((prevMessageFunc) => {
@@ -85,9 +84,6 @@ const OrderForm = (props) => {
     }
     setOrderFunc((prevOrderFunc) => {
       return { ...prevOrderFunc, [name]: value };
-    });
-    setMessageFunc((prevMessageFunc) => {
-      return { ...prevMessageFunc, checkSaved: false };
     });
     setWhyStatus(false);
     if (name === "order_status_id") {
@@ -298,13 +294,6 @@ const OrderForm = (props) => {
               <p className={styles.validationMessage}>
                 Changes not saved, press {mode === "edit" ? "Update" : "Submit"}{" "}
                 to save changes
-              </p>
-            ) : (
-              ""
-            )}
-            {whyStatus ? (
-              <p className={styles.validationMessage}>
-                Please review the highlighted errors:
               </p>
             ) : (
               ""

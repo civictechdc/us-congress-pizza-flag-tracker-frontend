@@ -6,8 +6,8 @@ import StatusDataService from "../service/statusService";
 
 import InfoBottom from "../components/scanOrder/infoBottom";
 import InfoTop from "../components/scanOrder/infoTop";
-
 import { numSort } from "../components/sorting/sortHook";
+import PopUpBoxComponent from "../components/popUpBoxComponent";
 
 import styles from "../style/scanOrder.module.css";
 
@@ -31,9 +31,14 @@ const ScanOrder = (props) => {
     },
   };
 
+  const initialMessageState = {
+    // to be consistent with other uses of Message State and PopUpBox
+    text: "",
+  };
+
   const [order, setOrder] = useState(initialOrderState);
   const [unalteredOrder, setUnalteredOrder] = useState(initialOrderState);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(initialMessageState);
   const [decline, setDecline] = useState(""); // Decline Update button
   const [revert, setRevert] = useState(""); // Revert Update button
   const [statuses, setStatuses] = useState([]);
@@ -151,7 +156,10 @@ const ScanOrder = (props) => {
       ).then((response) => {
         setOrder(response.data);
         setPopUpBox("block");
-        setMessage("The order was updated successfully!");
+        setMessage({
+          ...message,
+          text: "The order was updated successfully!",
+        });
         if (activateRevertButton === "on") {
           setRevert("yes");
         }
@@ -165,7 +173,10 @@ const ScanOrder = (props) => {
     } catch (e) {
       console.log(e);
       setPopUpBox("block");
-      setMessage("Update Status Error: ", e);
+      setMessage({
+        ...message,
+        text: ("Update Status Error: ", e),
+      });
     }
   };
 
@@ -199,9 +210,10 @@ const ScanOrder = (props) => {
           3600000) /* 1 hour in milliseconds */
     ) {
       setPopUpBox("block");
-      setMessage(
-        "Too much time has elapsed to undo a completed order; please see an Admin"
-      );
+      setMessage({
+        ...message,
+        text: "Too much time has elapsed to undo a completed order; please see an Admin",
+      });
     } else {
       setOrder(unalteredOrder);
       const activateRevertButton = "off";
@@ -211,9 +223,10 @@ const ScanOrder = (props) => {
 
   const refuseUpdate = () => {
     setPopUpBox("block");
-    setMessage(
-      "Do not have permissions for either (1) this order or (2) to advance to the next status"
-    );
+    setMessage({
+      ...message,
+      text: "Do not have permissions for either (1) this order or (2) to advance to the next status",
+    });
   };
 
   const skipUpdate = () => {
@@ -257,11 +270,11 @@ const ScanOrder = (props) => {
           <p>Please click on an order...</p>
         </>
       )}
-      <div className="pop-container" style={{ display: popUpBox }}>
-        <div className="pop-up" onClick={closePopUpBox}>
-          <h3>{message}</h3>
-        </div>
-      </div>
+      <PopUpBoxComponent
+        closePopUpBox={closePopUpBox}
+        message={message}
+        popUpBox={popUpBox}
+      />
     </div>
   );
 };

@@ -3,6 +3,7 @@ import AuthService from "../service/authService";
 import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 import OrderForm from "../components/orderForm";
+import PopUpBoxComponent from "../components/popUpBoxComponent";
 import { numSort } from "../components/sorting/sortHook";
 
 const EditOrder = (props) => {
@@ -30,7 +31,7 @@ const EditOrder = (props) => {
   const initialMessageState = {
     checkSaved: true,
     isLastChangeUSState: false,
-    success: "",
+    text: "",
   };
 
   const [order, setOrder] = useState(initialOrderState);
@@ -65,7 +66,7 @@ const EditOrder = (props) => {
         setMessage({
           ...message,
           checkSaved: true,
-          success: "The order was updated successfully!",
+          text: "The order was updated successfully!",
         });
       });
     };
@@ -113,11 +114,11 @@ const EditOrder = (props) => {
           <p>Please click on an order...</p>
         </>
       )}
-      <div className="pop-container" style={{ display: popUpBox }}>
-        <div className="pop-up" onClick={closePopUpBox}>
-          <h3>{message.success}</h3>
-        </div>
-      </div>
+      <PopUpBoxComponent
+        closePopUpBox={closePopUpBox}
+        message={message}
+        popUpBox={popUpBox}
+      />
     </>
   );
 };

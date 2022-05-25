@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AuthService from "../service/authService";
 import OrderDataService from "../service/orderService";
 import OrderForm from "../components/orderForm";
+import PopUpBoxComponent from "../components/popUpBoxComponent";
 
 const AddOrder = () => {
   const initialOrderState = {
@@ -15,7 +16,7 @@ const AddOrder = () => {
   const initialMessageState = {
     checkSaved: true,
     isLastChangeUSState: false,
-    success: "",
+    text: "",
   };
 
   const [order, setOrder] = useState(initialOrderState);
@@ -36,7 +37,7 @@ const AddOrder = () => {
         setMessage({
           ...message,
           checkSaved: true,
-          success: "The order was updated successfully!",
+          text: "The order was updated successfully!",
         });
         setPopUpBox("block");
       });
@@ -71,11 +72,16 @@ const AddOrder = () => {
         mode={mode}
       />
 
-      <div className="pop-container" style={{ display: popUpBox }}>
+      {/* <div className="pop-container" style={{ display: popUpBox }}>
         <div className="pop-up" onClick={closePopUpBox}>
-          <h3>{message.success}</h3>
+          <h3>{message.text}</h3>
         </div>
-      </div>
+      </div> */}
+      <PopUpBoxComponent
+        closePopUpBox={closePopUpBox}
+        message={message}
+        popUpBox={popUpBox}
+      />
     </>
   );
 };
