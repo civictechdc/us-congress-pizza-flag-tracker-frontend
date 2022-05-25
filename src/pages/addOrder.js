@@ -71,12 +71,6 @@ const AddOrder = () => {
         saveOrderFunc={saveOrder}
         mode={mode}
       />
-
-      {/* <div className="pop-container" style={{ display: popUpBox }}>
-        <div className="pop-up" onClick={closePopUpBox}>
-          <h3>{message.text}</h3>
-        </div>
-      </div> */}
       <PopUpBoxComponent
         closePopUpBox={closePopUpBox}
         message={message}
