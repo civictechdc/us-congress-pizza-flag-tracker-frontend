@@ -19,6 +19,10 @@ const update = (id, data) => {
   return httpAuthenticate().put(`/orders/${id}`, data);
 };
 
+const refresh = () => {
+  return httpAuthenticate().get("/reset");
+};
+
 const remove = (id) => {
   return httpAuthenticate().delete(`/orders/${id}`);
 };
@@ -61,10 +65,12 @@ const orderServiceObject = {
   get,
   create,
   update,
+  refresh,
   remove,
   removeAll,
   findByOrderNumber,
   getOrderLog,
   getOrder,
 };
+
 export default orderServiceObject;
