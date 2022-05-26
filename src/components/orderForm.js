@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Select from "react-select";
 import { baseURL } from "../http-common";
 import { STATES } from "./states.js";
 import styles from "../style/orderForm.module.css";
-import OrdersList from "../pages/ordersList";
 
 const OrderForm = (props) => {
   const {
@@ -17,6 +16,8 @@ const OrderForm = (props) => {
     statuses,
     loading,
   } = props;
+
+  const [whyStatus, setWhyStatus] = useState(false);
 
   let optionUSStates = [];
   if (STATES) {
@@ -69,7 +70,12 @@ const OrderForm = (props) => {
       name = event.target.name;
       value = event.target.value;
     }
-    setMessageFunc({ ...message, isLastChangeUSState: false, success: "" });
+    setMessageFunc({
+      ...message,
+      isLastChangeUSState: false,
+      text: "",
+      checkSaved: false,
+    });
     if (name === "usa_state") {
       setOrderFunc({ ...order, home_office_code: "" });
       setMessageFunc((prevMessageFunc) => {
@@ -79,9 +85,7 @@ const OrderForm = (props) => {
     setOrderFunc((prevOrderFunc) => {
       return { ...prevOrderFunc, [name]: value };
     });
-    setMessageFunc((prevMessageFunc) => {
-      return { ...prevMessageFunc, checkSaved: false, whyStatus: false };
-    });
+    setWhyStatus(false);
     if (name === "order_status_id") {
       handleStatusChange(event);
     }
@@ -108,7 +112,7 @@ const OrderForm = (props) => {
   };
 
   const whyNoSave = () => {
-    setMessageFunc({ ...message, whyStatus: true });
+    setWhyStatus(true);
   };
 
   // used to set Submit button className in addition to handleSave function
@@ -172,8 +176,10 @@ const OrderForm = (props) => {
                 onChange={handleInputChange}
                 name="order_number"
               />
-              {!order.order_number && message.whyStatus ? (
-                <p className="validation-message">Enter a valid Order Number</p>
+              {!order.order_number && whyStatus ? (
+                <p className={styles.validationMessage}>
+                  Enter a valid Order Number
+                </p>
               ) : (
                 ""
               )}
@@ -181,21 +187,17 @@ const OrderForm = (props) => {
 
             <div className="form-group">
               <label htmlFor="usa_state">US State:</label>{" "}
-              {mode === "edit" ? (
-                <Select
-                  onChange={handleInputChange}
-                  options={optionUSStates}
-                  value={{
-                    label: order.usa_state,
-                    name: "usa_state",
-                    value: order.usa_state,
-                  }}
-                />
-              ) : (
-                <Select onChange={handleInputChange} options={optionUSStates} />
-              )}
-              {!order.usa_state && message.whyStatus ? (
-                <p className="validation-message">Pick a US State</p>
+              <Select
+                onChange={handleInputChange}
+                options={optionUSStates}
+                value={{
+                  label: order.usa_state,
+                  name: "usa_state",
+                  value: order.usa_state,
+                }}
+              />
+              {!order.usa_state && whyStatus ? (
+                <p className={styles.validationMessage}>Pick a US State</p>
               ) : (
                 ""
               )}
@@ -229,15 +231,15 @@ const OrderForm = (props) => {
                   readOnly="readOnly"
                 />
               )}
-              {!order.home_office_code && message.whyStatus ? (
-                <p className="validation-message">
+              {!order.home_office_code && whyStatus ? (
+                <p className={styles.validationMessage}>
                   Pick a Congressional Office
                 </p>
               ) : (
                 ""
               )}
-              {!districtMatchCheck && message.whyStatus ? (
-                <p className="validation-message">
+              {!districtMatchCheck && whyStatus ? (
+                <p className={styles.validationMessage}>
                   US State and Congressional Office must correspond
                 </p>
               ) : (
@@ -288,9 +290,10 @@ const OrderForm = (props) => {
               {mode === "edit" ? "Update" : "Submit"}
             </button>
 
-            {mode === "edit" && !message.checkSaved ? (
-              <p className="validation-message">
-                Changes not saved, press Update to save changes
+            {!message.checkSaved ? (
+              <p className={styles.validationMessage}>
+                Changes not saved, press {mode === "edit" ? "Update" : "Submit"}{" "}
+                to save changes
               </p>
             ) : (
               ""

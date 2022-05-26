@@ -3,6 +3,7 @@ import AuthService from "../service/authService";
 import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 import OrderForm from "../components/orderForm";
+import PopUpBoxComponent from "../components/popUpBoxComponent";
 import { numSort } from "../components/sorting/sortHook";
 
 const EditOrder = (props) => {
@@ -30,15 +31,14 @@ const EditOrder = (props) => {
   const initialMessageState = {
     checkSaved: true,
     isLastChangeUSState: false,
-    submitted: false,
-    success: "",
-    whyStatus: false,
+    text: "",
   };
 
   const [order, setOrder] = useState(initialOrderState);
   const [message, setMessage] = useState(initialMessageState);
   const [statuses, setStatuses] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [popUpBox, setPopUpBox] = useState("none");
   const mode = "edit";
 
   useEffect(() => {
@@ -62,10 +62,11 @@ const EditOrder = (props) => {
   const updateOrder = () => {
     const serviceCall = () => {
       return OrderDataService.update(order.uuid, order).then((response) => {
+        setPopUpBox("block");
         setMessage({
           ...message,
           checkSaved: true,
-          success: "The order was updated successfully!",
+          text: "The order was updated successfully!",
         });
       });
     };
@@ -89,29 +90,35 @@ const EditOrder = (props) => {
     }
   };
 
+  const closePopUpBox = () => {
+    setPopUpBox("none");
+  };
+
   return (
     <>
       {order ? (
-        <>
-          <OrderForm
-            order={order}
-            message={message}
-            setOrderFunc={setOrder}
-            setMessageFunc={setMessage}
-            saveOrderFunc={updateOrder}
-            deleteOrderFunc={deleteOrder}
-            mode={mode}
-            statuses={sortedStatuses}
-            loading={loading}
-          />
-          <p>{message.success}</p>
-        </>
+        <OrderForm
+          order={order}
+          message={message}
+          setOrderFunc={setOrder}
+          setMessageFunc={setMessage}
+          saveOrderFunc={updateOrder}
+          deleteOrderFunc={deleteOrder}
+          mode={mode}
+          statuses={sortedStatuses}
+          loading={loading}
+        />
       ) : (
         <>
           <br />
           <p>Please click on an order...</p>
         </>
       )}
+      <PopUpBoxComponent
+        closePopUpBox={closePopUpBox}
+        message={message}
+        popUpBox={popUpBox}
+      />
     </>
   );
 };

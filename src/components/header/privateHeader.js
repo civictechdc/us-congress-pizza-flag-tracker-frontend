@@ -7,7 +7,6 @@ import { orderControl, adminControl } from "../protectedRoute/permissions";
 function Privateheader(params) {
   function logOut() {
     AuthService.logout();
-    console.log("passed");
     window.location.reload();
   }
 
