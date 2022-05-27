@@ -35,7 +35,7 @@ function App() {
           <AdminRoute path="/orders/:id" component={EditOrder} />
           <AdminRoute exact path="/users/add" component={AddUser} />
           <FedRoute exact path="/add" component={AddOrder} />
-          <Refresh path="/refresh" component={Refresh} />
+          <Refresh exact path="/refresh" component={Refresh} />
         </Switch>
       </main>
       {/* */}

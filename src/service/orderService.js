@@ -19,7 +19,7 @@ const update = (id, data) => {
   return httpAuthenticate().put(`/orders/${id}`, data);
 };
 
-const refresh = () => {
+const reset = () => {
   return httpAuthenticate().get("/reset");
 };
 
@@ -65,7 +65,7 @@ const orderServiceObject = {
   get,
   create,
   update,
-  refresh,
+  reset,
   remove,
   removeAll,
   findByOrderNumber,

@@ -1,25 +1,28 @@
 import React, { useEffect } from "react";
 import { Route, Redirect } from "react-router-dom";
+import OrderDataService from "../service/orderService";
 
 const Refresh = (props) => {
   const resetDatabase = () => {
-    // some code that talks to the server
+    return OrderDataService.reset()
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   useEffect(() => {
-    // resetDatabase();
+    resetDatabase();
   }, []);
 
   return (
     <>
       <p>Hello World!</p>
-
-      {/* <Route>
-        <Redirect to="/login"/>
-
-      </Route> */}
-
-      {/* <UserRoute exact path={["/", "/orders"]} component={OrdersList} /> */}
+      <Route exact path="/refresh">
+        <Redirect to="/orders" />
+      </Route>
     </>
   );
 };
