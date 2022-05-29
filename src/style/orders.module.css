@@ -49,7 +49,15 @@
 }
 
 .subSelect {
-  width: 33%;
+  width: 100%;
+}
+
+.searchComponent {
+  width: 100%;
+}
+
+label {
+  /*nothing yet*/
 }
 
 /*================================ Sorting =======================================*/
