@@ -7,8 +7,7 @@ import AuthService from "../service/authService";
 import { useSortableData } from "../components/sorting/sortHook";
 import { TableHeader } from "../components/tableHeader";
 import Gauge from "../components/gauge";
-import Select from "react-select";
-import { STATES } from "../components/states";
+import { Search } from "../components/Search";
 
 const OrdersList = () => {
   const [orders, setOrders] = useState([]);
@@ -24,29 +23,6 @@ const OrdersList = () => {
 
   const sortOptions = { sortedField, sortDir, sortType };
   const sortedOrders = useSortableData(orders, sortOptions);
-
-  const statusOptions = statuses.map((status) => ({
-    value: status.id,
-    label: status.status_code,
-    name: "status",
-  }));
-  statusOptions.unshift({ value: null, label: "None", name: "status" });
-  let stateOptions = [];
-  if (STATES) {
-    stateOptions = STATES.map((state) => ({
-      label: state.name,
-      value: state.name,
-      name: "state",
-    }));
-  }
-  stateOptions.unshift({ value: null, label: "None", name: "state" });
-
-  let officeOptions = [];
-  officeOptions = STATES.map((state) => state.districts);
-  officeOptions = officeOptions
-    .flat()
-    .map((office) => ({ label: office, value: office, name: "office" }));
-  officeOptions.unshift({ value: null, label: "None", name: "office" });
 
   //retrieve orders based on authorization level
   const retrieveOrders = () => {
@@ -78,26 +54,6 @@ const OrdersList = () => {
     setLoading(true);
   }, []);
 
-  function onChangeSearchTitle(e) {
-    const searchTitle = e.target.value;
-    console.log(e);
-    setSearchTitle(searchTitle);
-  }
-
-  const onChangeParams = (e) => {
-    const queryParams = new URLSearchParams(window.location.search);
-    if (e.value == null) {
-      queryParams.delete(e.name);
-    } else {
-      queryParams.set(e.name, e.value);
-    }
-    window.history.replaceState(
-      {},
-      "",
-      `${window.location.pathname}?${queryParams.toString()}`
-    );
-  };
-
   const refreshList = () => {
     retrieveOrders();
     setCurrentOrder(null);
@@ -121,29 +77,6 @@ const OrdersList = () => {
       });
     };
     AuthService.refreshTokenWrapperFunction(serviceCall);
-  };
-
-  const findByOrderNumber = () => {
-    let serviceCall = () => {
-      //changed from const to let to maintain best practices
-      return OrderDataService.findByOrderNumber(searchTitle).then(
-        (response) => {
-          if ("error" in response.data) {
-            setErrorMessage(response.data.error);
-          } else {
-            console.log("found", response.data);
-            setOrders(response.data.orders);
-          }
-          setLoading(false);
-        }
-      );
-    };
-    try {
-      setLoading(true);
-      AuthService.refreshTokenWrapperFunction(serviceCall);
-    } catch (e) {
-      console.log(e);
-    }
   };
 
   const clearSearch = () => {
@@ -265,44 +198,11 @@ const OrdersList = () => {
     <>
       <div className={styles.mainContainer}>
         <h4 className={styles.title}>Orders</h4>
-        <div className={styles.outerInputContainer}>
-          <div className={styles.inputContainer}>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Search by order number"
-              value={searchTitle}
-              onChange={onChangeSearchTitle}
-            />
-            <div className={styles.searchButton}>
-              <button
-                className="btn btn-outline-secondary"
-                type="button"
-                onClick={findByOrderNumber}
-              >
-                Search
-              </button>
-            </div>
-          </div>
-          <div className={styles.inputContainer}>
-            <Select
-              id="status"
-              options={statusOptions}
-              className={styles.subSelect}
-              onChange={onChangeParams}
-            ></Select>
-            <Select
-              options={stateOptions}
-              className={styles.subSelect}
-              onChange={onChangeParams}
-            ></Select>
-            <Select
-              options={officeOptions}
-              className={styles.subSelect}
-              onChange={onChangeParams}
-            ></Select>
-          </div>
-        </div>
+        <Search
+          searchTitle={searchTitle}
+          setSearchTitle={setSearchTitle}
+          statuses={statuses}
+        />
         <TableHeader
           sortedField={sortedField}
           sortDir={sortDir}
