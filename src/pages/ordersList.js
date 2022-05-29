@@ -8,6 +8,7 @@ import { useSortableData } from "../components/sorting/sortHook";
 import { TableHeader } from "../components/tableHeader";
 import Gauge from "../components/gauge";
 import { Search } from "../components/Search";
+import { useLocation } from "react-router-dom";
 
 const OrdersList = () => {
   const [orders, setOrders] = useState([]);
@@ -25,9 +26,9 @@ const OrdersList = () => {
   const sortedOrders = useSortableData(orders, sortOptions);
 
   //retrieve orders based on authorization level
-  const retrieveOrders = () => {
+  const retrieveOrders = (params) => {
     let serviceCall = () => {
-      return OrderDataService.getAll().then((response) => {
+      return OrderDataService.getAll(params).then((response) => {
         setOrders(response.data.orders);
         setLoading(false);
       });
@@ -36,23 +37,31 @@ const OrdersList = () => {
       AuthService.refreshTokenWrapperFunction(serviceCall);
     } catch (e) {
       setErrorMessage(e.message);
-      setPopUpbox("block");
+      setPopUpBox("block");
     }
   };
-
+  const searchParams = useLocation().search;
   useEffect(() => {
-    const retrieveOrders = () => {
-      let serviceCall = () => {
-        return OrderDataService.getAll().then((response) => {
-          setOrders(response.data.orders);
-          setLoading(false);
-        });
-      };
-      AuthService.refreshTokenWrapperFunction(serviceCall);
-    };
-    retrieveOrders();
-    setLoading(true);
-  }, []);
+    // const retrieveOrders = () => {
+    //   let serviceCall = () => {
+    //     return OrderDataService.getAll().then((response) => {
+    //       setOrders(response.data.orders);
+    //       setLoading(false);
+    //     });
+    //   };
+    //   AuthService.refreshTokenWrapperFunction(serviceCall);
+    // };
+    try {
+      if (searchParams) {
+        retrieveOrders(searchParams);
+      } else {
+        retrieveOrders();
+      }
+      setLoading(true);
+    } finally {
+      setLoading(false);
+    }
+  }, [searchParams]);
 
   const refreshList = () => {
     retrieveOrders();
@@ -70,6 +79,7 @@ const OrdersList = () => {
     }
   };
 
+  //delete?
   const removeAllOrders = () => {
     let serviceCall = () => {
       return OrderDataService.removeAll().then((response) => {
@@ -191,7 +201,7 @@ const OrdersList = () => {
   );
 
   const closePopUpBox = () => {
-    setPopUpbox("none");
+    setPopUpBox("none");
   };
 
   return (

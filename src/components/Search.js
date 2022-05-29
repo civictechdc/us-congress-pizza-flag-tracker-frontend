@@ -1,4 +1,5 @@
-import { React, useState } from "react";
+import { React } from "react";
+import { useHistory } from "react-router-dom";
 import Select from "react-select";
 import styles from "../style/orders.module.css";
 import OrderDataService from "../service/orderService";
@@ -6,11 +7,12 @@ import { STATES } from "../components/states";
 
 export const Search = (props) => {
   const { searchTitle, setSearchTitle, statuses } = props;
+  const history = useHistory();
 
   const statusOptions = statuses.map((status) => ({
     value: status.id,
     label: status.status_code,
-    name: "status",
+    name: "status_code",
   }));
   statusOptions.unshift({ value: null, label: "None", name: "status" });
   let stateOptions = [];
@@ -27,8 +29,8 @@ export const Search = (props) => {
   officeOptions = STATES.map((state) => state.districts);
   officeOptions = officeOptions
     .flat()
-    .map((office) => ({ label: office, value: office, name: "office" }));
-  officeOptions.unshift({ value: null, label: "None", name: "office" });
+    .map((office) => ({ label: office, value: office, name: "office_code" }));
+  officeOptions.unshift({ value: null, label: "None", name: "office_code" });
 
   function onChangeSearchTitle(e) {
     const searchTitle = e.target.value;
@@ -39,11 +41,7 @@ export const Search = (props) => {
     } else {
       queryParams.set("keyword", searchTitle);
     }
-    window.history.replaceState(
-      {},
-      "",
-      `${window.location.pathname}?${queryParams.toString()}`
-    );
+    history.replace(`${window.location.pathname}?${queryParams.toString()}`);
   }
 
   const onChangeParams = (e) => {
@@ -53,11 +51,7 @@ export const Search = (props) => {
     } else {
       queryParams.set(e.name, e.value);
     }
-    window.history.replaceState(
-      {},
-      "",
-      `${window.location.pathname}?${queryParams.toString()}`
-    );
+    history.replace(`${window.location.pathname}?${queryParams.toString()}`);
   };
 
   const onChangeMultiParams = (e) => {
@@ -72,11 +66,7 @@ export const Search = (props) => {
       queryParams.set("status", statusArray.join());
     }
 
-    window.history.replaceState(
-      {},
-      "",
-      `${window.location.pathname}?${queryParams.toString()}`
-    );
+    history.replace(`${window.location.pathname}?${queryParams.toString()}`);
   };
 
   const findByOrderNumber = () => {
@@ -105,14 +95,17 @@ export const Search = (props) => {
   return (
     <div className={styles.outerInputContainer}>
       <div className={styles.inputContainer}>
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Search by order number or keyword"
-          value={searchTitle}
-          onChange={onChangeSearchTitle}
-        />
-        <div className={styles.searchButton}>
+        <div className={styles.searchComponent}>
+          <label htmlFor="keyword">Search by order number or keyword</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search by order number or keyword"
+            value={searchTitle}
+            onChange={onChangeSearchTitle}
+            id="keyword"
+          />
+          {/* <div className={styles.searchButton}>
           <button
             className="btn btn-outline-secondary"
             type="button"
@@ -120,29 +113,42 @@ export const Search = (props) => {
           >
             Search
           </button>
+          </div> */}
         </div>
       </div>
       <div className={styles.inputContainer}>
-        <Select
-          id="status"
-          options={statusOptions}
-          className={styles.subSelect}
-          onChange={onChangeMultiParams}
-          isMulti={true}
-          placeholder={"Search by status"}
-        ></Select>
-        <Select
-          options={stateOptions}
-          className={styles.subSelect}
-          onChange={onChangeParams}
-          placeholder={"Search by state"}
-        ></Select>
-        <Select
-          options={officeOptions}
-          className={styles.subSelect}
-          onChange={onChangeParams}
-          placeholder="Search by office"
-        ></Select>
+        <div className={styles.searchComponent}>
+          <label htmlFor="status">Search by status</label>
+          <Select
+            id="status"
+            options={statusOptions}
+            className={styles.subSelect}
+            onChange={onChangeMultiParams}
+            isMulti={true}
+            placeholder="Search by status"
+            label="Search by status"
+          ></Select>
+        </div>
+      </div>
+      <div className={styles.inputContainer}>
+        <div className={styles.searchComponent}>
+          <label htmlFor="state">Search by state</label>
+          <Select
+            options={stateOptions}
+            className={styles.subSelect}
+            onChange={onChangeParams}
+            placeholder={"Search by state"}
+          ></Select>
+        </div>
+        <div className={styles.searchComponent}>
+          <label htmlFor="office">Search by office</label>
+          <Select
+            options={officeOptions}
+            className={styles.subSelect}
+            onChange={onChangeParams}
+            placeholder="Search by office"
+          ></Select>
+        </div>
       </div>
     </div>
   );
