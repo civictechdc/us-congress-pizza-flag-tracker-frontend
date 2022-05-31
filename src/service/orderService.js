@@ -3,8 +3,12 @@ import AuthService from "../service/authService";
 
 /* remember also the api/qrcode img API*/
 
-const getAll = () => {
-  return httpAuthenticate().get("/orders");
+const getAll = (params) => {
+  if (!params) {
+    return httpAuthenticate().get("/orders");
+  } else {
+    return httpAuthenticate().get("/orders" + params);
+  }
 };
 
 const get = (uuid) => {
