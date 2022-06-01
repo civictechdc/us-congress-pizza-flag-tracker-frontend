@@ -29,7 +29,7 @@ function App() {
         <Switch>
           <Route exact path="/login" component={Login} />
           <UserRoute exact path={["/", "/orders"]} component={OrdersList} />
-          <UserRoute path="/print:id" component={PrintOrder} />
+          <UserRoute path="/print/:id" component={PrintOrder} />
           <UserRoute exact path="/profile" component={Profile} />
           <ScanRoute path="/scan/:id" component={ScanOrder} />
           <AdminRoute path="/orders/:id" component={EditOrder} />
