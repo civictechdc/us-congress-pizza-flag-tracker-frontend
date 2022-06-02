@@ -17,28 +17,31 @@ const Refresh = (props) => {
       });
   };
 
-  const resolveAfter6Seconds = () => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve("resolved");
-      }, 6000);
-    });
-  };
+  // const resolveAfter6Seconds = () => {
+  //   return new Promise((resolve) => {
+  //     setTimeout(() => {
+  //       resolve("resolved");
+  //     }, 6000);
+  //   });
+  // };
 
-  const asyncCall = async () => {
-    await resolveAfter6Seconds();
-    setRedirectNow("yes");
-  };
+  // const asyncCall = async () => {
+  //   await resolveAfter6Seconds();
+  //   setRedirectNow("yes");
+  // };
 
-  useEffect(() => {
-    resetDatabase();
-  }, []);
+  // useEffect(() => {
+  //   resetDatabase();
+  // }, []);
 
   // asyncCall();
 
   return (
     <>
       <div className={styles.formContainer}>
+        <button onClick={resetDatabase} className={`btn btn-success`}>
+          Reset Database
+        </button>
         <h2 style={{ textAlign: "center" }}>
           Please wait a moment for the database to reset.
         </h2>
