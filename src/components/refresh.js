@@ -24,11 +24,19 @@ const Refresh = (props) => {
       })
       .catch((e) => {
         console.log(e);
+        setMessage({
+          ...message,
+          text: "Network Error, please see your IT Administrator",
+        });
       });
   };
 
   const closePopUpBox = () => {
     setPopUpBox("none");
+    setMessage({
+      ...message,
+      text: "Please wait a moment for the database to reset.",
+    });
   };
 
   return (
