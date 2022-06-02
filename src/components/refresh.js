@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Route, Redirect } from "react-router-dom";
+import PopUpBoxComponent from "./popUpBoxComponent";
 import OrderDataService from "../service/orderService";
 import styles from "../style/orderForm.module.css";
 
 const Refresh = (props) => {
+  const initialMessageState = {
+    checkSaved: true,
+    isLastChangeUSState: false,
+    text: "",
+  };
+
+  const [message, setMessage] = useState(initialMessageState);
+  const [popUpBox, setPopUpBox] = useState("none");
   const [redirectNow, setRedirectNow] = useState("");
 
   const resetDatabase = () => {
+    setPopUpBox("block");
     return OrderDataService.reset()
       .then((response) => {
         console.log(response);
@@ -36,6 +46,10 @@ const Refresh = (props) => {
 
   // asyncCall();
 
+  const closePopUpBox = () => {
+    setPopUpBox("none");
+  };
+
   return (
     <>
       <div className={styles.formContainer}>
@@ -57,6 +71,11 @@ const Refresh = (props) => {
       ) : (
         <></>
       )}
+      <PopUpBoxComponent
+        closePopUpBox={closePopUpBox}
+        message={message}
+        popUpBox={popUpBox}
+      />
     </>
   );
 };
