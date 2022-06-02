@@ -10,6 +10,7 @@ const Refresh = (props) => {
     return OrderDataService.reset()
       .then((response) => {
         console.log(response);
+        setRedirectNow("yes");
       })
       .catch((e) => {
         console.log(e);
@@ -33,7 +34,7 @@ const Refresh = (props) => {
     resetDatabase();
   }, []);
 
-  asyncCall();
+  // asyncCall();
 
   return (
     <>
