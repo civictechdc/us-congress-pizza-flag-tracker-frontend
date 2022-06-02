@@ -27,25 +27,6 @@ const Refresh = (props) => {
       });
   };
 
-  // const resolveAfter6Seconds = () => {
-  //   return new Promise((resolve) => {
-  //     setTimeout(() => {
-  //       resolve("resolved");
-  //     }, 6000);
-  //   });
-  // };
-
-  // const asyncCall = async () => {
-  //   await resolveAfter6Seconds();
-  //   setRedirectNow("yes");
-  // };
-
-  // useEffect(() => {
-  //   resetDatabase();
-  // }, []);
-
-  // asyncCall();
-
   const closePopUpBox = () => {
     setPopUpBox("none");
   };
@@ -56,13 +37,6 @@ const Refresh = (props) => {
         <button onClick={resetDatabase} className={`btn btn-success`}>
           Reset Database
         </button>
-        {/* <h2 style={{ textAlign: "center" }}>
-          Please wait a moment for the database to reset.
-        </h2>
-        <h2 style={{ textAlign: "center" }}>
-          You may need to refresh the Orders page if the database hasn't
-          finished repopulating
-        </h2> */}
       </div>
       {redirectNow ? (
         <Route exact path="/refresh">
