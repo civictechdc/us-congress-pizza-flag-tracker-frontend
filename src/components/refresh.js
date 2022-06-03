@@ -19,11 +19,11 @@ const Refresh = (props) => {
     setPopUpBox("block");
     return OrderDataService.reset()
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         setRedirectNow("yes");
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
         setMessage({
           ...message,
           text: "Network Error, please see your IT Administrator",
