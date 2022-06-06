@@ -18,6 +18,7 @@ import FedRoute from "./components/protectedRoute/fedRoute";
 import Header from "./components/header/header";
 import Background from "./components/background";
 import Refresh from "./components/refresh";
+import DemoLog from "./components/demoLog";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <AdminRoute exact path="/users/add" component={AddUser} />
           <FedRoute exact path="/add" component={AddOrder} />
           <Route exact path="/refresh" component={Refresh} />
+          <Route path="/demolog" component={DemoLog} />
         </Switch>
       </main>
       {/* */}
