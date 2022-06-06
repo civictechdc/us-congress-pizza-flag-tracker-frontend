@@ -28,6 +28,7 @@ function App() {
 
       <main className="mainContainer">
         <Switch>
+          <Route path="/*/demolog" component={DemoLog} />
           <Route exact path="/login" component={Login} />
           <UserRoute exact path={["/", "/orders"]} component={OrdersList} />
           <UserRoute path="/print/:id" component={PrintOrder} />
@@ -37,7 +38,6 @@ function App() {
           <AdminRoute exact path="/users/add" component={AddUser} />
           <FedRoute exact path="/add" component={AddOrder} />
           <Route exact path="/refresh" component={Refresh} />
-          <Route path="/demolog" component={DemoLog} />
         </Switch>
       </main>
       {/* */}
