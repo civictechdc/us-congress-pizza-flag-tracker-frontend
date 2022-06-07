@@ -31,9 +31,9 @@ const DemoLogIn = (props) => {
   console.log("Loc Editted: ", priorLocation);
 
   useEffect(() => {
-    setRedirectNow("yes");
+    // setRedirectNow("yes");
     AuthService.logout();
-    window.location.reload();
+    // window.location.reload();
   }, [redirectNow]);
 
   return (
