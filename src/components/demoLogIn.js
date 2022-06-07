@@ -49,16 +49,15 @@ const DemoLogIn = (props) => {
       });
   };
 
-  // useEffect(() => {
+  useEffect(() => {
+    // //   // AuthService.logout();
+    logIn(userName, password);
+    //  console.log("logging");
+    // //   // window.location.reload();
+    // //   // setRedirectNow("yes");
+  }, [userName, password]);
 
-  // //   // AuthService.logout();
-  // //  logIn(userName, password);
-  //  console.log("logging");
-  // //   // window.location.reload();
-  // //   // setRedirectNow("yes");
-  // }, [userName, password]);
-
-  logIn(userName, password);
+  // logIn(userName, password);
   console.log("redirect: ", redirectNow);
 
   const closePopUpBox = () => {
