@@ -18,7 +18,7 @@ import FedRoute from "./components/protectedRoute/fedRoute";
 import Header from "./components/header/header";
 import Background from "./components/background";
 import Refresh from "./components/refresh";
-import DemoLog from "./components/demoLog";
+import DemoLogIn from "./components/demoLogIn";
 
 function App() {
   return (
@@ -28,7 +28,7 @@ function App() {
 
       <main className="mainContainer">
         <Switch>
-          <Route path="/*/demolog" component={DemoLog} />
+          <Route path="/*/demoLogin" component={DemoLogIn} />
           <Route exact path="/login" component={Login} />
           <UserRoute exact path={["/", "/orders"]} component={OrdersList} />
           <UserRoute path="/print/:id" component={PrintOrder} />
