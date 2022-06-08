@@ -38,8 +38,8 @@ function App() {
       <main className="mainContainer">
         <UserContext.Provider value={value}>
           <Switch>
+            {/* DemoLogIn should be removed prior to production */}
             <Route path="/*/demoLogin" component={DemoLogIn} />{" "}
-            {/* This component should be removed prior to production */}
             <Route exact path="/login" component={Login} />
             <UserRoute exact path={["/", "/orders"]} component={OrdersList} />
             <UserRoute path="/print/:id" component={PrintOrder} />
@@ -48,8 +48,8 @@ function App() {
             <AdminRoute path="/orders/:id" component={EditOrder} />
             <AdminRoute exact path="/users/add" component={AddUser} />
             <FedRoute exact path="/add" component={AddOrder} />
+            {/* Refresh should be removed prior to production */}
             <Route exact path="/refresh" component={Refresh} />{" "}
-            {/* This component should be removed prior to production */}
           </Switch>
         </UserContext.Provider>
       </main>
