@@ -39,7 +39,10 @@ function App() {
         <UserContext.Provider value={value}>
           <Switch>
             {/* DemoLogIn should be removed prior to production */}
-            <Route path="/*/demoLogin" component={DemoLogIn} />{" "}
+            <Route
+              path={["/demoLogin", "/*/demoLogin"]}
+              component={DemoLogIn}
+            />{" "}
             <Route exact path="/login" component={Login} />
             <UserRoute exact path={["/", "/orders"]} component={OrdersList} />
             <UserRoute path="/print/:id" component={PrintOrder} />
