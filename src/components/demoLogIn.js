@@ -7,11 +7,13 @@ import AuthService from "../service/authService";
 import OrderDataService from "../service/orderService";
 import styles from "../style/orderForm.module.css";
 
+//This component should be removed prior to production
+
 const DemoLogIn = () => {
   const initialMessageState = {
     checkSaved: true,
     isLastChangeUSState: false,
-    text: "Please wait a moment for the database to reset.",
+    text: "Login Updated, click this box to continue",
   };
 
   const [message, setMessage] = useState(initialMessageState);
@@ -26,7 +28,6 @@ const DemoLogIn = () => {
   const password = userName + "-1010";
   console.log("Password: ", password);
 
-  // console.log("Loc: ", document.location.pathname);
   const priorLocation = document.location.pathname.slice(0, -10);
   console.log("Loc Editted: ", priorLocation);
 
@@ -46,13 +47,17 @@ const DemoLogIn = () => {
   }, [userName, password]);
 
   const closePopUpBox = () => {
+    // the value set is largely unimportant; rather the setting of any value will force Header component
+    // to rerender and display the updated login information
     setUserDisplay(1);
     history.push(priorLocation);
   };
 
   return (
     <>
-      <div className={styles.formContainer}>Hello World!</div>
+      <div className={styles.formContainer}>
+        Updating User Account: Demo Use Only
+      </div>
       <PopUpBoxComponent
         closePopUpBox={closePopUpBox}
         message={message}

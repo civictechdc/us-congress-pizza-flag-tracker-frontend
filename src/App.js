@@ -29,6 +29,8 @@ function App() {
   return (
     <>
       <Background />
+
+      {/* Header doesn't use Provided value directly, but instead updates and rerenders when other components (primarily DemoLogIn) change the value */}
       <UserContext.Provider value={value}>
         <Header />
       </UserContext.Provider>
@@ -36,7 +38,8 @@ function App() {
       <main className="mainContainer">
         <UserContext.Provider value={value}>
           <Switch>
-            <Route path="/*/demoLogin" component={DemoLogIn} />
+            <Route path="/*/demoLogin" component={DemoLogIn} />{" "}
+            {/* This component should be removed prior to production */}
             <Route exact path="/login" component={Login} />
             <UserRoute exact path={["/", "/orders"]} component={OrdersList} />
             <UserRoute path="/print/:id" component={PrintOrder} />
@@ -45,7 +48,8 @@ function App() {
             <AdminRoute path="/orders/:id" component={EditOrder} />
             <AdminRoute exact path="/users/add" component={AddUser} />
             <FedRoute exact path="/add" component={AddOrder} />
-            <Route exact path="/refresh" component={Refresh} />
+            <Route exact path="/refresh" component={Refresh} />{" "}
+            {/* This component should be removed prior to production */}
           </Switch>
         </UserContext.Provider>
       </main>
