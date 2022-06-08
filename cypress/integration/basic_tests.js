@@ -33,6 +33,14 @@ describe("CRUD actions for superuser", () => {
   });
 
   beforeEach(() => {
+    cy.request({
+      method: "GET",
+      url: `${Cypress.env("api_server")}/reset`,
+      headers: {
+        "Content-type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
     cy.restoreLocalStorage();
   });
 
@@ -45,7 +53,7 @@ describe("CRUD actions for superuser", () => {
     //I'd like the above test to work but I'm having trouble getting Cypress to work with the react-selector. As a compromise/stopgap we use the below instead:
     cy.get("input[id=react-select-5-input]").click().type(`CO-01{enter}`);
     cy.get(".btn").click();
-    cy.get("h4").contains("You submitted successfully!");
+    cy.get("h3").contains("successfully!");
   });
   it("does not allow FED-ADMIN to create a new order with a duplicate order number", () => {
     cy.visit("/add");
