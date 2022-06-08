@@ -30,7 +30,7 @@ function App() {
     <>
       <Background />
 
-      {/* Header doesn't use Provided value directly, but instead updates and rerenders when other components (primarily DemoLogIn) change the value */}
+      {/* Header doesn't use UserContext.Provider value directly, but instead updates and rerenders when other components (primarily DemoLogIn) change the value */}
       <UserContext.Provider value={value}>
         <Header />
       </UserContext.Provider>
@@ -38,7 +38,7 @@ function App() {
       <main className="mainContainer">
         <UserContext.Provider value={value}>
           <Switch>
-            {/* DemoLogIn should be removed prior to production */}
+            {/* DemoLogIn and UserContext.Provider wrapping it should be removed prior to production */}
             <Route
               path={["/demoLogin", "/*/demoLogin"]}
               component={DemoLogIn}
