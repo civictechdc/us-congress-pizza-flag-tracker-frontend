@@ -6,7 +6,7 @@ import OrderDataService from "../service/orderService";
 import { STATES } from "../components/states";
 
 export const Search = (props) => {
-  const { searchTitle, setSearchTitle, statuses } = props;
+  const { searchState, setSearchTitle, statuses } = props;
   const history = useHistory();
 
   const statusOptions = statuses.map((status) => ({
@@ -69,28 +69,29 @@ export const Search = (props) => {
     history.replace(`${window.location.pathname}?${queryParams.toString()}`);
   };
 
-  const findByOrderNumber = () => {
-    let serviceCall = () => {
-      //changed from const to let to maintain best practices
-      return OrderDataService.findByOrderNumber(searchTitle).then(
-        (response) => {
-          if ("error" in response.data) {
-            setErrorMessage(response.data.error);
-          } else {
-            console.log("found", response.data);
-            setOrders(response.data.orders);
-          }
-          setLoading(false);
-        }
-      );
-    };
-    try {
-      setLoading(true);
-      AuthService.refreshTokenWrapperFunction(serviceCall);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  /* This is now unused as we will replace it with the generic findByKeyword I believe */
+  // const findByOrderNumber = () => {
+  //   let serviceCall = () => {
+  //     //changed from const to let to maintain best practices
+  //     return OrderDataService.findByOrderNumber(searchTitle).then(
+  //       (response) => {
+  //         if ("error" in response.data) {
+  //           setErrorMessage(response.data.error);
+  //         } else {
+  //           console.log("found", response.data);
+  //           setOrders(response.data.orders);
+  //         }
+  //         setLoading(false);
+  //       }
+  //     );
+  //   };
+  //   try {
+  //     setLoading(true);
+  //     AuthService.refreshTokenWrapperFunction(serviceCall);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   return (
     <div className={styles.outerInputContainer}>
@@ -101,7 +102,7 @@ export const Search = (props) => {
             type="text"
             className="form-control"
             placeholder="Search by order number or keyword"
-            value={searchTitle}
+            value={searchState.keyword}
             onChange={onChangeSearchTitle}
             id="keyword"
           />
@@ -138,6 +139,7 @@ export const Search = (props) => {
             className={styles.subSelect}
             onChange={onChangeParams}
             placeholder={"Search by state"}
+            value={searchState.state}
           ></Select>
         </div>
         <div className={styles.searchComponent}>
@@ -147,6 +149,7 @@ export const Search = (props) => {
             className={styles.subSelect}
             onChange={onChangeParams}
             placeholder="Search by office"
+            value={searchState.office}
           ></Select>
         </div>
       </div>
