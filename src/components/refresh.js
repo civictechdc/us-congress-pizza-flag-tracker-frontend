@@ -4,6 +4,8 @@ import PopUpBoxComponent from "./popUpBoxComponent";
 import OrderDataService from "../service/orderService";
 import styles from "../style/orderForm.module.css";
 
+//This component should be removed prior to production
+
 const Refresh = (props) => {
   const initialMessageState = {
     checkSaved: true,
