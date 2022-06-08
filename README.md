@@ -12,7 +12,7 @@ This is frontend only; the information for the project as a whole is located her
 
 ## Running Cypress Tests
 - Copy .env.cypress.json.example to .env.cypress.json
-- Start backend (see (https://github.com/codefordc/us-congress-pizza-flag-tracke)
+- Start backend (see (https://github.com/codefordc/us-congress-pizza-flag-tracker)
 - Start Development Web Server
 - In a separate terminal from the frontend directory, run npx cypress open
 - 
