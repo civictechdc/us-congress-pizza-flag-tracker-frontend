@@ -68,6 +68,7 @@ describe("CRUD actions for superuser", () => {
   });
 
   it("allows FED-ADMIN to edit an order", () => {
+    cy.createSampleOrder();
     cy.visit("/orders");
     cy.get("p[class*='orders_orderNum']").contains("1234567890").click(); //danger, this may break upon implementing new layout if class name changes
     cy.get("a[class*='orders_orderLinks']").eq(0).click();
