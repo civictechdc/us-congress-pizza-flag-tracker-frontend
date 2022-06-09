@@ -27,7 +27,15 @@ export const Search = (props) => {
   stateOptions.unshift({ value: null, label: "None", name: "state" });
 
   let officeOptions = [];
-  officeOptions = STATES.map((state) => state.districts);
+  {
+    if (searchState.state.length === 2) {
+      let selectedState = JSON.parse(JSON.stringify(STATES));
+      selectedState = selectedState.filter(
+        (state) => state.name === searchState.state
+      );
+      officeOptions = selectedState.map((state) => state.districts);
+    } else officeOptions = STATES.map((state) => state.districts);
+  }
   officeOptions = officeOptions
     .flat()
     .map((office) => ({ label: office, value: office, name: "office" }));
@@ -47,7 +55,6 @@ export const Search = (props) => {
 
   const onChangeParams = (e) => {
     const queryParams = new URLSearchParams(window.location.search);
-    console.log("e: ", e);
     if (e.value == null) {
       queryParams.delete(e.name);
     } else {
@@ -94,8 +101,6 @@ export const Search = (props) => {
   //     console.log(e);
   //   }
   // };
-
-  console.log(searchState);
 
   return (
     <div className={styles.outerInputContainer}>
