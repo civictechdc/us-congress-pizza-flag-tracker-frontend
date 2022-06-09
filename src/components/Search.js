@@ -15,6 +15,7 @@ export const Search = (props) => {
     name: "status_code",
   }));
   statusOptions.unshift({ value: null, label: "None", name: "status" });
+
   let stateOptions = [];
   if (STATES) {
     stateOptions = STATES.map((state) => ({
@@ -29,8 +30,8 @@ export const Search = (props) => {
   officeOptions = STATES.map((state) => state.districts);
   officeOptions = officeOptions
     .flat()
-    .map((office) => ({ label: office, value: office, name: "office_code" }));
-  officeOptions.unshift({ value: null, label: "None", name: "office_code" });
+    .map((office) => ({ label: office, value: office, name: "office" }));
+  officeOptions.unshift({ value: null, label: "None", name: "office" });
 
   function onChangeSearchTitle(e) {
     const searchTitle = e.target.value;
@@ -46,6 +47,7 @@ export const Search = (props) => {
 
   const onChangeParams = (e) => {
     const queryParams = new URLSearchParams(window.location.search);
+    console.log("e: ", e);
     if (e.value == null) {
       queryParams.delete(e.name);
     } else {
@@ -93,6 +95,8 @@ export const Search = (props) => {
   //   }
   // };
 
+  console.log(searchState);
+
   return (
     <div className={styles.outerInputContainer}>
       <div className={styles.inputContainer}>
@@ -139,7 +143,12 @@ export const Search = (props) => {
             className={styles.subSelect}
             onChange={onChangeParams}
             placeholder={"Search by state"}
-            value={searchState.state}
+            // value={searchState.state}
+            value={{
+              label: searchState.state,
+              name: "usa_state",
+              value: searchState.state,
+            }}
           ></Select>
         </div>
         <div className={styles.searchComponent}>
@@ -149,7 +158,12 @@ export const Search = (props) => {
             className={styles.subSelect}
             onChange={onChangeParams}
             placeholder="Search by office"
-            value={searchState.office}
+            // value={searchState.office}
+            value={{
+              label: searchState.office,
+              name: "usa_state",
+              value: searchState.office,
+            }}
           ></Select>
         </div>
       </div>

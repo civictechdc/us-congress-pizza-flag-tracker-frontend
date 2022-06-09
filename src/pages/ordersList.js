@@ -64,6 +64,8 @@ const OrdersList = () => {
   useEffect(() => {
     setLoading(true);
     try {
+      dispatch({ type: "state", payload: "Search by State" });
+      dispatch({ type: "office", payload: "Search by Office" });
       if (searchParams) {
         retrieveOrders(searchParams);
         const parsedParams = new URLSearchParams(searchParams);
