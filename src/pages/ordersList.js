@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect } from "react";
 import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 import { Link } from "react-router-dom";
@@ -11,10 +11,9 @@ import { Search } from "../components/Search";
 import { useLocation } from "react-router-dom";
 
 const OrdersList = () => {
-  let initialSearchState = { keyword: "", status: [], state: "", office: "" };
   const [orders, setOrders] = useState([]);
   const [currentOrder, setCurrentOrder] = useState(null);
-  const [searchTitle, setSearchTitle] = useState(initialSearchState.keyword);
+  const [searchTitle, setSearchTitle] = useState("");
   const [popUpBox, setPopUpBox] = useState("none");
   const [errorMessage, setErrorMessage] = useState("");
   const [sortedField, setSortedField] = useState(null);
@@ -25,25 +24,6 @@ const OrdersList = () => {
 
   const sortOptions = { sortedField, sortDir, sortType };
   const sortedOrders = useSortableData(orders, sortOptions);
-  const searchStateReducer = (searchState, action) => {
-    switch (action.type) {
-      case "keyword":
-        return { ...searchState, keyword: action.payload };
-      case "state":
-        return { ...searchState, state: action.payload };
-      case "status":
-        const statusArray = [...searchState.status, action.payload];
-        return { ...searchState, status: statusArray };
-      case "office":
-        return { ...searchState, office: action.payload };
-      default:
-        return;
-    }
-  };
-  const [searchState, dispatch] = useReducer(
-    searchStateReducer,
-    initialSearchState
-  );
 
   //retrieve orders based on authorization level
   const retrieveOrders = (params) => {
@@ -62,21 +42,26 @@ const OrdersList = () => {
   };
   const searchParams = useLocation().search;
   useEffect(() => {
-    setLoading(true);
+    // const retrieveOrders = () => {
+    //   let serviceCall = () => {
+    //     return OrderDataService.getAll().then((response) => {
+    //       setOrders(response.data.orders);
+    //       setLoading(false);
+    //     });
+    //   };
+    //   AuthService.refreshTokenWrapperFunction(serviceCall);
+    // };
     try {
       if (searchParams) {
         retrieveOrders(searchParams);
-        const parsedParams = new URLSearchParams(searchParams);
-        parsedParams.forEach((value, propName) => {
-          dispatch({ type: propName, payload: value });
-        });
       } else {
         retrieveOrders();
       }
+      setLoading(true);
     } finally {
       setLoading(false);
     }
-  }, [searchParams, dispatch]);
+  }, [searchParams]);
 
   const refreshList = () => {
     retrieveOrders();
@@ -92,6 +77,16 @@ const OrdersList = () => {
     } else {
       setCurrentOrder(null);
     }
+  };
+
+  //delete?
+  const removeAllOrders = () => {
+    let serviceCall = () => {
+      return OrderDataService.removeAll().then((response) => {
+        refreshList();
+      });
+    };
+    AuthService.refreshTokenWrapperFunction(serviceCall);
   };
 
   const clearSearch = () => {
@@ -214,7 +209,7 @@ const OrdersList = () => {
       <div className={styles.mainContainer}>
         <h4 className={styles.title}>Orders</h4>
         <Search
-          searchState={searchState}
+          searchTitle={searchTitle}
           setSearchTitle={setSearchTitle}
           statuses={statuses}
         />
