@@ -59,6 +59,9 @@ export const Search = (props) => {
       queryParams.delete(e.name);
     } else {
       queryParams.set(e.name, e.value);
+      if (e.name === "state" && queryParams.get("office") != null) {
+        queryParams.delete("office");
+      }
     }
     history.replace(`${window.location.pathname}?${queryParams.toString()}`);
   };
