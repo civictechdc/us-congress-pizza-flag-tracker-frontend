@@ -151,7 +151,6 @@ export const Search = (props) => {
             className={styles.subSelect}
             onChange={onChangeParams}
             placeholder={"Search by state"}
-            // value={searchState.state}
             value={{
               label: searchState.state,
               name: "usa_state",
@@ -166,7 +165,6 @@ export const Search = (props) => {
             className={styles.subSelect}
             onChange={onChangeParams}
             placeholder="Search by office"
-            // value={searchState.office}
             value={{
               label: searchState.office,
               name: "usa_state",
