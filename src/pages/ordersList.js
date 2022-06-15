@@ -8,6 +8,7 @@ import { useSortableData } from "../components/sorting/sortHook";
 import { TableHeader } from "../components/tableHeader";
 import Gauge from "../components/gauge";
 import { Search } from "../components/Search";
+import { adminControl } from "../components/protectedRoute/permissions";
 import { useLocation } from "react-router-dom";
 
 const OrdersList = () => {
@@ -125,6 +126,9 @@ const OrdersList = () => {
     }
   }, [statuses]);
 
+  let isAdmin = "";
+  adminControl() ? (isAdmin = "yes") : (isAdmin = "");
+
   const orderTbody = (
     <div className={styles.flagContainer}>
       {loading
@@ -170,12 +174,16 @@ const OrdersList = () => {
                         </p>
                       </div>
                       <div className={styles.statusItem}>
-                        <Link
-                          to={"/orders/" + currentOrder.uuid}
-                          className={styles.orderLinks}
-                        >
-                          Edit
-                        </Link>
+                        {isAdmin ? (
+                          <Link
+                            to={"/orders/" + currentOrder.uuid}
+                            className={styles.orderLinks}
+                          >
+                            Edit
+                          </Link>
+                        ) : (
+                          <></>
+                        )}
                         <Link
                           to={{
                             pathname: "/scan/" + currentOrder.uuid,
