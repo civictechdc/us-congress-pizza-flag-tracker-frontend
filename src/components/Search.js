@@ -6,7 +6,7 @@ import OrderDataService from "../service/orderService";
 import { STATES } from "../components/states";
 
 export const Search = (props) => {
-  const { searchTitle, setSearchTitle, statuses } = props;
+  const { searchState, setSearchTitle, statuses } = props;
   const history = useHistory();
 
   const statusOptions = statuses.map((status) => ({
@@ -15,6 +15,7 @@ export const Search = (props) => {
     name: "status_code",
   }));
   statusOptions.unshift({ value: null, label: "None", name: "status" });
+
   let stateOptions = [];
   if (STATES) {
     stateOptions = STATES.map((state) => ({
@@ -26,11 +27,19 @@ export const Search = (props) => {
   stateOptions.unshift({ value: null, label: "None", name: "state" });
 
   let officeOptions = [];
-  officeOptions = STATES.map((state) => state.districts);
+  {
+    if (searchState.state.length === 2) {
+      let selectedState = JSON.parse(JSON.stringify(STATES));
+      selectedState = selectedState.filter(
+        (state) => state.name === searchState.state
+      );
+      officeOptions = selectedState.map((state) => state.districts);
+    } else officeOptions = STATES.map((state) => state.districts);
+  }
   officeOptions = officeOptions
     .flat()
-    .map((office) => ({ label: office, value: office, name: "office_code" }));
-  officeOptions.unshift({ value: null, label: "None", name: "office_code" });
+    .map((office) => ({ label: office, value: office, name: "office" }));
+  officeOptions.unshift({ value: null, label: "None", name: "office" });
 
   function onChangeSearchTitle(e) {
     const searchTitle = e.target.value;
@@ -50,6 +59,9 @@ export const Search = (props) => {
       queryParams.delete(e.name);
     } else {
       queryParams.set(e.name, e.value);
+      if (e.name === "state" && queryParams.get("office") != null) {
+        queryParams.delete("office");
+      }
     }
     history.replace(`${window.location.pathname}?${queryParams.toString()}`);
   };
@@ -69,28 +81,29 @@ export const Search = (props) => {
     history.replace(`${window.location.pathname}?${queryParams.toString()}`);
   };
 
-  const findByOrderNumber = () => {
-    let serviceCall = () => {
-      //changed from const to let to maintain best practices
-      return OrderDataService.findByOrderNumber(searchTitle).then(
-        (response) => {
-          if ("error" in response.data) {
-            setErrorMessage(response.data.error);
-          } else {
-            console.log("found", response.data);
-            setOrders(response.data.orders);
-          }
-          setLoading(false);
-        }
-      );
-    };
-    try {
-      setLoading(true);
-      AuthService.refreshTokenWrapperFunction(serviceCall);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  /* This is now unused as we will replace it with the generic findByKeyword I believe */
+  // const findByOrderNumber = () => {
+  //   let serviceCall = () => {
+  //     //changed from const to let to maintain best practices
+  //     return OrderDataService.findByOrderNumber(searchTitle).then(
+  //       (response) => {
+  //         if ("error" in response.data) {
+  //           setErrorMessage(response.data.error);
+  //         } else {
+  //           console.log("found", response.data);
+  //           setOrders(response.data.orders);
+  //         }
+  //         setLoading(false);
+  //       }
+  //     );
+  //   };
+  //   try {
+  //     setLoading(true);
+  //     AuthService.refreshTokenWrapperFunction(serviceCall);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   return (
     <div className={styles.outerInputContainer}>
@@ -101,7 +114,7 @@ export const Search = (props) => {
             type="text"
             className="form-control"
             placeholder="Search by order number or keyword"
-            value={searchTitle}
+            value={searchState.keyword}
             onChange={onChangeSearchTitle}
             id="keyword"
           />
@@ -138,6 +151,11 @@ export const Search = (props) => {
             className={styles.subSelect}
             onChange={onChangeParams}
             placeholder={"Search by state"}
+            value={{
+              label: searchState.state,
+              name: "usa_state",
+              value: searchState.state,
+            }}
           ></Select>
         </div>
         <div className={styles.searchComponent}>
@@ -147,6 +165,11 @@ export const Search = (props) => {
             className={styles.subSelect}
             onChange={onChangeParams}
             placeholder="Search by office"
+            value={{
+              label: searchState.office,
+              name: "usa_state",
+              value: searchState.office,
+            }}
           ></Select>
         </div>
       </div>

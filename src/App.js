@@ -14,6 +14,7 @@ import AddUser from "./pages/addUser";
 
 import UserRoute from "./components/protectedRoute/userRoute";
 import ScanRoute from "./components/protectedRoute/scanRoute";
+import EditorRoute from "./components/protectedRoute/editorRoute";
 import AdminRoute from "./components/protectedRoute/adminRoute";
 import FedRoute from "./components/protectedRoute/fedRoute";
 import Header from "./components/header/header";
@@ -48,7 +49,7 @@ function App() {
             <UserRoute path="/print/:id" component={PrintOrder} />
             <UserRoute exact path="/profile" component={Profile} />
             <UserRoute path="/scan/:id" component={ScanOrder} />
-            <AdminRoute path="/orders/:id" component={EditOrder} />
+            <EditorRoute path="/orders/:id" component={EditOrder} />
             <AdminRoute exact path="/users/add" component={AddUser} />
             <FedRoute exact path="/add" component={AddOrder} />
             {/* Refresh should be removed prior to production */}
