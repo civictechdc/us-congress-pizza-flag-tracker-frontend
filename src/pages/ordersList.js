@@ -8,7 +8,7 @@ import { useSortableData } from "../components/sorting/sortHook";
 import { TableHeader } from "../components/tableHeader";
 import Gauge from "../components/gauge";
 import { Search } from "../components/Search";
-import { adminControl } from "../components/protectedRoute/permissions";
+import { editOrderControl } from "../components/protectedRoute/permissions";
 import { useLocation } from "react-router-dom";
 
 const OrdersList = () => {
@@ -126,8 +126,8 @@ const OrdersList = () => {
     }
   }, [statuses]);
 
-  let isAdmin = "";
-  adminControl() ? (isAdmin = "yes") : (isAdmin = "");
+  let isEditor = "";
+  editOrderControl() ? (isEditor = "yes") : (isEditor = "");
 
   const orderTbody = (
     <div className={styles.flagContainer}>
@@ -174,7 +174,7 @@ const OrdersList = () => {
                         </p>
                       </div>
                       <div className={styles.statusItem}>
-                        {isAdmin ? (
+                        {isEditor ? (
                           <Link
                             to={"/orders/" + currentOrder.uuid}
                             className={styles.orderLinks}

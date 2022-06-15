@@ -33,6 +33,25 @@ export function adminControl() {
   }
 }
 
+//check admin status
+export function editOrderControl() {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (user !== null) {
+    const editor = user.manage_all_orders;
+    console.log("Editor: ", editor);
+    console.log("User: ", user); //temporary while security and routing are worked on
+
+    if (editor === "Y") {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
+
 //get user office
 export function userOffice() {
   const user = JSON.parse(localStorage.getItem("user"));
