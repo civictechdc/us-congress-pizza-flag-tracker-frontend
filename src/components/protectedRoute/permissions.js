@@ -20,8 +20,6 @@ export function adminControl() {
 
   if (user !== null) {
     const admin = user.is_admin;
-    console.log("Admin: ", admin);
-    console.log("User: ", user); //temporary while security and routing are worked on
 
     if (admin === "Y") {
       return true;
