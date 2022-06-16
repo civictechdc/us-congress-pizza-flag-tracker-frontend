@@ -32,3 +32,25 @@ Cypress.Commands.add("updateStatus", () => {
   cy.wait(2000);
   cy.get("div[class=pop-up]").should("be.visible").click();
 });
+
+Cypress.Commands.add("createSampleOrder", () => {
+  cy.login("FED-ADMIN", "FED-ADMIN-1010");
+  cy.request({
+    method: "POST",
+    url: `${Cypress.env("api_server")}/orders/create`,
+    headers: {
+      "Content-type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "X-Access-Tokens": Cypress.env("token"),
+    },
+    body: {
+      order_number: "1234",
+      home_office_code: "AL-01",
+      usa_state: "AL",
+    },
+  }).then((response) => {
+    if (response.status < 400) {
+      console.log(response);
+    } else throw error();
+  });
+});

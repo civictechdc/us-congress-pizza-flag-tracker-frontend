@@ -43,7 +43,7 @@ const OrderForm = (props) => {
   if (statuses) {
     optionStatuses = statuses.map((status) =>
       /* Old Filter by DEMO Organization Code was here
-          to be rewired to ACTUAL User Profile DB info  */
+        to be rewired to ACTUAL User Profile DB info  */
       ({
         label: `#${status.sequence_num} ${status.description}`,
         name: "order_status_id",
@@ -187,64 +187,68 @@ const OrderForm = (props) => {
 
             <div className="form-group">
               <label htmlFor="usa_state">US State:</label>{" "}
-              <Select
-                onChange={handleInputChange}
-                options={optionUSStates}
-                value={{
-                  label: order.usa_state,
-                  name: "usa_state",
-                  value: order.usa_state,
-                }}
-              />
-              {!order.usa_state && whyStatus ? (
-                <p className={styles.validationMessage}>Pick a US State</p>
-              ) : (
-                ""
-              )}
+              <div data-select-id="state-input">
+                <Select
+                  onChange={handleInputChange}
+                  options={optionUSStates}
+                  value={{
+                    label: order.usa_state,
+                    name: "usa_state",
+                    value: order.usa_state,
+                  }}
+                />
+                {!order.usa_state && whyStatus ? (
+                  <p className={styles.validationMessage}>Pick a US State</p>
+                ) : (
+                  ""
+                )}
+              </div>
             </div>
 
             <div className="form-group">
               <label htmlFor="home_office_code">Congressional Office:</label>{" "}
-              {order.usa_state ? (
-                message.isLastChangeUSState ? (
-                  <Select
-                    onChange={handleInputChange}
-                    options={optionDistricts}
-                    value={null}
-                  />
+              <div data-select-id="home_office_code-input">
+                {order.usa_state ? (
+                  message.isLastChangeUSState ? (
+                    <Select
+                      onChange={handleInputChange}
+                      options={optionDistricts}
+                      value={null}
+                    />
+                  ) : (
+                    <Select
+                      onChange={handleInputChange}
+                      options={optionDistricts}
+                      value={{
+                        label: order.home_office_code,
+                        name: "home_office_code",
+                        value: order.home_office_code,
+                      }}
+                    />
+                  )
                 ) : (
-                  <Select
-                    onChange={handleInputChange}
-                    options={optionDistricts}
-                    value={{
-                      label: order.home_office_code,
-                      name: "home_office_code",
-                      value: order.home_office_code,
-                    }}
+                  <input
+                    type="text"
+                    className="form-control"
+                    value="Pick a US State first..."
+                    readOnly="readOnly"
                   />
-                )
-              ) : (
-                <input
-                  type="text"
-                  className="form-control"
-                  value="Pick a US State first..."
-                  readOnly="readOnly"
-                />
-              )}
-              {!order.home_office_code && whyStatus ? (
-                <p className={styles.validationMessage}>
-                  Pick a Congressional Office
-                </p>
-              ) : (
-                ""
-              )}
-              {!districtMatchCheck && whyStatus ? (
-                <p className={styles.validationMessage}>
-                  US State and Congressional Office must correspond
-                </p>
-              ) : (
-                ""
-              )}
+                )}
+                {!order.home_office_code && whyStatus ? (
+                  <p className={styles.validationMessage}>
+                    Pick a Congressional Office
+                  </p>
+                ) : (
+                  ""
+                )}
+                {!districtMatchCheck && whyStatus ? (
+                  <p className={styles.validationMessage}>
+                    US State and Congressional Office must correspond
+                  </p>
+                ) : (
+                  ""
+                )}
+              </div>
             </div>
 
             {mode === "edit" ? (
