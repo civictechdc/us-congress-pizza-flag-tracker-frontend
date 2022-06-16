@@ -15,6 +15,7 @@ export const Search = (props) => {
     name: "status_code",
   }));
   statusOptions.unshift({ value: null, label: "None", name: "status" });
+
   let stateOptions = [];
   if (STATES) {
     stateOptions = STATES.map((state) => ({
@@ -26,11 +27,19 @@ export const Search = (props) => {
   stateOptions.unshift({ value: null, label: "None", name: "state" });
 
   let officeOptions = [];
-  officeOptions = STATES.map((state) => state.districts);
+  {
+    if (searchState.state.length === 2) {
+      let selectedState = JSON.parse(JSON.stringify(STATES));
+      selectedState = selectedState.filter(
+        (state) => state.name === searchState.state
+      );
+      officeOptions = selectedState.map((state) => state.districts);
+    } else officeOptions = STATES.map((state) => state.districts);
+  }
   officeOptions = officeOptions
     .flat()
-    .map((office) => ({ label: office, value: office, name: "office_code" }));
-  officeOptions.unshift({ value: null, label: "None", name: "office_code" });
+    .map((office) => ({ label: office, value: office, name: "office" }));
+  officeOptions.unshift({ value: null, label: "None", name: "office" });
 
   function onChangeSearchTitle(e) {
     const searchTitle = e.target.value;
@@ -50,6 +59,9 @@ export const Search = (props) => {
       queryParams.delete(e.name);
     } else {
       queryParams.set(e.name, e.value);
+      if (e.name === "state" && queryParams.get("office") != null) {
+        queryParams.delete("office");
+      }
     }
     history.replace(`${window.location.pathname}?${queryParams.toString()}`);
   };
@@ -138,6 +150,11 @@ export const Search = (props) => {
             className={styles.subSelect}
             onChange={onChangeParams}
             placeholder={"Search by state"}
+            value={{
+              label: searchState.state,
+              name: "usa_state",
+              value: searchState.state,
+            }}
           ></Select>
         </div>
         <div className={styles.searchComponent}>
@@ -147,6 +164,11 @@ export const Search = (props) => {
             className={styles.subSelect}
             onChange={onChangeParams}
             placeholder="Search by office"
+            value={{
+              label: searchState.office,
+              name: "usa_state",
+              value: searchState.office,
+            }}
           ></Select>
         </div>
       </div>

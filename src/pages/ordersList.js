@@ -8,6 +8,7 @@ import { useSortableData } from "../components/sorting/sortHook";
 import { TableHeader } from "../components/tableHeader";
 import Gauge from "../components/gauge";
 import { Search } from "../components/Search";
+import { editOrderControl } from "../components/protectedRoute/permissions";
 import { useLocation } from "react-router-dom";
 
 const OrdersList = () => {
@@ -52,6 +53,8 @@ const OrdersList = () => {
     //   AuthService.refreshTokenWrapperFunction(serviceCall);
     // };
     try {
+      dispatch({ type: "state", payload: "Search by State" });
+      dispatch({ type: "office", payload: "Search by Office" });
       if (searchParams) {
         retrieveOrders(searchParams);
       } else {
@@ -118,6 +121,9 @@ const OrdersList = () => {
     }
   }, [statuses]);
 
+  let isEditor = "";
+  editOrderControl() ? (isEditor = "yes") : (isEditor = "");
+
   const orderTbody = (
     <div className={styles.flagContainer}>
       {loading
@@ -163,12 +169,16 @@ const OrdersList = () => {
                         </p>
                       </div>
                       <div className={styles.statusItem}>
-                        <Link
-                          to={"/orders/" + currentOrder.uuid}
-                          className={styles.orderLinks}
-                        >
-                          Edit
-                        </Link>
+                        {isEditor ? (
+                          <Link
+                            to={"/orders/" + currentOrder.uuid}
+                            className={styles.orderLinks}
+                          >
+                            Edit
+                          </Link>
+                        ) : (
+                          <></>
+                        )}
                         <Link
                           to={{
                             pathname: "/scan/" + currentOrder.uuid,
