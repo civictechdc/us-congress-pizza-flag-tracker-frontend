@@ -109,7 +109,10 @@ const Login = (props) => {
           </div>
 
           <div className="form-group">
-            <button className="btn btn-primary btn-block">
+            <button
+              className="btn btn-primary btn-block"
+              data-button-function="Login"
+            >
               <span>Login</span>
             </button>
           </div>

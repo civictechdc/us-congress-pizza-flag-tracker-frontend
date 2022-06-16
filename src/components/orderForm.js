@@ -186,76 +186,76 @@ const OrderForm = (props) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="usa_state">US State:</label>{" "}
-              <div data-select-id="state-input">
-                <Select
-                  onChange={handleInputChange}
-                  options={optionUSStates}
-                  value={{
-                    label: order.usa_state,
-                    name: "usa_state",
-                    value: order.usa_state,
-                  }}
-                />
-                {!order.usa_state && whyStatus ? (
-                  <p className={styles.validationMessage}>Pick a US State</p>
-                ) : (
-                  ""
-                )}
-              </div>
+              <label htmlFor="edit-us-state">US State:</label>{" "}
+              <Select
+                inputId="edit-us-state"
+                onChange={handleInputChange}
+                options={optionUSStates}
+                value={{
+                  label: order.usa_state,
+                  name: "usa_state",
+                  value: order.usa_state,
+                }}
+              />
+              {!order.usa_state && whyStatus ? (
+                <p className={styles.validationMessage}>Pick a US State</p>
+              ) : (
+                ""
+              )}
             </div>
 
             <div className="form-group">
-              <label htmlFor="home_office_code">Congressional Office:</label>{" "}
-              <div data-select-id="home_office_code-input">
-                {order.usa_state ? (
-                  message.isLastChangeUSState ? (
-                    <Select
-                      onChange={handleInputChange}
-                      options={optionDistricts}
-                      value={null}
-                    />
-                  ) : (
-                    <Select
-                      onChange={handleInputChange}
-                      options={optionDistricts}
-                      value={{
-                        label: order.home_office_code,
-                        name: "home_office_code",
-                        value: order.home_office_code,
-                      }}
-                    />
-                  )
-                ) : (
-                  <input
-                    type="text"
-                    className="form-control"
-                    value="Pick a US State first..."
-                    readOnly="readOnly"
+              <label htmlFor="edit-office">Congressional Office:</label>{" "}
+              {order.usa_state ? (
+                message.isLastChangeUSState ? (
+                  <Select
+                    inputId="edit-office"
+                    onChange={handleInputChange}
+                    options={optionDistricts}
+                    value={null}
                   />
-                )}
-                {!order.home_office_code && whyStatus ? (
-                  <p className={styles.validationMessage}>
-                    Pick a Congressional Office
-                  </p>
                 ) : (
-                  ""
-                )}
-                {!districtMatchCheck && whyStatus ? (
-                  <p className={styles.validationMessage}>
-                    US State and Congressional Office must correspond
-                  </p>
-                ) : (
-                  ""
-                )}
-              </div>
+                  <Select
+                    inputId="edit-office"
+                    onChange={handleInputChange}
+                    options={optionDistricts}
+                    value={{
+                      label: order.home_office_code,
+                      name: "home_office_code",
+                      value: order.home_office_code,
+                    }}
+                  />
+                )
+              ) : (
+                <input
+                  type="text"
+                  className="form-control"
+                  value="Pick a US State first..."
+                  readOnly="readOnly"
+                />
+              )}
+              {!order.home_office_code && whyStatus ? (
+                <p className={styles.validationMessage}>
+                  Pick a Congressional Office
+                </p>
+              ) : (
+                ""
+              )}
+              {!districtMatchCheck && whyStatus ? (
+                <p className={styles.validationMessage}>
+                  US State and Congressional Office must correspond
+                </p>
+              ) : (
+                ""
+              )}
             </div>
 
             {mode === "edit" ? (
               <>
                 <div className="form-group">
-                  <label htmlFor="status_description">Status:</label>{" "}
+                  <label htmlFor="edit-status">Status:</label>{" "}
                   <Select
+                    inputId="edit-status"
                     onChange={handleInputChange}
                     options={optionStatuses}
                     value={{
