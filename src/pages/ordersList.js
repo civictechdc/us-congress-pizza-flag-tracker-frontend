@@ -159,7 +159,7 @@ const OrdersList = () => {
                 </div>
               </div>
               <div>
-                {currentOrder ? ( // checks for null values
+                {currentOrder ? ( // checks for null value
                   currentOrder.order_number == order.order_number ? (
                     <div className={styles.mobileStatus}>
                       <div className={styles.statusItem}>
