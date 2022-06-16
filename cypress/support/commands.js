@@ -44,7 +44,7 @@ Cypress.Commands.add("createSampleOrder", () => {
       "X-Access-Tokens": Cypress.env("token"),
     },
     body: {
-      order_number: "999999",
+      order_number: "1234",
       home_office_code: "AL-01",
       usa_state: "AL",
     },

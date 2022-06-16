@@ -47,7 +47,7 @@ describe("CRUD actions for superuser", () => {
   it("allows FED-ADMIN to create a new order ", () => {
     cy.visit("/add");
     //TODO add a name to the disabled Office input so that we can do cy.get("input[name=congressional_office]").should("be.disabled")
-    cy.get("input[name=order_number]").type("1234567890");
+    cy.get("input[name=order_number]").type("1234");
     cy.get("input[id=react-select-3-input]").type(`CO{enter}`);
     // cy.get("input[id=react-select-5-input]").click().find('[id*="5-option"]').eq(1).should("equal","CO-01").type("CO-01");
     //I'd like the above test to work but I'm having trouble getting Cypress to work with the react-selector. As a compromise/stopgap we use the below instead:
@@ -58,7 +58,7 @@ describe("CRUD actions for superuser", () => {
   it("does not allow FED-ADMIN to create a new order with a duplicate order number", () => {
     cy.visit("/add");
     //TODO add a name to the disabled Office input so that we can do cy.get("input[name=congressional_office]").should("be.disabled")
-    cy.get("input[name=order_number]").type("1234567890");
+    cy.get("input[name=order_number]").type("1234");
     cy.get("input[id=react-select-3-input]").type(`CO{enter}`);
     // cy.get("input[id=react-select-5-input]").click().find('[id*="5-option"]').eq(1).should("equal","CO-01").type("CO-01");
     //I'd like the above test to work but I'm having trouble getting Cypress to work with the react-selector. As a compromise/stopgap we use the below instead:
@@ -70,22 +70,30 @@ describe("CRUD actions for superuser", () => {
   it("allows FED-ADMIN to edit an order", () => {
     cy.createSampleOrder();
     cy.visit("/orders");
-    cy.get("p[class*='orders_orderNum']").contains("1234567890").click(); //danger, this may break upon implementing new layout if class name changes
+    cy.get("p[class*='orders_orderNum']").contains("1234").click(); //danger, this may break upon implementing new layout if class name changes
     cy.get("a[class*='orders_orderLinks']").eq(0).click();
-    cy.get("input[id=react-select-7-input]").click().type(`CO-02{enter}`); //why is it different on the edit screen? where do these numbers in the ids come from?
+    cy.get("div[data-select-id='state-input']")
+      .first()
+      .click()
+      .type(`CO{enter}`);
+    cy.get("div[data-select-id='home_office_code-input']")
+      .first()
+      .click()
+      .type(`CO-02{enter}`);
+    //why is it different on the edit screen? where do these numbers in the ids come from?
     cy.get(".btn-success").click();
     cy.visit("/orders");
     cy.get("p[class*='orders_orderNum']")
-      .contains("1234567890")
+      .contains("1234")
       .next()
       .children()
       .first()
       .should("contain", "CO-02");
   });
   it("allows FED-ADMIN to delete an order", () => {
-    cy.get("p[class*='orders_orderNum']").contains("1234567890").click(); //danger, this may break upon implementing new layout if class name changes
+    cy.get("p[class*='orders_orderNum']").contains("1234").click(); //danger, this may break upon implementing new layout if class name changes
     cy.get("a[class*='orders_orderLinks']").eq(0).click();
     cy.get(".badge-danger").click(); //there probably should be a confirmation step here both before and after deletion, SO, this test will need to be updated
-    cy.get("main").wait(1000).should("not.contain", "1234567890"); //cypress docs say not to use wait but otherwise it's testing against the empty, pre-rendered table
+    cy.get("main").wait(1000).should("not.contain", "1234"); //cypress docs say not to use wait but otherwise it's testing against the empty, pre-rendered table
   });
 });
