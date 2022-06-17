@@ -13,7 +13,7 @@ describe("Loading and logging in", () => {
   it("Can log in using admin credentials", () => {
     cy.visit("/login");
     cy.get("input[name=username]").type("FED-ADMIN");
-    cy.get("input[type=password]").type("FED-ADMIN-1010{enter}");
+    cy.get("input[type=password]").type(`FED-ADMIN-1010{enter}`);
     // cy.get("button[data-button-function='Login']").click();
     cy.visit("/");
     cy.get("nav").should("contain", "Add");
