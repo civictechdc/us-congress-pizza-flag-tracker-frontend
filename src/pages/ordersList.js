@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useRef } from "react";
 import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 import { Link } from "react-router-dom";
@@ -126,8 +126,10 @@ const OrdersList = () => {
     }
   }, [statuses]);
 
-  let isEditor = "";
-  editOrderControl() ? (isEditor = "yes") : (isEditor = "");
+  const isEditor = useRef("");
+  useEffect(() => {
+    editOrderControl() ? (isEditor.current = "yes") : (isEditor.current = "");
+  }, [isEditor]);
 
   const orderTbody = (
     <div className={styles.flagContainer}>
@@ -157,7 +159,7 @@ const OrdersList = () => {
                 </div>
               </div>
               <div>
-                {currentOrder ? ( // checks for null value
+                {currentOrder ? ( // checks for null values
                   currentOrder.order_number == order.order_number ? (
                     <div className={styles.mobileStatus}>
                       <div className={styles.statusItem}>
@@ -174,7 +176,7 @@ const OrdersList = () => {
                         </p>
                       </div>
                       <div className={styles.statusItem}>
-                        {isEditor ? (
+                        {isEditor.current ? (
                           <Link
                             to={"/orders/" + currentOrder.uuid}
                             className={styles.orderLinks}
