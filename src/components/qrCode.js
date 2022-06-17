@@ -6,25 +6,19 @@ const QrCode = forwardRef((props, ref) => {
 
   return (
     <div className="qr-group" ref={ref}>
-      <div className="form-group">
-        <label htmlFor="order_number">
+      <div className="formContainer item">
+        <p htmlFor="order_number" className="text">
           Order Number: <strong>{order.order_number}</strong>
-        </label>
-      </div>
-      <div className="form-group">
-        <label htmlFor="usa_state">
+          <br />
           US State: <strong>{order.usa_state}</strong>
-        </label>
-      </div>
-      <div className="form-group">
-        <label htmlFor="home_office_code">
+          <br />
           Congressional Office: <strong>{order.home_office_code}</strong>
-        </label>
+        </p>
       </div>
       <img
         src={baseURL + "/qrcode/" + order.uuid}
         alt="QR Code"
-        className="center"
+        className="center item"
       />
     </div>
   );
