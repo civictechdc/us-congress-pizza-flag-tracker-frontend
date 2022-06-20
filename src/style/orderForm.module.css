@@ -7,6 +7,16 @@
   font-weight: bold;
 }
 
+.constituent {
+  margin-bottom: 2px;
+}
+
+.flexContainer {
+  display: flex;
+  flex-direction: row;
+  column-gap: 25%;
+}
+
 .formContainer {
   position: relative;
   left: 25vw;
@@ -21,6 +31,11 @@
   flex-direction: column;
   row-gap: 3em;
 
+}
+
+.formGroup {
+  margin-bottom: 10px;
+  width: 25%;
 }
 
 .title {
