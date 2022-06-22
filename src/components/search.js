@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import Select from "react-select";
 import styles from "../style/orders.module.css";
 import OrderDataService from "../service/orderService";
-import { STATES } from "../components/states";
+import { STATES } from "./states";
 
 export const Search = (props) => {
   const { searchState, setSearchTitle, statuses } = props;

@@ -7,7 +7,7 @@ import AuthService from "../service/authService";
 import { useSortableData } from "../components/sorting/sortHook";
 import { TableHeader } from "../components/tableHeader";
 import Gauge from "../components/gauge";
-import { Search } from "../components/Search";
+import { Search } from "../components/search";
 import { editOrderControl } from "../components/protectedRoute/permissions";
 import { useLocation } from "react-router-dom";
 

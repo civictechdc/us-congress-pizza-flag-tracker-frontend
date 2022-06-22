@@ -1,7 +1,7 @@
 import { React, useState } from "react";
 import OrderClosed from "./infoBottom/orderClosed";
 import OrderOpen from "./infoBottom/orderOpen";
-import { LogTable } from "../LogTable";
+import { LogTable } from "../logTable";
 
 const InfoBottom = (props) => {
   const {

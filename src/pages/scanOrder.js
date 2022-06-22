@@ -43,7 +43,6 @@ const ScanOrder = (props) => {
   const [revert, setRevert] = useState(""); // Revert Update button
   const [statuses, setStatuses] = useState([]);
   const [popUpBox, setPopUpBox] = useState("none");
-  const [errorMessage, setErrorMessage] = useState("");
   const user = JSON.parse(localStorage.getItem("user"));
   const [loading, setLoading] = useState(false);
 
@@ -59,11 +58,7 @@ const ScanOrder = (props) => {
 
   useEffect(() => {
     if (statuses.length === 0) {
-      StatusDataService.retrieveStatuses(
-        setErrorMessage,
-        setStatuses,
-        setPopUpBox
-      );
+      StatusDataService.retrieveStatuses(setMessage, setStatuses, setPopUpBox);
     }
   }, [statuses]);
 
