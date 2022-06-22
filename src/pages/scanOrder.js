@@ -234,8 +234,6 @@ const ScanOrder = (props) => {
     setPopUpBox("none");
   };
 
-  console.log("render");
-
   return (
     <div className={styles.scanContainer}>
       <h1 className={styles.title}>Scan</h1>
