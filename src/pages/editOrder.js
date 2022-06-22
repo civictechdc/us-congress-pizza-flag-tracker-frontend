@@ -53,7 +53,7 @@ const EditOrder = (props) => {
 
   useEffect(() => {
     if (statuses.length === 0) {
-      StatusDataService.retrieveStatuses(setMessage, setStatuses);
+      StatusDataService.retrieveStatuses(setMessage, setStatuses, setPopUpBox);
     }
   }, [statuses]);
 

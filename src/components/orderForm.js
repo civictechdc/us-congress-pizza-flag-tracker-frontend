@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Select from "react-select";
-import { baseURL } from "../http-common";
 import { STATES } from "./states.js";
 import styles from "../style/orderForm.module.css";
 
@@ -200,7 +199,7 @@ const OrderForm = (props) => {
               </div>
 
               <div className={styles.formGroup}>
-                <label htmlFor="edit-office">Congressional Office:</label>{" "}
+                <label htmlFor="edit-office">District:</label>{" "}
                 {order.usa_state ? (
                   message.isLastChangeUSState ? (
                     <Select
