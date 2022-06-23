@@ -60,6 +60,7 @@ const LoginSubComponent = (props) => {
           <div className="form-group">
             <label htmlFor="username">Username</label>
             <Input
+              id="username"
               type="text"
               className="form-control"
               name="username"
@@ -72,6 +73,7 @@ const LoginSubComponent = (props) => {
           <div className="form-group">
             <label htmlFor="password">Password</label>
             <Input
+              id="password"
               type="password"
               className="form-control"
               password="password"
