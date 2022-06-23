@@ -50,7 +50,7 @@ function App() {
             <Route exact path="/profile" component={Profile} />
             <Route path="/scan/:id" component={ScanOrder} />
             <Route path="/orders/:id" component={EditOrder} />
-            <AdminRoute exact path="/users/add" component={AddUser} />
+            <Route exact path="/users/add" component={AddUser} />
             <Route exact path="/add" component={AddOrder} />
             {/* Refresh should be removed prior to production */}
             <Route exact path="/refresh" component={Refresh} />{" "}
