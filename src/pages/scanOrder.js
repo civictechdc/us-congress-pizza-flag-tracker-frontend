@@ -2,7 +2,7 @@ import React from "react";
 
 import { isUser } from "../components/protectedRoute/permissions";
 import LoginSubComponent from "../components/loginSubComponent";
-import ScanView from "../components/scanView";
+import ScanView from "../components/scanOrder/scanView";
 
 const ScanOrder = (props) => {
   console.log("props, ", props);

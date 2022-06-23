@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 
-import AuthService from "../service/authService";
-import OrderDataService from "../service/orderService";
-import StatusDataService from "../service/statusService";
+import AuthService from "../../service/authService";
+import OrderDataService from "../../service/orderService";
+import StatusDataService from "../../service/statusService";
 
-import InfoBottom from "./scanOrder/infoBottom";
-import InfoTop from "./scanOrder/infoTop";
-import { numSort } from "./sorting/sortHook";
-import PopUpBoxComponent from "./popUpBoxComponent";
+import InfoBottom from "./infoBottom";
+import InfoTop from "./infoTop";
+import { numSort } from "../sorting/sortHook";
+import PopUpBoxComponent from "../popUpBoxComponent";
 
-import styles from "../style/scanOrder.module.css";
+import styles from "../../style/scanOrder.module.css";
 
 const ScanView = (props) => {
   const { scanId } = props;
