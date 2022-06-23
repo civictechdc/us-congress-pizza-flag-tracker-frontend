@@ -6,271 +6,282 @@ import StatusDataService from "../service/statusService";
 
 import InfoBottom from "../components/scanOrder/infoBottom";
 import InfoTop from "../components/scanOrder/infoTop";
+import LoginSubComponent from "../components/loginSubComponent";
 import { numSort } from "../components/sorting/sortHook";
 import PopUpBoxComponent from "../components/popUpBoxComponent";
+import UserContext from "../components/userContext";
+import ScanView from "../components/scanView";
+
+import { isUser } from "../components/protectedRoute/permissions";
 
 import styles from "../style/scanOrder.module.css";
 
 const ScanOrder = (props) => {
-  const initialOrderState = {
-    uuid: null,
-    title: "",
-    description: "",
-    published: false,
-    order_number: "",
-    home_office_code: "",
-    usa_state: "",
-    order_status_id: "",
-    status: {
-      description: "",
-      id: "",
-      sequence_num: "",
-      permission: "",
-      active_status: "",
-      status_code: "",
-    },
-  };
+  console.log("props, ", props);
+  // const initialOrderState = {
+  //   uuid: null,
+  //   title: "",
+  //   description: "",
+  //   published: false,
+  //   order_number: "",
+  //   home_office_code: "",
+  //   usa_state: "",
+  //   order_status_id: "",
+  //   status: {
+  //     description: "",
+  //     id: "",
+  //     sequence_num: "",
+  //     permission: "",
+  //     active_status: "",
+  //     status_code: "",
+  //   },
+  // };
 
-  const initialMessageState = {
-    // to be consistent with other uses of Message State and PopUpBox
-    text: "",
-  };
+  // const initialMessageState = {
+  //   // to be consistent with other uses of Message State and PopUpBox
+  //   text: "",
+  // };
 
-  const [order, setOrder] = useState(initialOrderState);
-  const [unalteredOrder, setUnalteredOrder] = useState(initialOrderState);
-  const [message, setMessage] = useState(initialMessageState);
-  const [decline, setDecline] = useState(""); // Decline Update button
-  const [revert, setRevert] = useState(""); // Revert Update button
-  const [statuses, setStatuses] = useState([]);
-  const [popUpBox, setPopUpBox] = useState("none");
-  const user = JSON.parse(localStorage.getItem("user"));
-  const [loading, setLoading] = useState(false);
+  // const [order, setOrder] = useState(initialOrderState);
+  // const [unalteredOrder, setUnalteredOrder] = useState(initialOrderState);
+  // const [message, setMessage] = useState(initialMessageState);
+  // const [decline, setDecline] = useState(""); // Decline Update button
+  // const [revert, setRevert] = useState(""); // Revert Update button
+  // const [statuses, setStatuses] = useState([]);
+  // const [popUpBox, setPopUpBox] = useState("none");
+  // const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    setLoading(true);
-    OrderDataService.getOrder(
-      props.match.params.id,
-      setOrder,
-      setUnalteredOrder,
-      setLoading
-    );
-  }, [props.match.params.id]);
+  // let user = JSON.parse(localStorage.getItem("user"));
+  // if (user == null) { user = { office_code: null,}};
 
-  useEffect(() => {
-    if (statuses.length === 0) {
-      StatusDataService.retrieveStatuses(setMessage, setStatuses, setPopUpBox);
-    }
-  }, [statuses]);
+  // useEffect(() => {
+  //   setLoading(true);
+  //   OrderDataService.getOrder(
+  //     props.match.params.id,
+  //     setOrder,
+  //     setUnalteredOrder,
+  //     setLoading
+  //   );
+  // }, [props.match.params.id]);
 
-  let nextStatus = {
-    description: "",
-    id: null,
-    sequence_num: null,
-    permission: "",
-    active_status: "",
-  };
+  // useEffect(() => {
+  //   if (statuses.length === 0) {
+  //     StatusDataService.retrieveStatuses(setMessage, setStatuses, setPopUpBox);
+  //   }
+  // }, [statuses]);
 
-  let skipStatus = {
-    description: "",
-    id: null,
-    sequence_num: null,
-    permission: "",
-  };
+  // let nextStatus = {
+  //   description: "",
+  //   id: null,
+  //   sequence_num: null,
+  //   permission: "",
+  //   active_status: "",
+  // };
 
-  let sortedStatuses = numSort(statuses, "sequence_num", "asc");
-  let skip = "";
+  // let skipStatus = {
+  //   description: "",
+  //   id: null,
+  //   sequence_num: null,
+  //   permission: "",
+  // };
 
-  const removeCancelStatus = () => {
-    for (let i = 0; i < sortedStatuses.length; i++) {
-      if (sortedStatuses[i].active_status === "CANCELED") {
-        sortedStatuses.splice(i, 1);
-        i--;
-      }
-    }
-  };
+  // let sortedStatuses = numSort(statuses, "sequence_num", "asc");
+  // let skip = "";
 
-  const calculateNextStatus = () => {
-    for (let i = 0; i < sortedStatuses.length; i++) {
-      if (sortedStatuses[i].sequence_num > order.status.sequence_num) {
-        nextStatus.description = sortedStatuses[i].description;
-        nextStatus.id = sortedStatuses[i].id;
-        nextStatus.sequence_num = sortedStatuses[i].sequence_num;
-        nextStatus.permission = sortedStatuses[i].permission;
-        nextStatus.active_status = sortedStatuses[i].active_status;
-        break;
-      }
-    }
-  };
+  // const removeCancelStatus = () => {
+  //   for (let i = 0; i < sortedStatuses.length; i++) {
+  //     if (sortedStatuses[i].active_status === "CANCELED") {
+  //       sortedStatuses.splice(i, 1);
+  //       i--;
+  //     }
+  //   }
+  // };
 
-  const calculateBypassArchitectOfCapital = () => {
-    for (let i = 0; i < sortedStatuses.length; i++) {
-      if (sortedStatuses[i].permission == "FED-MAIL") {
-        skipStatus.description = sortedStatuses[i].description;
-        skipStatus.id = sortedStatuses[i].id;
-        skipStatus.sequence_num = sortedStatuses[i].sequence_num;
-        skipStatus.permission = sortedStatuses[i].permission;
-        break;
-      }
-    }
-  };
+  // const calculateNextStatus = () => {
+  //   for (let i = 0; i < sortedStatuses.length; i++) {
+  //     if (sortedStatuses[i].sequence_num > order.status.sequence_num) {
+  //       nextStatus.description = sortedStatuses[i].description;
+  //       nextStatus.id = sortedStatuses[i].id;
+  //       nextStatus.sequence_num = sortedStatuses[i].sequence_num;
+  //       nextStatus.permission = sortedStatuses[i].permission;
+  //       nextStatus.active_status = sortedStatuses[i].active_status;
+  //       break;
+  //     }
+  //   }
+  // };
 
-  if (statuses && order) {
-    removeCancelStatus();
-    calculateNextStatus();
-    calculateBypassArchitectOfCapital();
-  }
+  // const calculateBypassArchitectOfCapital = () => {
+  //   for (let i = 0; i < sortedStatuses.length; i++) {
+  //     if (sortedStatuses[i].permission == "FED-MAIL") {
+  //       skipStatus.description = sortedStatuses[i].description;
+  //       skipStatus.id = sortedStatuses[i].id;
+  //       skipStatus.sequence_num = sortedStatuses[i].sequence_num;
+  //       skipStatus.permission = sortedStatuses[i].permission;
+  //       break;
+  //     }
+  //   }
+  // };
 
-  if (
-    user.office_code === ("FED-MAIL" || "FED-MAIL-ADMIN") &&
-    order.status.status_code === "HOSS_VERIFIED"
-  ) {
-    skip = "true";
-  }
+  // if (statuses && order) {
+  //   removeCancelStatus();
+  //   calculateNextStatus();
+  //   calculateBypassArchitectOfCapital();
+  // }
 
-  const handleUpdate = () => {
-    const updatedStatus = {
-      ...order,
-      order_status_id: nextStatus.id,
-    };
-    return updatedStatus;
-  };
+  // if (
+  //   user.office_code === ("FED-MAIL" || "FED-MAIL-ADMIN") &&
+  //   order.status.status_code === "HOSS_VERIFIED"
+  // ) {
+  //   skip = "true";
+  // }
 
-  const handleSkip = () => {
-    const updatedStatus = {
-      ...order,
-      order_status_id: skipStatus.id,
-    };
-    return updatedStatus;
-  };
+  // const handleUpdate = () => {
+  //   const updatedStatus = {
+  //     ...order,
+  //     order_status_id: nextStatus.id,
+  //   };
+  //   return updatedStatus;
+  // };
 
-  const updateStatus = (updatedStatus, activateRevertButton) => {
-    const serviceCall = () => {
-      return StatusDataService.updateStatus(
-        updatedStatus.uuid,
-        updatedStatus
-      ).then((response) => {
-        setOrder(response.data);
-        setPopUpBox("block");
-        setMessage({
-          ...message,
-          text: "The order was updated successfully!",
-        });
-        if (activateRevertButton === "on") {
-          setRevert("yes");
-        }
-        if (activateRevertButton === "off") {
-          setRevert("");
-        }
-      });
-    };
-    try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
-    } catch (e) {
-      console.log(e);
-      setPopUpBox("block");
-      setMessage({
-        ...message,
-        text: ("Update Status Error: ", e),
-      });
-    }
-  };
+  // const handleSkip = () => {
+  //   const updatedStatus = {
+  //     ...order,
+  //     order_status_id: skipStatus.id,
+  //   };
+  //   return updatedStatus;
+  // };
 
-  const saveUpdate = () => {
-    const updatedStatus = handleUpdate();
-    const activateRevertButton = "on";
-    updateStatus(updatedStatus, activateRevertButton);
-  };
+  // const updateStatus = (updatedStatus, activateRevertButton) => {
+  //   const serviceCall = () => {
+  //     return StatusDataService.updateStatus(
+  //       updatedStatus.uuid,
+  //       updatedStatus
+  //     ).then((response) => {
+  //       setOrder(response.data);
+  //       setPopUpBox("block");
+  //       setMessage({
+  //         ...message,
+  //         text: "The order was updated successfully!",
+  //       });
+  //       if (activateRevertButton === "on") {
+  //         setRevert("yes");
+  //       }
+  //       if (activateRevertButton === "off") {
+  //         setRevert("");
+  //       }
+  //     });
+  //   };
+  //   try {
+  //     AuthService.refreshTokenWrapperFunction(serviceCall);
+  //   } catch (e) {
+  //     console.log(e);
+  //     setPopUpBox("block");
+  //     setMessage({
+  //       ...message,
+  //       text: ("Update Status Error: ", e),
+  //     });
+  //   }
+  // };
 
-  const declineUpdate = () => {
-    setDecline("yes");
-  };
+  // const saveUpdate = () => {
+  //   const updatedStatus = handleUpdate();
+  //   const activateRevertButton = "on";
+  //   updateStatus(updatedStatus, activateRevertButton);
+  // };
 
-  const revertUpdate = () => {
-    const currentTime = new Date().toUTCString();
-    const currentTimeInMilliSeconds = Date.parse(currentTime);
+  // const declineUpdate = () => {
+  //   setDecline("yes");
+  // };
 
-    let lastUpdateTime = order.updated_at;
-    lastUpdateTime += " GMT";
-    lastUpdateTime = lastUpdateTime.replace(/-/g, " ");
-    const lastUpdateTimeInMilliSeconds = Date.parse(lastUpdateTime);
+  // const revertUpdate = () => {
+  //   const currentTime = new Date().toUTCString();
+  //   const currentTimeInMilliSeconds = Date.parse(currentTime);
 
-    const milliSecondsSinceUpdate =
-      currentTimeInMilliSeconds - lastUpdateTimeInMilliSeconds;
+  //   let lastUpdateTime = order.updated_at;
+  //   lastUpdateTime += " GMT";
+  //   lastUpdateTime = lastUpdateTime.replace(/-/g, " ");
+  //   const lastUpdateTimeInMilliSeconds = Date.parse(lastUpdateTime);
 
-    if (
-      order.status.active_status === "CLOSED" &&
-      user.update_all_statuses !== "Y" &&
-      milliSecondsSinceUpdate >
-        (process.env.REACT_APP_THRESHOLD ||
-          3600000) /* 1 hour in milliseconds */
-    ) {
-      setPopUpBox("block");
-      setMessage({
-        ...message,
-        text: "Too much time has elapsed to undo a completed order; please see an Admin",
-      });
-    } else {
-      setOrder(unalteredOrder);
-      const activateRevertButton = "off";
-      updateStatus(unalteredOrder, activateRevertButton);
-    }
-  };
+  //   const milliSecondsSinceUpdate =
+  //     currentTimeInMilliSeconds - lastUpdateTimeInMilliSeconds;
 
-  const refuseUpdate = () => {
-    setPopUpBox("block");
-    setMessage({
-      ...message,
-      text: "Do not have permissions for either (1) this order or (2) to advance to the next status",
-    });
-  };
+  //   if (
+  //     order.status.active_status === "CLOSED" &&
+  //     user.update_all_statuses !== "Y" &&
+  //     milliSecondsSinceUpdate >
+  //       (process.env.REACT_APP_THRESHOLD ||
+  //         3600000) /* 1 hour in milliseconds */
+  //   ) {
+  //     setPopUpBox("block");
+  //     setMessage({
+  //       ...message,
+  //       text: "Too much time has elapsed to undo a completed order; please see an Admin",
+  //     });
+  //   } else {
+  //     setOrder(unalteredOrder);
+  //     const activateRevertButton = "off";
+  //     updateStatus(unalteredOrder, activateRevertButton);
+  //   }
+  // };
 
-  const skipUpdate = () => {
-    const updatedStatus = handleSkip();
-    const activateRevertButton = "on";
-    updateStatus(updatedStatus, activateRevertButton);
-  };
+  // const refuseUpdate = () => {
+  //   setPopUpBox("block");
+  //   setMessage({
+  //     ...message,
+  //     text: "Do not have permissions for either (1) this order or (2) to advance to the next status",
+  //   });
+  // };
 
-  const closePopUpBox = () => {
-    setPopUpBox("none");
-  };
+  // const skipUpdate = () => {
+  //   const updatedStatus = handleSkip();
+  //   const activateRevertButton = "on";
+  //   updateStatus(updatedStatus, activateRevertButton);
+  // };
 
-  return (
-    <div className={styles.scanContainer}>
-      <h1 className={styles.title}>Scan</h1>
-      {loading ? (
-        "Loading..."
-      ) : order ? (
-        <>
-          <InfoTop order={order} />
-          <InfoBottom
-            decline={decline}
-            declineUpdate={declineUpdate}
-            nextStatus={nextStatus}
-            unalteredOrder={unalteredOrder}
-            order={order}
-            refuseUpdate={refuseUpdate}
-            revert={revert}
-            revertUpdate={revertUpdate}
-            saveUpdate={saveUpdate}
-            skip={skip}
-            skipStatus={skipStatus}
-            skipUpdate={skipUpdate}
-            statuses={statuses}
-            user={user}
-          />
-        </>
-      ) : (
-        <>
-          <br />
-          <p>Please click on an order...</p>
-        </>
-      )}
-      <PopUpBoxComponent
-        closePopUpBox={closePopUpBox}
-        message={message}
-        popUpBox={popUpBox}
-      />
-    </div>
+  // const closePopUpBox = () => {
+  //   setPopUpBox("none");
+  // };
+
+  return isUser() ? (
+    // <div className={styles.scanContainer}>
+    //   <h1 className={styles.title}>Scan</h1>
+    //   {loading ? (
+    //     "Loading..."
+    //   ) : order ? (
+    //     <>
+    //       <InfoTop order={order} />
+    //       <InfoBottom
+    //         decline={decline}
+    //         declineUpdate={declineUpdate}
+    //         nextStatus={nextStatus}
+    //         unalteredOrder={unalteredOrder}
+    //         order={order}
+    //         refuseUpdate={refuseUpdate}
+    //         revert={revert}
+    //         revertUpdate={revertUpdate}
+    //         saveUpdate={saveUpdate}
+    //         skip={skip}
+    //         skipStatus={skipStatus}
+    //         skipUpdate={skipUpdate}
+    //         statuses={statuses}
+    //         user={user}
+    //       />
+    //     </>
+    //   ) : (
+    //     <>
+    //       <br />
+    //       <p>Please click on an order...</p>
+    //     </>
+    //   )}
+    //   <PopUpBoxComponent
+    //     closePopUpBox={closePopUpBox}
+    //     message={message}
+    //     popUpBox={popUpBox}
+    //   />
+    // </div>
+    <ScanView scanId={props.match.params.id} />
+  ) : (
+    <LoginSubComponent />
   );
 };
 

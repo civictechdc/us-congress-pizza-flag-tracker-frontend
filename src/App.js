@@ -37,9 +37,9 @@ function App() {
       </UserContext.Provider>
 
       <main className="mainContainer">
-        <UserContext.Provider value={value}>
-          <Switch>
-            {/* DemoLogIn and UserContext.Provider wrapping it should be removed prior to production */}
+        <Switch>
+          <UserContext.Provider value={value}>
+            {/* DemoLogIn should be removed prior to production */}
             <Route
               path={["/demoLogin", "/*/demoLogin"]}
               component={DemoLogIn}
@@ -48,14 +48,14 @@ function App() {
             <UserRoute exact path={["/", "/orders"]} component={OrdersList} />
             <UserRoute path="/print/:id" component={PrintOrder} />
             <UserRoute exact path="/profile" component={Profile} />
-            <UserRoute path="/scan/:id" component={ScanOrder} />
+            <Route path="/scan/:id" component={ScanOrder} />
             <EditorRoute path="/orders/:id" component={EditOrder} />
             <AdminRoute exact path="/users/add" component={AddUser} />
             <FedRoute exact path="/add" component={AddOrder} />
             {/* Refresh should be removed prior to production */}
             <Route exact path="/refresh" component={Refresh} />{" "}
-          </Switch>
-        </UserContext.Provider>
+          </UserContext.Provider>
+        </Switch>
       </main>
       {/* */}
       <footer className="footer-container"></footer>
