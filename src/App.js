@@ -46,7 +46,7 @@ function App() {
             />{" "}
             <Route exact path="/login" component={Login} />
             <UserRoute exact path={["/", "/orders"]} component={OrdersList} />
-            <UserRoute path="/print/:id" component={PrintOrder} />
+            <Route path="/print/:id" component={PrintOrder} />
             <Route exact path="/profile" component={Profile} />
             <Route path="/scan/:id" component={ScanOrder} />
             <EditorRoute path="/orders/:id" component={EditOrder} />
