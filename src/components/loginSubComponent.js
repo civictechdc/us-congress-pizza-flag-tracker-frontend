@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { useLocation, useHistory, Redirect } from "react-router-dom";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
@@ -24,9 +23,6 @@ const LoginSubComponent = (props) => {
   const [message, setMessage] = useState("");
   const { userDisplay, setUserDisplay } = useContext(UserContext);
 
-  const location = useLocation();
-  const history = useHistory();
-
   const onChangeUsername = (e) => {
     setUsername(e.target.value);
   };
@@ -40,35 +36,8 @@ const LoginSubComponent = (props) => {
 
     return AuthService.login(username, password).then(
       () => {
-        // const whereAreYouGoing = async () => {
-        //   if (location.state === undefined) {
-        //     return history.push("/");
-        //   } else {
-        //     let id = location.state.destination.slice(6);
-        //     let path = generatePath("/scan/:id", { id: id });
-        //     let serviceCall = async () => {
-        //       let response = await OrderDataService.get(id);
-        //       return response.data;
-        //     };
-
-        //     let order = await AuthService.refreshTokenWrapperFunction(
-        //       serviceCall
-        //     );
-        //     let orderOfficeCode =
-        //       order !== undefined ? order.home_office_code : "";
-        //     let destination = history.push(path, {
-        //       orderOfficeCheck: orderOfficeCode,
-        //     });
-
-        //     return destination;
-        //   }
-        // };
-
-        // whereAreYouGoing();
-        // window.location.reload();
-
-        setMessage("You have logged in successfully");
-        console.log(message);
+        // the value set is largely unimportant; rather the setting of any value will force Header component
+        // to rerender and display the updated login information
         setUserDisplay(1);
       },
       (error) => {

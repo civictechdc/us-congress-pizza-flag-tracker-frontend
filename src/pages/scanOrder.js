@@ -5,8 +5,6 @@ import LoginSubComponent from "../components/loginSubComponent";
 import ScanView from "../components/scanOrder/scanView";
 
 const ScanOrder = (props) => {
-  console.log("props, ", props);
-
   return isUser() ? (
     <ScanView scanId={props.match.params.id} />
   ) : (
