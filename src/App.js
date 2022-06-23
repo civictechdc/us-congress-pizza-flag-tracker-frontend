@@ -46,10 +46,10 @@ function App() {
             />{" "}
             <Route exact path="/login" component={Login} />
             <Route exact path={["/", "/orders"]} component={OrdersList} />
-            <Route path="/print/:id" component={PrintOrder} />
+            <Route exact path="/print/:id" component={PrintOrder} />
             <Route exact path="/profile" component={Profile} />
-            <Route path="/scan/:id" component={ScanOrder} />
-            <Route path="/orders/:id" component={EditOrder} />
+            <Route exact path="/scan/:id" component={ScanOrder} />
+            <Route exact path="/orders/:id" component={EditOrder} />
             <Route exact path="/users/add" component={AddUser} />
             <Route exact path="/add" component={AddOrder} />
             {/* Refresh should be removed prior to production */}
