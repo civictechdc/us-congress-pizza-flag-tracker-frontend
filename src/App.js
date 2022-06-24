@@ -39,13 +39,13 @@ function App() {
       <main className="mainContainer">
         <Switch>
           <UserContext.Provider value={value}>
+            <Route exact path={["/"]} component={OrdersList} />
             {/* DemoLogIn should be removed prior to production */}
             <Route
               path={["/demoLogin", "/*/demoLogin"]}
               component={DemoLogIn}
             />{" "}
             <Route exact path="/login" component={Login} />
-            <Route exact path={["/", "/orders"]} component={OrdersList} />
             <Route exact path="/print/:id" component={PrintOrder} />
             <Route exact path="/profile" component={Profile} />
             <Route exact path="/scan/:id" component={ScanOrder} />

@@ -46,7 +46,7 @@ const Refresh = () => {
           Reset Database
         </button>
       </div>
-      {redirectNow ? <Redirect to="/orders" /> : <></>}
+      {redirectNow ? <Redirect to="/" /> : <></>}
       <PopUpBoxComponent
         closePopUpBox={closePopUpBox}
         message={message}

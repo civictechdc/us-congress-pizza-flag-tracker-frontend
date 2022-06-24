@@ -13,7 +13,7 @@ const EditOrder = (props) => {
     editOrderControl() ? (
       <EditView editId={props.match.params.id} history={props.history} />
     ) : (
-      <Redirect to="/orders" />
+      <Redirect to="/" />
     )
   ) : (
     <LoginSubComponent />

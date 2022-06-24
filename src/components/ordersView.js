@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useReducer, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useReducer,
+  useRef,
+  useContext,
+} from "react";
 import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 import { Link } from "react-router-dom";
@@ -9,7 +15,8 @@ import { TableHeader } from "./tableHeader";
 import Gauge from "./gauge";
 import { Search } from "./search";
 import { editOrderControl } from "./protectedRoute/permissions";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+import UserContext from "./userContext";
 
 const OrdersView = () => {
   let initialSearchState = { keyword: "", status: [], state: "", office: "" };
@@ -23,6 +30,8 @@ const OrdersView = () => {
   const [sortType, setSortType] = useState("numeric");
   const [loading, setLoading] = useState(false);
   const [statuses, setStatuses] = useState([]);
+  const { userDisplay, setUserDisplay } = useContext(UserContext);
+  const history = useHistory();
 
   const sortOptions = { sortedField, sortDir, sortType };
   const sortedOrders = useSortableData(orders, sortOptions);
@@ -61,7 +70,36 @@ const OrdersView = () => {
       setPopUpBox("block");
     }
   };
-  const searchParams = useLocation().search;
+
+  // in production replace demologin code with this:
+  // const searchParams = useLocation().search;
+
+  //demologin code begin
+  const rawParams = useLocation().search;
+  const paramsArray = rawParams.split("/demoLogin?q=");
+  const searchParams = paramsArray[0];
+  const userName = paramsArray[1];
+
+  const logIn = (userName, password) => {
+    return AuthService.login(userName, password)
+      .then((response) => {
+        console.log("response", response);
+        setErrorMessage("Login Updated, click this box to continue");
+        setPopUpBox("block");
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  if (userName != undefined) {
+    const password = userName + "-1010";
+    console.log("password: ", password);
+    logIn(userName, password);
+    history.push("/" + searchParams);
+  }
+  //demologin code end
+
   useEffect(() => {
     setLoading(true);
     try {
@@ -219,6 +257,7 @@ const OrdersView = () => {
 
   const closePopUpBox = () => {
     setPopUpBox("none");
+    setUserDisplay(1);
   };
 
   return (

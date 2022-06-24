@@ -13,7 +13,7 @@ const AddOrder = () => {
     editOrderControl() ? (
       <AddView />
     ) : (
-      <Redirect to="/orders" />
+      <Redirect to="/" />
     )
   ) : (
     <LoginSubComponent />

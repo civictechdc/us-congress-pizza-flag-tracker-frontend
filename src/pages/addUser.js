@@ -10,7 +10,7 @@ const AddUser = () => {
     adminControl() ? (
       <AddUserView />
     ) : (
-      <Redirect to="/orders" />
+      <Redirect to="/" />
     )
   ) : (
     <LoginSubComponent />

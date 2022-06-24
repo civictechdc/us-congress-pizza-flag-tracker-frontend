@@ -77,7 +77,7 @@ const EditView = (props) => {
   const deleteOrder = () => {
     const serviceCall = () => {
       return OrderDataService.remove(order.uuid).then((response) => {
-        history.push("/orders");
+        history.push("/");
       });
     };
     try {
