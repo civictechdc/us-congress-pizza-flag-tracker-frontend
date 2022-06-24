@@ -10,7 +10,8 @@ export const Search = (props) => {
   const history = useHistory();
 
   const statusOptions = statuses.map((status) => ({
-    value: status.id,
+    // value: status.id,
+    value: status.status_code,
     label: status.status_code,
     name: "status_code",
   }));
