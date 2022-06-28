@@ -129,9 +129,11 @@ const OrderForm = (props) => {
     if (disableButton) {
       whyNoSave();
     } else {
-      saveOrderFunc();
+      saveOrderFunc(order);
     }
   };
+
+  console.log(order);
 
   return (
     <>

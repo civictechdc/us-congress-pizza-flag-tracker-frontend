@@ -19,6 +19,7 @@ const InfoBottom = (props) => {
     skipUpdate,
     statuses,
     user,
+    editMode,
   } = props;
 
   const [showLog, setShowLog] = useState(false);
@@ -49,6 +50,7 @@ const InfoBottom = (props) => {
           skipUpdate={skipUpdate}
           statuses={statuses}
           user={user}
+          editMode={editMode}
         />
       )}
       <>

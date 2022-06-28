@@ -1,5 +1,5 @@
 .scanContainer {
-    width: 40vw;
+    width: 70vw;
     min-height: 50vh;
     position: relative;
     left: 20vw;
@@ -13,7 +13,10 @@
     flex-direction: column;
     align-items: center;
     row-gap: .5em;
+}
 
+.container {
+    width: 90%;
 }
 
 .skipMessage1 {
@@ -27,7 +30,37 @@
 }
 
 .title {
-    font-size: 6rem;
+    font-size: 4rem;
+}
+
+.constituentBox {
+    padding: 0.5rem;
+    width:50%;
+}
+
+.flagDataBox {
+    padding: 0.5rem;
+    text-align:right;
+    max-width: 50%;
+    width:50%;
+}
+
+.formBox {
+    width:100%;
+    display:flex;
+    justify-content: space-between;
+}
+
+.form-group {
+    margin-bottom: 10px;
+    width: 25%;
+  }
+
+  label {
+    width: 80%;
+  }
+.error {
+    color: red
 }
 
 /*====================================================

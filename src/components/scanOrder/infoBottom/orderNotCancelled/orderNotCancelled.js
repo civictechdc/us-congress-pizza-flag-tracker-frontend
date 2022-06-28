@@ -17,6 +17,7 @@ const OrderNotCancelled = (props) => {
     skipUpdate,
     statuses,
     user,
+    editMode,
   } = props;
 
   return (
@@ -38,6 +39,7 @@ const OrderNotCancelled = (props) => {
           skipUpdate={skipUpdate}
           statuses={statuses}
           user={user}
+          editMode={editMode}
         />
       )}
     </>
