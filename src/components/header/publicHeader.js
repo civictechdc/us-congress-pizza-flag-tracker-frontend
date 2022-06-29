@@ -10,7 +10,7 @@ function Publicheader(params) {
           <div className={styles.nav_group1}>
             <h1 className={styles.nav_title}>Flagpizza</h1>
             <li>
-              <Link to={"/orders"} className={styles.nav_item}>
+              <Link to={"/"} className={styles.nav_item}>
                 Orders
               </Link>
             </li>

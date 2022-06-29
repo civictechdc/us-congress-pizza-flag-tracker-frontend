@@ -9,31 +9,22 @@ const InfoTop = (props) => {
     <>
       <div className={styles.constituentBox}>
         {order.person === undefined ? (
-          <div></div>
+          <></>
         ) : (
           <>
-            <p className={styles.constituentName}>{order.person.name}</p>
-            <p className={styles.constituentPhone}>{order.person.phone}</p>
-            <p className={styles.constituentAddress1}>{order.person.address}</p>
-            <p className={styles.constituentAddress2}>{order.person.town}</p>
+            <h5 className={styles.constituent}>{order.person.name}</h5>
+            <h5 className={styles.constituent}>{order.person.phone}</h5>
+            <h5 className={styles.constituent}>{order.person.address}</h5>
+            <h5 className={styles.constituent}>{order.person.town}</h5>
           </>
         )}
+        <br></br>
+        <h5>Order Number: {order.order_number}</h5>
+        <h5>US State: {order.usa_state}</h5>
+        <h5>District: {order.home_office_code}</h5>
+        <br></br>
       </div>
-      <div className="form-group">
-        <label htmlFor="order_number">
-          Order Number: <strong>{order.order_number}</strong>
-        </label>
-      </div>
-      <div className="form-group">
-        <label htmlFor="usa_state">
-          US State: <strong>{order.usa_state}</strong>
-        </label>
-      </div>
-      <div className="form-group">
-        <label htmlFor="home_office_code">
-          Congressional Office: <strong>{order.home_office_code}</strong>
-        </label>
-      </div>
+
       <div className="form-group">
         <label htmlFor="current_status">
           Current Status:{" "}

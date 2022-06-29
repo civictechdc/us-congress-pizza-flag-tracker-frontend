@@ -68,14 +68,14 @@ describe("CRUD actions for superuser", () => {
   });
 
   it("allows FED-ADMIN to edit an order", () => {
-    cy.visit("/orders");
+    cy.visit("/");
     cy.get("p[class*='orders_orderNum']").contains("10").click(); //danger, this may break upon implementing new layout if class name changes
     cy.get("a[class*='orders_orderLinks']").eq(0).click();
     cy.get("input[id=edit-us-state]").first().click().type(`CO{enter}`);
     cy.get("input[id=edit-office]").first().click().type(`CO-02{enter}`);
     //why is it different on the edit screen? where do these numbers in the ids come from?
     cy.get(".btn-success").click();
-    cy.visit("/orders");
+    cy.visit("/");
     cy.get("p[class*='orders_orderNum']")
       .contains("10")
       .next()
@@ -84,7 +84,7 @@ describe("CRUD actions for superuser", () => {
       .should("contain", "CO-02");
   });
   it("allows FED-ADMIN to delete an order", () => {
-    cy.visit("/orders");
+    cy.visit("/");
     cy.get("p[class*='orders_orderNum']").contains("10").click(); //danger, this may break upon implementing new layout if class name changes
     cy.get("a[class*='orders_orderLinks']").eq(0).click();
     cy.get(".badge-danger").click(); //there probably should be a confirmation step here both before and after deletion, SO, this test will need to be updated
