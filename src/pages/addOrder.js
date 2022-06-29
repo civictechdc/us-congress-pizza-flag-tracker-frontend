@@ -43,7 +43,7 @@ const AddOrder = () => {
       });
     };
     try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
+      AuthService.checkTokenAndExecuteFunc(serviceCall);
     } catch (e) {
       setExceptionMessage("You have a problem. " + e.message);
     }

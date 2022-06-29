@@ -51,9 +51,7 @@ const Login = (props) => {
               return response.data;
             };
 
-            let order = await AuthService.refreshTokenWrapperFunction(
-              serviceCall
-            );
+            let order = await AuthService.checkTokenAndExecuteFunc(serviceCall);
             let orderOfficeCode =
               order !== undefined ? order.home_office_code : "";
             let destination = history.push(path, {

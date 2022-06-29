@@ -164,7 +164,7 @@ const ScanOrder = (props) => {
       });
     };
     try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
+      AuthService.checkTokenAndExecuteFunc(serviceCall);
     } catch (e) {
       console.log(e);
       setPopUpBox("block");

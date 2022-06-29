@@ -16,10 +16,9 @@ const retrieveStatuses = (setMessage, setStatuses, setPopUpBox) => {
     });
   };
   try {
-    AuthService.refreshTokenWrapperFunction(serviceCall);
+    AuthService.checkTokenAndExecuteFunc(serviceCall);
   } catch (e) {
     setPopUpBox("block");
-    console.log("retrieveStatuses: ", e);
     if (e.response.status === 401) {
       setMessage("You must be logged in to view this page");
     } else {

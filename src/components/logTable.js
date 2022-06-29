@@ -7,27 +7,23 @@ export const LogTable = (props) => {
   const [loading, setLoading] = useState(false);
   const [orderLog, setOrderLog] = useState();
 
-  const getOrderLog = useCallback(
-    (order_number) => {
-      const serviceCall = () => {
-        return OrderDataService.getOrderLog(order_number)
-          .then((response) => {
-            setOrderLog(response.data.orders);
-            console.log(orderLog);
-            setLoading(false);
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      };
-      try {
-        AuthService.refreshTokenWrapperFunction(serviceCall);
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    [orderLog]
-  );
+  const getOrderLog = useCallback((order_number) => {
+    const serviceCall = () => {
+      return OrderDataService.getOrderLog(order_number)
+        .then((response) => {
+          setOrderLog(response.data.orders);
+          setLoading(false);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    };
+    try {
+      AuthService.checkTokenAndExecuteFunc(serviceCall);
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
 
   useEffect(() => {
     if (!orderLog) {

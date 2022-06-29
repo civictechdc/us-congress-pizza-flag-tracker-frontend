@@ -71,7 +71,7 @@ const EditOrder = (props) => {
       });
     };
     try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
+      AuthService.checkTokenAndExecuteFunc(serviceCall);
     } catch (e) {
       console.log(`error occurred while updating order: ${e}`);
     }
@@ -84,7 +84,7 @@ const EditOrder = (props) => {
       });
     };
     try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
+      AuthService.checkTokenAndExecuteFunc(serviceCall);
     } catch (e) {
       console.log(e);
     }

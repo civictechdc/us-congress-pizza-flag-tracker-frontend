@@ -99,7 +99,7 @@ export const Search = (props) => {
   //   };
   //   try {
   //     setLoading(true);
-  //     AuthService.refreshTokenWrapperFunction(serviceCall);
+  //     AuthService.checkTokenAndExecuteFunc(serviceCall);
   //   } catch (e) {
   //     console.log(e);
   //   }

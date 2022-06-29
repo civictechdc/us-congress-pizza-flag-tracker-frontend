@@ -79,7 +79,7 @@ const PasswordUpdate = () => {
           });
       };
       try {
-        AuthService.refreshTokenWrapperFunction(serviceCall);
+        AuthService.checkTokenAndExecuteFunc(serviceCall);
       } catch (e) {
         setMessage("An error occurred. Please try logging out and back in.");
       }
@@ -111,7 +111,7 @@ const PasswordUpdate = () => {
           .catch((err) => setMessage(""));
       };
       try {
-        AuthService.refreshTokenWrapperFunction(serviceCall);
+        AuthService.checkTokenAndExecuteFunc(serviceCall);
       } catch (e) {
         console.log(`error occurred while updating password: ${e}`);
         setMessage("");

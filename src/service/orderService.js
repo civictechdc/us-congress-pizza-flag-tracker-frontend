@@ -58,7 +58,7 @@ const getOrder = (id, setOrder, setUnalteredOrder, setLoading) => {
       });
   };
   try {
-    AuthService.refreshTokenWrapperFunction(serviceCall);
+    AuthService.checkTokenAndExecuteFunc(serviceCall);
   } catch (e) {
     console.log(e);
   }

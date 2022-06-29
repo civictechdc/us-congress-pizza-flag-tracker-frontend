@@ -10,7 +10,9 @@ import Gauge from "../components/gauge";
 import { Search } from "../components/search";
 import { editOrderControl } from "../components/protectedRoute/permissions";
 import { useLocation } from "react-router-dom";
+import { wait } from "@testing-library/user-event/dist/utils";
 
+let waitForPauseTimer = null;
 const OrdersList = () => {
   let initialSearchState = { keyword: "", status: [], state: "", office: "" };
   const [orders, setOrders] = useState([]);
@@ -46,23 +48,28 @@ const OrdersList = () => {
     initialSearchState
   );
 
-  //retrieve orders based on authorization level
-  const retrieveOrders = (params) => {
-    let serviceCall = () => {
-      return OrderDataService.getAll(params).then((response) => {
-        setOrders(response.data.orders);
-        setLoading(false);
-      });
-    };
-    try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
-    } catch (e) {
-      setErrorMessage(e.message);
-      setPopUpBox("block");
-    }
+  const getOrdersFunc = (params) => {
+    return OrderDataService.getAll(params).then((response) => {
+      setOrders(response.data.orders);
+      setLoading(false);
+    });
   };
+
+  //retrieve orders based on authorization level
+
   const searchParams = useLocation().search;
   useEffect(() => {
+    const retrieveOrders = (params) => {
+      try {
+        clearTimeout(waitForPauseTimer);
+        waitForPauseTimer = setTimeout(() => {
+          AuthService.checkTokenAndExecuteFunc(() => getOrdersFunc(params));
+        }, 2000);
+      } catch (e) {
+        setErrorMessage(e.message);
+        setPopUpBox("block");
+      }
+    };
     setLoading(true);
     try {
       dispatch({ type: "state", payload: "Search by State" });
