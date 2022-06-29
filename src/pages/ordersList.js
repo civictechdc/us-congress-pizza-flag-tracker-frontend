@@ -60,11 +60,14 @@ const OrdersList = () => {
   const searchParams = useLocation().search;
   useEffect(() => {
     const retrieveOrders = (params) => {
+      let waitForPauseMilliseconds = parseInt(
+        process.env.REACT_APP_WAIT_FOR_PAUSE_MILLISECONDS || "500"
+      );
       try {
         clearTimeout(waitForPauseTimer);
         waitForPauseTimer = setTimeout(() => {
           AuthService.checkTokenAndExecuteFunc(() => getOrdersFunc(params));
-        }, 2000);
+        }, waitForPauseMilliseconds);
         return waitForPauseTimer;
       } catch (e) {
         setErrorMessage(e.message);
