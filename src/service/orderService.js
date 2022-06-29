@@ -2,13 +2,17 @@ import { httpAuthenticate } from "../http-common";
 import AuthService from "../service/authService";
 
 /* remember also the api/qrcode img API*/
+const timerForGetAll = null;
 
-const getAll = (params) => {
-  if (!params) {
-    return httpAuthenticate().get("/orders");
-  } else {
-    return httpAuthenticate().get("/orders" + params);
-  }
+const getAllTimer = (params) => {
+  clearTimeout(timerForGetAll);
+  timerForGetAll = setTimeout(() => {
+    if (!params) {
+      return httpAuthenticate().get("/orders");
+    } else {
+      return httpAuthenticate().get("/orders" + params);
+    }
+  }, 500);
 };
 
 const get = (uuid) => {
@@ -65,7 +69,7 @@ const getOrder = (id, setOrder, setUnalteredOrder, setLoading) => {
 };
 
 const orderServiceObject = {
-  getAll,
+  getAll: getAllTimer,
   get,
   create,
   update,
