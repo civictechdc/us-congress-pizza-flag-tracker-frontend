@@ -65,6 +65,7 @@ const OrdersList = () => {
         waitForPauseTimer = setTimeout(() => {
           AuthService.checkTokenAndExecuteFunc(() => getOrdersFunc(params));
         }, 2000);
+        return waitForPauseTimer;
       } catch (e) {
         setErrorMessage(e.message);
         setPopUpBox("block");
