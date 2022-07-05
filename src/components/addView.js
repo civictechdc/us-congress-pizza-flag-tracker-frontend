@@ -26,7 +26,7 @@ const AddView = () => {
   const mode = "add";
 
   const saveOrder = () => {
-    var data = {
+    let data = {
       order_number: order.order_number,
       home_office_code: order.home_office_code,
       usa_state: order.usa_state,
