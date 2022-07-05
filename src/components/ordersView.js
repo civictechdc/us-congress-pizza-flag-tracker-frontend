@@ -30,7 +30,7 @@ const OrdersView = () => {
   const [sortType, setSortType] = useState("numeric");
   const [loading, setLoading] = useState(false);
   const [statuses, setStatuses] = useState([]);
-  const { userDisplay, setUserDisplay } = useContext(UserContext);
+  const { setUserDisplay } = useContext(UserContext);
   const history = useHistory();
 
   const sortOptions = { sortedField, sortDir, sortType };
@@ -257,7 +257,7 @@ const OrdersView = () => {
 
   const closePopUpBox = () => {
     setPopUpBox("none");
-    setUserDisplay(1);
+    setUserDisplay();
   };
 
   return (
