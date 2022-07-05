@@ -21,7 +21,7 @@ const LoginSubComponent = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const { userDisplay, setUserDisplay } = useContext(UserContext);
+  const { setUserDisplay } = useContext(UserContext);
 
   const onChangeUsername = (e) => {
     setUsername(e.target.value);
@@ -36,8 +36,6 @@ const LoginSubComponent = (props) => {
 
     return AuthService.login(username, password).then(
       () => {
-        // the value set is largely unimportant; rather the setting of any value will force Header component
-        // to rerender and display the updated login information
         setUserDisplay();
       },
       (error) => {
