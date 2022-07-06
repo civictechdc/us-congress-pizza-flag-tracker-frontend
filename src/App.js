@@ -22,6 +22,7 @@ import Background from "./components/background";
 import Refresh from "./components/refresh";
 import DemoLogIn from "./components/demoLogIn";
 import UserContext from "./components/userContext";
+import Welcome from "./pages/welcome";
 
 function App() {
   const [userDisplay, setUserDisplay] = useState("");
@@ -45,6 +46,7 @@ function App() {
               path={["/demoLogin", "/*/demoLogin"]}
               component={DemoLogIn}
             />{" "}
+            <Route exact path="/welcome" component={Welcome} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/print/:id" component={PrintOrder} />
             <Route exact path="/profile" component={Profile} />
