@@ -31,7 +31,7 @@ export function adminControl() {
   }
 }
 
-//check admin status
+//check edit status
 export function editOrderControl() {
   const user = JSON.parse(localStorage.getItem("user"));
 

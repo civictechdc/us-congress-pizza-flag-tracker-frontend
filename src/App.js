@@ -22,6 +22,7 @@ import Background from "./components/background";
 import Refresh from "./components/refresh";
 import DemoLogIn from "./components/demoLogIn";
 import UserContext from "./components/userContext";
+import Welcome from "./pages/welcome";
 
 function App() {
   const [userDisplay, setUserDisplay] = useState("");
@@ -37,25 +38,26 @@ function App() {
       </UserContext.Provider>
 
       <main className="mainContainer">
-        <UserContext.Provider value={value}>
-          <Switch>
-            {/* DemoLogIn and UserContext.Provider wrapping it should be removed prior to production */}
+        <Switch>
+          <UserContext.Provider value={value}>
+            <Route exact path={["/"]} component={OrdersList} />
+            {/* DemoLogIn should be removed prior to production */}
             <Route
               path={["/demoLogin", "/*/demoLogin"]}
               component={DemoLogIn}
             />{" "}
+            <Route exact path="/welcome" component={Welcome} />
             <Route exact path="/login" component={Login} />
-            <UserRoute exact path={["/", "/orders"]} component={OrdersList} />
-            <UserRoute path="/print/:id" component={PrintOrder} />
-            <UserRoute exact path="/profile" component={Profile} />
-            <UserRoute path="/scan/:id" component={ScanOrder} />
-            <EditorRoute path="/orders/:id" component={EditOrder} />
-            <AdminRoute exact path="/users/add" component={AddUser} />
-            <FedRoute exact path="/add" component={AddOrder} />
+            <Route exact path="/print/:id" component={PrintOrder} />
+            <Route exact path="/profile" component={Profile} />
+            <Route exact path="/scan/:id" component={ScanOrder} />
+            <Route exact path="/orders/:id" component={EditOrder} />
+            <Route exact path="/users/add" component={AddUser} />
+            <Route exact path="/add" component={AddOrder} />
             {/* Refresh should be removed prior to production */}
             <Route exact path="/refresh" component={Refresh} />{" "}
-          </Switch>
-        </UserContext.Provider>
+          </UserContext.Provider>
+        </Switch>
       </main>
       {/* */}
       <footer className="footer-container"></footer>

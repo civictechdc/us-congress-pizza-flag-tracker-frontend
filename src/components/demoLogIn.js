@@ -16,7 +16,7 @@ const DemoLogIn = () => {
 
   const [message, setMessage] = useState(initialMessageState);
   const [popUpBox, setPopUpBox] = useState("none");
-  const { userDisplay, setUserDisplay } = useContext(UserContext);
+  const { setUserDisplay } = useContext(UserContext);
 
   const history = useHistory();
   const params = new URLSearchParams(document.location.search);
@@ -42,7 +42,7 @@ const DemoLogIn = () => {
   const closePopUpBox = () => {
     // the value set is largely unimportant; rather the setting of any value will force Header component
     // to rerender and display the updated login information
-    setUserDisplay(1);
+    setUserDisplay();
     history.push(priorLocation);
   };
 
