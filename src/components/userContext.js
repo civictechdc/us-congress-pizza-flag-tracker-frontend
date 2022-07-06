@@ -1,7 +1,6 @@
-import { createContext, useState, useContext, useMemo } from "react";
+import { createContext } from "react";
 
 const UserContext = createContext({
-  userDisplay: "",
   setUserDisplay: () => {},
 });
 
