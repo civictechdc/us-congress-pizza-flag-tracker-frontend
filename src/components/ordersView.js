@@ -269,14 +269,19 @@ const OrdersView = () => {
           setSearchTitle={setSearchTitle}
           statuses={statuses}
         />
-        <TableHeader
-          sortedField={sortedField}
-          sortDir={sortDir}
-          setSortedField={setSortedField}
-          setSortType={setSortType}
-          setSortDir={setSortDir}
-        />
-
+        {ordersToDisplay.length ? (
+          <TableHeader
+            sortedField={sortedField}
+            sortDir={sortDir}
+            setSortedField={setSortedField}
+            setSortType={setSortType}
+            setSortDir={setSortDir}
+          />
+        ) : (
+          <div className={styles.mainContainer}>
+            <h4 className={styles.title}>No orders found</h4>
+          </div>
+        )}
         <div className={styles.orderContainer}>
           {orderTbody}
 
@@ -287,14 +292,14 @@ const OrdersView = () => {
           <button className="m-3 btn btn-sm btn-danger" onClick={clearSearch}>
             Clear search
           </button>
-        ) : (
+        ) : ordersToDisplay.length ? (
           <div className={styles.statusItem}>
             <p>
               Please click
               <br /> on an order...
             </p>
           </div>
-        )}
+        ) : null}
       </div>
       <div className="pop-container" style={{ display: popUpBox }}>
         <div className="pop-up" onClick={closePopUpBox}>
