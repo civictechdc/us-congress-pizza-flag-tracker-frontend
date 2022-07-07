@@ -7,7 +7,15 @@ import { updateOrder } from "../../utils/orderUtils";
 import Select from "react-select";
 
 const InfoTop = (props) => {
-  const { order, setOrder, statuses, message, setMessage, editMode } = props;
+  const {
+    order,
+    setOrder,
+    statuses,
+    message,
+    setMessage,
+    editMode,
+    toggleEdit,
+  } = props;
 
   const initialValues = {
     order_number: order.order_number,
@@ -16,8 +24,6 @@ const InfoTop = (props) => {
     status: order.status.sequence_num,
   };
 
-  const [optionDistricts, setOptionDistricts] = useState([]);
-  console.log(optionDistricts);
   const validationSchema = Yup.object().shape({
     order_number: Yup.string()
       .max(15, "Must be 15 digits or less")
@@ -35,18 +41,16 @@ const InfoTop = (props) => {
     }));
   }
 
-  useEffect(() => {
-    if (STATES && order.usa_state) {
-      const availableDistricts = STATES.filter(
-        (state) => state.name === order.usa_state
-      )[0].districts.map((district) => ({
-        label: district,
-        name: "home_office_code",
-        value: district,
-      }));
-      setOptionDistricts((prev) => ({ ...prev, availableDistricts }));
-    }
-  }, [order.usa_state]);
+  let optionDistricts = [];
+  if (STATES && order.usa_state) {
+    optionDistricts = STATES.filter(
+      (state) => state.name === order.usa_state
+    )[0].districts.map((district) => ({
+      label: district,
+      name: "home_office_code",
+      value: district,
+    }));
+  }
 
   let optionStatuses = [];
   if (statuses) {
@@ -110,7 +114,9 @@ const InfoTop = (props) => {
             errors,
             touched,
             isValid,
+            dirty,
           } = props;
+
           return (
             <>
               <Form onSubmit={handleSubmit} className={styles.formBox}>
@@ -190,8 +196,6 @@ const InfoTop = (props) => {
                               {errors.usa_state}
                             </div>
                           )}
-                          {console.log(order)}
-                          {console.log(optionDistricts)}
                         </>
                       ) : (
                         <strong>{order.usa_state}</strong>
@@ -210,6 +214,19 @@ const InfoTop = (props) => {
                           options={optionDistricts}
                           value={values.home_office_code}
                           defaultValue={values.home_office_code}
+                          onBlur={(option) => {
+                            optionDistricts = STATES.filter(
+                              (state) => state.name === option.value
+                            );
+                            if (optionDistricts.length) {
+                              console.log(optionDistricts);
+                              optionDistricts[0].map((district) => ({
+                                label: district,
+                                name: "home_office_code",
+                                value: district,
+                              }));
+                            }
+                          }}
                         />
                       ) : (
                         <strong>{order.home_office_code}</strong>
@@ -237,9 +254,12 @@ const InfoTop = (props) => {
                     </label>
                   </div>
                   {editMode ? (
-                    <button type="submit" disabled={!isValid}>
-                      Submit
-                    </button>
+                    <>
+                      <button type="submit" disabled={!isValid || !dirty}>
+                        Submit
+                      </button>
+                      <button onClick={() => toggleEdit()}>Cancel</button>
+                    </>
                   ) : (
                     <></>
                   )}

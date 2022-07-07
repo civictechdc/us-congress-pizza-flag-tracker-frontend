@@ -11,7 +11,7 @@ import { Search } from "../components/search";
 import { editOrderControl } from "../components/protectedRoute/permissions";
 import { useLocation, useHistory } from "react-router-dom";
 
-export const OrdersView = () => {
+const OrdersView = () => {
   let initialSearchState = { keyword: "", status: [], state: "", office: "" };
   const [orders, setOrders] = useState([]);
   const [currentOrder, setCurrentOrder] = useState(null);
@@ -215,3 +215,4 @@ export const OrdersView = () => {
     </>
   );
 };
+export default OrdersView;
