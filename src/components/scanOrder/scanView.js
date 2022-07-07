@@ -46,6 +46,7 @@ const ScanView = (props) => {
   const [statuses, setStatuses] = useState([]);
   const [popUpBox, setPopUpBox] = useState("none");
   const [loading, setLoading] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   let user = JSON.parse(localStorage.getItem("user"));
   if (user == null) {
@@ -242,7 +243,13 @@ const ScanView = (props) => {
         "Loading..."
       ) : order ? (
         <>
-          <InfoTop order={order} />
+          <InfoTop
+            order={order}
+            setOrder={setOrder}
+            editMode={editMode}
+            setEditMode={setEditMode}
+            statuses={statuses}
+          />
           <InfoBottom
             decline={decline}
             declineUpdate={declineUpdate}
@@ -258,6 +265,7 @@ const ScanView = (props) => {
             skipUpdate={skipUpdate}
             statuses={statuses}
             user={user}
+            editMode={editMode}
           />
         </>
       ) : (

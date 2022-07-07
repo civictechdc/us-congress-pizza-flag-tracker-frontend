@@ -5,6 +5,8 @@ import * as Yup from "yup";
 import styles from "../../style/scanOrder.module.css";
 import { updateOrder } from "../../utils/orderUtils";
 import Select from "react-select";
+import SelectField from "./SelectField";
+import { editOrderControl } from "../protectedRoute/permissions";
 
 const InfoTop = (props) => {
   const {
@@ -14,7 +16,7 @@ const InfoTop = (props) => {
     message,
     setMessage,
     editMode,
-    toggleEdit,
+    setEditMode,
   } = props;
 
   const initialValues = {
@@ -65,6 +67,22 @@ const InfoTop = (props) => {
     );
   }
 
+  const isEditor = editOrderControl();
+
+  const updateDistricts = (option) => {
+    {
+      optionDistricts = STATES.filter((state) => state.name === option.value);
+      if (optionDistricts.length) {
+        console.log(optionDistricts);
+        optionDistricts[0].map((district) => ({
+          label: district,
+          name: "home_office_code",
+          value: district,
+        }));
+      }
+    }
+  };
+
   // putting this in Component State makes this check old state instead of what state is being updated to
   // and/or exceed maximum update depth error
   let districtMatchCheck = true;
@@ -110,15 +128,28 @@ const InfoTop = (props) => {
             handleSubmit,
             handleChange,
             handleBlur,
-            setFieldValue,
             errors,
             touched,
             isValid,
             dirty,
           } = props;
-
+          console.log(values.usa_state);
           return (
             <>
+              <div className={styles.toggleEdit}>
+                {isEditor && (
+                  <>
+                    <button
+                      onClick={() => {
+                        setEditMode(!editMode);
+                      }}
+                    >
+                      Edit
+                    </button>
+                  </>
+                )}{" "}
+                Print
+              </div>
               <Form onSubmit={handleSubmit} className={styles.formBox}>
                 <div className={styles.constituentBox}>
                   {order.person === undefined ? (
@@ -181,15 +212,12 @@ const InfoTop = (props) => {
                       US State:{" "}
                       {editMode ? (
                         <>
-                          <Select
+                          <Field
+                            component={SelectField}
                             inputId="edit-us-state"
                             name="usa_state"
-                            onChange={(option) => {
-                              setFieldValue("usa_state", option);
-                              order.usa_state = option.value;
-                            }}
                             options={optionUSStates}
-                            value={values.usa_state}
+                            initialValue={values.usa_state}
                           />
                           {touched.usa_state && errors.usa_state && (
                             <div className={styles.error}>
@@ -206,27 +234,11 @@ const InfoTop = (props) => {
                     <label htmlFor="home_office_code">
                       Congressional Office:{" "}
                       {editMode ? (
-                        <Select
+                        <Field
+                          component={SelectField}
                           inputId="edit-office"
-                          onChange={(option) =>
-                            setFieldValue("home_office_code", option)
-                          }
                           options={optionDistricts}
-                          value={values.home_office_code}
-                          defaultValue={values.home_office_code}
-                          onBlur={(option) => {
-                            optionDistricts = STATES.filter(
-                              (state) => state.name === option.value
-                            );
-                            if (optionDistricts.length) {
-                              console.log(optionDistricts);
-                              optionDistricts[0].map((district) => ({
-                                label: district,
-                                name: "home_office_code",
-                                value: district,
-                              }));
-                            }
-                          }}
+                          name="home_office_code"
                         />
                       ) : (
                         <strong>{order.home_office_code}</strong>
@@ -237,11 +249,11 @@ const InfoTop = (props) => {
                     <label htmlFor="current_status">
                       Current Status:{" "}
                       {editMode ? (
-                        <Select
+                        <Field
+                          component={SelectField}
                           inputId="edit-status"
-                          onChange={(option) => setFieldValue("status", option)}
+                          name="status"
                           options={optionStatuses}
-                          value={values.status.sequence_num}
                         />
                       ) : order.status.description ? (
                         <strong>
@@ -258,7 +270,7 @@ const InfoTop = (props) => {
                       <button type="submit" disabled={!isValid || !dirty}>
                         Submit
                       </button>
-                      <button onClick={() => toggleEdit()}>Cancel</button>
+                      <button onClick={() => setEditMode(false)}>Cancel</button>
                     </>
                   ) : (
                     <></>
