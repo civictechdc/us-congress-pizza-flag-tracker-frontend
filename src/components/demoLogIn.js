@@ -40,8 +40,6 @@ const DemoLogIn = () => {
   }, [userName, password]);
 
   const closePopUpBox = () => {
-    // the value set is largely unimportant; rather the setting of any value will force Header component
-    // to rerender and display the updated login information
     setUserDisplay();
     history.push(priorLocation);
   };
