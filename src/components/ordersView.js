@@ -260,7 +260,7 @@ const OrdersView = () => {
     setUserDisplay();
   };
 
-  return (
+  return ordersToDisplay.length ? (
     <>
       <div className={styles.mainContainer}>
         <h4 className={styles.title}>Orders</h4>
@@ -300,6 +300,12 @@ const OrdersView = () => {
         <div className="pop-up" onClick={closePopUpBox}>
           <h3>{errorMessage}</h3>
         </div>
+      </div>
+    </>
+  ) : (
+    <>
+      <div className={styles.mainContainer}>
+        <h4 className={styles.title}>No orders found</h4>
       </div>
     </>
   );
