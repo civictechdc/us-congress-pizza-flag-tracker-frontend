@@ -60,12 +60,12 @@ const ScanView = (props) => {
         setOrder,
         setUnalteredOrder,
         setLoading
-      ).then(function (value) {
-        if (value != undefined) {
+      ).then(function (serviceCallResult) {
+        if (serviceCallResult != undefined) {
           setMessage((message) => {
             return {
               ...message,
-              text: "Issue: " + value.message,
+              text: "Issue: " + serviceCallResult.message,
             };
           });
           setPopUpBox("block");
@@ -185,12 +185,12 @@ const ScanView = (props) => {
     };
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall).then(function (
-        value
+        serviceCallResult
       ) {
-        if (value != undefined) {
+        if (serviceCallResult != undefined) {
           setMessage({
             ...message,
-            text: "Issue: " + value.message,
+            text: "Issue: " + serviceCallResult.message,
           });
           setPopUpBox("block");
         }

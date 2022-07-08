@@ -44,13 +44,13 @@ const AddView = () => {
     };
     try {
       AuthService.refreshTokenWrapperFunction(serviceCall).then(function (
-        value
+        serviceCallResult
       ) {
-        if (value != undefined) {
+        if (serviceCallResult != undefined) {
           setMessage({
             ...message,
             checkSaved: false,
-            text: "Issue: " + value.message,
+            text: "Issue: " + serviceCallResult.message,
           });
           setPopUpBox("block");
         }
