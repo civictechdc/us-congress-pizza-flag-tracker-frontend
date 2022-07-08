@@ -62,7 +62,7 @@ const OrdersView = () => {
 
   //retrieve orders based on authorization level
   const retrieveOrders = (params) => {
-    let serviceToExecute = () => {
+    const serviceToExecute = () => {
       return OrderDataService.getAll(params).then((response) => {
         setOrders(response.data.orders);
         setLoading(false);
@@ -70,14 +70,14 @@ const OrdersView = () => {
     };
     try {
       AuthService.checkTokenAndExecute(serviceToExecute).then(function (
-        serviceCallResult
+        serviceResult
       ) {
-        if (serviceCallResult != undefined) {
+        if (serviceResult != undefined) {
           setPopUpBox("block");
           setMessage((message) => {
             return {
               ...message,
-              text: "Issue: " + serviceCallResult.message,
+              text: "Issue: " + serviceResult.message,
             };
           });
         }

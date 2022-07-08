@@ -23,21 +23,19 @@ export const LogTable = (props) => {
             setOrderLog(response.data.orders);
             setLoading(false);
           })
-          // .catch((e) => {
-          //   console.log("Service Call check: ", e);
-          // });
+        // do not add catch at this level
       };
       try {
         AuthService.checkTokenAndExecute(serviceToExecute).then(function (
-          serviceCallResult
+          serviceResult
         ) {
-          console.log("Top level result: ", serviceCallResult);
-          if (serviceCallResult != undefined) {
+          console.log("Top level result: ", serviceResult);
+          if (serviceResult != undefined) {
             setPopUpBox("block");
             setMessage((message) => {
               return {
                 ...message,
-                text: "Issue: " + serviceCallResult.message,
+                text: "Issue: " + serviceResult.message,
               }
             });
           };

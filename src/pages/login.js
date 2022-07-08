@@ -51,7 +51,7 @@ const Login = (props) => {
               return response.data;
             };
 
-            let order = await AuthService.refreshTokenWrapperFunction(
+            let order = await AuthService.checkTokenAndExecute(
               serviceToExecute
             );
             let orderOfficeCode =

@@ -1,10 +1,16 @@
 import { useState } from "react";
+import PopUpBoxComponent from "./popUpBoxComponent";
 import userService from "../service/userService";
 import AuthService from "../service/authService";
 import styles from "../style/password.module.css";
 import { adminControl } from "./protectedRoute/permissions";
 
 const PasswordUpdate = () => {
+  const initialMessageState = {
+    // to be consistent with other uses of Message State and PopUpBox
+    text: "",
+  };
+
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPassword2, setNewPassword2] = useState("");
@@ -12,7 +18,8 @@ const PasswordUpdate = () => {
   const [userNewPassword, setUserNewPassword] = useState("");
   const [userNewPassword2, setUserNewPassword2] = useState("");
 
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(initialMessageState);
+  const [popUpBox, setPopUpBox] = useState("none");
 
   const handleChange = (e) => {
     let { name, value } = e;
@@ -65,26 +72,38 @@ const PasswordUpdate = () => {
               setOldPassword("");
               setNewPassword("");
               setNewPassword2("");
-              setMessage("Password updated successfully.");
-            } else {
-              setMessage("An error occurred: " + response.statusText);
+              setPopUpBox("block");
+              setMessage({
+                ...message,
+                text: "The password was updated successfully!",
+              });
             }
           })
-          .catch((err) => {
-            setMessage(
-              err.response.data.error ||
-                err.response.toString() ||
-                err.toString()
-            );
-          });
       };
       try {
-        AuthService.checkTokenAndExecute(serviceToExecute);
+        AuthService.checkTokenAndExecute(serviceToExecute).then(function (
+          serviceResult
+        ) {
+          console.log("Top level result: ", serviceResult);
+          if (serviceResult != undefined) {
+            setPopUpBox("block");
+            setMessage((message) => {
+              return {
+                ...message,
+                text: "Issue: " + serviceResult.message,
+              }
+            });
+          };
+        });
       } catch (e) {
-        setMessage("An error occurred. Please try logging out and back in.");
+        console.log(e);
       }
     } else {
-      setMessage("New passwords must match!");
+      setPopUpBox("block");
+      setMessage({
+        ...message,
+        text: "New passwords must match!",
+      });
     }
   };
 
@@ -103,22 +122,43 @@ const PasswordUpdate = () => {
               setUserName("");
               setUserNewPassword("");
               setUserNewPassword2("");
-              setMessage("Password updated successfully.");
-            } else {
-              setMessage("An error occurred: " + response.statusText);
-            }
+              setPopUpBox("block");
+              setMessage({
+                ...message,
+                text: "The password was updated successfully!",
+              });
+            } 
           })
-          .catch((err) => setMessage(""));
       };
       try {
-        AuthService.checkTokenAndExecute(serviceToExecute);
+        AuthService.checkTokenAndExecute(serviceToExecute).then(function (
+          serviceResult
+        ) {
+          console.log("Top level result: ", serviceResult);
+          if (serviceResult != undefined) {
+            setPopUpBox("block");
+            setMessage((message) => {
+              return {
+                ...message,
+                text: "Issue: " + serviceResult.message,
+              }
+            });
+          };
+        });
       } catch (e) {
-        console.log(`error occurred while updating password: ${e}`);
-        setMessage("");
+        console.log(e);
       }
     } else {
-      setMessage("New passwords must match!");
+      setPopUpBox("block");
+      setMessage({
+        ...message,
+        text: "New passwords must match!",
+      });
     }
+  };
+
+  const closePopUpBox = () => {
+    setPopUpBox("none");
   };
 
   return (
@@ -149,7 +189,6 @@ const PasswordUpdate = () => {
         ></input>
         <p>&nbsp;</p>
         <input type="submit"></input>
-        {message}
       </form>
       {adminControl() ? (
         <form className={styles.form2} onSubmit={submitAdmin}>
@@ -174,6 +213,11 @@ const PasswordUpdate = () => {
       ) : (
         <div></div>
       )}
+      <PopUpBoxComponent
+        closePopUpBox={closePopUpBox}
+        message={message}
+        popUpBox={popUpBox}
+      />
     </>
   );
 };

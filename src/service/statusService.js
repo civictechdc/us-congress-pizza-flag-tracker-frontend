@@ -15,23 +15,24 @@ const retrieveStatuses = (setMessage, setStatuses, setPopUpBox) => {
       setStatuses(response.data.statuses);
     });
   };
-  try {
+  // try {
     AuthService.checkTokenAndExecute(serviceToExecute).then(function (
-      serviceCallResult
+      serviceResult
     ) {
-      if (serviceCallResult != undefined) {
+      if (serviceResult != undefined) {
         setPopUpBox("block");
         setMessage((message) => {
           return {
             ...message,
-            text: "Status Issue: " + serviceCallResult.message,
+            text: "Status Issue: " + serviceResult.message,
           };
         });
       }
     });
-  } catch (e) {
-    console.log(e);
-  }
+  // } 
+  // catch (e) {
+  //   console.log(e);
+  // }
 };
 
 const statusServiceObject = {

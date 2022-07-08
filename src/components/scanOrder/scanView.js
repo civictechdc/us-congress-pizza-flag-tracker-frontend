@@ -54,26 +54,27 @@ const ScanView = (props) => {
 
   useEffect(() => {
     setLoading(true);
-    try {
+    // try {
       OrderDataService.getOrder(
         scanId,
         setOrder,
         setUnalteredOrder,
         setLoading
-      ).then(function (serviceCallResult) {
-        if (serviceCallResult != undefined) {
+      ).then(function (serviceResult) {
+        if (serviceResult != undefined) {
           setMessage((message) => {
             return {
               ...message,
-              text: "Issue: " + serviceCallResult.message,
+              text: "Issue: " + serviceResult.message,
             };
           });
           setPopUpBox("block");
         }
       });
-    } catch (e) {
-      console.log(e);
-    }
+    // } 
+    // catch (e) {
+    //   console.log(e);
+    // }
   }, [scanId]);
 
   useEffect(() => {
@@ -185,12 +186,12 @@ const ScanView = (props) => {
     };
     try {
       AuthService.checkTokenAndExecute(serviceToExecute).then(function (
-        serviceCallResult
+        serviceResult
       ) {
-        if (serviceCallResult != undefined) {
+        if (serviceResult != undefined) {
           setMessage({
             ...message,
-            text: "Issue: " + serviceCallResult.message,
+            text: "Issue: " + serviceResult.message,
           });
           setPopUpBox("block");
         }

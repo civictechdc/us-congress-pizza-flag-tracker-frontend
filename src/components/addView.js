@@ -44,13 +44,13 @@ const AddView = () => {
     };
     try {
       AuthService.checkTokenAndExecute(serviceToExecute).then(function (
-        serviceCallResult
+        serviceResult
       ) {
-        if (serviceCallResult != undefined) {
+        if (serviceResult != undefined) {
           setMessage({
             ...message,
             checkSaved: false,
-            text: "Issue: " + serviceCallResult.message,
+            text: "Issue: " + serviceResult.message,
           });
           setPopUpBox("block");
         }
