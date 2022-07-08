@@ -164,7 +164,7 @@ const ScanView = (props) => {
   };
 
   const updateStatus = (updatedStatus, activateRevertButton) => {
-    const serviceCall = () => {
+    const serviceToExecute = () => {
       return StatusDataService.updateStatus(
         updatedStatus.uuid,
         updatedStatus
@@ -184,7 +184,7 @@ const ScanView = (props) => {
       });
     };
     try {
-      AuthService.refreshTokenWrapperFunction(serviceCall).then(function (
+      AuthService.checkTokenAndExecute(serviceToExecute).then(function (
         serviceCallResult
       ) {
         if (serviceCallResult != undefined) {

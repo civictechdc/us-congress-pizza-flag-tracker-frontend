@@ -10,13 +10,13 @@ const updateStatus = (id, data) => {
 };
 
 const retrieveStatuses = (setMessage, setStatuses, setPopUpBox) => {
-  const serviceCall = () => {
+  const serviceToExecute = () => {
     return getStatus().then((response) => {
       setStatuses(response.data.statuses);
     });
   };
   try {
-    AuthService.refreshTokenWrapperFunction(serviceCall).then(function (
+    AuthService.checkTokenAndExecute(serviceToExecute).then(function (
       serviceCallResult
     ) {
       if (serviceCallResult != undefined) {

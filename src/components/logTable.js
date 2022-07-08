@@ -17,7 +17,7 @@ export const LogTable = (props) => {
 
   const getOrderLog = useCallback(
     (order_number) => {
-      const serviceCall = () => {
+      const serviceToExecute = () => {
         return OrderDataService.getOrderLog(order_number)
           .then((response) => {
             setOrderLog(response.data.orders);
@@ -28,7 +28,7 @@ export const LogTable = (props) => {
           // });
       };
       try {
-        AuthService.refreshTokenWrapperFunction(serviceCall).then(function (
+        AuthService.checkTokenAndExecute(serviceToExecute).then(function (
           serviceCallResult
         ) {
           console.log("Top level result: ", serviceCallResult);

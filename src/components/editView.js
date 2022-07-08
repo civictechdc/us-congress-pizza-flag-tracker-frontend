@@ -57,7 +57,7 @@ const EditView = (props) => {
   const sortedStatuses = numSort(statuses, "sequence_num", "asc");
 
   const updateOrder = () => {
-    const serviceCall = () => {
+    const serviceToExecute = () => {
       return OrderDataService.update(order.uuid, order).then((response) => {
         setPopUpBox("block");
         setMessage({
@@ -68,20 +68,20 @@ const EditView = (props) => {
       });
     };
     try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
+      AuthService.checkTokenAndExecute(serviceToExecute);
     } catch (e) {
       console.log(`error occurred while updating order: ${e}`);
     }
   };
 
   const deleteOrder = () => {
-    const serviceCall = () => {
+    const serviceToExecute = () => {
       return OrderDataService.remove(order.uuid).then((response) => {
         history.push("/");
       });
     };
     try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
+      AuthService.checkTokenAndExecute(serviceToExecute);
     } catch (e) {
       console.log(e);
     }

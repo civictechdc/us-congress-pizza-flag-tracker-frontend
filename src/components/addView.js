@@ -31,7 +31,7 @@ const AddView = () => {
       home_office_code: order.home_office_code,
       usa_state: order.usa_state,
     };
-    const serviceCall = () => {
+    const serviceToExecute = () => {
       return OrderDataService.create(data).then((response) => {
         setOrder(initialOrderState);
         setMessage({
@@ -43,7 +43,7 @@ const AddView = () => {
       });
     };
     try {
-      AuthService.refreshTokenWrapperFunction(serviceCall).then(function (
+      AuthService.checkTokenAndExecute(serviceToExecute).then(function (
         serviceCallResult
       ) {
         if (serviceCallResult != undefined) {

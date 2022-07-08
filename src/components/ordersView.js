@@ -62,14 +62,14 @@ const OrdersView = () => {
 
   //retrieve orders based on authorization level
   const retrieveOrders = (params) => {
-    let serviceCall = () => {
+    let serviceToExecute = () => {
       return OrderDataService.getAll(params).then((response) => {
         setOrders(response.data.orders);
         setLoading(false);
       });
     };
     try {
-      AuthService.refreshTokenWrapperFunction(serviceCall).then(function (
+      AuthService.checkTokenAndExecute(serviceToExecute).then(function (
         serviceCallResult
       ) {
         if (serviceCallResult != undefined) {

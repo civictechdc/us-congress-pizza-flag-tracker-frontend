@@ -54,7 +54,7 @@ const PasswordUpdate = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     if (comparePasswords(newPassword, newPassword2)) {
-      const serviceCall = () => {
+      const serviceToExecute = () => {
         return userService
           .updateOwnPassword({
             newPassword: newPassword,
@@ -79,7 +79,7 @@ const PasswordUpdate = () => {
           });
       };
       try {
-        AuthService.refreshTokenWrapperFunction(serviceCall);
+        AuthService.checkTokenAndExecute(serviceToExecute);
       } catch (e) {
         setMessage("An error occurred. Please try logging out and back in.");
       }
@@ -92,7 +92,7 @@ const PasswordUpdate = () => {
   const submitAdmin = (e) => {
     e.preventDefault();
     if (comparePasswords(userNewPassword, userNewPassword2)) {
-      const serviceCall = () => {
+      const serviceToExecute = () => {
         return userService
           .updateOthersPassword({
             username: userName,
@@ -111,7 +111,7 @@ const PasswordUpdate = () => {
           .catch((err) => setMessage(""));
       };
       try {
-        AuthService.refreshTokenWrapperFunction(serviceCall);
+        AuthService.checkTokenAndExecute(serviceToExecute);
       } catch (e) {
         console.log(`error occurred while updating password: ${e}`);
         setMessage("");

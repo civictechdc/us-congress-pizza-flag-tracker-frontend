@@ -46,7 +46,7 @@ const getOrderLog = (order_number) => {
 const getOrder = (id, setOrder, setUnalteredOrder, setLoading) => {
   let e = "";
 
-  const serviceCall = () => {
+  const serviceToExecute = () => {
     return get(id).then((response) => {
       setOrder(response.data);
       if (setUnalteredOrder !== false) {
@@ -56,7 +56,7 @@ const getOrder = (id, setOrder, setUnalteredOrder, setLoading) => {
     });
   };
   try {
-    e = AuthService.refreshTokenWrapperFunction(serviceCall).then(function (
+    e = AuthService.checkTokenAndExecute(serviceToExecute).then(function (
       value
     ) {
       return value;

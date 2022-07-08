@@ -46,13 +46,13 @@ const Login = (props) => {
           } else {
             let id = location.state.destination.slice(6);
             let path = generatePath("/scan/:id", { id: id });
-            let serviceCall = async () => {
+            let serviceToExecute = async () => {
               let response = await OrderDataService.get(id);
               return response.data;
             };
 
             let order = await AuthService.refreshTokenWrapperFunction(
-              serviceCall
+              serviceToExecute
             );
             let orderOfficeCode =
               order !== undefined ? order.home_office_code : "";
