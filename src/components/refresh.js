@@ -7,11 +7,9 @@ import styles from "../style/orderForm.module.css";
 //This component should be removed prior to production
 
 const Refresh = () => {
-  const initialMessageState = {
-    text: "Please wait a moment for the database to reset.",
-  };
-
-  const [message, setMessage] = useState(initialMessageState);
+  const [message, setMessage] = useState(
+    "Please wait a moment for the database to reset."
+  );
   const [popUpBox, setPopUpBox] = useState("none");
   const [redirectNow, setRedirectNow] = useState("");
 
@@ -22,19 +20,13 @@ const Refresh = () => {
         setRedirectNow("yes");
       })
       .catch((e) => {
-        setMessage({
-          ...message,
-          text: "Network Error, please see your IT Administrator",
-        });
+        setMessage("Network Error, please see your IT Administrator");
       });
   };
 
   const closePopUpBox = () => {
     setPopUpBox("none");
-    setMessage({
-      ...message,
-      text: "Please wait a moment for the database to reset.",
-    });
+    setMessage("Please wait a moment for the database to reset.");
   };
 
   return (

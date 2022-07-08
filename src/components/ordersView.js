@@ -21,15 +21,12 @@ import PopUpBoxComponent from "./popUpBoxComponent";
 
 const OrdersView = () => {
   const initialSearchState = { keyword: "", status: [], state: "", office: "" };
-  const initialMessageState = {
-    // to be consistent with other uses of Message State and PopUpBox
-    text: "",
-  };
+
   const [orders, setOrders] = useState([]);
   const [currentOrder, setCurrentOrder] = useState(null);
   const [searchTitle, setSearchTitle] = useState(initialSearchState.keyword);
   const [popUpBox, setPopUpBox] = useState("none");
-  const [message, setMessage] = useState(initialMessageState);
+  const [message, setMessage] = useState("");
   const [sortedField, setSortedField] = useState(null);
   const [sortDir, setSortDir] = useState("asc");
   const [sortType, setSortType] = useState("numeric");
@@ -74,12 +71,7 @@ const OrdersView = () => {
       ) {
         if (serviceResult != undefined) {
           setPopUpBox("block");
-          setMessage((message) => {
-            return {
-              ...message,
-              text: "Issue: " + serviceResult.message,
-            };
-          });
+          setMessage("Issue: " + serviceResult.message);
         }
       });
     } catch (e) {

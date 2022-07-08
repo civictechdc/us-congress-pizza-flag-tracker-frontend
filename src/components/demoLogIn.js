@@ -8,11 +8,7 @@ import styles from "../style/orderForm.module.css";
 //This component should be removed prior to production
 
 const DemoLogIn = () => {
-  const initialMessageState = {
-    text: "Login Updated, click this box to continue",
-  };
-
-  const [message, setMessage] = useState(initialMessageState);
+  const [message] = useState("Login Updated, click this box to continue");
   const [popUpBox, setPopUpBox] = useState("none");
   const { setUserDisplay } = useContext(UserContext);
 

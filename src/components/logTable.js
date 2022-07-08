@@ -4,48 +4,33 @@ import OrderDataService from "../service/orderService";
 import AuthService from "../service/authService";
 
 export const LogTable = (props) => {
-  const initialMessageState = {
-    // to be consistent with other uses of Message State and PopUpBox
-    text: "",
-  };
-
   const order_number = props.order_number;
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(initialMessageState);
+  const [message, setMessage] = useState("");
   const [orderLog, setOrderLog] = useState();
   const [popUpBox, setPopUpBox] = useState("none");
 
-  const getOrderLog = useCallback(
-    (order_number) => {
-      const serviceToExecute = () => {
-        return OrderDataService.getOrderLog(order_number)
-          .then((response) => {
-            setOrderLog(response.data.orders);
-            setLoading(false);
-          })
-        // do not add catch at this level
-      };
-      try {
-        AuthService.checkTokenAndExecute(serviceToExecute).then(function (
-          serviceResult
-        ) {
-          console.log("Top level result: ", serviceResult);
-          if (serviceResult != undefined) {
-            setPopUpBox("block");
-            setMessage((message) => {
-              return {
-                ...message,
-                text: "Issue: " + serviceResult.message,
-              }
-            });
-          };
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    []
-  );
+  const getOrderLog = useCallback((order_number) => {
+    const serviceToExecute = () => {
+      return OrderDataService.getOrderLog(order_number).then((response) => {
+        setOrderLog(response.data.orders);
+        setLoading(false);
+      });
+      // do not add catch at this level
+    };
+    try {
+      AuthService.checkTokenAndExecute(serviceToExecute).then(function (
+        serviceResult
+      ) {
+        if (serviceResult != undefined) {
+          setPopUpBox("block");
+          setMessage("Issue: " + serviceResult.message);
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
 
   useEffect(() => {
     if (!orderLog) {

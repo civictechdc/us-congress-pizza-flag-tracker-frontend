@@ -13,13 +13,9 @@ const AddView = () => {
     published: false,
   };
 
-  const initialMessageState = {
-    text: "",
-  };
-
   const [checkSaved, setCheckSaved] = useState(true);
   const [order, setOrder] = useState(initialOrderState);
-  const [message, setMessage] = useState(initialMessageState);
+  const [message, setMessage] = useState("");
   const [popUpBox, setPopUpBox] = useState("none");
   const mode = "add";
 
@@ -32,10 +28,7 @@ const AddView = () => {
     const serviceToExecute = () => {
       return OrderDataService.create(data).then((response) => {
         setOrder(initialOrderState);
-        setMessage({
-          ...message,
-          text: "The order was updated successfully!",
-        });
+        setMessage("The order was updated successfully!");
         setCheckSaved(true);
         setPopUpBox("block");
       });
@@ -45,10 +38,7 @@ const AddView = () => {
         serviceResult
       ) {
         if (serviceResult != undefined) {
-          setMessage({
-            ...message,
-            text: "Issue: " + serviceResult.message,
-          });
+          setMessage("Issue: " + serviceResult.message);
           setCheckSaved(false);
           setPopUpBox("block");
         }

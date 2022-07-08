@@ -6,11 +6,6 @@ import styles from "../style/password.module.css";
 import { adminControl } from "./protectedRoute/permissions";
 
 const PasswordUpdate = () => {
-  const initialMessageState = {
-    // to be consistent with other uses of Message State and PopUpBox
-    text: "",
-  };
-
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPassword2, setNewPassword2] = useState("");
@@ -18,7 +13,7 @@ const PasswordUpdate = () => {
   const [userNewPassword, setUserNewPassword] = useState("");
   const [userNewPassword2, setUserNewPassword2] = useState("");
 
-  const [message, setMessage] = useState(initialMessageState);
+  const [message, setMessage] = useState("");
   const [popUpBox, setPopUpBox] = useState("none");
 
   const handleChange = (e) => {
@@ -73,37 +68,25 @@ const PasswordUpdate = () => {
               setNewPassword("");
               setNewPassword2("");
               setPopUpBox("block");
-              setMessage({
-                ...message,
-                text: "The password was updated successfully!",
-              });
+              setMessage("The password was updated successfully!");
             }
-          })
+          });
       };
       try {
         AuthService.checkTokenAndExecute(serviceToExecute).then(function (
           serviceResult
         ) {
-          console.log("Top level result: ", serviceResult);
           if (serviceResult != undefined) {
             setPopUpBox("block");
-            setMessage((message) => {
-              return {
-                ...message,
-                text: "Issue: " + serviceResult.message,
-              }
-            });
-          };
+            setMessage("Issue: " + serviceResult.message);
+          }
         });
       } catch (e) {
         console.log(e);
       }
     } else {
       setPopUpBox("block");
-      setMessage({
-        ...message,
-        text: "New passwords must match!",
-      });
+      setMessage("New passwords must match!");
     }
   };
 
@@ -123,12 +106,9 @@ const PasswordUpdate = () => {
               setUserNewPassword("");
               setUserNewPassword2("");
               setPopUpBox("block");
-              setMessage({
-                ...message,
-                text: "The password was updated successfully!",
-              });
-            } 
-          })
+              setMessage("The password was updated successfully!");
+            }
+          });
       };
       try {
         AuthService.checkTokenAndExecute(serviceToExecute).then(function (
@@ -137,23 +117,15 @@ const PasswordUpdate = () => {
           console.log("Top level result: ", serviceResult);
           if (serviceResult != undefined) {
             setPopUpBox("block");
-            setMessage((message) => {
-              return {
-                ...message,
-                text: "Issue: " + serviceResult.message,
-              }
-            });
-          };
+            setMessage("Issue: " + serviceResult.message);
+          }
         });
       } catch (e) {
         console.log(e);
       }
     } else {
       setPopUpBox("block");
-      setMessage({
-        ...message,
-        text: "New passwords must match!",
-      });
+      setMessage("New passwords must match!");
     }
   };
 

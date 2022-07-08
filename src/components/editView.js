@@ -30,13 +30,9 @@ const EditView = (props) => {
     uuid: null,
   };
 
-  const initialMessageState = {
-    text: "",
-  };
-
   const [checkSaved, setCheckSaved] = useState(true);
   const [order, setOrder] = useState(initialOrderState);
-  const [message, setMessage] = useState(initialMessageState);
+  const [message, setMessage] = useState("");
   const [statuses, setStatuses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [popUpBox, setPopUpBox] = useState("none");
@@ -59,25 +55,16 @@ const EditView = (props) => {
     const serviceToExecute = () => {
       return OrderDataService.update(order.uuid, order).then((response) => {
         setPopUpBox("block");
-        setMessage({
-          ...message,
-          text: "The order was updated successfully!",
-        });
+        setMessage("The order was updated successfully!");
         setCheckSaved(true);
       });
     };
     AuthService.checkTokenAndExecute(serviceToExecute).then(function (
       serviceResult
     ) {
-      console.log("Top level result: ", serviceResult);
       if (serviceResult != undefined) {
         setPopUpBox("block");
-        setMessage((message) => {
-          return {
-            ...message,
-            text: "Issue: " + serviceResult.message,
-          };
-        });
+        setMessage("Issue: " + serviceResult.message);
       }
     });
   };
@@ -88,19 +75,13 @@ const EditView = (props) => {
         history.push("/");
       });
     };
-
     AuthService.checkTokenAndExecute(serviceToExecute).then(function (
       serviceResult
     ) {
       console.log("Top level result: ", serviceResult);
       if (serviceResult != undefined) {
         setPopUpBox("block");
-        setMessage((message) => {
-          return {
-            ...message,
-            text: "Issue: " + serviceResult.message,
-          };
-        });
+        setMessage("Issue: " + serviceResult.message);
       }
     });
   };
