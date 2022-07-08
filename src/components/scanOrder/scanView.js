@@ -55,19 +55,17 @@ const ScanView = (props) => {
   useEffect(() => {
     setLoading(true);
     try {
-      OrderDataService.getOrder(scanId, setOrder, setUnalteredOrder, setLoading).then(function(value) {
-        console.log("value: ", value);
+      OrderDataService.getOrder(
+        scanId,
+        setOrder,
+        setUnalteredOrder,
+        setLoading
+      ).then(function (value) {
         if (value != undefined) {
-          // setMessage({
-          //   ...message,
-          //   checkSaved: false,
-          //   text: "You have a problem: " + value.message,
-          // });
           setMessage((message) => {
             return {
               ...message,
-              // gicheckSaved: false,
-              text: "Error: " + value.message,
+              text: "Issue: " + value.message,
             };
           });
           setPopUpBox("block");
@@ -75,7 +73,7 @@ const ScanView = (props) => {
       });
     } catch (e) {
       console.log(e);
-    }    
+    }
   }, [scanId]);
 
   useEffect(() => {
@@ -186,14 +184,19 @@ const ScanView = (props) => {
       });
     };
     try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
+      AuthService.refreshTokenWrapperFunction(serviceCall).then(function (
+        value
+      ) {
+        if (value != undefined) {
+          setMessage({
+            ...message,
+            text: "Issue: " + value.message,
+          });
+          setPopUpBox("block");
+        }
+      });
     } catch (e) {
       console.log(e);
-      setPopUpBox("block");
-      setMessage({
-        ...message,
-        text: ("Update Status Error: ", e),
-      });
     }
   };
 
