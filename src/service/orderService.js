@@ -45,40 +45,26 @@ const getOrderLog = (order_number) => {
 
 const getOrder = (id, setOrder, setUnalteredOrder, setLoading) => {
   let e = "";
-  
+
   const serviceCall = () => {
-    return get(id)
-      .then((response) => {
-        setOrder(response.data);
-        if (setUnalteredOrder !== false) {
-          setUnalteredOrder(response.data);
-        }
-        setLoading(false);
-      })
-      // .catch((e) => {
-      //   console.log(e);
-      // });
+    return get(id).then((response) => {
+      setOrder(response.data);
+      if (setUnalteredOrder !== false) {
+        setUnalteredOrder(response.data);
+      }
+      setLoading(false);
+    });
   };
   try {
-  //   AuthService.refreshTokenWrapperFunction(serviceCall);
-    e = AuthService.refreshTokenWrapperFunction(serviceCall).then(function(value) {
-      console.log("Ey", value)
-      // console.log("Yo", value.message)
+    e = AuthService.refreshTokenWrapperFunction(serviceCall).then(function (
+      value
+    ) {
       return value;
     });
   } catch (e) {
     console.log(e);
   }
   return e;
-
-  // const e = AuthService.refreshTokenWrapperFunction(serviceCall).then(function(value) {
-  //   console.log("Auth Value", value)
-  //   return value
-  // });
-
-
-
-  // return e;
 };
 
 const orderServiceObject = {
