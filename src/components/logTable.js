@@ -1,11 +1,19 @@
 import { React, useCallback, useEffect, useState } from "react";
+import PopUpBoxComponent from "./popUpBoxComponent";
 import OrderDataService from "../service/orderService";
 import AuthService from "../service/authService";
 
 export const LogTable = (props) => {
+  const initialMessageState = {
+    // to be consistent with other uses of Message State and PopUpBox
+    text: "",
+  };
+
   const order_number = props.order_number;
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(initialMessageState);
   const [orderLog, setOrderLog] = useState();
+  const [popUpBox, setPopUpBox] = useState("none");
 
   const getOrderLog = useCallback(
     (order_number) => {
@@ -13,20 +21,32 @@ export const LogTable = (props) => {
         return OrderDataService.getOrderLog(order_number)
           .then((response) => {
             setOrderLog(response.data.orders);
-            console.log(orderLog);
             setLoading(false);
           })
-          .catch((e) => {
-            console.log(e);
-          });
+          // .catch((e) => {
+          //   console.log("Service Call check: ", e);
+          // });
       };
       try {
-        AuthService.refreshTokenWrapperFunction(serviceCall);
+        AuthService.refreshTokenWrapperFunction(serviceCall).then(function (
+          serviceCallResult
+        ) {
+          console.log("Top level result: ", serviceCallResult);
+          if (serviceCallResult != undefined) {
+            setPopUpBox("block");
+            setMessage((message) => {
+              return {
+                ...message,
+                text: "Issue: " + serviceCallResult.message,
+              }
+            });
+          };
+        });
       } catch (e) {
         console.log(e);
       }
     },
-    [orderLog]
+    []
   );
 
   useEffect(() => {
@@ -35,6 +55,10 @@ export const LogTable = (props) => {
       getOrderLog(order_number);
     }
   }, [orderLog, order_number, getOrderLog]);
+
+  const closePopUpBox = () => {
+    setPopUpBox("none");
+  };
 
   return (
     <>
@@ -70,6 +94,11 @@ export const LogTable = (props) => {
       ) : (
         "No data to display"
       )}
+      <PopUpBoxComponent
+        closePopUpBox={closePopUpBox}
+        message={message}
+        popUpBox={popUpBox}
+      />
     </>
   );
 };

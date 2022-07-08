@@ -62,12 +62,10 @@ class AuthService {
           return e;
         } else {
           console.log("Auth error: ", e);
-          console.log("e.message: ", e.message);
           return e;
         }
       } else {
         console.log("Auth error: ", e);
-        console.log("e.message: ", e.message);
         return e;
       }
     });
