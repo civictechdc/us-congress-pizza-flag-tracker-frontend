@@ -16,8 +16,8 @@ const OrderForm = (props) => {
     loading,
   } = props;
 
-  const [whyCantIUpdate, setWhyCantIUpdate] = useState(false);
   const [isLastChangeUSState, setIsLastChangeUSState] = useState(false);
+  const [whyCantIUpdate, setWhyCantIUpdate] = useState(false);
 
   let optionUSStates = [];
   if (STATES) {

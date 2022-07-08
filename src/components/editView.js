@@ -61,7 +61,6 @@ const EditView = (props) => {
         setPopUpBox("block");
         setMessage({
           ...message,
-          checkSaved: true,
           text: "The order was updated successfully!",
         });
         setCheckSaved(true);
