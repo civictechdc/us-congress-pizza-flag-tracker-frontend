@@ -14,13 +14,11 @@ const AddView = () => {
   };
 
   const initialMessageState = {
-    checkSaved: true,
-    isLastChangeUSState: false,
     text: "",
   };
 
+  const [checkSaved, setCheckSaved] = useState(true);
   const [order, setOrder] = useState(initialOrderState);
-  const [exceptionMessage, setExceptionMessage] = useState();
   const [message, setMessage] = useState(initialMessageState);
   const [popUpBox, setPopUpBox] = useState("none");
   const mode = "add";
@@ -36,9 +34,9 @@ const AddView = () => {
         setOrder(initialOrderState);
         setMessage({
           ...message,
-          checkSaved: true,
           text: "The order was updated successfully!",
         });
+        setCheckSaved(true);
         setPopUpBox("block");
       });
     };
@@ -49,9 +47,9 @@ const AddView = () => {
         if (serviceResult != undefined) {
           setMessage({
             ...message,
-            checkSaved: false,
             text: "Issue: " + serviceResult.message,
           });
+          setCheckSaved(false);
           setPopUpBox("block");
         }
       });
@@ -64,21 +62,13 @@ const AddView = () => {
     setPopUpBox("none");
   };
 
-  if (exceptionMessage) {
-    return (
-      <div class="alert alert-warning" role="alert">
-        Error {exceptionMessage}
-      </div>
-    );
-  }
-
   return (
     <>
       <OrderForm
         order={order}
-        message={message}
+        checkSaved={checkSaved}
         setOrderFunc={setOrder}
-        setMessageFunc={setMessage}
+        setCheckSavedFunc={setCheckSaved}
         saveOrderFunc={saveOrder}
         mode={mode}
       />

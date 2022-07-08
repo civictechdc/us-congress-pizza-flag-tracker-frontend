@@ -6,9 +6,9 @@ import styles from "../style/orderForm.module.css";
 const OrderForm = (props) => {
   const {
     order,
-    message,
+    checkSaved,
     setOrderFunc,
-    setMessageFunc,
+    setCheckSavedFunc,
     saveOrderFunc,
     mode,
     deleteOrderFunc,
@@ -17,6 +17,7 @@ const OrderForm = (props) => {
   } = props;
 
   const [whyCantIUpdate, setWhyCantIUpdate] = useState(false);
+  const [isLastChangeUSState, setIsLastChangeUSState] = useState(false);
 
   let optionUSStates = [];
   if (STATES) {
@@ -69,17 +70,11 @@ const OrderForm = (props) => {
       name = event.target.name;
       value = event.target.value;
     }
-    setMessageFunc({
-      ...message,
-      isLastChangeUSState: false,
-      text: "",
-      checkSaved: false,
-    });
+    setIsLastChangeUSState(false);
+    setCheckSavedFunc(false);
     if (name === "usa_state") {
       setOrderFunc({ ...order, home_office_code: "" });
-      setMessageFunc((prevMessageFunc) => {
-        return { ...prevMessageFunc, isLastChangeUSState: true };
-      });
+      setIsLastChangeUSState(true);
     }
     setOrderFunc((prevOrderFunc) => {
       return { ...prevOrderFunc, [name]: value };
@@ -201,7 +196,7 @@ const OrderForm = (props) => {
               <div className={styles.formGroup}>
                 <label htmlFor="edit-office">District:</label>{" "}
                 {order.usa_state ? (
-                  message.isLastChangeUSState ? (
+                  isLastChangeUSState ? (
                     <Select
                       inputId="edit-office"
                       onChange={handleInputChange}
@@ -260,17 +255,6 @@ const OrderForm = (props) => {
                     }}
                   />
                 </div>
-
-                {/* <div className="form-group">
-                  <label>QR Code</label>
-                  {order.uuid}
-                  <img
-                    src={baseURL + "/qrcode/" + order.uuid}
-                    className={styles.qrImage}
-                    alt="QR Code"
-                    align="center"
-                  />
-                </div> */}
               </>
             ) : null}
 
@@ -289,7 +273,7 @@ const OrderForm = (props) => {
               {mode === "edit" ? "Update" : "Submit"}
             </button>
 
-            {!message.checkSaved ? (
+            {!checkSaved ? (
               <p className={styles.validationMessage}>
                 Changes not saved, press {mode === "edit" ? "Update" : "Submit"}{" "}
                 to save changes

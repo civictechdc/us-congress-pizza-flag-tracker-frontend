@@ -9,8 +9,6 @@ import styles from "../style/orderForm.module.css";
 
 const DemoLogIn = () => {
   const initialMessageState = {
-    checkSaved: true,
-    isLastChangeUSState: false,
     text: "Login Updated, click this box to continue",
   };
 

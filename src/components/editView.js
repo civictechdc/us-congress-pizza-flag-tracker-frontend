@@ -31,11 +31,10 @@ const EditView = (props) => {
   };
 
   const initialMessageState = {
-    checkSaved: true,
-    isLastChangeUSState: false,
     text: "",
   };
 
+  const [checkSaved, setCheckSaved] = useState(true);
   const [order, setOrder] = useState(initialOrderState);
   const [message, setMessage] = useState(initialMessageState);
   const [statuses, setStatuses] = useState([]);
@@ -65,13 +64,23 @@ const EditView = (props) => {
           checkSaved: true,
           text: "The order was updated successfully!",
         });
+        setCheckSaved(true);
       });
     };
-    try {
-      AuthService.checkTokenAndExecute(serviceToExecute);
-    } catch (e) {
-      console.log(`error occurred while updating order: ${e}`);
-    }
+    AuthService.checkTokenAndExecute(serviceToExecute).then(function (
+      serviceResult
+    ) {
+      console.log("Top level result: ", serviceResult);
+      if (serviceResult != undefined) {
+        setPopUpBox("block");
+        setMessage((message) => {
+          return {
+            ...message,
+            text: "Issue: " + serviceResult.message,
+          };
+        });
+      }
+    });
   };
 
   const deleteOrder = () => {
@@ -80,11 +89,21 @@ const EditView = (props) => {
         history.push("/");
       });
     };
-    try {
-      AuthService.checkTokenAndExecute(serviceToExecute);
-    } catch (e) {
-      console.log(e);
-    }
+
+    AuthService.checkTokenAndExecute(serviceToExecute).then(function (
+      serviceResult
+    ) {
+      console.log("Top level result: ", serviceResult);
+      if (serviceResult != undefined) {
+        setPopUpBox("block");
+        setMessage((message) => {
+          return {
+            ...message,
+            text: "Issue: " + serviceResult.message,
+          };
+        });
+      }
+    });
   };
 
   const closePopUpBox = () => {
@@ -96,9 +115,9 @@ const EditView = (props) => {
       {order ? (
         <OrderForm
           order={order}
-          message={message}
+          checkSaved={checkSaved}
           setOrderFunc={setOrder}
-          setMessageFunc={setMessage}
+          setCheckSavedFunc={setCheckSaved}
           saveOrderFunc={updateOrder}
           deleteOrderFunc={deleteOrder}
           mode={mode}

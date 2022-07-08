@@ -8,8 +8,6 @@ import styles from "../style/orderForm.module.css";
 
 const Refresh = () => {
   const initialMessageState = {
-    checkSaved: true,
-    isLastChangeUSState: false,
     text: "Please wait a moment for the database to reset.",
   };
 
