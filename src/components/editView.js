@@ -78,7 +78,6 @@ const EditView = (props) => {
     AuthService.checkTokenAndExecute(serviceToExecute).then(function (
       serviceResult
     ) {
-      console.log("Top level result: ", serviceResult);
       if (serviceResult != undefined) {
         setPopUpBox("block");
         setMessage("Issue: " + serviceResult.message);

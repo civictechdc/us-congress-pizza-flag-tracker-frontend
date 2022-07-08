@@ -33,19 +33,15 @@ const AddView = () => {
         setPopUpBox("block");
       });
     };
-    try {
-      AuthService.checkTokenAndExecute(serviceToExecute).then(function (
-        serviceResult
-      ) {
-        if (serviceResult != undefined) {
-          setMessage("Issue: " + serviceResult.message);
-          setCheckSaved(false);
-          setPopUpBox("block");
-        }
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    AuthService.checkTokenAndExecute(serviceToExecute).then(function (
+      serviceResult
+    ) {
+      if (serviceResult != undefined) {
+        setMessage("Issue: " + serviceResult.message);
+        setCheckSaved(false);
+        setPopUpBox("block");
+      }
+    });
   };
 
   const closePopUpBox = () => {

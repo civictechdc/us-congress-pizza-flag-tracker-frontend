@@ -65,18 +65,14 @@ const OrdersView = () => {
         setLoading(false);
       });
     };
-    try {
-      AuthService.checkTokenAndExecute(serviceToExecute).then(function (
-        serviceResult
-      ) {
-        if (serviceResult != undefined) {
-          setPopUpBox("block");
-          setMessage("Issue: " + serviceResult.message);
-        }
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    AuthService.checkTokenAndExecute(serviceToExecute).then(function (
+      serviceResult
+    ) {
+      if (serviceResult != undefined) {
+        setPopUpBox("block");
+        setMessage("Issue: " + serviceResult.message);
+      }
+    });
   };
 
   // in production replace demologin code with this:

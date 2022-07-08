@@ -72,18 +72,14 @@ const PasswordUpdate = () => {
             }
           });
       };
-      try {
-        AuthService.checkTokenAndExecute(serviceToExecute).then(function (
-          serviceResult
-        ) {
-          if (serviceResult != undefined) {
-            setPopUpBox("block");
-            setMessage("Issue: " + serviceResult.message);
-          }
-        });
-      } catch (e) {
-        console.log(e);
-      }
+      AuthService.checkTokenAndExecute(serviceToExecute).then(function (
+        serviceResult
+      ) {
+        if (serviceResult != undefined) {
+          setPopUpBox("block");
+          setMessage("Issue: " + serviceResult.message);
+        }
+      });
     } else {
       setPopUpBox("block");
       setMessage("New passwords must match!");
@@ -110,19 +106,14 @@ const PasswordUpdate = () => {
             }
           });
       };
-      try {
-        AuthService.checkTokenAndExecute(serviceToExecute).then(function (
-          serviceResult
-        ) {
-          console.log("Top level result: ", serviceResult);
-          if (serviceResult != undefined) {
-            setPopUpBox("block");
-            setMessage("Issue: " + serviceResult.message);
-          }
-        });
-      } catch (e) {
-        console.log(e);
-      }
+      AuthService.checkTokenAndExecute(serviceToExecute).then(function (
+        serviceResult
+      ) {
+        if (serviceResult != undefined) {
+          setPopUpBox("block");
+          setMessage("Issue: " + serviceResult.message);
+        }
+      });
     } else {
       setPopUpBox("block");
       setMessage("New passwords must match!");

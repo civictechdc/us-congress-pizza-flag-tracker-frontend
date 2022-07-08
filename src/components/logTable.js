@@ -18,18 +18,14 @@ export const LogTable = (props) => {
       });
       // do not add catch at this level
     };
-    try {
-      AuthService.checkTokenAndExecute(serviceToExecute).then(function (
-        serviceResult
-      ) {
-        if (serviceResult != undefined) {
-          setPopUpBox("block");
-          setMessage("Issue: " + serviceResult.message);
-        }
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    AuthService.checkTokenAndExecute(serviceToExecute).then(function (
+      serviceResult
+    ) {
+      if (serviceResult != undefined) {
+        setPopUpBox("block");
+        setMessage("Issue: " + serviceResult.message);
+      }
+    });
   }, []);
 
   useEffect(() => {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import ReactToPrint from "react-to-print";
 import OrderDataService from "../service/orderService";
+import PopUpBoxComponent from "./popUpBoxComponent";
 import QrCode from "../components/qrCode";
 import "../style/printOrder.css";
 
@@ -26,14 +27,28 @@ const PrintView = (props) => {
     },
   };
 
-  const [order, setOrder] = useState(initialOrderState);
   const [loading, setLoading] = useState(false);
+  const [order, setOrder] = useState(initialOrderState);
+  const [message, setMessage] = useState("");
+  const [popUpBox, setPopUpBox] = useState("none");
+
   const componentRef = useRef();
 
   useEffect(() => {
     setLoading(true);
-    OrderDataService.getOrder(printId, setOrder, false, setLoading);
+    OrderDataService.getOrder(printId, setOrder, false, setLoading).then(
+      function (serviceResult) {
+        if (serviceResult != undefined) {
+          setMessage("Issue: " + serviceResult.message);
+          setPopUpBox("block");
+        }
+      }
+    );
   }, [printId]);
+
+  const closePopUpBox = () => {
+    setPopUpBox("none");
+  };
 
   return (
     <>
@@ -48,6 +63,11 @@ const PrintView = (props) => {
           />
         </>
       )}
+      <PopUpBoxComponent
+        closePopUpBox={closePopUpBox}
+        message={message}
+        popUpBox={popUpBox}
+      />
     </>
   );
 };

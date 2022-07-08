@@ -55,15 +55,9 @@ const getOrder = (id, setOrder, setUnalteredOrder, setLoading) => {
       setLoading(false);
     });
   };
-  try {
-    e = AuthService.checkTokenAndExecute(serviceToExecute).then(function (
-      value
-    ) {
-      return value;
-    });
-  } catch (e) {
-    console.log(e);
-  }
+  e = AuthService.checkTokenAndExecute(serviceToExecute).then(function (value) {
+    return value;
+  });
   return e;
 };
 

@@ -166,18 +166,14 @@ const ScanView = (props) => {
         }
       });
     };
-    try {
-      AuthService.checkTokenAndExecute(serviceToExecute).then(function (
-        serviceResult
-      ) {
-        if (serviceResult != undefined) {
-          setMessage("Issue: " + serviceResult.message);
-          setPopUpBox("block");
-        }
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    AuthService.checkTokenAndExecute(serviceToExecute).then(function (
+      serviceResult
+    ) {
+      if (serviceResult != undefined) {
+        setMessage("Issue: " + serviceResult.message);
+        setPopUpBox("block");
+      }
+    });
   };
 
   const saveUpdate = () => {
