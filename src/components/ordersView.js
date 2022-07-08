@@ -17,14 +17,19 @@ import { Search } from "./search";
 import { editOrderControl } from "./protectedRoute/permissions";
 import { useHistory, useLocation } from "react-router-dom";
 import UserContext from "./userContext";
+import PopUpBoxComponent from "./popUpBoxComponent";
 
 const OrdersView = () => {
-  let initialSearchState = { keyword: "", status: [], state: "", office: "" };
+  const initialSearchState = { keyword: "", status: [], state: "", office: "" };
+  const initialMessageState = {
+    // to be consistent with other uses of Message State and PopUpBox
+    text: "",
+  };
   const [orders, setOrders] = useState([]);
   const [currentOrder, setCurrentOrder] = useState(null);
   const [searchTitle, setSearchTitle] = useState(initialSearchState.keyword);
   const [popUpBox, setPopUpBox] = useState("none");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [message, setMessage] = useState(initialMessageState);
   const [sortedField, setSortedField] = useState(null);
   const [sortDir, setSortDir] = useState("asc");
   const [sortType, setSortType] = useState("numeric");
@@ -64,10 +69,21 @@ const OrdersView = () => {
       });
     };
     try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
+      AuthService.refreshTokenWrapperFunction(serviceCall).then(function (
+        serviceCallResult
+      ) {
+        if (serviceCallResult != undefined) {
+          setPopUpBox("block");
+          setMessage((message) => {
+            return {
+              ...message,
+              text: "Issue: " + serviceCallResult.message,
+            };
+          });
+        }
+      });
     } catch (e) {
-      setErrorMessage(e.message);
-      setPopUpBox("block");
+      console.log(e);
     }
   };
 
@@ -84,7 +100,7 @@ const OrdersView = () => {
     return AuthService.login(userName, password)
       .then((response) => {
         console.log("response", response);
-        setErrorMessage("Login Updated, click this box to continue");
+        setMessage("Login Updated, click this box to continue");
         setPopUpBox("block");
       })
       .catch((e) => {
@@ -138,7 +154,7 @@ const OrdersView = () => {
   const clearSearch = () => {
     refreshList();
     setSearchTitle("");
-    setErrorMessage("");
+    setMessage("");
   };
 
   const formatDate = (dateString) => {
@@ -156,11 +172,7 @@ const OrdersView = () => {
 
   useEffect(() => {
     if (statuses.length === 0) {
-      StatusDataService.retrieveStatuses(
-        setErrorMessage,
-        setStatuses,
-        setPopUpBox
-      );
+      StatusDataService.retrieveStatuses(setMessage, setStatuses, setPopUpBox);
     }
   }, [statuses]);
 
@@ -283,7 +295,7 @@ const OrdersView = () => {
           <div className={styles.statusItemContainer}></div>
         </div>
 
-        {errorMessage || searchTitle ? (
+        {message || searchTitle ? (
           <button className="m-3 btn btn-sm btn-danger" onClick={clearSearch}>
             Clear search
           </button>
@@ -296,11 +308,11 @@ const OrdersView = () => {
           </div>
         )}
       </div>
-      <div className="pop-container" style={{ display: popUpBox }}>
-        <div className="pop-up" onClick={closePopUpBox}>
-          <h3>{errorMessage}</h3>
-        </div>
-      </div>
+      <PopUpBoxComponent
+        closePopUpBox={closePopUpBox}
+        message={message}
+        popUpBox={popUpBox}
+      />
     </>
   );
 };

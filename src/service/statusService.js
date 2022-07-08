@@ -16,19 +16,21 @@ const retrieveStatuses = (setMessage, setStatuses, setPopUpBox) => {
     });
   };
   try {
-    AuthService.refreshTokenWrapperFunction(serviceCall);
+    AuthService.refreshTokenWrapperFunction(serviceCall).then(function (
+      serviceCallResult
+    ) {
+      if (serviceCallResult != undefined) {
+        setPopUpBox("block");
+        setMessage((message) => {
+          return {
+            ...message,
+            text: "Status Issue: " + serviceCallResult.message,
+          };
+        });
+      }
+    });
   } catch (e) {
-    setPopUpBox("block");
-    console.log("retrieveStatuses: ", e);
-    if (e.response.status === 401) {
-      setMessage("You must be logged in to view this page");
-    } else {
-      setMessage(
-        e.message +
-          "." +
-          "Check with admin if server is down or try logging out and logging in."
-      );
-    }
+    console.log(e);
   }
 };
 
