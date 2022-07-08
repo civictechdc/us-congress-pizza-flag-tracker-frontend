@@ -43,25 +43,20 @@ const AddView = () => {
       });
     };
     try {
-      AuthService.refreshTokenWrapperFunction(serviceCall).then(function(value) {
-        console.log("Ey", value)
-        // console.log("Yo", value.message)
+      AuthService.refreshTokenWrapperFunction(serviceCall).then(function (
+        value
+      ) {
         if (value != undefined) {
           setMessage({
             ...message,
             checkSaved: false,
-            text: "Error: " + value.message,
+            text: "Issue: " + value.message,
           });
           setPopUpBox("block");
         }
-
       });
-      // console.log(e);
     } catch (e) {
-      setExceptionMessage("You have a problem. " + e.message);
-      console.log("AddView Error: ", e.message);
-      console.log("E: ", e);
-      console.log("Hello World");
+      console.log(e);
     }
   };
 
