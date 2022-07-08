@@ -39,50 +39,6 @@ const Login = (props) => {
     setPassword(e.target.value);
   };
 
-  // const handleLogin = (e) => {
-  //   e.preventDefault();
-
-  //   return AuthService.login(username, password).then(
-  //     () => {
-  //       const whereAreYouGoing = async () => {
-  //         if (location.state === undefined) {
-  //           return history.push("/");
-  //         } else {
-  //           let id = location.state.destination.slice(6);
-  //           let path = generatePath("/scan/:id", { id: id });
-  //           let serviceToExecute = async () => {
-  //             let response = await OrderDataService.get(id);
-  //             return response.data;
-  //           };
-
-  //           let order = await AuthService.checkTokenAndExecute(
-  //             serviceToExecute
-  //           );
-  //           let orderOfficeCode =
-  //             order !== undefined ? order.home_office_code : "";
-  //           let destination = history.push(path, {
-  //             orderOfficeCheck: orderOfficeCode,
-  //           });
-
-  //           return destination;
-  //         }
-  //       };
-
-  //       whereAreYouGoing();
-  //       window.location.reload();
-  //     },
-  //     (error) => {
-  //       const resMessage =
-  //         (error.response &&
-  //           error.response.data &&
-  //           error.response.data.message) ||
-  //         error.message ||
-  //         error.toString();
-  //       setMessage(resMessage);
-  //     }
-  //   );
-  // };
-
   const handleLogin = (e) => {
     e.preventDefault();
 
