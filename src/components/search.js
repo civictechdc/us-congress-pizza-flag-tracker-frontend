@@ -2,7 +2,6 @@ import { React } from "react";
 import { useHistory } from "react-router-dom";
 import Select from "react-select";
 import styles from "../style/orders.module.css";
-import OrderDataService from "../service/orderService";
 import { STATES } from "./states";
 
 export const Search = (props) => {
@@ -10,7 +9,6 @@ export const Search = (props) => {
   const history = useHistory();
 
   const statusOptions = statuses.map((status) => ({
-    // value: status.id,
     value: status.status_code,
     label: status.status_code,
     name: "status_code",
@@ -82,30 +80,6 @@ export const Search = (props) => {
     history.replace(`${window.location.pathname}?${queryParams.toString()}`);
   };
 
-  /* This is now unused as we will replace it with the generic findByKeyword I believe */
-  // const findByOrderNumber = () => {
-  //   let serviceCall = () => {
-  //     //changed from const to let to maintain best practices
-  //     return OrderDataService.findByOrderNumber(searchTitle).then(
-  //       (response) => {
-  //         if ("error" in response.data) {
-  //           setErrorMessage(response.data.error);
-  //         } else {
-  //           console.log("found", response.data);
-  //           setOrders(response.data.orders);
-  //         }
-  //         setLoading(false);
-  //       }
-  //     );
-  //   };
-  //   try {
-  //     setLoading(true);
-  //     AuthService.refreshTokenWrapperFunction(serviceCall);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
-
   return (
     <div className={styles.outerInputContainer}>
       <div className={styles.inputContainer}>
@@ -119,15 +93,6 @@ export const Search = (props) => {
             onChange={onChangeSearchTitle}
             id="keyword"
           />
-          {/* <div className={styles.searchButton}>
-          <button
-            className="btn btn-outline-secondary"
-            type="button"
-            onClick={findByOrderNumber}
-          >
-            Search
-          </button>
-          </div> */}
         </div>
       </div>
       <div className={styles.inputContainer}>

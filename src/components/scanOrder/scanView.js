@@ -54,7 +54,28 @@ const ScanView = (props) => {
 
   useEffect(() => {
     setLoading(true);
-    OrderDataService.getOrder(scanId, setOrder, setUnalteredOrder, setLoading);
+    try {
+      OrderDataService.getOrder(scanId, setOrder, setUnalteredOrder, setLoading).then(function(value) {
+        console.log("value: ", value);
+        if (value != undefined) {
+          // setMessage({
+          //   ...message,
+          //   checkSaved: false,
+          //   text: "You have a problem: " + value.message,
+          // });
+          setMessage((message) => {
+            return {
+              ...message,
+              // gicheckSaved: false,
+              text: "Error: " + value.message,
+            };
+          });
+          setPopUpBox("block");
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }    
   }, [scanId]);
 
   useEffect(() => {
