@@ -45,7 +45,6 @@ const getOrderLog = (order_number) => {
 
 const getOrder = (id, setOrder, setUnalteredOrder, setLoading) => {
   let e = "";
-
   const serviceToExecute = () => {
     return get(id).then((response) => {
       setOrder(response.data);
