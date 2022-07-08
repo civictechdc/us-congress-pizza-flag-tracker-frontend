@@ -1,16 +1,13 @@
 import React, { useState, useContext } from "react";
-import { useLocation, useHistory, Redirect } from "react-router-dom";
-import { generatePath } from "react-router";
+import { useHistory, Redirect } from "react-router-dom";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import styles from "../style/login.module.css";
 import UserContext from "../components/userContext";
 import { isUser } from "../components/protectedRoute/permissions";
-import OrdersList from "./ordersList";
 
 import AuthService from "../service/authService";
-import OrderDataService from "../service/orderService";
 
 const required = (value) => {
   if (!value) {
@@ -22,13 +19,12 @@ const required = (value) => {
   }
 };
 
-const Login = (props) => {
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const { setUserDisplay } = useContext(UserContext);
 
-  const location = useLocation();
   const history = useHistory();
 
   const onChangeUsername = (e) => {
