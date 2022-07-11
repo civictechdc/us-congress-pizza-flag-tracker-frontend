@@ -109,6 +109,7 @@ const OrdersView = () => {
     try {
       dispatch({ type: "state", payload: "Search by State" });
       dispatch({ type: "office", payload: "Search by Office" });
+      dispatch({ type: "keyword", payload: "" });
       if (searchParams) {
         retrieveOrders(searchParams);
         const parsedParams = new URLSearchParams(searchParams);
@@ -141,8 +142,8 @@ const OrdersView = () => {
 
   const clearSearch = () => {
     refreshList();
-    setSearchTitle("");
-    setMessage("");
+    setSearchTitle(initialSearchState);
+    history.push("/");
   };
 
   const formatDate = (dateString) => {
@@ -268,15 +269,22 @@ const OrdersView = () => {
           searchState={searchState}
           setSearchTitle={setSearchTitle}
           statuses={statuses}
+          searchParams={searchParams}
+          clearSearch={clearSearch}
         />
         {ordersToDisplay.length ? (
-          <TableHeader
-            sortedField={sortedField}
-            sortDir={sortDir}
-            setSortedField={setSortedField}
-            setSortType={setSortType}
-            setSortDir={setSortDir}
-          />
+          <>
+            <TableHeader
+              sortedField={sortedField}
+              sortDir={sortDir}
+              setSortedField={setSortedField}
+              setSortType={setSortType}
+              setSortDir={setSortDir}
+            />
+            <div className={styles.statusItem}>
+              <h5> Please click on an order... </h5>
+            </div>
+          </>
         ) : (
           <div className={styles.mainContainer}>
             <h4 className={styles.title}>No orders found</h4>
@@ -287,19 +295,6 @@ const OrdersView = () => {
 
           <div className={styles.statusItemContainer}></div>
         </div>
-
-        {message || searchTitle ? (
-          <button className="m-3 btn btn-sm btn-danger" onClick={clearSearch}>
-            Clear search
-          </button>
-        ) : ordersToDisplay.length ? (
-          <div className={styles.statusItem}>
-            <p>
-              Please click
-              <br /> on an order...
-            </p>
-          </div>
-        ) : null}
       </div>
       <PopUpBoxComponent
         closePopUpBox={closePopUpBox}
