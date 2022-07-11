@@ -38,7 +38,7 @@ const PrintView = (props) => {
     setLoading(true);
     OrderDataService.getOrder(printId, setOrder, false, setLoading).then(
       function (serviceResult) {
-        if (serviceResult != undefined) {
+        if (serviceResult) {
           setMessage("Issue: " + serviceResult.message);
           setPopUpBox("block");
         }

@@ -62,7 +62,7 @@ const EditView = (props) => {
     AuthService.checkTokenAndExecute(serviceToExecute).then(function (
       serviceResult
     ) {
-      if (serviceResult != undefined) {
+      if (serviceResult) {
         setPopUpBox("block");
         setMessage("Issue: " + serviceResult.message);
       }
@@ -78,7 +78,7 @@ const EditView = (props) => {
     AuthService.checkTokenAndExecute(serviceToExecute).then(function (
       serviceResult
     ) {
-      if (serviceResult != undefined) {
+      if (serviceResult) {
         setPopUpBox("block");
         setMessage("Issue: " + serviceResult.message);
       }

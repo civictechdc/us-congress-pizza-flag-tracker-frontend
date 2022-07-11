@@ -18,7 +18,7 @@ const retrieveStatuses = (setMessage, setStatuses, setPopUpBox) => {
   AuthService.checkTokenAndExecute(serviceToExecute).then(function (
     serviceResult
   ) {
-    if (serviceResult != undefined) {
+    if (serviceResult) {
       setPopUpBox("block");
       setMessage("Status Issue: " + serviceResult.message);
     }

@@ -55,7 +55,7 @@ const ScanView = (props) => {
       setUnalteredOrder,
       setLoading
     ).then(function (serviceResult) {
-      if (serviceResult != undefined) {
+      if (serviceResult) {
         setMessage("Issue: " + serviceResult.message);
         setPopUpBox("block");
       }
@@ -169,7 +169,7 @@ const ScanView = (props) => {
     AuthService.checkTokenAndExecute(serviceToExecute).then(function (
       serviceResult
     ) {
-      if (serviceResult != undefined) {
+      if (serviceResult) {
         setMessage("Issue: " + serviceResult.message);
         setPopUpBox("block");
       }
