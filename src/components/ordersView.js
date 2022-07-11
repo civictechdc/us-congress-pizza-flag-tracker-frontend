@@ -87,7 +87,6 @@ const OrdersView = () => {
   const logIn = (userName, password) => {
     return AuthService.login(userName, password)
       .then((response) => {
-        console.log("response", response);
         setMessage("Login Updated, click this box to continue");
         setPopUpBox("block");
       })
@@ -98,7 +97,6 @@ const OrdersView = () => {
 
   if (userName != undefined) {
     const password = userName + "-1010";
-    console.log("password: ", password);
     logIn(userName, password);
     history.push("/" + searchParams);
   }
