@@ -5,8 +5,7 @@ import styles from "../style/orders.module.css";
 import { STATES } from "./states";
 
 export const Search = (props) => {
-  const { searchState, setSearchTitle, statuses, searchParams, clearSearch } =
-    props;
+  const { searchState, statuses, searchParams, clearSearch } = props;
   const history = useHistory();
 
   const statusOptions = statuses.map((status) => ({
@@ -44,7 +43,6 @@ export const Search = (props) => {
 
   function onChangeSearchTitle(e) {
     const searchTitle = e.target.value;
-    setSearchTitle(searchTitle);
     const queryParams = new URLSearchParams(window.location.search);
     if (searchTitle == null) {
       queryParams.delete("keyword");

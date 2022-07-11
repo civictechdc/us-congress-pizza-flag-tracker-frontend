@@ -24,7 +24,6 @@ const OrdersView = () => {
 
   const [orders, setOrders] = useState([]);
   const [currentOrder, setCurrentOrder] = useState(null);
-  const [searchTitle, setSearchTitle] = useState(initialSearchState.keyword);
   const [popUpBox, setPopUpBox] = useState("none");
   const [message, setMessage] = useState("");
   const [sortedField, setSortedField] = useState(null);
@@ -140,7 +139,6 @@ const OrdersView = () => {
 
   const clearSearch = () => {
     refreshList();
-    setSearchTitle(initialSearchState);
     history.push("/");
   };
 
@@ -265,7 +263,6 @@ const OrdersView = () => {
         <h4 className={styles.title}>Orders</h4>
         <Search
           searchState={searchState}
-          setSearchTitle={setSearchTitle}
           statuses={statuses}
           searchParams={searchParams}
           clearSearch={clearSearch}
