@@ -4,8 +4,8 @@ import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 import styles from "../../style/scanOrder.module.css";
 import { updateOrder } from "../../utils/orderUtils";
-import Select from "react-select";
-import SelectField from "./SelectField";
+
+import SelectField, { DistrictSelectField } from "./SelectField";
 import { editOrderControl } from "../protectedRoute/permissions";
 
 const InfoTop = (props) => {
@@ -71,10 +71,9 @@ const InfoTop = (props) => {
 
   const updateDistricts = (option) => {
     {
-      optionDistricts = STATES.filter((state) => state.name === option.value);
+      optionDistricts = STATES.filter((state) => state.name === option);
       if (optionDistricts.length) {
-        console.log(optionDistricts);
-        optionDistricts[0].map((district) => ({
+        optionDistricts[0].districts.map((district) => ({
           label: district,
           name: "home_office_code",
           value: district,
@@ -121,6 +120,7 @@ const InfoTop = (props) => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
+        enableReinitialize
       >
         {(props) => {
           const {
@@ -133,7 +133,7 @@ const InfoTop = (props) => {
             isValid,
             dirty,
           } = props;
-          console.log(values.usa_state);
+
           return (
             <>
               <div className={styles.toggleEdit}>
@@ -218,6 +218,7 @@ const InfoTop = (props) => {
                             name="usa_state"
                             options={optionUSStates}
                             initialValue={values.usa_state}
+                            updateDistricts={updateDistricts}
                           />
                           {touched.usa_state && errors.usa_state && (
                             <div className={styles.error}>
