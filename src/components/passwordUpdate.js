@@ -56,21 +56,19 @@ const PasswordUpdate = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     if (comparePasswords(newPassword, newPassword2)) {
-      const serviceToExecute = () => {
-        return userService
+      const serviceToExecute = async () => {
+        const response = await userService
           .updateOwnPassword({
             newPassword: newPassword,
             oldPassword: oldPassword,
-          })
-          .then((response) => {
-            if (response.status === 200) {
-              setOldPassword("");
-              setNewPassword("");
-              setNewPassword2("");
-              setPopUpBox("block");
-              setMessage("The password was updated successfully!");
-            }
           });
+        if (response.status === 200) {
+          setOldPassword("");
+          setNewPassword("");
+          setNewPassword2("");
+          setPopUpBox("block");
+          setMessage("The password was updated successfully!");
+        }
       };
       AuthService.checkTokenAndExecute(serviceToExecute).then(function (
         serviceResult
@@ -90,21 +88,19 @@ const PasswordUpdate = () => {
   const submitAdmin = (e) => {
     e.preventDefault();
     if (comparePasswords(userNewPassword, userNewPassword2)) {
-      const serviceToExecute = () => {
-        return userService
+      const serviceToExecute = async () => {
+        const response = await userService
           .updateOthersPassword({
             username: userName,
             oldPassword: userNewPassword,
-          })
-          .then((response) => {
-            if (response.status === 200) {
-              setUserName("");
-              setUserNewPassword("");
-              setUserNewPassword2("");
-              setPopUpBox("block");
-              setMessage("The password was updated successfully!");
-            }
           });
+        if (response.status === 200) {
+          setUserName("");
+          setUserNewPassword("");
+          setUserNewPassword2("");
+          setPopUpBox("block");
+          setMessage("The password was updated successfully!");
+        }
       };
       AuthService.checkTokenAndExecute(serviceToExecute).then(function (
         serviceResult

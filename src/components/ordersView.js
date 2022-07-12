@@ -58,11 +58,10 @@ const OrdersView = () => {
 
   //retrieve orders based on authorization level
   const retrieveOrders = (params) => {
-    const serviceToExecute = () => {
-      return OrderDataService.getAll(params).then((response) => {
-        setOrders(response.data.orders);
-        setLoading(false);
-      });
+    const serviceToExecute = async () => {
+      const response = await OrderDataService.getAll(params);
+      setOrders(response.data.orders);
+      setLoading(false);
     };
     AuthService.checkTokenAndExecute(serviceToExecute).then(function (
       serviceResult
@@ -83,15 +82,14 @@ const OrdersView = () => {
   const searchParams = paramsArray[0];
   const userName = paramsArray[1];
 
-  const logIn = (userName, password) => {
-    return AuthService.login(userName, password)
-      .then((response) => {
-        setMessage("Login Updated, click this box to continue");
-        setPopUpBox("block");
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+  const logIn = async (userName, password) => {
+    const response = await AuthService.login(userName, password);
+    if (response.message) {
+      setMessage("Issue: " + response.message)
+    } else {
+      setMessage("Login Updated, click this box to continue");
+    }
+    setPopUpBox("block"); 
   };
 
   if (userName != undefined) {

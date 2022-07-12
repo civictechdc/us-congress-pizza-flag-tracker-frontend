@@ -52,12 +52,11 @@ const EditView = (props) => {
   const sortedStatuses = numSort(statuses, "sequence_num", "asc");
 
   const updateOrder = () => {
-    const serviceToExecute = () => {
-      return OrderDataService.update(order.uuid, order).then((response) => {
-        setPopUpBox("block");
-        setMessage("The order was updated successfully!");
-        setCheckSaved(true);
-      });
+    const serviceToExecute = async () => {
+      const response = await OrderDataService.update(order.uuid, order);
+      setPopUpBox("block");
+      setMessage("The order was updated successfully!");
+      setCheckSaved(true);
     };
     AuthService.checkTokenAndExecute(serviceToExecute).then(function (
       serviceResult
@@ -70,10 +69,9 @@ const EditView = (props) => {
   };
 
   const deleteOrder = () => {
-    const serviceToExecute = () => {
-      return OrderDataService.remove(order.uuid).then((response) => {
-        history.push("/");
-      });
+    const serviceToExecute = async () => {
+      const response = await OrderDataService.remove(order.uuid);
+      history.push("/");
     };
     AuthService.checkTokenAndExecute(serviceToExecute).then(function (
       serviceResult

@@ -10,10 +10,9 @@ const updateStatus = (id, data) => {
 };
 
 const retrieveStatuses = (setMessage, setStatuses, setPopUpBox) => {
-  const serviceToExecute = () => {
-    return getStatus().then((response) => {
-      setStatuses(response.data.statuses);
-    });
+  const serviceToExecute = async () => {
+    const response = await getStatus();
+    setStatuses(response.data.statuses);
   };
   AuthService.checkTokenAndExecute(serviceToExecute).then(function (
     serviceResult

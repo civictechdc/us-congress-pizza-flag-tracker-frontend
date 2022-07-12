@@ -28,6 +28,9 @@ class AuthService {
         }
 
         return response.data;
+      })
+      .catch((e) =>  {
+        return e
       });
   }
 

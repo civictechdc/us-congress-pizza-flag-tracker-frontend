@@ -25,13 +25,12 @@ const AddView = () => {
       home_office_code: order.home_office_code,
       usa_state: order.usa_state,
     };
-    const serviceToExecute = () => {
-      return OrderDataService.create(data).then((response) => {
-        setOrder(initialOrderState);
-        setMessage("The order was updated successfully!");
-        setCheckSaved(true);
-        setPopUpBox("block");
-      });
+    const serviceToExecute = async () => {
+      const response = await OrderDataService.create(data);
+      setOrder(initialOrderState);
+      setMessage("The order was updated successfully!");
+      setCheckSaved(true);
+      setPopUpBox("block");
     };
     AuthService.checkTokenAndExecute(serviceToExecute).then(function (
       serviceResult

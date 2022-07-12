@@ -11,11 +11,10 @@ export const LogTable = (props) => {
   const [popUpBox, setPopUpBox] = useState("none");
 
   const getOrderLog = useCallback((order_number) => {
-    const serviceToExecute = () => {
-      return OrderDataService.getOrderLog(order_number).then((response) => {
-        setOrderLog(response.data.orders);
-        setLoading(false);
-      });
+    const serviceToExecute = async () => {
+      const response = await OrderDataService.getOrderLog(order_number);
+      setOrderLog(response.data.orders);
+      setLoading(false);
       // do not add catch at this level
     };
     AuthService.checkTokenAndExecute(serviceToExecute).then(function (

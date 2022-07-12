@@ -150,21 +150,20 @@ const ScanView = (props) => {
   };
 
   const updateStatus = (updatedStatus, activateRevertButton) => {
-    const serviceToExecute = () => {
-      return StatusDataService.updateStatus(
+    const serviceToExecute = async () => {
+      const response = await StatusDataService.updateStatus(
         updatedStatus.uuid,
         updatedStatus
-      ).then((response) => {
-        setOrder(response.data);
-        setPopUpBox("block");
-        setMessage("The order was updated successfully!");
-        if (activateRevertButton === "on") {
-          setRevert("yes");
-        }
-        if (activateRevertButton === "off") {
-          setRevert("");
-        }
-      });
+      );
+      setOrder(response.data);
+      setPopUpBox("block");
+      setMessage("The order was updated successfully!");
+      if (activateRevertButton === "on") {
+        setRevert("yes");
+      }
+      if (activateRevertButton === "off") {
+        setRevert("");
+      }
     };
     AuthService.checkTokenAndExecute(serviceToExecute).then(function (
       serviceResult
