@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "../style/orderForm.module.css";
 
 const PopUpBoxComponent = (props) => {
   const { closePopUpBox, message, popUpBox } = props;
