@@ -1,33 +1,31 @@
 import { React, useCallback, useEffect, useState } from "react";
+import PopUpBoxComponent from "./popUpBoxComponent";
 import OrderDataService from "../service/orderService";
 import AuthService from "../service/authService";
 
 export const LogTable = (props) => {
   const order_number = props.order_number;
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
   const [orderLog, setOrderLog] = useState();
+  const [popUpBox, setPopUpBox] = useState("none");
 
-  const getOrderLog = useCallback(
-    (order_number) => {
-      const serviceCall = () => {
-        return OrderDataService.getOrderLog(order_number)
-          .then((response) => {
-            setOrderLog(response.data.orders);
-            console.log(orderLog);
-            setLoading(false);
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      };
-      try {
-        AuthService.refreshTokenWrapperFunction(serviceCall);
-      } catch (e) {
-        console.log(e);
+  const getOrderLog = useCallback((order_number) => {
+    const serviceToExecute = async () => {
+      const response = await OrderDataService.getOrderLog(order_number);
+      setOrderLog(response.data.orders);
+      setLoading(false);
+      // do not add catch at this level
+    };
+    AuthService.checkTokenAndExecute(serviceToExecute).then(function (
+      serviceResult
+    ) {
+      if (serviceResult) {
+        setPopUpBox("block");
+        setMessage("Issue: " + serviceResult.message);
       }
-    },
-    [orderLog]
-  );
+    });
+  }, []);
 
   useEffect(() => {
     if (!orderLog) {
@@ -35,6 +33,10 @@ export const LogTable = (props) => {
       getOrderLog(order_number);
     }
   }, [orderLog, order_number, getOrderLog]);
+
+  const closePopUpBox = () => {
+    setPopUpBox("none");
+  };
 
   return (
     <>
@@ -70,6 +72,11 @@ export const LogTable = (props) => {
       ) : (
         "No data to display"
       )}
+      <PopUpBoxComponent
+        closePopUpBox={closePopUpBox}
+        message={message}
+        popUpBox={popUpBox}
+      />
     </>
   );
 };

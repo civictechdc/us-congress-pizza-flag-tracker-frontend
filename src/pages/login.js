@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { useLocation, useHistory, Redirect } from "react-router-dom";
-import { generatePath } from "react-router";
+import React, { useState, useContext } from "react";
+import { useHistory, Redirect } from "react-router-dom";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import styles from "../style/login.module.css";
+import UserContext from "../components/userContext";
+import { isUser } from "../components/protectedRoute/permissions";
 
 import AuthService from "../service/authService";
-import OrderDataService from "../service/orderService";
 
 const required = (value) => {
   if (!value) {
@@ -19,12 +19,12 @@ const required = (value) => {
   }
 };
 
-const Login = (props) => {
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const { setUserDisplay } = useContext(UserContext);
 
-  const location = useLocation();
   const history = useHistory();
 
   const onChangeUsername = (e) => {
@@ -40,32 +40,8 @@ const Login = (props) => {
 
     return AuthService.login(username, password).then(
       () => {
-        const whereAreYouGoing = async () => {
-          if (location.state === undefined) {
-            return history.push("/");
-          } else {
-            let id = location.state.destination.slice(6);
-            let path = generatePath("/scan/:id", { id: id });
-            let serviceCall = async () => {
-              let response = await OrderDataService.get(id);
-              return response.data;
-            };
-
-            let order = await AuthService.refreshTokenWrapperFunction(
-              serviceCall
-            );
-            let orderOfficeCode =
-              order !== undefined ? order.home_office_code : "";
-            let destination = history.push(path, {
-              orderOfficeCheck: orderOfficeCode,
-            });
-
-            return destination;
-          }
-        };
-
-        whereAreYouGoing();
-        window.location.reload();
+        setUserDisplay();
+        return history.push("/");
       },
       (error) => {
         const resMessage =
@@ -79,7 +55,9 @@ const Login = (props) => {
     );
   };
 
-  return (
+  return isUser ? (
+    <Redirect to="/" />
+  ) : (
     <div className={styles.loginContainer}>
       <h1 className={styles.title}>Login</h1>
       <div className="card card-container">

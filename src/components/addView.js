@@ -13,15 +13,9 @@ const AddView = () => {
     published: false,
   };
 
-  const initialMessageState = {
-    checkSaved: true,
-    isLastChangeUSState: false,
-    text: "",
-  };
-
+  const [checkSaved, setCheckSaved] = useState(true);
   const [order, setOrder] = useState(initialOrderState);
-  const [exceptionMessage, setExceptionMessage] = useState();
-  const [message, setMessage] = useState(initialMessageState);
+  const [message, setMessage] = useState("");
   const [popUpBox, setPopUpBox] = useState("none");
   const mode = "add";
 
@@ -31,43 +25,35 @@ const AddView = () => {
       home_office_code: order.home_office_code,
       usa_state: order.usa_state,
     };
-    const serviceCall = () => {
-      return OrderDataService.create(data).then((response) => {
-        setOrder(initialOrderState);
-        setMessage({
-          ...message,
-          checkSaved: true,
-          text: "The order was updated successfully!",
-        });
-        setPopUpBox("block");
-      });
+    const serviceToExecute = async () => {
+      const response = await OrderDataService.create(data);
+      setOrder(initialOrderState);
+      setMessage("The order was updated successfully!");
+      setCheckSaved(true);
+      setPopUpBox("block");
     };
-    try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
-    } catch (e) {
-      setExceptionMessage("You have a problem. " + e.message);
-    }
+    AuthService.checkTokenAndExecute(serviceToExecute).then(function (
+      serviceResult
+    ) {
+      if (serviceResult) {
+        setMessage("Issue: " + serviceResult.message);
+        setCheckSaved(false);
+        setPopUpBox("block");
+      }
+    });
   };
 
   const closePopUpBox = () => {
     setPopUpBox("none");
   };
 
-  if (exceptionMessage) {
-    return (
-      <div class="alert alert-warning" role="alert">
-        Error {exceptionMessage}
-      </div>
-    );
-  }
-
   return (
     <>
       <OrderForm
         order={order}
-        message={message}
+        checkSaved={checkSaved}
         setOrderFunc={setOrder}
-        setMessageFunc={setMessage}
+        setCheckSavedFunc={setCheckSaved}
         saveOrderFunc={saveOrder}
         mode={mode}
       />

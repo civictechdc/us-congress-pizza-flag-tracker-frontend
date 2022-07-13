@@ -17,14 +17,15 @@ import { Search } from "./search";
 import { editOrderControl } from "./protectedRoute/permissions";
 import { useHistory, useLocation } from "react-router-dom";
 import UserContext from "./userContext";
+import PopUpBoxComponent from "./popUpBoxComponent";
 
 const OrdersView = () => {
-  let initialSearchState = { keyword: "", status: [], state: "", office: "" };
+  const initialSearchState = { keyword: "", status: [], state: "", office: "" };
+
   const [orders, setOrders] = useState([]);
   const [currentOrder, setCurrentOrder] = useState(null);
-  const [searchTitle, setSearchTitle] = useState(initialSearchState.keyword);
   const [popUpBox, setPopUpBox] = useState("none");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [message, setMessage] = useState("");
   const [sortedField, setSortedField] = useState(null);
   const [sortDir, setSortDir] = useState("asc");
   const [sortType, setSortType] = useState("numeric");
@@ -57,18 +58,19 @@ const OrdersView = () => {
 
   //retrieve orders based on authorization level
   const retrieveOrders = (params) => {
-    let serviceCall = () => {
-      return OrderDataService.getAll(params).then((response) => {
-        setOrders(response.data.orders);
-        setLoading(false);
-      });
+    const serviceToExecute = async () => {
+      const response = await OrderDataService.getAll(params);
+      setOrders(response.data.orders);
+      setLoading(false);
     };
-    try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
-    } catch (e) {
-      setErrorMessage(e.message);
-      setPopUpBox("block");
-    }
+    AuthService.checkTokenAndExecute(serviceToExecute).then(function (
+      serviceResult
+    ) {
+      if (serviceResult) {
+        setPopUpBox("block");
+        setMessage("Issue: " + serviceResult.message);
+      }
+    });
   };
 
   // in production replace demologin code with this:
@@ -80,21 +82,18 @@ const OrdersView = () => {
   const searchParams = paramsArray[0];
   const userName = paramsArray[1];
 
-  const logIn = (userName, password) => {
-    return AuthService.login(userName, password)
-      .then((response) => {
-        console.log("response", response);
-        setErrorMessage("Login Updated, click this box to continue");
-        setPopUpBox("block");
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+  const logIn = async (userName, password) => {
+    const response = await AuthService.login(userName, password);
+    if (response.message) {
+      setMessage("Issue: " + response.message)
+    } else {
+      setMessage("Login Updated, click this box to continue");
+    }
+    setPopUpBox("block"); 
   };
 
   if (userName != undefined) {
     const password = userName + "-1010";
-    console.log("password: ", password);
     logIn(userName, password);
     history.push("/" + searchParams);
   }
@@ -105,6 +104,7 @@ const OrdersView = () => {
     try {
       dispatch({ type: "state", payload: "Search by State" });
       dispatch({ type: "office", payload: "Search by Office" });
+      dispatch({ type: "keyword", payload: "" });
       if (searchParams) {
         retrieveOrders(searchParams);
         const parsedParams = new URLSearchParams(searchParams);
@@ -137,8 +137,7 @@ const OrdersView = () => {
 
   const clearSearch = () => {
     refreshList();
-    setSearchTitle("");
-    setErrorMessage("");
+    history.push("/");
   };
 
   const formatDate = (dateString) => {
@@ -156,11 +155,7 @@ const OrdersView = () => {
 
   useEffect(() => {
     if (statuses.length === 0) {
-      StatusDataService.retrieveStatuses(
-        setErrorMessage,
-        setStatuses,
-        setPopUpBox
-      );
+      StatusDataService.retrieveStatuses(setMessage, setStatuses, setPopUpBox);
     }
   }, [statuses]);
 
@@ -266,17 +261,23 @@ const OrdersView = () => {
         <h4 className={styles.title}>Orders</h4>
         <Search
           searchState={searchState}
-          setSearchTitle={setSearchTitle}
           statuses={statuses}
+          searchParams={searchParams}
+          clearSearch={clearSearch}
         />
         {ordersToDisplay.length ? (
-          <TableHeader
-            sortedField={sortedField}
-            sortDir={sortDir}
-            setSortedField={setSortedField}
-            setSortType={setSortType}
-            setSortDir={setSortDir}
-          />
+          <>
+            <TableHeader
+              sortedField={sortedField}
+              sortDir={sortDir}
+              setSortedField={setSortedField}
+              setSortType={setSortType}
+              setSortDir={setSortDir}
+            />
+            <div className={styles.statusItem}>
+              <h5> Please click on an order... </h5>
+            </div>
+          </>
         ) : (
           <div className={styles.mainContainer}>
             <h4 className={styles.title}>No orders found</h4>
@@ -287,25 +288,12 @@ const OrdersView = () => {
 
           <div className={styles.statusItemContainer}></div>
         </div>
-
-        {errorMessage || searchTitle ? (
-          <button className="m-3 btn btn-sm btn-danger" onClick={clearSearch}>
-            Clear search
-          </button>
-        ) : ordersToDisplay.length ? (
-          <div className={styles.statusItem}>
-            <p>
-              Please click
-              <br /> on an order...
-            </p>
-          </div>
-        ) : null}
       </div>
-      <div className="pop-container" style={{ display: popUpBox }}>
-        <div className="pop-up" onClick={closePopUpBox}>
-          <h3>{errorMessage}</h3>
-        </div>
-      </div>
+      <PopUpBoxComponent
+        closePopUpBox={closePopUpBox}
+        message={message}
+        popUpBox={popUpBox}
+      />
     </>
   );
 };

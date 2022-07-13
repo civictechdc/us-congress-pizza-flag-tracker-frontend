@@ -10,26 +10,18 @@ const updateStatus = (id, data) => {
 };
 
 const retrieveStatuses = (setMessage, setStatuses, setPopUpBox) => {
-  const serviceCall = () => {
-    return getStatus().then((response) => {
-      setStatuses(response.data.statuses);
-    });
+  const serviceToExecute = async () => {
+    const response = await getStatus();
+    setStatuses(response.data.statuses);
   };
-  try {
-    AuthService.refreshTokenWrapperFunction(serviceCall);
-  } catch (e) {
-    setPopUpBox("block");
-    console.log("retrieveStatuses: ", e);
-    if (e.response.status === 401) {
-      setMessage("You must be logged in to view this page");
-    } else {
-      setMessage(
-        e.message +
-          "." +
-          "Check with admin if server is down or try logging out and logging in."
-      );
+  AuthService.checkTokenAndExecute(serviceToExecute).then(function (
+    serviceResult
+  ) {
+    if (serviceResult) {
+      setPopUpBox("block");
+      setMessage("Status Issue: " + serviceResult.message);
     }
-  }
+  });
 };
 
 const statusServiceObject = {

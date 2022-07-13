@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PopUpBoxComponent from "./popUpBoxComponent";
 import userService from "../service/userService";
 import AuthService from "../service/authService";
 import styles from "../style/password.module.css";
@@ -13,6 +14,7 @@ const PasswordUpdate = () => {
   const [userNewPassword2, setUserNewPassword2] = useState("");
 
   const [message, setMessage] = useState("");
+  const [popUpBox, setPopUpBox] = useState("none");
 
   const handleChange = (e) => {
     let { name, value } = e;
@@ -54,36 +56,30 @@ const PasswordUpdate = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     if (comparePasswords(newPassword, newPassword2)) {
-      const serviceCall = () => {
-        return userService
+      const serviceToExecute = async () => {
+        const response = await userService
           .updateOwnPassword({
             newPassword: newPassword,
             oldPassword: oldPassword,
-          })
-          .then((response) => {
-            if (response.status === 200) {
-              setOldPassword("");
-              setNewPassword("");
-              setNewPassword2("");
-              setMessage("Password updated successfully.");
-            } else {
-              setMessage("An error occurred: " + response.statusText);
-            }
-          })
-          .catch((err) => {
-            setMessage(
-              err.response.data.error ||
-                err.response.toString() ||
-                err.toString()
-            );
           });
+        if (response.status === 200) {
+          setOldPassword("");
+          setNewPassword("");
+          setNewPassword2("");
+          setPopUpBox("block");
+          setMessage("The password was updated successfully!");
+        }
       };
-      try {
-        AuthService.refreshTokenWrapperFunction(serviceCall);
-      } catch (e) {
-        setMessage("An error occurred. Please try logging out and back in.");
-      }
+      AuthService.checkTokenAndExecute(serviceToExecute).then(function (
+        serviceResult
+      ) {
+        if (serviceResult) {
+          setPopUpBox("block");
+          setMessage("Issue: " + serviceResult.message);
+        }
+      });
     } else {
+      setPopUpBox("block");
       setMessage("New passwords must match!");
     }
   };
@@ -92,33 +88,36 @@ const PasswordUpdate = () => {
   const submitAdmin = (e) => {
     e.preventDefault();
     if (comparePasswords(userNewPassword, userNewPassword2)) {
-      const serviceCall = () => {
-        return userService
+      const serviceToExecute = async () => {
+        const response = await userService
           .updateOthersPassword({
             username: userName,
             oldPassword: userNewPassword,
-          })
-          .then((response) => {
-            if (response.status === 200) {
-              setUserName("");
-              setUserNewPassword("");
-              setUserNewPassword2("");
-              setMessage("Password updated successfully.");
-            } else {
-              setMessage("An error occurred: " + response.statusText);
-            }
-          })
-          .catch((err) => setMessage(""));
+          });
+        if (response.status === 200) {
+          setUserName("");
+          setUserNewPassword("");
+          setUserNewPassword2("");
+          setPopUpBox("block");
+          setMessage("The password was updated successfully!");
+        }
       };
-      try {
-        AuthService.refreshTokenWrapperFunction(serviceCall);
-      } catch (e) {
-        console.log(`error occurred while updating password: ${e}`);
-        setMessage("");
-      }
+      AuthService.checkTokenAndExecute(serviceToExecute).then(function (
+        serviceResult
+      ) {
+        if (serviceResult) {
+          setPopUpBox("block");
+          setMessage("Issue: " + serviceResult.message);
+        }
+      });
     } else {
+      setPopUpBox("block");
       setMessage("New passwords must match!");
     }
+  };
+
+  const closePopUpBox = () => {
+    setPopUpBox("none");
   };
 
   return (
@@ -149,7 +148,6 @@ const PasswordUpdate = () => {
         ></input>
         <p>&nbsp;</p>
         <input type="submit"></input>
-        {message}
       </form>
       {adminControl() ? (
         <form className={styles.form2} onSubmit={submitAdmin}>
@@ -174,6 +172,11 @@ const PasswordUpdate = () => {
       ) : (
         <div></div>
       )}
+      <PopUpBoxComponent
+        closePopUpBox={closePopUpBox}
+        message={message}
+        popUpBox={popUpBox}
+      />
     </>
   );
 };

@@ -33,14 +33,9 @@ const ScanView = (props) => {
     },
   };
 
-  const initialMessageState = {
-    // to be consistent with other uses of Message State and PopUpBox
-    text: "",
-  };
-
   const [order, setOrder] = useState(initialOrderState);
   const [unalteredOrder, setUnalteredOrder] = useState(initialOrderState);
-  const [message, setMessage] = useState(initialMessageState);
+  const [message, setMessage] = useState("");
   const [decline, setDecline] = useState(""); // Decline Update button
   const [revert, setRevert] = useState(""); // Revert Update button
   const [statuses, setStatuses] = useState([]);
@@ -54,7 +49,17 @@ const ScanView = (props) => {
 
   useEffect(() => {
     setLoading(true);
-    OrderDataService.getOrder(scanId, setOrder, setUnalteredOrder, setLoading);
+    OrderDataService.getOrder(
+      scanId,
+      setOrder,
+      setUnalteredOrder,
+      setLoading
+    ).then(function (serviceResult) {
+      if (serviceResult) {
+        setMessage("Issue: " + serviceResult.message);
+        setPopUpBox("block");
+      }
+    });
   }, [scanId]);
 
   useEffect(() => {
@@ -145,35 +150,29 @@ const ScanView = (props) => {
   };
 
   const updateStatus = (updatedStatus, activateRevertButton) => {
-    const serviceCall = () => {
-      return StatusDataService.updateStatus(
+    const serviceToExecute = async () => {
+      const response = await StatusDataService.updateStatus(
         updatedStatus.uuid,
         updatedStatus
-      ).then((response) => {
-        setOrder(response.data);
-        setPopUpBox("block");
-        setMessage({
-          ...message,
-          text: "The order was updated successfully!",
-        });
-        if (activateRevertButton === "on") {
-          setRevert("yes");
-        }
-        if (activateRevertButton === "off") {
-          setRevert("");
-        }
-      });
-    };
-    try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
-    } catch (e) {
-      console.log(e);
+      );
+      setOrder(response.data);
       setPopUpBox("block");
-      setMessage({
-        ...message,
-        text: ("Update Status Error: ", e),
-      });
-    }
+      setMessage("The order was updated successfully!");
+      if (activateRevertButton === "on") {
+        setRevert("yes");
+      }
+      if (activateRevertButton === "off") {
+        setRevert("");
+      }
+    };
+    AuthService.checkTokenAndExecute(serviceToExecute).then(function (
+      serviceResult
+    ) {
+      if (serviceResult) {
+        setMessage("Issue: " + serviceResult.message);
+        setPopUpBox("block");
+      }
+    });
   };
 
   const saveUpdate = () => {
@@ -206,10 +205,9 @@ const ScanView = (props) => {
           3600000) /* 1 hour in milliseconds */
     ) {
       setPopUpBox("block");
-      setMessage({
-        ...message,
-        text: "Too much time has elapsed to undo a completed order; please see an Admin",
-      });
+      setMessage(
+        "Too much time has elapsed to undo a completed order; please see an Admin"
+      );
     } else {
       setOrder(unalteredOrder);
       const activateRevertButton = "off";
@@ -219,10 +217,9 @@ const ScanView = (props) => {
 
   const refuseUpdate = () => {
     setPopUpBox("block");
-    setMessage({
-      ...message,
-      text: "Do not have permissions for either (1) this order or (2) to advance to the next status",
-    });
+    setMessage(
+      "Do not have permissions for either (1) this order or (2) to advance to the next status"
+    );
   };
 
   const skipUpdate = () => {

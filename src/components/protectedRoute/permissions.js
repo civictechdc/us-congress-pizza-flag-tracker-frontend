@@ -37,8 +37,6 @@ export function editOrderControl() {
 
   if (user !== null) {
     const editor = user.manage_all_orders;
-    console.log("Editor: ", editor);
-    console.log("User: ", user); //temporary while security and routing are worked on
 
     if (editor === "Y") {
       return true;

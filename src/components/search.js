@@ -1,21 +1,20 @@
-import { React } from "react";
+import { React, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Select from "react-select";
 import styles from "../style/orders.module.css";
-import OrderDataService from "../service/orderService";
 import { STATES } from "./states";
 
 export const Search = (props) => {
-  const { searchState, setSearchTitle, statuses } = props;
+  const { searchState, statuses, searchParams, clearSearch } = props;
   const history = useHistory();
 
   const statusOptions = statuses.map((status) => ({
-    // value: status.id,
     value: status.status_code,
     label: status.status_code,
     name: "status_code",
   }));
-  statusOptions.unshift({ value: null, label: "None", name: "status" });
+
+  const [statusSelected, setStatusSelected] = useState(statusOptions[0]);
 
   let stateOptions = [];
   if (STATES) {
@@ -44,7 +43,6 @@ export const Search = (props) => {
 
   function onChangeSearchTitle(e) {
     const searchTitle = e.target.value;
-    setSearchTitle(searchTitle);
     const queryParams = new URLSearchParams(window.location.search);
     if (searchTitle == null) {
       queryParams.delete("keyword");
@@ -68,6 +66,7 @@ export const Search = (props) => {
   };
 
   const onChangeMultiParams = (e) => {
+    setStatusSelected(e);
     const queryParams = new URLSearchParams(window.location.search);
     let statusArray = [];
     if (!e.length) {
@@ -82,98 +81,81 @@ export const Search = (props) => {
     history.replace(`${window.location.pathname}?${queryParams.toString()}`);
   };
 
-  /* This is now unused as we will replace it with the generic findByKeyword I believe */
-  // const findByOrderNumber = () => {
-  //   let serviceCall = () => {
-  //     //changed from const to let to maintain best practices
-  //     return OrderDataService.findByOrderNumber(searchTitle).then(
-  //       (response) => {
-  //         if ("error" in response.data) {
-  //           setErrorMessage(response.data.error);
-  //         } else {
-  //           console.log("found", response.data);
-  //           setOrders(response.data.orders);
-  //         }
-  //         setLoading(false);
-  //       }
-  //     );
-  //   };
-  //   try {
-  //     setLoading(true);
-  //     AuthService.refreshTokenWrapperFunction(serviceCall);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
+  const emptySearch = () => {
+    clearSearch();
+    setStatusSelected(null);
+  };
 
   return (
-    <div className={styles.outerInputContainer}>
-      <div className={styles.inputContainer}>
-        <div className={styles.searchComponent}>
-          <label htmlFor="keyword">Search by order number or keyword</label>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Search by order number or keyword"
-            value={searchState.keyword}
-            onChange={onChangeSearchTitle}
-            id="keyword"
-          />
-          {/* <div className={styles.searchButton}>
-          <button
-            className="btn btn-outline-secondary"
-            type="button"
-            onClick={findByOrderNumber}
-          >
-            Search
-          </button>
-          </div> */}
+    <>
+      <div className={styles.outerInputContainer}>
+        <div className={styles.inputContainer}>
+          <div className={styles.searchComponent}>
+            <label htmlFor="keyword">Search by order number or keyword</label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search by order number or keyword"
+              value={searchState.keyword}
+              onChange={onChangeSearchTitle}
+              id="keyword"
+            />
+          </div>
+        </div>
+        <div className={styles.inputContainer}>
+          <div className={styles.searchComponent}>
+            <label htmlFor="status">Search by status</label>
+            <Select
+              id="status"
+              options={statusOptions}
+              className={styles.subSelect}
+              onChange={onChangeMultiParams}
+              isMulti={true}
+              placeholder="Search by status"
+              label="Search by status"
+              value={statusSelected}
+            ></Select>
+          </div>
+        </div>
+        <div className={styles.inputContainer}>
+          <div className={styles.searchComponent}>
+            <label htmlFor="state">Search by state</label>
+            <Select
+              options={stateOptions}
+              className={styles.subSelect}
+              onChange={onChangeParams}
+              placeholder={"Search by state"}
+              value={{
+                label: searchState.state,
+                name: "usa_state",
+                value: searchState.state,
+              }}
+            ></Select>
+          </div>
+          <div className={styles.searchComponent}>
+            <label htmlFor="office">Search by office</label>
+            <Select
+              options={officeOptions}
+              className={styles.subSelect}
+              onChange={onChangeParams}
+              placeholder="Search by office"
+              value={{
+                label: searchState.office,
+                name: "usa_state",
+                value: searchState.office,
+              }}
+            ></Select>
+          </div>
         </div>
       </div>
-      <div className={styles.inputContainer}>
-        <div className={styles.searchComponent}>
-          <label htmlFor="status">Search by status</label>
-          <Select
-            id="status"
-            options={statusOptions}
-            className={styles.subSelect}
-            onChange={onChangeMultiParams}
-            isMulti={true}
-            placeholder="Search by status"
-            label="Search by status"
-          ></Select>
-        </div>
-      </div>
-      <div className={styles.inputContainer}>
-        <div className={styles.searchComponent}>
-          <label htmlFor="state">Search by state</label>
-          <Select
-            options={stateOptions}
-            className={styles.subSelect}
-            onChange={onChangeParams}
-            placeholder={"Search by state"}
-            value={{
-              label: searchState.state,
-              name: "usa_state",
-              value: searchState.state,
-            }}
-          ></Select>
-        </div>
-        <div className={styles.searchComponent}>
-          <label htmlFor="office">Search by office</label>
-          <Select
-            options={officeOptions}
-            className={styles.subSelect}
-            onChange={onChangeParams}
-            placeholder="Search by office"
-            value={{
-              label: searchState.office,
-              name: "usa_state",
-              value: searchState.office,
-            }}
-          ></Select>
-        </div>
-      </div>
-    </div>
+
+      {searchParams ? (
+        <button className="m-3 btn btn-sm btn-danger" onClick={emptySearch}>
+          Clear search
+        </button>
+      ) : (
+        <></>
+      )}
+    </>
   );
 };

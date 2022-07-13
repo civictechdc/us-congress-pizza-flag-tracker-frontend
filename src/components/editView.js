@@ -30,14 +30,9 @@ const EditView = (props) => {
     uuid: null,
   };
 
-  const initialMessageState = {
-    checkSaved: true,
-    isLastChangeUSState: false,
-    text: "",
-  };
-
+  const [checkSaved, setCheckSaved] = useState(true);
   const [order, setOrder] = useState(initialOrderState);
-  const [message, setMessage] = useState(initialMessageState);
+  const [message, setMessage] = useState("");
   const [statuses, setStatuses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [popUpBox, setPopUpBox] = useState("none");
@@ -57,34 +52,35 @@ const EditView = (props) => {
   const sortedStatuses = numSort(statuses, "sequence_num", "asc");
 
   const updateOrder = () => {
-    const serviceCall = () => {
-      return OrderDataService.update(order.uuid, order).then((response) => {
-        setPopUpBox("block");
-        setMessage({
-          ...message,
-          checkSaved: true,
-          text: "The order was updated successfully!",
-        });
-      });
+    const serviceToExecute = async () => {
+      const response = await OrderDataService.update(order.uuid, order);
+      setPopUpBox("block");
+      setMessage("The order was updated successfully!");
+      setCheckSaved(true);
     };
-    try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
-    } catch (e) {
-      console.log(`error occurred while updating order: ${e}`);
-    }
+    AuthService.checkTokenAndExecute(serviceToExecute).then(function (
+      serviceResult
+    ) {
+      if (serviceResult) {
+        setPopUpBox("block");
+        setMessage("Issue: " + serviceResult.message);
+      }
+    });
   };
 
   const deleteOrder = () => {
-    const serviceCall = () => {
-      return OrderDataService.remove(order.uuid).then((response) => {
-        history.push("/");
-      });
+    const serviceToExecute = async () => {
+      const response = await OrderDataService.remove(order.uuid);
+      history.push("/");
     };
-    try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
-    } catch (e) {
-      console.log(e);
-    }
+    AuthService.checkTokenAndExecute(serviceToExecute).then(function (
+      serviceResult
+    ) {
+      if (serviceResult) {
+        setPopUpBox("block");
+        setMessage("Issue: " + serviceResult.message);
+      }
+    });
   };
 
   const closePopUpBox = () => {
@@ -96,9 +92,9 @@ const EditView = (props) => {
       {order ? (
         <OrderForm
           order={order}
-          message={message}
+          checkSaved={checkSaved}
           setOrderFunc={setOrder}
-          setMessageFunc={setMessage}
+          setCheckSavedFunc={setCheckSaved}
           saveOrderFunc={updateOrder}
           deleteOrderFunc={deleteOrder}
           mode={mode}
