@@ -1,5 +1,4 @@
 //check if user is logged in and has a token
-
 export function isUser() {
   const user = JSON.parse(localStorage.getItem("user"));
   if (user !== null) {
@@ -16,15 +15,30 @@ export function isUser() {
 }
 
 //check admin status
-
 export function adminControl() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   if (user !== null) {
     const admin = user.is_admin;
-    console.log(admin);
 
     if (admin === "Y") {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
+
+//check edit status
+export function editOrderControl() {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (user !== null) {
+    const editor = user.manage_all_orders;
+
+    if (editor === "Y") {
       return true;
     } else {
       return false;

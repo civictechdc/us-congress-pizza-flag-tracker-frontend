@@ -1,7 +1,38 @@
 .center {
+  border-radius: 5px;
   display: block;
   text-align: center;
   text-decoration: none;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 10px;
+}
+
+.formContainer {
+  position: relative;
+  left: 25vw;
+  /* top: 10vh; */
+  width: 50vw;
+  padding: 2em;
+
+  background-color: white;
+  border-radius: 5px;
+
+  display: flex;
+  flex-direction: column;
+  row-gap: 3em;
+}
+
+.item {
+  flex: auto;
+}
+
+.qr-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.text {
+  font-size: 14px;
+  margin-bottom: 0rem;
 }

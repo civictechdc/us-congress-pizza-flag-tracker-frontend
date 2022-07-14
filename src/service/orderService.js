@@ -44,24 +44,19 @@ const getOrderLog = (order_number) => {
 };
 
 const getOrder = (id, setOrder, setUnalteredOrder, setLoading) => {
-  const serviceCall = () => {
-    return get(id)
-      .then((response) => {
-        setOrder(response.data);
-        if (setUnalteredOrder !== false) {
-          setUnalteredOrder(response.data);
-        }
-        setLoading(false);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+  let e = "";
+  const serviceToExecute = async () => {
+    const response = await get(id);
+    setOrder(response.data);
+    if (setUnalteredOrder !== false) {
+      setUnalteredOrder(response.data);
+    }
+    setLoading(false);
   };
-  try {
-    AuthService.refreshTokenWrapperFunction(serviceCall);
-  } catch (e) {
-    console.log(e);
-  }
+  e = AuthService.checkTokenAndExecute(serviceToExecute).then(function (value) {
+    return value;
+  });
+  return e;
 };
 
 const orderServiceObject = {

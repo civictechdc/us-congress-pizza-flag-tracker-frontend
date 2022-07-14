@@ -1,58 +1,47 @@
-import React, { useState, useEffect } from "react";
-import { Route, Redirect } from "react-router-dom";
+import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
+import PopUpBoxComponent from "./popUpBoxComponent";
 import OrderDataService from "../service/orderService";
 import styles from "../style/orderForm.module.css";
 
-const Refresh = (props) => {
+//This component should be removed prior to production
+
+const Refresh = () => {
+  const [message, setMessage] = useState(
+    "Please wait a moment for the database to reset."
+  );
+  const [popUpBox, setPopUpBox] = useState("none");
   const [redirectNow, setRedirectNow] = useState("");
 
   const resetDatabase = () => {
+    setPopUpBox("block");
     return OrderDataService.reset()
       .then((response) => {
-        console.log(response);
+        setRedirectNow("yes");
       })
       .catch((e) => {
-        console.log(e);
+        setMessage("Network Error, please see your IT Administrator");
       });
   };
 
-  const resolveAfter6Seconds = () => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve("resolved");
-      }, 6000);
-    });
+  const closePopUpBox = () => {
+    setPopUpBox("none");
+    setMessage("Please wait a moment for the database to reset.");
   };
-
-  const asyncCall = async () => {
-    await resolveAfter6Seconds();
-    setRedirectNow("yes");
-  };
-
-  useEffect(() => {
-    resetDatabase();
-  }, []);
-
-  asyncCall();
 
   return (
     <>
       <div className={styles.formContainer}>
-        <h2 style={{ textAlign: "center" }}>
-          Please wait a moment for the database to reset.
-        </h2>
-        <h2 style={{ textAlign: "center" }}>
-          You may need to refresh the Orders page if the database hasn't
-          finished repopulating
-        </h2>
+        <button onClick={resetDatabase} className={`btn btn-success`}>
+          Reset Database
+        </button>
       </div>
-      {redirectNow ? (
-        <Route exact path="/refresh">
-          <Redirect to="/orders" />
-        </Route>
-      ) : (
-        <></>
-      )}
+      {redirectNow ? <Redirect to="/" /> : <></>}
+      <PopUpBoxComponent
+        closePopUpBox={closePopUpBox}
+        message={message}
+        popUpBox={popUpBox}
+      />
     </>
   );
 };

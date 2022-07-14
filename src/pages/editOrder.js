@@ -1,125 +1,22 @@
-import React, { useState, useEffect } from "react";
-import AuthService from "../service/authService";
-import OrderDataService from "../service/orderService";
-import StatusDataService from "../service/statusService";
-import OrderForm from "../components/orderForm";
-import PopUpBoxComponent from "../components/popUpBoxComponent";
-import { numSort } from "../components/sorting/sortHook";
+import React from "react";
+import { Redirect } from "react-router-dom";
+
+import {
+  editOrderControl,
+  isUser,
+} from "../components/protectedRoute/permissions";
+import EditView from "../components/editView";
+import LoginSubComponent from "../components/loginSubComponent";
 
 const EditOrder = (props) => {
-  const initialOrderState = {
-    description: "",
-    home_office_code: "",
-    order_number: "",
-    order_status_id: "",
-    published: false,
-    status: {
-      active_status: "",
-      created_at: "",
-      description: "",
-      id: "",
-      permission: "",
-      sequence_num: "",
-      status_code: "",
-      updated_at: "",
-    },
-    title: "",
-    usa_state: "",
-    uuid: null,
-  };
-
-  const initialMessageState = {
-    checkSaved: true,
-    isLastChangeUSState: false,
-    text: "",
-  };
-
-  const [order, setOrder] = useState(initialOrderState);
-  const [message, setMessage] = useState(initialMessageState);
-  const [statuses, setStatuses] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [popUpBox, setPopUpBox] = useState("none");
-  const mode = "edit";
-
-  useEffect(() => {
-    setLoading(true);
-    OrderDataService.getOrder(
-      props.match.params.id,
-      setOrder,
-      false,
-      setLoading
-    );
-  }, [props.match.params.id]);
-
-  useEffect(() => {
-    if (statuses.length === 0) {
-      StatusDataService.retrieveStatuses(setMessage, setStatuses);
-    }
-  }, [statuses]);
-
-  const sortedStatuses = numSort(statuses, "sequence_num", "asc");
-
-  const updateOrder = () => {
-    const serviceCall = () => {
-      return OrderDataService.update(order.uuid, order).then((response) => {
-        setPopUpBox("block");
-        setMessage({
-          ...message,
-          checkSaved: true,
-          text: "The order was updated successfully!",
-        });
-      });
-    };
-    try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
-    } catch (e) {
-      console.log(`error occurred while updating order: ${e}`);
-    }
-  };
-
-  const deleteOrder = () => {
-    const serviceCall = () => {
-      return OrderDataService.remove(order.uuid).then((response) => {
-        props.history.push("/orders");
-      });
-    };
-    try {
-      AuthService.refreshTokenWrapperFunction(serviceCall);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const closePopUpBox = () => {
-    setPopUpBox("none");
-  };
-
-  return (
-    <>
-      {order ? (
-        <OrderForm
-          order={order}
-          message={message}
-          setOrderFunc={setOrder}
-          setMessageFunc={setMessage}
-          saveOrderFunc={updateOrder}
-          deleteOrderFunc={deleteOrder}
-          mode={mode}
-          statuses={sortedStatuses}
-          loading={loading}
-        />
-      ) : (
-        <>
-          <br />
-          <p>Please click on an order...</p>
-        </>
-      )}
-      <PopUpBoxComponent
-        closePopUpBox={closePopUpBox}
-        message={message}
-        popUpBox={popUpBox}
-      />
-    </>
+  return isUser() ? (
+    editOrderControl() ? (
+      <EditView editId={props.match.params.id} history={props.history} />
+    ) : (
+      <Redirect to="/" />
+    )
+  ) : (
+    <LoginSubComponent />
   );
 };
 

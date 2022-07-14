@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import Select from "react-select";
-import { baseURL } from "../http-common";
 import { STATES } from "./states.js";
 import styles from "../style/orderForm.module.css";
 
 const OrderForm = (props) => {
   const {
     order,
-    message,
+    checkSaved,
     setOrderFunc,
-    setMessageFunc,
+    setCheckSavedFunc,
     saveOrderFunc,
     mode,
     deleteOrderFunc,
@@ -17,7 +16,8 @@ const OrderForm = (props) => {
     loading,
   } = props;
 
-  const [whyStatus, setWhyStatus] = useState(false);
+  const [isLastChangeUSState, setIsLastChangeUSState] = useState(false);
+  const [whyCantIUpdate, setWhyCantIUpdate] = useState(false);
 
   let optionUSStates = [];
   if (STATES) {
@@ -43,7 +43,7 @@ const OrderForm = (props) => {
   if (statuses) {
     optionStatuses = statuses.map((status) =>
       /* Old Filter by DEMO Organization Code was here
-          to be rewired to ACTUAL User Profile DB info  */
+        to be rewired to ACTUAL User Profile DB info  */
       ({
         label: `#${status.sequence_num} ${status.description}`,
         name: "order_status_id",
@@ -70,22 +70,16 @@ const OrderForm = (props) => {
       name = event.target.name;
       value = event.target.value;
     }
-    setMessageFunc({
-      ...message,
-      isLastChangeUSState: false,
-      text: "",
-      checkSaved: false,
-    });
+    setIsLastChangeUSState(false);
+    setCheckSavedFunc(false);
     if (name === "usa_state") {
       setOrderFunc({ ...order, home_office_code: "" });
-      setMessageFunc((prevMessageFunc) => {
-        return { ...prevMessageFunc, isLastChangeUSState: true };
-      });
+      setIsLastChangeUSState(true);
     }
     setOrderFunc((prevOrderFunc) => {
       return { ...prevOrderFunc, [name]: value };
     });
-    setWhyStatus(false);
+    setWhyCantIUpdate(false);
     if (name === "order_status_id") {
       handleStatusChange(event);
     }
@@ -112,7 +106,7 @@ const OrderForm = (props) => {
   };
 
   const whyNoSave = () => {
-    setWhyStatus(true);
+    setWhyCantIUpdate(true);
   };
 
   // used to set Submit button className in addition to handleSave function
@@ -148,19 +142,13 @@ const OrderForm = (props) => {
           <>
             <div className={styles.constituentBox}>
               {order.person === undefined ? (
-                <div></div>
+                <></>
               ) : (
                 <>
-                  <p className={styles.constituentName}>{order.person.name}</p>
-                  <p className={styles.constituentPhone}>
-                    {order.person.phone}
-                  </p>
-                  <p className={styles.constituentAddress1}>
-                    {order.person.address}
-                  </p>
-                  <p className={styles.constituentAddress2}>
-                    {order.person.town}
-                  </p>
+                  <h5 className={styles.constituent}>{order.person.name}</h5>
+                  <h5 className={styles.constituent}>{order.person.phone}</h5>
+                  <h5 className={styles.constituent}>{order.person.address}</h5>
+                  <h5 className={styles.constituent}>{order.person.town}</h5>
                 </>
               )}
             </div>
@@ -176,7 +164,7 @@ const OrderForm = (props) => {
                 onChange={handleInputChange}
                 name="order_number"
               />
-              {!order.order_number && whyStatus ? (
+              {!order.order_number && whyCantIUpdate ? (
                 <p className={styles.validationMessage}>
                   Enter a valid Order Number
                 </p>
@@ -185,73 +173,79 @@ const OrderForm = (props) => {
               )}
             </div>
 
-            <div className="form-group">
-              <label htmlFor="usa_state">US State:</label>{" "}
-              <Select
-                onChange={handleInputChange}
-                options={optionUSStates}
-                value={{
-                  label: order.usa_state,
-                  name: "usa_state",
-                  value: order.usa_state,
-                }}
-              />
-              {!order.usa_state && whyStatus ? (
-                <p className={styles.validationMessage}>Pick a US State</p>
-              ) : (
-                ""
-              )}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="home_office_code">Congressional Office:</label>{" "}
-              {order.usa_state ? (
-                message.isLastChangeUSState ? (
-                  <Select
-                    onChange={handleInputChange}
-                    options={optionDistricts}
-                    value={null}
-                  />
-                ) : (
-                  <Select
-                    onChange={handleInputChange}
-                    options={optionDistricts}
-                    value={{
-                      label: order.home_office_code,
-                      name: "home_office_code",
-                      value: order.home_office_code,
-                    }}
-                  />
-                )
-              ) : (
-                <input
-                  type="text"
-                  className="form-control"
-                  value="Pick a US State first..."
-                  readOnly="readOnly"
+            <span className={styles.flexContainer}>
+              <div className={styles.formGroup}>
+                <label htmlFor="edit-us-state">US State:</label>{" "}
+                <Select
+                  inputId="edit-us-state"
+                  onChange={handleInputChange}
+                  options={optionUSStates}
+                  value={{
+                    label: order.usa_state,
+                    name: "usa_state",
+                    value: order.usa_state,
+                  }}
                 />
-              )}
-              {!order.home_office_code && whyStatus ? (
-                <p className={styles.validationMessage}>
-                  Pick a Congressional Office
-                </p>
-              ) : (
-                ""
-              )}
-              {!districtMatchCheck && whyStatus ? (
-                <p className={styles.validationMessage}>
-                  US State and Congressional Office must correspond
-                </p>
-              ) : (
-                ""
-              )}
-            </div>
+                {!order.usa_state && whyCantIUpdate ? (
+                  <p className={styles.validationMessage}>Pick a US State</p>
+                ) : (
+                  ""
+                )}
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="edit-office">District:</label>{" "}
+                {order.usa_state ? (
+                  isLastChangeUSState ? (
+                    <Select
+                      inputId="edit-office"
+                      onChange={handleInputChange}
+                      options={optionDistricts}
+                      value={null}
+                    />
+                  ) : (
+                    <Select
+                      inputId="edit-office"
+                      onChange={handleInputChange}
+                      options={optionDistricts}
+                      value={{
+                        label: order.home_office_code,
+                        name: "home_office_code",
+                        value: order.home_office_code,
+                      }}
+                    />
+                  )
+                ) : (
+                  <input
+                    type="text"
+                    className="form-control"
+                    value="Pick a US State first..."
+                    readOnly="readOnly"
+                  />
+                )}
+                {!order.home_office_code && whyCantIUpdate ? (
+                  <p className={styles.validationMessage}>
+                    Pick a Congressional Office
+                  </p>
+                ) : (
+                  ""
+                )}
+                {!districtMatchCheck && whyCantIUpdate ? (
+                  <p className={styles.validationMessage}>
+                    US State and Congressional Office must correspond
+                  </p>
+                ) : (
+                  ""
+                )}
+              </div>
+            </span>
 
             {mode === "edit" ? (
               <>
                 <div className="form-group">
-                  <label htmlFor="status_description">Status:</label>{" "}
+                  <label htmlFor="edit-status">Status:</label>{" "}
                   <Select
+                    inputId="edit-status"
                     onChange={handleInputChange}
                     options={optionStatuses}
                     value={{
@@ -259,17 +253,6 @@ const OrderForm = (props) => {
                       name: "order_status_id",
                       value: order.status.sequence_num,
                     }}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label>QR Code</label>
-                  {order.uuid}
-                  <img
-                    src={baseURL + "/qrcode/" + order.uuid}
-                    className={styles.qrImage}
-                    alt="QR Code"
-                    align="center"
                   />
                 </div>
               </>
@@ -290,7 +273,7 @@ const OrderForm = (props) => {
               {mode === "edit" ? "Update" : "Submit"}
             </button>
 
-            {!message.checkSaved ? (
+            {!checkSaved ? (
               <p className={styles.validationMessage}>
                 Changes not saved, press {mode === "edit" ? "Update" : "Submit"}{" "}
                 to save changes

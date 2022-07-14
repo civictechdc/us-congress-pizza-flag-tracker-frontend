@@ -9,6 +9,7 @@ class AuthService {
       return "";
     }
   }
+  
   login(username, password) {
     return http
       .post(
@@ -27,6 +28,9 @@ class AuthService {
         }
 
         return response.data;
+      })
+      .catch((e) =>  {
+        return e
       });
   }
 
@@ -53,12 +57,13 @@ class AuthService {
   }
 
   //this method exists so that any call to the database first checks for a 401 error; if the 401 error is caused by an outdated (but not expired) token, this method will generate a new token and re-try the command.
-  refreshTokenWrapperFunction(serviceCall) {
-    serviceCall().catch((e) => {
+  checkTokenAndExecute(serviceToExecute) {
+    const e = serviceToExecute().catch((e) => {
       if (e.response?.status === 401) {
         if (e.response?.data?.refreshedToken) {
           this.updateToken(e.response.data.refreshedToken);
-          serviceCall();
+          serviceToExecute();
+          return e;
         } else {
           console.log("Auth error: ", e);
           return e;
@@ -68,7 +73,9 @@ class AuthService {
         return e;
       }
     });
-  }
+    return e;
+  } 
 }
+
 
 export default new AuthService();

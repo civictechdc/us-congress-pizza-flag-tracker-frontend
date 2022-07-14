@@ -1,11 +1,9 @@
 import React, { useState, useContext } from "react";
-import { useHistory, Redirect } from "react-router-dom";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import styles from "../style/login.module.css";
-import UserContext from "../components/userContext";
-import { isUser } from "../components/protectedRoute/permissions";
+import UserContext from "./userContext";
 
 import AuthService from "../service/authService";
 
@@ -19,13 +17,11 @@ const required = (value) => {
   }
 };
 
-const Login = () => {
+const LoginSubComponent = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const { setUserDisplay } = useContext(UserContext);
-
-  const history = useHistory();
 
   const onChangeUsername = (e) => {
     setUsername(e.target.value);
@@ -41,7 +37,6 @@ const Login = () => {
     return AuthService.login(username, password).then(
       () => {
         setUserDisplay();
-        return history.push("/");
       },
       (error) => {
         const resMessage =
@@ -55,9 +50,7 @@ const Login = () => {
     );
   };
 
-  return isUser ? (
-    <Redirect to="/" />
-  ) : (
+  return (
     <div className={styles.loginContainer}>
       <h1 className={styles.title}>Login</h1>
       <div className="card card-container">
@@ -65,6 +58,7 @@ const Login = () => {
           <div className="form-group">
             <label htmlFor="username">Username</label>
             <Input
+              id="username"
               type="text"
               className="form-control"
               name="username"
@@ -77,6 +71,7 @@ const Login = () => {
           <div className="form-group">
             <label htmlFor="password">Password</label>
             <Input
+              id="password"
               type="password"
               className="form-control"
               password="password"
@@ -109,4 +104,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginSubComponent;

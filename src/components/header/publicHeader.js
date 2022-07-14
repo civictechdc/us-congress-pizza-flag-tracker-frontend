@@ -8,9 +8,14 @@ function Publicheader(params) {
       <header>
         <nav className={styles.nav_conatiner}>
           <div className={styles.nav_group1}>
-            <h1 className={styles.nav_title}>Flagpizza</h1>
+            <h1 className={styles.nav_title}>
+              <Link to={"/welcome"} style={{ color: "#000" }}>
+                Flagpizza
+              </Link>
+            </h1>
+
             <li>
-              <Link to={"/orders"} className={styles.nav_item}>
+              <Link to={"/"} className={styles.nav_item}>
                 Orders
               </Link>
             </li>
