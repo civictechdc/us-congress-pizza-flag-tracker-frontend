@@ -8,7 +8,9 @@ import styles from "../style/orderForm.module.css";
 //This component should be removed prior to production
 
 const DemoLogIn = () => {
-  const [message, setMessage] = useState("Login Updated, click this box to continue");
+  const [message, setMessage] = useState(
+    "Login Updated, click this box to continue"
+  );
   const [popUpBox, setPopUpBox] = useState("none");
   const { setUserDisplay } = useContext(UserContext);
 
@@ -21,11 +23,11 @@ const DemoLogIn = () => {
   const logIn = async (userName, password) => {
     const response = await AuthService.login(userName, password);
     if (response.message) {
-      setMessage("Issue: " + response.message)
+      setMessage("Issue: " + response.message);
     } else {
       setMessage("Login Updated, click this box to continue");
     }
-    setPopUpBox("block"); 
+    setPopUpBox("block");
   };
 
   useEffect(() => {
@@ -33,8 +35,6 @@ const DemoLogIn = () => {
   }, [userName, password]);
 
   const closePopUpBox = () => {
-    // the value set is largely unimportant; rather the setting of any value will force Header component
-    // to rerender and display the updated login information
     setUserDisplay();
     history.push(priorLocation);
   };

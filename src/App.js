@@ -38,14 +38,14 @@ function App() {
       </UserContext.Provider>
 
       <main className="mainContainer">
-        <Switch>
-          <UserContext.Provider value={value}>
+        <UserContext.Provider value={value}>
+          <Switch>
             <Route exact path={["/"]} component={OrdersList} />
             {/* DemoLogIn should be removed prior to production */}
             <Route
               path={["/demoLogin", "/*/demoLogin"]}
               component={DemoLogIn}
-            />{" "}
+            />
             <Route exact path="/welcome" component={Welcome} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/print/:id" component={PrintOrder} />
@@ -55,9 +55,12 @@ function App() {
             <Route exact path="/users/add" component={AddUser} />
             <Route exact path="/add" component={AddOrder} />
             {/* Refresh should be removed prior to production */}
-            <Route exact path="/refresh" component={Refresh} />{" "}
-          </UserContext.Provider>
-        </Switch>
+            <Route exact path="/refresh" component={Refresh} />
+            {/* the first OrderList route exists to handle simultanous use of searchParams and demoLogin searchParams
+            the second Orderlist route catches typoed URLs */}
+            <Route path={["/"]} component={OrdersList} />
+          </Switch>
+        </UserContext.Provider>
       </main>
       {/* */}
       <footer className="footer-container"></footer>

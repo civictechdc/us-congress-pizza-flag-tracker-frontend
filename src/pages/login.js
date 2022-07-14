@@ -55,7 +55,7 @@ const Login = () => {
     );
   };
 
-  return isUser ? (
+  return isUser() ? (
     <Redirect to="/" />
   ) : (
     <div className={styles.loginContainer}>
