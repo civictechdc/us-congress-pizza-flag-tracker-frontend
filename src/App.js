@@ -56,6 +56,8 @@ function App() {
             <Route exact path="/add" component={AddOrder} />
             {/* Refresh should be removed prior to production */}
             <Route exact path="/refresh" component={Refresh} />
+            {/* the first OrderList route exists to handle simultanous use of searchParams and demoLogin searchParams
+            the second Orderlist route catches typoed URLs */}
             <Route path={["/"]} component={OrdersList} />
           </Switch>
         </UserContext.Provider>
