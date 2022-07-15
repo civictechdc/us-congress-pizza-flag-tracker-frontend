@@ -53,7 +53,7 @@ const getOrder = (id, setOrder, setUnalteredOrder, setLoading) => {
     }
     setLoading(false);
   };
-  e = AuthService.checkTokenAndExecute(serviceToExecute).then(function (value) {
+  e = AuthService.checkTokenAndExecute(serviceToExecute).then((value) => {
     return value;
   });
   return e;

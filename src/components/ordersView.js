@@ -63,9 +63,7 @@ const OrdersView = () => {
       setOrders(response.data.orders);
       setLoading(false);
     };
-    AuthService.checkTokenAndExecute(serviceToExecute).then(function (
-      serviceResult
-    ) {
+    AuthService.checkTokenAndExecute(serviceToExecute).then((serviceResult) => {
       if (serviceResult) {
         setPopUpBox("block");
         setMessage("Issue: " + serviceResult.message);
@@ -85,11 +83,11 @@ const OrdersView = () => {
   const logIn = async (userName, password) => {
     const response = await AuthService.login(userName, password);
     if (response.message) {
-      setMessage("Issue: " + response.message)
+      setMessage("Issue: " + response.message);
     } else {
       setMessage("Login Updated, click this box to continue");
     }
-    setPopUpBox("block"); 
+    setPopUpBox("block");
   };
 
   if (userName != undefined) {
