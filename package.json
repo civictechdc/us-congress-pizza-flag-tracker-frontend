@@ -7,7 +7,7 @@
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^13.1.9",
     "axios": "^0.21.1",
-    "bootstrap": "^5.1.3",
+    "bootstrap": "^5.2.0-beta1",
     "css-select": "^4.1.3",
     "nth-check": "^2.1.1",
     "react": "^17.0.2",
