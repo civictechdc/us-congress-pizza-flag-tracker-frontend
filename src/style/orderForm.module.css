@@ -2,6 +2,10 @@
   opacity: .6;
 }
 
+.btnDelete {
+  color: #FF0000;
+}
+
 .validationMessage {
   color: #FF0000;
   font-weight: bold;

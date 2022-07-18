@@ -260,7 +260,7 @@ const OrderForm = (props) => {
 
             {mode === "edit" && (
               <button
-                className="btn badge-danger mr-2"
+                className={`btn btn-danger mr-2`}
                 onClick={deleteOrderFunc}
               >
                 Delete
