@@ -1,10 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 
-import {
-  editOrderControl,
-  isUser,
-} from "../components/protectedRoute/permissions";
+import { editOrderControl, isUser } from "../components/permissions";
 import EditView from "../components/editView";
 import LoginSubComponent from "../components/loginSubComponent";
 

@@ -5,7 +5,7 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import styles from "../style/login.module.css";
 import UserContext from "../components/userContext";
-import { isUser } from "../components/protectedRoute/permissions";
+import { isUser } from "../components/permissions";
 
 import AuthService from "../service/authService";
 

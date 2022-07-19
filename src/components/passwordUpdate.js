@@ -3,7 +3,7 @@ import PopUpBoxComponent from "./popUpBoxComponent";
 import userService from "../service/userService";
 import AuthService from "../service/authService";
 import styles from "../style/password.module.css";
-import { adminControl } from "./protectedRoute/permissions";
+import { adminControl } from "./permissions";
 
 const PasswordUpdate = () => {
   const [oldPassword, setOldPassword] = useState("");
@@ -57,11 +57,10 @@ const PasswordUpdate = () => {
     e.preventDefault();
     if (comparePasswords(newPassword, newPassword2)) {
       const serviceToExecute = async () => {
-        const response = await userService
-          .updateOwnPassword({
-            newPassword: newPassword,
-            oldPassword: oldPassword,
-          });
+        const response = await userService.updateOwnPassword({
+          newPassword: newPassword,
+          oldPassword: oldPassword,
+        });
         if (response.status === 200) {
           setOldPassword("");
           setNewPassword("");
@@ -89,11 +88,10 @@ const PasswordUpdate = () => {
     e.preventDefault();
     if (comparePasswords(userNewPassword, userNewPassword2)) {
       const serviceToExecute = async () => {
-        const response = await userService
-          .updateOthersPassword({
-            username: userName,
-            oldPassword: userNewPassword,
-          });
+        const response = await userService.updateOthersPassword({
+          username: userName,
+          oldPassword: userNewPassword,
+        });
         if (response.status === 200) {
           setUserName("");
           setUserNewPassword("");

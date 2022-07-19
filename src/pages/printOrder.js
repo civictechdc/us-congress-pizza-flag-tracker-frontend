@@ -1,6 +1,6 @@
 import React from "react";
 
-import { isUser } from "../components/protectedRoute/permissions";
+import { isUser } from "../components/permissions";
 import LoginSubComponent from "../components/loginSubComponent";
 import PrintView from "../components/printView";
 

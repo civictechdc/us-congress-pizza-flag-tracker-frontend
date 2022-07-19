@@ -12,11 +12,6 @@ import Profile from "./pages/profile";
 import PrintOrder from "./pages/printOrder";
 import AddUser from "./pages/addUser";
 
-import UserRoute from "./components/protectedRoute/userRoute";
-import ScanRoute from "./components/protectedRoute/scanRoute";
-import EditorRoute from "./components/protectedRoute/editorRoute";
-import AdminRoute from "./components/protectedRoute/adminRoute";
-import FedRoute from "./components/protectedRoute/fedRoute";
 import Header from "./components/header/header";
 import Background from "./components/background";
 import Refresh from "./components/refresh";

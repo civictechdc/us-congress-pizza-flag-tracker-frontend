@@ -14,7 +14,7 @@ import { useSortableData } from "./sorting/sortHook";
 import { TableHeader } from "./tableHeader";
 import Gauge from "./gauge";
 import { Search } from "./search";
-import { editOrderControl } from "./protectedRoute/permissions";
+import { editOrderControl } from "./permissions";
 import { useHistory, useLocation } from "react-router-dom";
 import UserContext from "./userContext";
 import PopUpBoxComponent from "./popUpBoxComponent";
@@ -85,11 +85,11 @@ const OrdersView = () => {
   const logIn = async (userName, password) => {
     const response = await AuthService.login(userName, password);
     if (response.message) {
-      setMessage("Issue: " + response.message)
+      setMessage("Issue: " + response.message);
     } else {
       setMessage("Login Updated, click this box to continue");
     }
-    setPopUpBox("block"); 
+    setPopUpBox("block");
   };
 
   if (userName != undefined) {
