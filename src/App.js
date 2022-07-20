@@ -1,6 +1,6 @@
 import "./style/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Switch, Route, useParams } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import { useState, useMemo } from "react";
 
 import AddOrder from "./pages/addOrder";
@@ -22,10 +22,6 @@ import Welcome from "./pages/welcome";
 function App() {
   const [userDisplay, setUserDisplay] = useState("");
   const value = useMemo(() => ({ userDisplay, setUserDisplay }), [userDisplay]);
-
-  // let { id } = useParams();
-
-  // console.log("Id: ", id);
 
   return (
     <>
@@ -61,12 +57,9 @@ function App() {
             <Route exact path="/scan/:id">
               <ScanOrder />
             </Route>
-
-            {/* <Route exact path="/orders/:id" component={EditOrder} /> */}
             <Route exact path="/orders/:id">
               <EditOrder />
             </Route>
-
             <Route exact path="/users/add">
               <AddUser />
             </Route>
