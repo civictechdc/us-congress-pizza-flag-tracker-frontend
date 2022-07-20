@@ -12,11 +12,6 @@ import Profile from "./pages/profile";
 import PrintOrder from "./pages/printOrder";
 import AddUser from "./pages/addUser";
 
-import UserRoute from "./components/protectedRoute/userRoute";
-import ScanRoute from "./components/protectedRoute/scanRoute";
-import EditorRoute from "./components/protectedRoute/editorRoute";
-import AdminRoute from "./components/protectedRoute/adminRoute";
-import FedRoute from "./components/protectedRoute/fedRoute";
 import Header from "./components/header/header";
 import Background from "./components/background";
 import Refresh from "./components/refresh";
@@ -40,25 +35,46 @@ function App() {
       <main className="mainContainer">
         <UserContext.Provider value={value}>
           <Switch>
-            <Route exact path={["/"]} component={OrdersList} />
+            <Route exact path={["/"]}>
+              <OrdersList />
+            </Route>
             {/* DemoLogIn should be removed prior to production */}
-            <Route
-              path={["/demoLogin", "/*/demoLogin"]}
-              component={DemoLogIn}
-            />
-            <Route exact path="/welcome" component={Welcome} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/print/:id" component={PrintOrder} />
-            <Route exact path="/profile" component={Profile} />
-            <Route exact path="/scan/:id" component={ScanOrder} />
-            <Route exact path="/orders/:id" component={EditOrder} />
-            <Route exact path="/users/add" component={AddUser} />
-            <Route exact path="/add" component={AddOrder} />
+            <Route path={["/demoLogin", "/*/demoLogin"]}>
+              <DemoLogIn />
+            </Route>
+            <Route exact path="/welcome">
+              <Welcome />
+            </Route>
+            <Route exact path="/login">
+              <Login />
+            </Route>
+            <Route exact path="/print/:id">
+              <PrintOrder />
+            </Route>
+            <Route exact path="/profile">
+              <Profile />
+            </Route>
+            <Route exact path="/scan/:id">
+              <ScanOrder />
+            </Route>
+            <Route exact path="/orders/:id">
+              <EditOrder />
+            </Route>
+            <Route exact path="/users/add">
+              <AddUser />
+            </Route>
+            <Route exact path="/add">
+              <AddOrder />
+            </Route>
             {/* Refresh should be removed prior to production */}
-            <Route exact path="/refresh" component={Refresh} />
+            <Route exact path="/refresh">
+              <Refresh />
+            </Route>
             {/* the first OrderList route exists to handle simultanous use of searchParams and demoLogin searchParams
             the second Orderlist route catches typoed URLs */}
-            <Route path={["/"]} component={OrdersList} />
+            <Route path={["/"]}>
+              <OrdersList />
+            </Route>
           </Switch>
         </UserContext.Provider>
       </main>

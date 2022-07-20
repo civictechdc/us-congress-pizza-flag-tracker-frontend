@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styles from "../../style/navbar.module.css";
 import AuthService from "../../service/authService";
-import { orderControl, adminControl } from "../protectedRoute/permissions";
+import { orderControl, adminControl } from "../permissions";
 
 function Privateheader(params) {
   function logOut() {

@@ -3,7 +3,7 @@ import PopUpBoxComponent from "./popUpBoxComponent";
 import userService from "../service/userService";
 import AuthService from "../service/authService";
 import styles from "../style/password.module.css";
-import { adminControl } from "./protectedRoute/permissions";
+import { adminControl } from "./permissions";
 
 const PasswordUpdate = () => {
   const [oldPassword, setOldPassword] = useState("");

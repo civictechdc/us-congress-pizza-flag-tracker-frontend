@@ -1,6 +1,6 @@
 import React from "react";
 
-import { isUser } from "../components/protectedRoute/permissions";
+import { isUser } from "../components/permissions";
 import OrdersView from "../components/ordersView";
 import Welcome from "./welcome";
 

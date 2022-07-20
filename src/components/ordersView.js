@@ -14,7 +14,7 @@ import { useSortableData } from "./sorting/sortHook";
 import { TableHeader } from "./tableHeader";
 import Gauge from "./gauge";
 import { Search } from "./search";
-import { editOrderControl } from "./protectedRoute/permissions";
+import { editOrderControl } from "./permissions";
 import { useHistory, useLocation } from "react-router-dom";
 import UserContext from "./userContext";
 import PopUpBoxComponent from "./popUpBoxComponent";
