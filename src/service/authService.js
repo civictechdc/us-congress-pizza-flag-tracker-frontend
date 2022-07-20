@@ -58,22 +58,15 @@ class AuthService {
 
   //this method exists so that any call to the database first checks for a 401 error; if the 401 error is caused by an outdated (but not expired) token, this method will generate a new token and re-try the command.
   checkTokenAndExecute(serviceToExecute) {
-    const e = serviceToExecute().catch((e) => {
-      if (e.response?.status === 401) {
-        if (e.response?.data?.refreshedToken) {
-          this.updateToken(e.response.data.refreshedToken);
-          serviceToExecute();
-          return e;
-        } else {
-          console.log("Auth error: ", e);
-          return e;
-        }
+    return serviceToExecute().catch((e) => {
+      if (e?.response?.status === 401 && e?.response?.data?.refreshedToken) {
+        this.updateToken(e.response.data.refreshedToken);
+        return serviceToExecute();
       } else {
         console.log("Auth error: ", e);
-        return e;
+        throw e;
       }
     });
-    return e;
   } 
 }
 

@@ -63,10 +63,10 @@ const OrdersView = () => {
       setOrders(response.data.orders);
       setLoading(false);
     };
-    AuthService.checkTokenAndExecute(serviceToExecute).then((serviceResult) => {
-      if (serviceResult) {
+    return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
+      if (err) {
         setPopUpBox("block");
-        setMessage("Issue: " + serviceResult.message);
+        setMessage("Issue: " + err.message);
       }
     });
   };
