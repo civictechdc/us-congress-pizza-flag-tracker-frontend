@@ -54,7 +54,7 @@ const ScanView = (props) => {
       setOrder,
       setUnalteredOrder,
       setLoading
-    ).then(function (serviceResult) {
+    ).then((serviceResult) => {
       if (serviceResult) {
         setMessage("Issue: " + serviceResult.message);
         setPopUpBox("block");
@@ -165,9 +165,7 @@ const ScanView = (props) => {
         setRevert("");
       }
     };
-    AuthService.checkTokenAndExecute(serviceToExecute).then(function (
-      serviceResult
-    ) {
+    AuthService.checkTokenAndExecute(serviceToExecute).then((serviceResult) => {
       if (serviceResult) {
         setMessage("Issue: " + serviceResult.message);
         setPopUpBox("block");

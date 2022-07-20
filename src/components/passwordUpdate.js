@@ -57,11 +57,10 @@ const PasswordUpdate = () => {
     e.preventDefault();
     if (comparePasswords(newPassword, newPassword2)) {
       const serviceToExecute = async () => {
-        const response = await userService
-          .updateOwnPassword({
-            newPassword: newPassword,
-            oldPassword: oldPassword,
-          });
+        const response = await userService.updateOwnPassword({
+          newPassword: newPassword,
+          oldPassword: oldPassword,
+        });
         if (response.status === 200) {
           setOldPassword("");
           setNewPassword("");
@@ -70,14 +69,14 @@ const PasswordUpdate = () => {
           setMessage("The password was updated successfully!");
         }
       };
-      AuthService.checkTokenAndExecute(serviceToExecute).then(function (
-        serviceResult
-      ) {
-        if (serviceResult) {
-          setPopUpBox("block");
-          setMessage("Issue: " + serviceResult.message);
+      AuthService.checkTokenAndExecute(serviceToExecute).then(
+        (serviceResult) => {
+          if (serviceResult) {
+            setPopUpBox("block");
+            setMessage("Issue: " + serviceResult.message);
+          }
         }
-      });
+      );
     } else {
       setPopUpBox("block");
       setMessage("New passwords must match!");
@@ -89,11 +88,10 @@ const PasswordUpdate = () => {
     e.preventDefault();
     if (comparePasswords(userNewPassword, userNewPassword2)) {
       const serviceToExecute = async () => {
-        const response = await userService
-          .updateOthersPassword({
-            username: userName,
-            oldPassword: userNewPassword,
-          });
+        const response = await userService.updateOthersPassword({
+          username: userName,
+          oldPassword: userNewPassword,
+        });
         if (response.status === 200) {
           setUserName("");
           setUserNewPassword("");
@@ -102,14 +100,14 @@ const PasswordUpdate = () => {
           setMessage("The password was updated successfully!");
         }
       };
-      AuthService.checkTokenAndExecute(serviceToExecute).then(function (
-        serviceResult
-      ) {
-        if (serviceResult) {
-          setPopUpBox("block");
-          setMessage("Issue: " + serviceResult.message);
+      AuthService.checkTokenAndExecute(serviceToExecute).then(
+        (serviceResult) => {
+          if (serviceResult) {
+            setPopUpBox("block");
+            setMessage("Issue: " + serviceResult.message);
+          }
         }
-      });
+      );
     } else {
       setPopUpBox("block");
       setMessage("New passwords must match!");

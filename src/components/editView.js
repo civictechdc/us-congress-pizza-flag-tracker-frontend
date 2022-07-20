@@ -58,9 +58,7 @@ const EditView = (props) => {
       setMessage("The order was updated successfully!");
       setCheckSaved(true);
     };
-    AuthService.checkTokenAndExecute(serviceToExecute).then(function (
-      serviceResult
-    ) {
+    AuthService.checkTokenAndExecute(serviceToExecute).then((serviceResult) => {
       if (serviceResult) {
         setPopUpBox("block");
         setMessage("Issue: " + serviceResult.message);
@@ -73,9 +71,7 @@ const EditView = (props) => {
       const response = await OrderDataService.remove(order.uuid);
       history.push("/");
     };
-    AuthService.checkTokenAndExecute(serviceToExecute).then(function (
-      serviceResult
-    ) {
+    AuthService.checkTokenAndExecute(serviceToExecute).then((serviceResult) => {
       if (serviceResult) {
         setPopUpBox("block");
         setMessage("Issue: " + serviceResult.message);
