@@ -47,6 +47,9 @@ const ScanView = (props) => {
     user = { office_code: null };
   }
 
+  const editLink = "/orders/" + order.uuid;
+  const printLink = "/print/" + order.uuid;
+
   useEffect(() => {
     setLoading(true);
     OrderDataService.getOrder(
@@ -237,6 +240,8 @@ const ScanView = (props) => {
         "Loading..."
       ) : order ? (
         <>
+          <a href={editLink}>Edit this order</a>{" "}
+          <a href={printLink}>Print this order</a>
           <InfoTop order={order} />
           <InfoBottom
             decline={decline}
