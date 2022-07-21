@@ -53,10 +53,9 @@ const getOrder = (id, setOrder, setUnalteredOrder, setLoading) => {
     }
     setLoading(false);
   };
-  e = AuthService.checkTokenAndExecute(serviceToExecute).then((value) => {
-    return value;
+  return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
+    return err;
   });
-  return e;
 };
 
 const orderServiceObject = {

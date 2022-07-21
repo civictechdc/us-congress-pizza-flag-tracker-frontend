@@ -165,11 +165,9 @@ const ScanView = (props) => {
         setRevert("");
       }
     };
-    AuthService.checkTokenAndExecute(serviceToExecute).then((serviceResult) => {
-      if (serviceResult) {
-        setMessage("Issue: " + serviceResult.message);
-        setPopUpBox("block");
-      }
+    return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
+      setMessage("Issue: " + err);
+      setPopUpBox("block");
     });
   };
 

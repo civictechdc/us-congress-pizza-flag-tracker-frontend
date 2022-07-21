@@ -69,14 +69,10 @@ const PasswordUpdate = () => {
           setMessage("The password was updated successfully!");
         }
       };
-      AuthService.checkTokenAndExecute(serviceToExecute).then(
-        (serviceResult) => {
-          if (serviceResult) {
-            setPopUpBox("block");
-            setMessage("Issue: " + serviceResult.message);
-          }
-        }
-      );
+      return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
+        setMessage("Issue: " + err);
+        setPopUpBox("block");
+      });
     } else {
       setPopUpBox("block");
       setMessage("New passwords must match!");
@@ -100,14 +96,10 @@ const PasswordUpdate = () => {
           setMessage("The password was updated successfully!");
         }
       };
-      AuthService.checkTokenAndExecute(serviceToExecute).then(
-        (serviceResult) => {
-          if (serviceResult) {
-            setPopUpBox("block");
-            setMessage("Issue: " + serviceResult.message);
-          }
-        }
-      );
+      return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
+        setMessage("Issue: " + err);
+        setPopUpBox("block");
+      });
     } else {
       setPopUpBox("block");
       setMessage("New passwords must match!");
