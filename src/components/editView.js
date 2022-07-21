@@ -40,12 +40,20 @@ const EditView = (props) => {
 
   useEffect(() => {
     setLoading(true);
-    OrderDataService.getOrder(editId, setOrder, false, setLoading);
+    OrderDataService.getOrder(editId, setOrder, false, setLoading).catch(
+      (err) => {
+        setMessage("Order Issue: " + err.message);
+        setPopUpBox("block");
+      }
+    );
   }, [editId]);
 
   useEffect(() => {
     if (statuses.length === 0) {
-      StatusDataService.retrieveStatuses(setMessage, setStatuses, setPopUpBox);
+      StatusDataService.retrieveStatuses(setStatuses).catch((err) => {
+        setMessage("Status Issue: " + err.message);
+        setPopUpBox("block");
+      });
     }
   }, [statuses]);
 
@@ -59,7 +67,7 @@ const EditView = (props) => {
       setCheckSaved(true);
     };
     return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
-      setMessage("Issue: " + err);
+      setMessage("Issue: " + err.message);
       setPopUpBox("block");
     });
   };
@@ -70,7 +78,7 @@ const EditView = (props) => {
       history.push("/");
     };
     return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
-      setMessage("Issue: " + err);
+      setMessage("Issue: " + err.message);
       setPopUpBox("block");
     });
   };

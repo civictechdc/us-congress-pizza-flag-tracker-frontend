@@ -9,14 +9,13 @@ const updateStatus = (id, data) => {
   return httpAuthenticate().put(`/scan/${id}`, data);
 };
 
-const retrieveStatuses = (setMessage, setStatuses, setPopUpBox) => {
+const retrieveStatuses = (setStatuses) => {
   const serviceToExecute = async () => {
     const response = await getStatus();
     setStatuses(response.data.statuses);
   };
   return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
-    setMessage("Issue: " + err);
-    setPopUpBox("block");
+    throw err;
   });
 };
 
