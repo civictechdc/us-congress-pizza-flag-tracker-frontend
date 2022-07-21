@@ -65,12 +65,12 @@ class AuthService {
         this.updateToken(e.response.data.refreshedToken);
         return serviceToExecute();                    // success
       } else {                                        // error
-        if (e.response?.data?.error_msg) {                 // got a response from the server
+        if (e.response?.data?.error_msg) {            // error --> got a response from the server
           const errorArray = error_msg.split("\n");
           const basicError = errorArray[0];
           console.log("Auth error: ", basicError);
           throw basicError;
-        } else {                                           // no server response, connection down?
+        } else {                                      // error --> no server response, connection down?
           console.log("Auth error: ", error_msg);
           throw error_msg;
         }
