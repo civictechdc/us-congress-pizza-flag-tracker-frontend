@@ -32,12 +32,10 @@ const AddView = () => {
       setCheckSaved(true);
       setPopUpBox("block");
     };
-    AuthService.checkTokenAndExecute(serviceToExecute).then((serviceResult) => {
-      if (serviceResult) {
-        setMessage("Issue: " + serviceResult.message);
-        setCheckSaved(false);
-        setPopUpBox("block");
-      }
+    return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
+      setMessage("Issue: " + err.message);
+      setCheckSaved(false);
+      setPopUpBox("block");
     });
   };
 

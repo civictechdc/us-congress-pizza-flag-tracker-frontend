@@ -54,17 +54,18 @@ const ScanView = (props) => {
       setOrder,
       setUnalteredOrder,
       setLoading
-    ).then((serviceResult) => {
-      if (serviceResult) {
-        setMessage("Issue: " + serviceResult.message);
-        setPopUpBox("block");
-      }
+    ).catch((err) => {
+      setMessage("Order Issue: " + err.message);
+      setPopUpBox("block");
     });
   }, [scanId]);
 
   useEffect(() => {
     if (statuses.length === 0) {
-      StatusDataService.retrieveStatuses(setMessage, setStatuses, setPopUpBox);
+      StatusDataService.retrieveStatuses(setStatuses).catch((err) => {
+        setMessage("Status Issue: " + err.message);
+        setPopUpBox("block");
+      });
     }
   }, [statuses]);
 
@@ -165,11 +166,9 @@ const ScanView = (props) => {
         setRevert("");
       }
     };
-    AuthService.checkTokenAndExecute(serviceToExecute).then((serviceResult) => {
-      if (serviceResult) {
-        setMessage("Issue: " + serviceResult.message);
-        setPopUpBox("block");
-      }
+    return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
+      setMessage("Issue: " + err.message);
+      setPopUpBox("block");
     });
   };
 

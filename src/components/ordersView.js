@@ -63,10 +63,10 @@ const OrdersView = () => {
       setOrders(response.data.orders);
       setLoading(false);
     };
-    AuthService.checkTokenAndExecute(serviceToExecute).then((serviceResult) => {
-      if (serviceResult) {
+    return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
+      if (err) {
         setPopUpBox("block");
-        setMessage("Issue: " + serviceResult.message);
+        setMessage("Order Issue: " + err.message);
       }
     });
   };
@@ -153,7 +153,10 @@ const OrdersView = () => {
 
   useEffect(() => {
     if (statuses.length === 0) {
-      StatusDataService.retrieveStatuses(setMessage, setStatuses, setPopUpBox);
+      StatusDataService.retrieveStatuses(setStatuses).catch((err) => {
+        setMessage("Status Issue: " + err.message);
+        setPopUpBox("block");
+      });
     }
   }, [statuses]);
 

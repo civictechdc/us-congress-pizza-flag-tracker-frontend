@@ -36,12 +36,10 @@ const PrintView = (props) => {
 
   useEffect(() => {
     setLoading(true);
-    OrderDataService.getOrder(printId, setOrder, false, setLoading).then(
-      function (serviceResult) {
-        if (serviceResult) {
-          setMessage("Issue: " + serviceResult.message);
-          setPopUpBox("block");
-        }
+    OrderDataService.getOrder(printId, setOrder, false, setLoading).catch(
+      (err) => {
+        setMessage("Order Issue: " + err.message);
+        setPopUpBox("block");
       }
     );
   }, [printId]);

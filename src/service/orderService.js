@@ -44,7 +44,6 @@ const getOrderLog = (order_number) => {
 };
 
 const getOrder = (id, setOrder, setUnalteredOrder, setLoading) => {
-  let e = "";
   const serviceToExecute = async () => {
     const response = await get(id);
     setOrder(response.data);
@@ -53,10 +52,9 @@ const getOrder = (id, setOrder, setUnalteredOrder, setLoading) => {
     }
     setLoading(false);
   };
-  e = AuthService.checkTokenAndExecute(serviceToExecute).then((value) => {
-    return value;
+  return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
+    throw err;
   });
-  return e;
 };
 
 const orderServiceObject = {

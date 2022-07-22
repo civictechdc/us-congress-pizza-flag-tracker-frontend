@@ -2,6 +2,7 @@
 
 .env
 .idea
+.cypress.env
 
 # dependencies
 /node_modules
