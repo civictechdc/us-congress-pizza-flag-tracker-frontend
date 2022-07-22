@@ -41,6 +41,7 @@ const Login = () => {
     return AuthService.login(username, password).then(
       () => {
         setUserDisplay();
+        return history.push("/");
       },
     ).catch((error) => {
       const resMessage =
