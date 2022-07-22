@@ -65,10 +65,8 @@ const OrdersView = () => {
     };
     return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
       console.log("Err: ", err);
-      if (err) {
-        setPopUpBox("block");
-        setMessage("Order Issue: " + err);
-      }
+      setPopUpBox("block");
+      setMessage("Order Issue: " + err);
     });
   };
 
