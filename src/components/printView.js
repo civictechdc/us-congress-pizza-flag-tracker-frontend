@@ -38,7 +38,7 @@ const PrintView = (props) => {
     setLoading(true);
     OrderDataService.getOrder(printId, setOrder, false, setLoading).catch(
       (err) => {
-        setMessage("Order Issue: " + err.message);
+        setMessage("Order Issue: " + err);
         setPopUpBox("block");
       }
     );

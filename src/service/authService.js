@@ -65,7 +65,10 @@ class AuthService {
       } else {                                        // error
         if (e.response?.data?.error_msg) {            // error --> got a response from the server
           const errorArray = e.response.data.error_msg.split("\n");
-          const basicError = errorArray[0];
+          let basicError = errorArray[0];
+          if (errorArray[1] === '(sqlite3.IntegrityError) datatype mismatch') {
+            basicError = errorArray[1];
+          } 
           console.log("Auth error: ", basicError);
           throw basicError;
         } else {                                      // error --> no server response, connection down?

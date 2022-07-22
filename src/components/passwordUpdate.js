@@ -70,7 +70,7 @@ const PasswordUpdate = () => {
         }
       };
       return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
-        setMessage("Issue: " + err.message);
+        setMessage("Issue: " + err);
         setPopUpBox("block");
       });
     } else {
@@ -97,7 +97,7 @@ const PasswordUpdate = () => {
         }
       };
       return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
-        setMessage("Issue: " + err.message);
+        setMessage("Issue: " + err);
         setPopUpBox("block");
       });
     } else {

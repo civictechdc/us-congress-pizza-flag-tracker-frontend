@@ -64,10 +64,8 @@ const OrdersView = () => {
       setLoading(false);
     };
     return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
-      if (err) {
-        setPopUpBox("block");
-        setMessage("Order Issue: " + err.message);
-      }
+      setPopUpBox("block");
+      setMessage("Order Issue: " + err);
     });
   };
 
@@ -154,7 +152,7 @@ const OrdersView = () => {
   useEffect(() => {
     if (statuses.length === 0) {
       StatusDataService.retrieveStatuses(setStatuses).catch((err) => {
-        setMessage("Status Issue: " + err.message);
+        setMessage("Status Issue: " + err);
         setPopUpBox("block");
       });
     }
