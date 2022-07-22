@@ -42,7 +42,7 @@ const EditView = (props) => {
     setLoading(true);
     OrderDataService.getOrder(editId, setOrder, false, setLoading).catch(
       (err) => {
-        setMessage("Order Issue: " + err.message);
+        setMessage("Order Issue: " + err);
         setPopUpBox("block");
       }
     );
@@ -51,7 +51,7 @@ const EditView = (props) => {
   useEffect(() => {
     if (statuses.length === 0) {
       StatusDataService.retrieveStatuses(setStatuses).catch((err) => {
-        setMessage("Status Issue: " + err.message);
+        setMessage("Status Issue: " + err);
         setPopUpBox("block");
       });
     }
@@ -67,7 +67,7 @@ const EditView = (props) => {
       setCheckSaved(true);
     };
     return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
-      setMessage("Issue: " + err.message);
+      setMessage("Issue: " + err);
       setPopUpBox("block");
     });
   };
@@ -78,7 +78,7 @@ const EditView = (props) => {
       history.push("/");
     };
     return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
-      setMessage("Issue: " + err.message);
+      setMessage("Issue: " + err);
       setPopUpBox("block");
     });
   };

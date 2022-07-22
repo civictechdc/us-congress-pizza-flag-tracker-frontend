@@ -55,7 +55,7 @@ const ScanView = (props) => {
       setUnalteredOrder,
       setLoading
     ).catch((err) => {
-      setMessage("Order Issue: " + err.message);
+      setMessage("Order Issue: " + err);
       setPopUpBox("block");
     });
   }, [scanId]);
@@ -63,7 +63,7 @@ const ScanView = (props) => {
   useEffect(() => {
     if (statuses.length === 0) {
       StatusDataService.retrieveStatuses(setStatuses).catch((err) => {
-        setMessage("Status Issue: " + err.message);
+        setMessage("Status Issue: " + err);
         setPopUpBox("block");
       });
     }
@@ -167,7 +167,7 @@ const ScanView = (props) => {
       }
     };
     return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
-      setMessage("Issue: " + err.message);
+      setMessage("Issue: " + err);
       setPopUpBox("block");
     });
   };

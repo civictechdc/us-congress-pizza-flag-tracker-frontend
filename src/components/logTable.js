@@ -18,7 +18,7 @@ export const LogTable = (props) => {
       // do not add catch at this level
     };
     return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
-      setMessage("Issue: " + err.message);
+      setMessage("Issue: " + err);
       setPopUpBox("block");
     });
   }, []);
