@@ -1,13 +1,7 @@
-import React, {
-  useState,
-  useEffect,
-  useReducer,
-  useRef,
-  useContext,
-} from "react";
+import React, { useState, useEffect, useReducer, useRef, useContext } from "react";
 import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
-import { Link } from "react-router-dom";
+
 import styles from "../style/orders.module.css";
 import AuthService from "../service/authService";
 import { useSortableData } from "./sorting/sortHook";
@@ -68,6 +62,7 @@ const OrdersView = () => {
       setMessage("Order Issue: " + err);
     });
   };
+  let searchParams = useLocation().search;
 
   // in production replace demologin code with this:
   // const searchParams = useLocation().search;
@@ -75,7 +70,7 @@ const OrdersView = () => {
   //demologin code begin
   const rawParams = useLocation().search;
   const paramsArray = rawParams.split("/demoLogin?q=");
-  const searchParams = paramsArray[0];
+  searchParams = paramsArray[0];
   const userName = paramsArray[1];
 
   const logIn = async (userName, password) => {
@@ -120,15 +115,8 @@ const OrdersView = () => {
     setCurrentOrder(null);
   };
 
-  const setActiveOrder = (order, index) => {
-    if (
-      currentOrder == null ||
-      currentOrder.order_number !== order.order_number
-    ) {
-      setCurrentOrder(order, index);
-    } else {
-      setCurrentOrder(null);
-    }
+  const setActiveOrder = (order) => {
+    history.push("/scan/" + order.uuid);
   };
 
   const clearSearch = () => {
@@ -172,7 +160,7 @@ const OrdersView = () => {
             <>
               <div
                 className={styles.flagItem}
-                onClick={() => setActiveOrder(order, index)}
+                onClick={() => setActiveOrder(order)}
                 key={index}
               >
                 <p className={styles.orderNum}>{order.order_number}</p>
@@ -182,6 +170,15 @@ const OrdersView = () => {
                   <p className={styles.constituentPhone}>
                     {order.person.phone}
                   </p>
+                  <p className={styles.description}>
+                    {order.status.description}
+                  </p>
+                  <p>
+                    <b>Created:</b> {formatDate(order.created_at)}
+                  </p>
+                  <p>
+                    <b>Updated:</b> {formatDate(order.updated_at)}
+                  </p>
                 </div>
                 <div className={styles.gaugeContainer}>
                   <Gauge
@@ -189,60 +186,6 @@ const OrdersView = () => {
                     statuses={statuses}
                   />
                 </div>
-              </div>
-              <div>
-                {currentOrder ? ( // checks for null value
-                  currentOrder.order_number == order.order_number ? (
-                    <div className={styles.mobileStatus}>
-                      <div className={styles.statusItem}>
-                        <p className={styles.description}>
-                          {currentOrder.status.description}
-                        </p>
-                      </div>
-                      <div className={styles.statusItem}>
-                        <p>
-                          <b>Created:</b> {formatDate(currentOrder.created_at)}
-                        </p>
-                        <p>
-                          <b>Updated:</b> {formatDate(currentOrder.updated_at)}
-                        </p>
-                      </div>
-                      <div className={styles.statusItem}>
-                        {isEditor.current ? (
-                          <Link
-                            to={"/orders/" + currentOrder.uuid}
-                            className={styles.orderLinks}
-                          >
-                            Edit
-                          </Link>
-                        ) : (
-                          <></>
-                        )}
-                        <Link
-                          to={{
-                            pathname: "/scan/" + currentOrder.uuid,
-                            state: {
-                              orderOfficeCheck: currentOrder.home_office_code,
-                            },
-                          }} // sends order office to route for checking
-                          className={styles.orderLinks}
-                        >
-                          Scan
-                        </Link>
-                        <Link
-                          to={"/print/" + currentOrder.uuid}
-                          className={styles.orderLinks}
-                        >
-                          Print
-                        </Link>
-                      </div>
-                    </div>
-                  ) : (
-                    <div style={{ width: 0 }}></div>
-                  )
-                ) : (
-                  <div style={{ borderTop: "none" }}></div>
-                )}
               </div>
             </>
           ))}
