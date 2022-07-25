@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, useRef } from "react";
+import React, { useState, useEffect, useReducer, useRef, useContext } from "react";
 import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 
@@ -25,6 +25,7 @@ const OrdersView = () => {
   const [sortType, setSortType] = useState("numeric");
   const [loading, setLoading] = useState(false);
   const [statuses, setStatuses] = useState([]);
+  const { setUserDisplay } = useContext(UserContext);
   const history = useHistory();
 
   const sortOptions = { sortedField, sortDir, sortType };
@@ -185,7 +186,6 @@ const OrdersView = () => {
                   />
                 </div>
               </div>
-              <div></div>
             </>
           ))}
     </div>
@@ -193,6 +193,7 @@ const OrdersView = () => {
 
   const closePopUpBox = () => {
     setPopUpBox("none");
+    setUserDisplay();
   };
 
   return (
