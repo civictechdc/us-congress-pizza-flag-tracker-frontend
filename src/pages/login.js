@@ -43,16 +43,15 @@ const Login = () => {
         setUserDisplay();
         return history.push("/");
       },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        setMessage(resMessage);
-      }
-    );
+    ).catch((error) => {
+      const resMessage =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      setMessage(resMessage);
+    });
   };
 
   return isUser() ? (
