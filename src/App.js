@@ -27,6 +27,7 @@ function App() {
         <Route index element={<OrdersList />} />
         {/* DemoLogIn should be removed prior to production */}
         <Route path="/demoLogin" element={<DemoLogIn />} />
+        <Route path="login" element={<Login />} />
         <Route path="orders" element={<OrdersList />} />
         <Route path="profile" element={<Profile />} />
         <Route path="profile/demoLogin" element={<DemoLogIn />} />
