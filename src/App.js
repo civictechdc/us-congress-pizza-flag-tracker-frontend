@@ -31,6 +31,7 @@ function App() {
         <Route path="profile" element={<Profile />} />
         <Route path="profile/demoLogin" element={<DemoLogIn />} />
         <Route path="refresh" element={<Refresh />} />
+        <Route path="welcome" element={<Welcome />} />
         <Route path="*" element={<OrdersList />} />
       </Route>
     </Routes>
