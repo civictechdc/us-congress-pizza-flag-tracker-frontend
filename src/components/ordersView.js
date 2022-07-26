@@ -71,7 +71,9 @@ const OrdersView = () => {
 
   let searchParams = useLocation().search;
 
-  // in production remove demologin code:
+  //////////////////////////////////////////
+  /* in production remove demologin code: */
+  //////////////////////////////////////////
 
   //demologin code begin
   const rawParams = useLocation().search;
@@ -103,12 +105,12 @@ const OrdersView = () => {
       logIn(userName, password);
       navigate("/" + searchParams);
     }
-  }
-
-  const demoLoginBugCheckTwo = rawParams.includes("?q=");
-  if (demoLoginBugCheckTwo == true) {
-    searchParams = "";
-    navigate("/");
+  } else {
+    const demoLoginBugCheckTwo = rawParams.includes("?q=");
+    if (demoLoginBugCheckTwo == true) {
+      searchParams = "";
+      navigate("/");
+    }
   }
   //demologin code end
 
