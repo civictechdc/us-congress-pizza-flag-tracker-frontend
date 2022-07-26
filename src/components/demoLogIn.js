@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PopUpBoxComponent from "./popUpBoxComponent";
 import UserContext from "./userContext";
 import AuthService from "../service/authService";
@@ -14,11 +14,12 @@ const DemoLogIn = () => {
   const [popUpBox, setPopUpBox] = useState("none");
   const { setUserDisplay } = useContext(UserContext);
 
-  const history = useHistory();
-  const params = new URLSearchParams(document.location.search);
+  const navigate = useNavigate();
+  const params = new URLSearchParams(window.location.search);
+
   const userName = params.get("q");
   const password = userName + "-1010";
-  const priorLocation = document.location.pathname.slice(0, -10);
+  const priorLocation = window.location.pathname.slice(0, -9);
 
   const logIn = async (userName, password) => {
     const response = await AuthService.login(userName, password);
@@ -36,7 +37,7 @@ const DemoLogIn = () => {
 
   const closePopUpBox = () => {
     setUserDisplay();
-    history.push(priorLocation);
+    navigate(priorLocation);
   };
 
   return (

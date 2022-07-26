@@ -1,8 +1,9 @@
 import "./style/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Routes, Outlet } from "react-router-dom";
 import { useState, useMemo } from "react";
 
+import Layout from "./pages/Layout";
 import AddOrder from "./pages/addOrder";
 import Login from "./pages/login";
 import EditOrder from "./pages/editOrder";
@@ -20,28 +21,25 @@ import UserContext from "./components/userContext";
 import Welcome from "./pages/welcome";
 
 function App() {
-  const [userDisplay, setUserDisplay] = useState("");
-  const value = useMemo(() => ({ userDisplay, setUserDisplay }), [userDisplay]);
-
   return (
-    <>
-      <Background />
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<OrdersList />} />
+        {/* DemoLogIn should be removed prior to production */}
+        <Route path="/demoLogin" element={<DemoLogIn />} />
+        <Route path="orders" element={<OrdersList />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="profile/demoLogin" element={<DemoLogIn />} />
+        <Route path="refresh" element={<Refresh />} />
+        <Route path="*" element={<OrdersList />} />
+      </Route>
+    </Routes>
+  );
+}
 
-      {/* Header doesn't use UserContext.Provider value directly, but instead updates and rerenders when other components (primarily DemoLogIn) change the value */}
-      <UserContext.Provider value={value}>
-        <Header />
-      </UserContext.Provider>
+export default App;
 
-      <main className="mainContainer">
-        <UserContext.Provider value={value}>
-          <Switch>
-            <Route exact path={["/"]}>
-              <OrdersList />
-            </Route>
-            {/* DemoLogIn should be removed prior to production */}
-            <Route path={["/demoLogin", "/*/demoLogin"]}>
-              <DemoLogIn />
-            </Route>
+/*
             <Route exact path="/welcome">
               <Welcome />
             </Route>
@@ -66,22 +64,4 @@ function App() {
             <Route exact path="/add">
               <AddOrder />
             </Route>
-            {/* Refresh should be removed prior to production */}
-            <Route exact path="/refresh">
-              <Refresh />
-            </Route>
-            {/* the first OrderList route exists to handle simultanous use of searchParams and demoLogin searchParams
-            the second Orderlist route catches typoed URLs */}
-            <Route path={["/"]}>
-              <OrdersList />
-            </Route>
-          </Switch>
-        </UserContext.Provider>
-      </main>
-      {/* */}
-      <footer className="footer-container"></footer>
-    </>
-  );
-}
-
-export default App;
+*/

@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useReducer, useRef, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useReducer,
+  useRef,
+  useContext,
+} from "react";
 import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 
@@ -9,7 +15,7 @@ import { TableHeader } from "./tableHeader";
 import Gauge from "./gauge";
 import { Search } from "./search";
 import { editOrderControl } from "./permissions";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import UserContext from "./userContext";
 import PopUpBoxComponent from "./popUpBoxComponent";
 
@@ -26,7 +32,7 @@ const OrdersView = () => {
   const [loading, setLoading] = useState(false);
   const [statuses, setStatuses] = useState([]);
   const { setUserDisplay } = useContext(UserContext);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const sortOptions = { sortedField, sortDir, sortType };
   const sortedOrders = useSortableData(orders, sortOptions);
@@ -62,31 +68,47 @@ const OrdersView = () => {
       setMessage("Order Issue: " + err);
     });
   };
+
   let searchParams = useLocation().search;
 
-  // in production replace demologin code with this:
-  // const searchParams = useLocation().search;
+  // in production remove demologin code:
 
   //demologin code begin
   const rawParams = useLocation().search;
-  const paramsArray = rawParams.split("/demoLogin?q=");
-  searchParams = paramsArray[0];
-  const userName = paramsArray[1];
+  let countParams = 0;
+  const queryCharacter = "?";
+  rawParams
+    .split("")
+    .forEach((x) => (x == queryCharacter ? countParams++ : null));
 
-  const logIn = async (userName, password) => {
-    const response = await AuthService.login(userName, password);
-    if (response.message) {
-      setMessage("Issue: " + response.message);
-    } else {
-      setMessage("Login Updated, click this box to continue");
+  const demoLoginBugCheckOne = rawParams.includes("/demoLogin?q=");
+
+  if (countParams == 2 && demoLoginBugCheckOne == true) {
+    const paramsArray = rawParams.split("/demoLogin?q=");
+    searchParams = paramsArray[0];
+    const userName = paramsArray[1];
+
+    const logIn = async (userName, password) => {
+      const response = await AuthService.login(userName, password);
+      if (response.message) {
+        setMessage("Issue: " + response.message);
+      } else {
+        setMessage("Login Updated, click this box to continue");
+      }
+      setPopUpBox("block");
+    };
+
+    if (userName != undefined) {
+      const password = userName + "-1010";
+      logIn(userName, password);
+      navigate("/" + searchParams);
     }
-    setPopUpBox("block");
-  };
+  }
 
-  if (userName != undefined) {
-    const password = userName + "-1010";
-    logIn(userName, password);
-    history.push("/" + searchParams);
+  const demoLoginBugCheckTwo = rawParams.includes("?q=");
+  if (demoLoginBugCheckTwo == true) {
+    searchParams = "";
+    navigate("/");
   }
   //demologin code end
 
@@ -116,12 +138,12 @@ const OrdersView = () => {
   };
 
   const setActiveOrder = (order) => {
-    history.push("/scan/" + order.uuid);
+    navigate("/scan/" + order.uuid);
   };
 
   const clearSearch = () => {
     refreshList();
-    history.push("/");
+    navigate("/");
   };
 
   const formatDate = (dateString) => {

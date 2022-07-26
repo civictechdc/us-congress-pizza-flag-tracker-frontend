@@ -15,7 +15,7 @@ function Publicheader(params) {
             </h1>
 
             <li>
-              <Link to={"/"} className={styles.nav_item}>
+              <Link to={"/orders"} className={styles.nav_item}>
                 Orders
               </Link>
             </li>

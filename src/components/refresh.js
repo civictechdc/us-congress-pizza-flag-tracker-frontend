@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import PopUpBoxComponent from "./popUpBoxComponent";
 import OrderDataService from "../service/orderService";
 import styles from "../style/orderForm.module.css";
@@ -11,13 +11,13 @@ const Refresh = () => {
     "Please wait a moment for the database to reset."
   );
   const [popUpBox, setPopUpBox] = useState("none");
-  const [redirectNow, setRedirectNow] = useState("");
+  const [navigateNow, setNavigateNow] = useState("");
 
   const resetDatabase = () => {
     setPopUpBox("block");
     return OrderDataService.reset()
       .then((response) => {
-        setRedirectNow("yes");
+        setNavigateNow("yes");
       })
       .catch((e) => {
         setMessage("Network Error, please see your IT Administrator");
@@ -36,7 +36,7 @@ const Refresh = () => {
           Reset Database
         </button>
       </div>
-      {redirectNow ? <Redirect to="/" /> : <></>}
+      {navigateNow ? <Navigate to="/" replace /> : <></>}
       <PopUpBoxComponent
         closePopUpBox={closePopUpBox}
         message={message}

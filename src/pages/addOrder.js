@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 import AddView from "../components/addView";
 import { editOrderControl, isUser } from "../components/permissions";
@@ -10,7 +10,7 @@ const AddOrder = () => {
     editOrderControl() ? (
       <AddView />
     ) : (
-      <Redirect to="/" />
+      <Navigate to="/" replace />
     )
   ) : (
     <LoginSubComponent />

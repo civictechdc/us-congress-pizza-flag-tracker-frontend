@@ -1,19 +1,19 @@
 import React from "react";
-import { Redirect, useHistory, useRouteMatch } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 
 import { editOrderControl, isUser } from "../components/permissions";
 import EditView from "../components/editView";
 import LoginSubComponent from "../components/loginSubComponent";
 
 const EditOrder = () => {
-  const match = useRouteMatch("/orders/:id");
-  let history = useHistory();
+  const params = useParams("/orders/:id");
+  let navigate = useNavigate();
 
   return isUser() ? (
     editOrderControl() ? (
-      <EditView editId={match.params.id} history={history} />
+      <EditView editId={params.id} navigate={navigate} />
     ) : (
-      <Redirect to="/" />
+      <Navigate to="/" replace />
     )
   ) : (
     <LoginSubComponent />

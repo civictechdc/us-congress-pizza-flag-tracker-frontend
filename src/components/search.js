@@ -1,12 +1,12 @@
 import { React, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import styles from "../style/orders.module.css";
 import { STATES } from "./states";
 
 export const Search = (props) => {
   const { searchState, statuses, searchParams, clearSearch } = props;
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const statusOptions = statuses.map((status) => ({
     value: status.status_code,
@@ -49,7 +49,9 @@ export const Search = (props) => {
     } else {
       queryParams.set("keyword", searchTitle);
     }
-    history.replace(`${window.location.pathname}?${queryParams.toString()}`);
+    navigate(`${window.location.pathname}?${queryParams.toString()}`, {
+      replace: true,
+    });
   }
 
   const onChangeParams = (e) => {
@@ -62,7 +64,9 @@ export const Search = (props) => {
         queryParams.delete("office");
       }
     }
-    history.replace(`${window.location.pathname}?${queryParams.toString()}`);
+    navigate(`${window.location.pathname}?${queryParams.toString()}`, {
+      replace: true,
+    });
   };
 
   const onChangeMultiParams = (e) => {
@@ -78,7 +82,9 @@ export const Search = (props) => {
       queryParams.set("status", statusArray.join());
     }
 
-    history.replace(`${window.location.pathname}?${queryParams.toString()}`);
+    navigate(`${window.location.pathname}?${queryParams.toString()}`, {
+      replace: true,
+    });
   };
 
   const emptySearch = () => {
