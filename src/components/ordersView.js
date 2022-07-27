@@ -71,6 +71,11 @@ const OrdersView = () => {
 
   let searchParams = useLocation().search;
 
+  if (searchState === undefined) {
+    navigate("/");                                                
+    searchParams = "";                                            
+  }
+
   //////////////////////////////////////////
   /* in production remove demologin code: */
   //////////////////////////////////////////
@@ -78,40 +83,16 @@ const OrdersView = () => {
   //demologin code begin
 
   const rawParams = useLocation().search;
-  // console.log("Raw Params", rawParams);
-  // const sixCheck = rawParams.slice(0, 6);
-  // console.log("State check", sixCheck)
-  // const sevenCheck = rawParams.slice(0, 7)
-  // console.log("Office/Status check", sevenCheck)
-  // const eightCheck = rawParams.slice(0, 8)
-  // console.log("Keyword check", eightCheck)
 
-  // if ((sixCheck != "?state") && (sixCheck != "") && (sevenCheck != "?office") && (sevenCheck != "?status") && (sevenCheck != "") && (eightCheck != "?keyword") && (eightCheck != "")) {
-  //   searchParams = "";
-  //   navigate("/");
-  // }
-
-  let countParams = 0;                                    // too many ? characters...
-  const queryCharacter = "?";                             // ... can break the render
+  let countParams = 0; 
+  const queryCharacter = "?";
   rawParams
     .split("")
     .forEach((x) => (x == queryCharacter ? countParams++ : null));
+  
+  const demoLoginBugCheck = rawParams.includes("/demoLogin?q=");
 
-  console.log(searchState)
-
-  if (searchState === undefined) {
-    navigate("/");                                        // ... go home ...
-    searchParams = "";                                    // ... and rethink your life
-  }
-   
-  // if (countParams >= 2) {                                 // if you have too many ?s...
-  //   navigate("/");                                        // ... go home ...
-  //   searchParams = "";                                    // ... and rethink your life
-  // }
-
-  const demoLoginBugCheckOne = rawParams.includes("/demoLogin?q=");  //rename? chop off One now that Two is obsolete?
-
-  if (countParams == 2 && demoLoginBugCheckOne == true) { // Legit use case, you may pass
+  if (countParams == 2 && demoLoginBugCheck == true) {            // Legit use case, you may pass
     const paramsArray = rawParams.split("/demoLogin?q=");
     searchParams = paramsArray[0];
     const userName = paramsArray[1];
@@ -132,13 +113,6 @@ const OrdersView = () => {
       navigate("/" + searchParams);
     }
   } 
-  // else {
-  //   const demoLoginBugCheckTwo = rawParams.includes("?q=");
-  //   if (demoLoginBugCheckTwo == true) {
-  //     searchParams = "";
-  //     navigate("/");
-  //   }
-  // }
   //demologin code end
 
   useEffect(() => {
