@@ -28,7 +28,7 @@ export const Search = (props) => {
 
   let officeOptions = [];
   {
-    if (searchState.state.length === 2) {
+    if (searchState?.state?.length === 2) {
       let selectedState = JSON.parse(JSON.stringify(STATES));
       selectedState = selectedState.filter(
         (state) => state.name === searchState.state
@@ -102,7 +102,7 @@ export const Search = (props) => {
               type="text"
               className="form-control"
               placeholder="Search by order number or keyword"
-              value={searchState.keyword}
+              value={searchState?.keyword}
               onChange={onChangeSearchTitle}
               id="keyword"
             />
@@ -132,9 +132,9 @@ export const Search = (props) => {
               onChange={onChangeParams}
               placeholder={"Search by state"}
               value={{
-                label: searchState.state,
+                label: searchState?.state,
                 name: "usa_state",
-                value: searchState.state,
+                value: searchState?.state,
               }}
             ></Select>
           </div>
@@ -146,9 +146,9 @@ export const Search = (props) => {
               onChange={onChangeParams}
               placeholder="Search by office"
               value={{
-                label: searchState.office,
+                label: searchState?.office,
                 name: "usa_state",
-                value: searchState.office,
+                value: searchState?.office,
               }}
             ></Select>
           </div>

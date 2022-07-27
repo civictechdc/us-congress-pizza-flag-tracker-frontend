@@ -15,7 +15,8 @@ function Layout() {
     <>
       <Background />
 
-      {/* Header doesn't use UserContext.Provider value directly, but instead updates and rerenders when other components (primarily DemoLogIn) change the value */}
+      {/* Header doesn't use UserContext.Provider value directly, but instead updates
+       and rerenders when other components (primarily DemoLogIn) change the value */}
       <UserContext.Provider value={value}>
         <Header />
       </UserContext.Provider>
@@ -25,7 +26,7 @@ function Layout() {
           <Outlet />
         </UserContext.Provider>
       </main>
-      {/* */}
+
       <footer className="footer-container" />
     </>
   );

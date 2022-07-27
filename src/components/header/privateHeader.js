@@ -4,7 +4,7 @@ import styles from "../../style/navbar.module.css";
 import AuthService from "../../service/authService";
 import { orderControl, adminControl } from "../permissions";
 
-function Privateheader(params) {
+function Privateheader() {
   function logOut() {
     AuthService.logout();
     window.location.reload();
@@ -19,6 +19,7 @@ function Privateheader(params) {
               Flagpizza
             </Link>
           </h1>
+
           <li>
             <Link to={"/orders"} className={styles.nav_item}>
               Orders
@@ -40,6 +41,7 @@ function Privateheader(params) {
               Profile
             </Link>
           </li>
+
           {adminControl() ? (
             <li>
               <Link to={"/users/add"} className={styles.nav_item}>
@@ -50,12 +52,14 @@ function Privateheader(params) {
             <div></div>
           )}
         </div>
+
         <div className={styles.nav_group2}>
           <li>
             <Link to={"/login"} onClick={logOut} className={styles.nav_logout}>
               Log Out
             </Link>
           </li>
+
           <li className={styles.nav_username}>
             <p>{AuthService.getCurrentUserName()}</p>
           </li>
