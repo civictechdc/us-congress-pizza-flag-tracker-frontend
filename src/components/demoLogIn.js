@@ -19,7 +19,7 @@ const DemoLogIn = () => {
 
   const userName = params.get("q");
   const password = userName + "-1010";
-  const priorLocation = window.location.pathname.slice(0, -9);
+  const priorLocation = window.location.pathname.slice(0, -10);
 
   const logIn = async (userName, password) => {
     const response = await AuthService.login(userName, password);

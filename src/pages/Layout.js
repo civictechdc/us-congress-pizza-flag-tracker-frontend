@@ -1,7 +1,7 @@
 import "../style/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Outlet } from "react-router-dom";
 import { useState, useMemo } from "react";
+import { Outlet } from "react-router-dom";
 
 import Header from "../components/header/header";
 import Background from "../components/background";
