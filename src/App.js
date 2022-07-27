@@ -1,87 +1,57 @@
 import "./style/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Switch, Route } from "react-router-dom";
-import { useState, useMemo } from "react";
+import { Route, Routes } from "react-router-dom";
+
+import Layout from "./pages/Layout";
 
 import AddOrder from "./pages/addOrder";
-import Login from "./pages/login";
-import EditOrder from "./pages/editOrder";
-import OrdersList from "./pages/ordersList";
-import ScanOrder from "./pages/scanOrder";
-import Profile from "./pages/profile";
-import PrintOrder from "./pages/printOrder";
 import AddUser from "./pages/addUser";
-
-import Header from "./components/header/header";
-import Background from "./components/background";
-import Refresh from "./components/refresh";
-import DemoLogIn from "./components/demoLogIn";
-import UserContext from "./components/userContext";
+import EditOrder from "./pages/editOrder";
+import Login from "./pages/login";
+import OrdersList from "./pages/ordersList";
+import PrintOrder from "./pages/printOrder";
+import Profile from "./pages/profile";
+import ScanOrder from "./pages/scanOrder";
 import Welcome from "./pages/welcome";
 
+import Refresh from "./components/refresh";
+import DemoLogIn from "./components/demoLogIn";
+
 function App() {
-  const [userDisplay, setUserDisplay] = useState("");
-  const value = useMemo(() => ({ userDisplay, setUserDisplay }), [userDisplay]);
-
   return (
-    <>
-      <Background />
-
-      {/* Header doesn't use UserContext.Provider value directly, but instead updates and rerenders when other components (primarily DemoLogIn) change the value */}
-      <UserContext.Provider value={value}>
-        <Header />
-      </UserContext.Provider>
-
-      <main className="mainContainer">
-        <UserContext.Provider value={value}>
-          <Switch>
-            <Route exact path={["/"]}>
-              <OrdersList />
-            </Route>
-            {/* DemoLogIn should be removed prior to production */}
-            <Route path={["/demoLogin", "/*/demoLogin"]}>
-              <DemoLogIn />
-            </Route>
-            <Route exact path="/welcome">
-              <Welcome />
-            </Route>
-            <Route exact path="/login">
-              <Login />
-            </Route>
-            <Route exact path="/print/:id">
-              <PrintOrder />
-            </Route>
-            <Route exact path="/profile">
-              <Profile />
-            </Route>
-            <Route exact path="/scan/:id">
-              <ScanOrder />
-            </Route>
-            <Route exact path="/orders/:id">
-              <EditOrder />
-            </Route>
-            <Route exact path="/users/add">
-              <AddUser />
-            </Route>
-            <Route exact path="/add">
-              <AddOrder />
-            </Route>
-            {/* Refresh should be removed prior to production */}
-            <Route exact path="/refresh">
-              <Refresh />
-            </Route>
-            {/* the first OrderList route exists to handle simultanous use of searchParams and demoLogin searchParams
-            the second Orderlist route catches typoed URLs */}
-            <Route path={["/"]}>
-              <OrdersList />
-            </Route>
-          </Switch>
-        </UserContext.Provider>
-      </main>
-      {/* */}
-      <footer className="footer-container"></footer>
-    </>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<OrdersList />} />
+        <Route path="add" element={<AddOrder />} />
+        <Route path="add/demoLogin" element={<DemoLogIn />} />
+        <Route path="users/add" element={<AddUser />} />
+        <Route path="users/add/demoLogin" element={<DemoLogIn />} />
+        {/* DemoLogIn should be removed prior to production */}
+        <Route path="/demoLogin" element={<DemoLogIn />} />
+        <Route path="orders/:id" element={<EditOrder />} />
+        <Route path="orders/:id/demoLogin" element={<DemoLogIn />} />
+        <Route path="login" element={<Login />} />
+        <Route path="login/demoLogin" element={<DemoLogIn />} />
+        <Route path="orders" element={<OrdersList />} />
+        <Route path="orders/demoLogin" element={<DemoLogIn />} />
+        <Route path="print/:id" element={<PrintOrder />} />
+        <Route path="print/:id/demoLogin" element={<DemoLogIn />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="profile/demoLogin" element={<DemoLogIn />} />
+        {/* Refresh should be removed prior to production */}
+        <Route path="refresh" element={<Refresh />} />
+        <Route path="scan/:id" element={<ScanOrder />} />
+        <Route path="scan/:id/demoLogin" element={<DemoLogIn />} />
+        <Route path="welcome" element={<Welcome />} />
+        <Route path="welcome/demoLogin" element={<DemoLogIn />} />
+        <Route path="*" element={<OrdersList />} />
+      </Route>
+    </Routes>
   );
 }
 
 export default App;
+
+/*
+
+*/

@@ -30,7 +30,18 @@ class AuthService {
         return response.data;
       })
       .catch((e) =>  {
-        throw e
+        if (e.response?.data?.error_msg) {            // error --> got a response from the server
+          const errorArray = e.response.data.error_msg.split("\n");
+          let basicError = errorArray[0];
+          if (errorArray[1] === '(sqlite3.IntegrityError) datatype mismatch') {
+            basicError = errorArray[1];
+          } 
+          console.log("Auth error w/ server response: ", basicError);
+          throw basicError;
+        } else {                                      // error --> no server response, connection down?
+          console.log("Auth error w/o server response: ", e);
+          throw e;
+        }
       });
   }
 
@@ -69,10 +80,10 @@ class AuthService {
           if (errorArray[1] === '(sqlite3.IntegrityError) datatype mismatch') {
             basicError = errorArray[1];
           } 
-          console.log("Auth error: ", basicError);
+          console.log("Auth error w/ server response: ", basicError);
           throw basicError;
         } else {                                      // error --> no server response, connection down?
-          console.log("Auth error: ", e);
+          console.log("Auth error w/o server response: ", e);
           throw e;
         }
       }

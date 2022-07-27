@@ -1,12 +1,12 @@
 import { React, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import styles from "../style/orders.module.css";
 import { STATES } from "./states";
 
 export const Search = (props) => {
   const { searchState, statuses, searchParams, clearSearch } = props;
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const statusOptions = statuses.map((status) => ({
     value: status.status_code,
@@ -28,7 +28,7 @@ export const Search = (props) => {
 
   let officeOptions = [];
   {
-    if (searchState.state.length === 2) {
+    if (searchState?.state?.length === 2) {
       let selectedState = JSON.parse(JSON.stringify(STATES));
       selectedState = selectedState.filter(
         (state) => state.name === searchState.state
@@ -49,7 +49,9 @@ export const Search = (props) => {
     } else {
       queryParams.set("keyword", searchTitle);
     }
-    history.replace(`${window.location.pathname}?${queryParams.toString()}`);
+    navigate(`${window.location.pathname}?${queryParams.toString()}`, {
+      replace: true,
+    });
   }
 
   const onChangeParams = (e) => {
@@ -62,7 +64,9 @@ export const Search = (props) => {
         queryParams.delete("office");
       }
     }
-    history.replace(`${window.location.pathname}?${queryParams.toString()}`);
+    navigate(`${window.location.pathname}?${queryParams.toString()}`, {
+      replace: true,
+    });
   };
 
   const onChangeMultiParams = (e) => {
@@ -78,7 +82,9 @@ export const Search = (props) => {
       queryParams.set("status", statusArray.join());
     }
 
-    history.replace(`${window.location.pathname}?${queryParams.toString()}`);
+    navigate(`${window.location.pathname}?${queryParams.toString()}`, {
+      replace: true,
+    });
   };
 
   const emptySearch = () => {
@@ -96,7 +102,7 @@ export const Search = (props) => {
               type="text"
               className="form-control"
               placeholder="Search by order number or keyword"
-              value={searchState.keyword}
+              value={searchState?.keyword}
               onChange={onChangeSearchTitle}
               id="keyword"
             />
@@ -126,9 +132,9 @@ export const Search = (props) => {
               onChange={onChangeParams}
               placeholder={"Search by state"}
               value={{
-                label: searchState.state,
+                label: searchState?.state,
                 name: "usa_state",
-                value: searchState.state,
+                value: searchState?.state,
               }}
             ></Select>
           </div>
@@ -140,9 +146,9 @@ export const Search = (props) => {
               onChange={onChangeParams}
               placeholder="Search by office"
               value={{
-                label: searchState.office,
+                label: searchState?.office,
                 name: "usa_state",
-                value: searchState.office,
+                value: searchState?.office,
               }}
             ></Select>
           </div>

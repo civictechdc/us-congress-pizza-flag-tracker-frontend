@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useReducer, useRef, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useReducer,
+  useRef,
+  useContext,
+} from "react";
 import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 
@@ -9,7 +15,7 @@ import { TableHeader } from "./tableHeader";
 import Gauge from "./gauge";
 import { Search } from "./search";
 import { editOrderControl } from "./permissions";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import UserContext from "./userContext";
 import PopUpBoxComponent from "./popUpBoxComponent";
 
@@ -26,7 +32,7 @@ const OrdersView = () => {
   const [loading, setLoading] = useState(false);
   const [statuses, setStatuses] = useState([]);
   const { setUserDisplay } = useContext(UserContext);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const sortOptions = { sortedField, sortDir, sortType };
   const sortedOrders = useSortableData(orders, sortOptions);
@@ -37,7 +43,7 @@ const OrdersView = () => {
       case "state":
         return { ...searchState, state: action.payload };
       case "status":
-        const statusArray = [...searchState.status, action.payload];
+        const statusArray = [...searchState?.status ?? [], action?.payload]; // https://www.angularfix.com/2021/12/typeerror-intermediate.html
         return { ...searchState, status: statusArray };
       case "office":
         return { ...searchState, office: action.payload };
@@ -62,32 +68,49 @@ const OrdersView = () => {
       setMessage("Order Issue: " + err);
     });
   };
+
   let searchParams = useLocation().search;
 
-  // in production replace demologin code with this:
-  // const searchParams = useLocation().search;
+  if (searchState === undefined) {
+    navigate("/");                                                
+    searchParams = "";                                            
+  }
+
+  //////////////////////////////////////////
+  /* in production remove demologin code: */
+  //////////////////////////////////////////
 
   //demologin code begin
   const rawParams = useLocation().search;
-  const paramsArray = rawParams.split("/demoLogin?q=");
-  searchParams = paramsArray[0];
-  const userName = paramsArray[1];
 
-  const logIn = async (userName, password) => {
-    const response = await AuthService.login(userName, password);
-    if (response.message) {
-      setMessage("Issue: " + response.message);
-    } else {
-      setMessage("Login Updated, click this box to continue");
+  let countParams = 0; 
+  const queryCharacter = "?";
+  rawParams
+    .split("")
+    .forEach((x) => (x == queryCharacter ? countParams++ : null));
+  
+  const demoLoginBugCheck = rawParams.includes("/demoLogin?q=");
+
+  if (countParams == 2 && demoLoginBugCheck == true) {            // Legit use case, you may pass
+    const paramsArray = rawParams.split("/demoLogin?q=");
+    searchParams = paramsArray[0];
+    const userName = paramsArray[1];
+
+    const logIn = async (userName, password) => {
+      const response = await AuthService.login(userName, password).then((response) => {
+        setMessage("Login Updated, click this box to continue");
+      }).catch((err) => {
+        setMessage("Issue: " + err);
+      });
+      setPopUpBox("block");
+    };
+
+    if (userName != undefined) {
+      const password = userName + "-1010";
+      logIn(userName, password);
+      navigate("/" + searchParams);
     }
-    setPopUpBox("block");
-  };
-
-  if (userName != undefined) {
-    const password = userName + "-1010";
-    logIn(userName, password);
-    history.push("/" + searchParams);
-  }
+  } 
   //demologin code end
 
   useEffect(() => {
@@ -116,12 +139,12 @@ const OrdersView = () => {
   };
 
   const setActiveOrder = (order) => {
-    history.push("/scan/" + order.uuid);
+    navigate("/scan/" + order.uuid);
   };
 
   const clearSearch = () => {
     refreshList();
-    history.push("/");
+    navigate("/");
   };
 
   const formatDate = (dateString) => {

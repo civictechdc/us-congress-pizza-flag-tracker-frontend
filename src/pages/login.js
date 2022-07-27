@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { useHistory, Redirect } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
@@ -25,7 +25,7 @@ const Login = () => {
   const [message, setMessage] = useState("");
   const { setUserDisplay } = useContext(UserContext);
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const onChangeUsername = (e) => {
     setUsername(e.target.value);
@@ -38,24 +38,24 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    return AuthService.login(username, password).then(
-      () => {
+    return AuthService.login(username, password)
+      .then(() => {
         setUserDisplay();
-        return history.push("/");
-      },
-    ).catch((error) => {
-      const resMessage =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      setMessage(resMessage);
-    });
+        return navigate("/");
+      })
+      .catch((error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        setMessage(resMessage);
+      });
   };
 
   return isUser() ? (
-    <Redirect to="/" />
+    <Navigate to="/" replace />
   ) : (
     <div className={styles.loginContainer}>
       <h1 className={styles.title}>Login</h1>

@@ -1,18 +1,16 @@
-import React from "react";
-import { useRouteMatch } from "react-router-dom";
+import React, { useContext } from "react";
+import { useParams } from "react-router-dom";
 
 import { isUser } from "../components/permissions";
 import LoginSubComponent from "../components/loginSubComponent";
 import PrintView from "../components/printView";
+import UserContext from "../components/userContext";
 
 const PrintOrder = () => {
-  const match = useRouteMatch("/print/:id");
+  const params = useParams("/print/:id");
+  const { setUserDisplay } = useContext(UserContext);  // rerenders when user logs in
 
-  return isUser() ? (
-    <PrintView printId={match.params.id} />
-  ) : (
-    <LoginSubComponent />
-  );
+  return isUser() ? <PrintView printId={params.id} /> : <LoginSubComponent />;
 };
 
 export default PrintOrder;

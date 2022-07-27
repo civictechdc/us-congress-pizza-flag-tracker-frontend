@@ -1,19 +1,21 @@
-import React from "react";
-import { Redirect, useHistory, useRouteMatch } from "react-router-dom";
+import React, { useContext } from "react";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 
 import { editOrderControl, isUser } from "../components/permissions";
 import EditView from "../components/editView";
 import LoginSubComponent from "../components/loginSubComponent";
+import UserContext from "../components/userContext";
 
 const EditOrder = () => {
-  const match = useRouteMatch("/orders/:id");
-  let history = useHistory();
+  const params = useParams("/orders/:id");
+  let navigate = useNavigate();
+  const { setUserDisplay } = useContext(UserContext);  // rerenders when user logs in
 
-  return isUser() ? (
+  return isUser() ? (  
     editOrderControl() ? (
-      <EditView editId={match.params.id} history={history} />
+      <EditView editId={params.id} navigate={navigate} />
     ) : (
-      <Redirect to="/" />
+      <Navigate to="/" replace />
     )
   ) : (
     <LoginSubComponent />
