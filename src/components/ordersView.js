@@ -43,7 +43,7 @@ const OrdersView = () => {
       case "state":
         return { ...searchState, state: action.payload };
       case "status":
-        const statusArray = [...searchState?.status ?? [], action?.payload]; // https://www.angularfix.com/2021/12/typeerror-intermediate.htmlgit a
+        const statusArray = [...searchState?.status ?? [], action?.payload]; // https://www.angularfix.com/2021/12/typeerror-intermediate.html
         return { ...searchState, status: statusArray };
       case "office":
         return { ...searchState, office: action.payload };
