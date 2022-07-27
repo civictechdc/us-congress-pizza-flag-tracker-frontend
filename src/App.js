@@ -22,11 +22,20 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<OrdersList />} />
+        <Route path="add" element={<AddOrder />} />
+        <Route path="add/demoLogin" element={<DemoLogIn />} />
+        <Route path="users/add" element={<AddUser />} />
+        <Route path="users/add/demoLogin" element={<DemoLogIn />} />
         {/* DemoLogIn should be removed prior to production */}
         <Route path="/demoLogin" element={<DemoLogIn />} />
+        <Route path="orders/:id" element={<EditOrder />} />
+        <Route path="orders/:id/demoLogin" element={<DemoLogIn />} />
         <Route path="login" element={<Login />} />
         <Route path="login/demoLogin" element={<DemoLogIn />} />
         <Route path="orders" element={<OrdersList />} />
+        <Route path="orders/demoLogin" element={<DemoLogIn />} />
+        <Route path="print/:id" element={<PrintOrder />} />
+        <Route path="print/:id/demoLogin" element={<DemoLogIn />} />
         <Route path="profile" element={<Profile />} />
         <Route path="profile/demoLogin" element={<DemoLogIn />} />
         {/* Refresh should be removed prior to production */}
@@ -44,16 +53,5 @@ function App() {
 export default App;
 
 /*
-            <Route exact path="/print/:id">
-              <PrintOrder />
-            </Route>
-            <Route exact path="/orders/:id">
-              <EditOrder />
-            </Route>
-            <Route exact path="/users/add">
-              <AddUser />
-            </Route>
-            <Route exact path="/add">
-              <AddOrder />
-            </Route>
+
 */

@@ -81,7 +81,6 @@ const OrdersView = () => {
   //////////////////////////////////////////
 
   //demologin code begin
-
   const rawParams = useLocation().search;
 
   let countParams = 0; 
@@ -98,12 +97,11 @@ const OrdersView = () => {
     const userName = paramsArray[1];
 
     const logIn = async (userName, password) => {
-      const response = await AuthService.login(userName, password);
-      if (response.message) {
-        setMessage("Issue: " + response.message);
-      } else {
+      const response = await AuthService.login(userName, password).then((response) => {
         setMessage("Login Updated, click this box to continue");
-      }
+      }).catch((err) => {
+        setMessage("Issue: " + err);
+      });
       setPopUpBox("block");
     };
 

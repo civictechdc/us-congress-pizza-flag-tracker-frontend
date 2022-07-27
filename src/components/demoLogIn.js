@@ -19,15 +19,14 @@ const DemoLogIn = () => {
 
   const userName = params.get("q");
   const password = userName + "-1010";
-  const priorLocation = window.location.pathname.slice(0, -10);
+  const priorLocation = window.location.pathname.slice(0, -9);
 
   const logIn = async (userName, password) => {
-    const response = await AuthService.login(userName, password);
-    if (response.message) {
-      setMessage("Issue: " + response.message);
-    } else {
+    const response = await AuthService.login(userName, password).then((response) => {
       setMessage("Login Updated, click this box to continue");
-    }
+    }).catch((err) => {
+      setMessage("Issue: " + err);
+    });
     setPopUpBox("block");
   };
 
