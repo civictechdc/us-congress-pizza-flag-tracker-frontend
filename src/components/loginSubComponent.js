@@ -34,20 +34,22 @@ const LoginSubComponent = (props) => {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    return AuthService.login(username, password).then(
-      () => {
+    return AuthService.login(username, password)
+      .then(() => {
         setUserDisplay();
-      },
-    ).catch((error) => {
-      const resMessage =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      setMessage(resMessage);
-    });
+      })
+      .catch((error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        setMessage(resMessage);
+      });
   };
+
+  console.log("where: ", window.location.href);
 
   return (
     <div className={styles.loginContainer}>
