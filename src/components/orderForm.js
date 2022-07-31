@@ -258,6 +258,12 @@ const OrderForm = (props) => {
               </>
             ) : null}
 
+            <button
+              onClick={handleSave}
+              className={`btn btn-success ${disableButton ? "btn-why" : ""}`}
+            >
+              {mode === "edit" ? "Update" : "Submit"}
+            </button>
             {mode === "edit" && (
               <button
                 className={`btn btn-danger mr-2`}
@@ -266,13 +272,6 @@ const OrderForm = (props) => {
                 Delete
               </button>
             )}
-            <button
-              onClick={handleSave}
-              className={`btn btn-success ${disableButton ? "btn-why" : ""}`}
-            >
-              {mode === "edit" ? "Update" : "Submit"}
-            </button>
-
             {!checkSaved ? (
               <p className={styles.validationMessage}>
                 Changes not saved, press {mode === "edit" ? "Update" : "Submit"}{" "}

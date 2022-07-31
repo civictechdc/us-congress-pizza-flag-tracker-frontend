@@ -239,7 +239,9 @@ const ScanView = (props) => {
         "Loading..."
       ) : order ? (
         <>
-          <a href={editLink}>Edit this order</a>{" "}
+          <a data-name="edit" href={editLink}>
+            Edit this order
+          </a>{" "}
           <a href={printLink}>Print this order</a>
           <InfoTop order={order} />
           <InfoBottom

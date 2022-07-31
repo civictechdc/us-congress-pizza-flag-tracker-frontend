@@ -56,6 +56,17 @@ describe("CRUD actions for superuser", () => {
     cy.get("h3").contains("successfully!");
   });
   it("does not allow FED-ADMIN to create a new order with a duplicate order number", () => {
+    //setup--TODO: do this with a direct hit to the backend api
+    cy.visit("/add");
+    //TODO add a name to the disabled Office input so that we can do cy.get("input[name=congressional_office]").should("be.disabled")
+    cy.get("input[name=order_number]").type("1234");
+    cy.get("input[id=edit-us-state]").type(`CO{enter}`);
+    // cy.get("input[id=react-select-5-input]").click().find('[id*="5-option"]').eq(1).should("equal","CO-01").type("CO-01");
+    //I'd like the above test to work but I'm having trouble getting Cypress to work with the react-selector. As a compromise/stopgap we use the below instead:
+    cy.get("input[id=edit-office]").click().type(`CO-01{enter}`);
+    cy.get(".btn").click();
+    cy.get("h3").contains("successfully!");
+    //test
     cy.visit("/add");
     //TODO add a name to the disabled Office input so that we can do cy.get("input[name=congressional_office]").should("be.disabled")
     cy.get("input[name=order_number]").type("1234");
@@ -70,7 +81,8 @@ describe("CRUD actions for superuser", () => {
   it("allows FED-ADMIN to edit an order", () => {
     cy.visit("/");
     cy.get("p[class*='orders_orderNum']").contains("10").click(); //danger, this may break upon implementing new layout if class name changes
-    cy.get("a[class*='orders_orderLinks']").eq(0).click();
+    cy.get("a[data-name='edit']").click();
+    cy.wait(1000); //we need this because occasionally the edit page loads before the content in it (loaded via a useEffect) does
     cy.get("input[id=edit-us-state]").first().click().type(`CO{enter}`);
     cy.get("input[id=edit-office]").first().click().type(`CO-02{enter}`);
     //why is it different on the edit screen? where do these numbers in the ids come from?
@@ -86,8 +98,9 @@ describe("CRUD actions for superuser", () => {
   it("allows FED-ADMIN to delete an order", () => {
     cy.visit("/");
     cy.get("p[class*='orders_orderNum']").contains("10").click(); //danger, this may break upon implementing new layout if class name changes
-    cy.get("a[class*='orders_orderLinks']").eq(0).click();
-    cy.get(".badge-danger").click(); //there probably should be a confirmation step here both before and after deletion, SO, this test will need to be updated
+    cy.get("a[data-name='edit']").click();
+    cy.wait(1000); //we need this because occasionally the edit page loads before the content in it (loaded via a useEffect) does
+    cy.get(".btn-danger").click(); //there probably should be a confirmation step here both before and after deletion, SO, this test will need to be updated
     cy.get("main").wait(1000).should("not.contain", "10"); //cypress docs say not to use wait but otherwise it's testing against the empty, pre-rendered table
   });
 });
