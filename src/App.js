@@ -14,8 +14,8 @@ import Profile from "./pages/profile";
 import ScanOrder from "./pages/scanOrder";
 import Welcome from "./pages/welcome";
 
-import Refresh from "./components/refresh";
 import DemoLogIn from "./components/demoLogIn";
+import Refresh from "./components/refresh";
 
 function App() {
   return (
