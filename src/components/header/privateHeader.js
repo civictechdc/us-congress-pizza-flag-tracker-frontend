@@ -7,7 +7,6 @@ import { orderControl, adminControl } from "../permissions";
 function Privateheader() {
   function logOut() {
     AuthService.logout();
-    window.location.reload();
   }
 
   return (
