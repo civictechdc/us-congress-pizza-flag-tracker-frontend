@@ -55,7 +55,7 @@ const Login = () => {
 
   let location = window.location.href;
 
-  if (location == "http://localhost:3000/login") {
+  if (window.location.pathname == "/login") {
     location = "/";
   }
 
