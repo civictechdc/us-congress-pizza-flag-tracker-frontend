@@ -5,9 +5,10 @@ import StatusDataService from "../service/statusService";
 import OrderForm from "./orderForm";
 import PopUpBoxComponent from "./popUpBoxComponent";
 import { numSort } from "./sorting/sortHook";
+import { useNavigate } from "react-router-dom";
 
 const EditView = (props) => {
-  const { editId, history } = props;
+  const { editId } = props;
 
   const initialOrderState = {
     description: "",
@@ -37,6 +38,7 @@ const EditView = (props) => {
   const [loading, setLoading] = useState(false);
   const [popUpBox, setPopUpBox] = useState("none");
   const mode = "edit";
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -75,7 +77,7 @@ const EditView = (props) => {
   const deleteOrder = () => {
     const serviceToExecute = async () => {
       const response = await OrderDataService.remove(order.uuid);
-      history.push("/");
+      navigate("/");
     };
     return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
       setMessage("Issue: " + err);
