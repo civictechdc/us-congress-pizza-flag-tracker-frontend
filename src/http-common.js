@@ -25,7 +25,6 @@ export default axios.create({
 
 function getBaseUrl() {
   const appUrl = window.location.origin;
-  console.log("URL", appUrl);
   const isGitpodUrl = appUrl.startsWith("https://3000");
   const originUrl = isGitpodUrl
     ? "https://5000" + appUrl.substr(12)
