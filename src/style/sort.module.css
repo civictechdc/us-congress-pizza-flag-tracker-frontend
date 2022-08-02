@@ -11,7 +11,6 @@
   cursor: pointer;
   font-size: 1.5rem;
   font-weight: 500;
-  width: 10%;
   color: #fff;
   background-color: #28a745;
   border-color: #28a745;
@@ -40,6 +39,7 @@
 @media only screen and (min-width: 550px) and (max-width: 950px) {
   .sortContainer {
     width: 80vw;
+    margin: 1vh 0 3vh 0;
   }
 }
 
@@ -54,5 +54,6 @@
 @media only screen and (max-width: 600px) {
   .sortContainer {
     width: 90vw;
+    margin: 0vh 0 2vh 0;
   }
 }
