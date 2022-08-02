@@ -58,6 +58,16 @@ label {
   /*nothing yet*/
 }
 
+.clearButton {
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #fff;
+  background-color: #cf2f13;
+  border-color: #cf2f13;
+  padding: 1px 13.25px;
+}
+
 /*============================== Flags =========================================*/
 
 .flagContainer {
@@ -195,6 +205,10 @@ label {
     justify-content: center;
     align-items: center;
   }
+
+  .clearButton {
+    margin-bottom: 1vh;
+  }
 }
 
 
@@ -250,6 +264,10 @@ label {
     justify-content: center;
     align-items: center;
     gap: 2%;
+  }
+
+  .clearButton {
+    margin-bottom: 1vh;
   }
 
   .description {
