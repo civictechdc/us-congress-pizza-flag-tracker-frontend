@@ -1,5 +1,5 @@
 import React from "react";
-import flag from "../components/us-capitol-flag-6240878.jpg";
+import flag from "../components/images/us-capitol-flag-6240878.jpg";
 
 const styles = {
   flexContainer: {

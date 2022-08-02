@@ -5,6 +5,7 @@ import styles from "../../style/navbar.module.css";
 import AuthService from "../../service/authService";
 import { adminControl, isUser, orderControl } from "../permissions";
 import UserContext from "../userContext";
+import logoutImage from "../images/Logout.svg.png";
 
 function Header() {
   const { setUserDisplay } = useContext(UserContext); // rerenders when user logs in
@@ -19,11 +20,11 @@ function Header() {
       <header>
         <nav className={styles.nav_container}>
           <div className={styles.nav_group1}>
-            <h1 className={styles.nav_title}>
-              <Link to={"/welcome"} style={{ color: "#000" }}>
+            <li>
+              <Link to={"/welcome"} className={styles.nav_title}>
                 Flagpizza
               </Link>
-            </h1>
+            </li>
 
             <li>
               <Link to={"/orders"} className={styles.nav_item}>
@@ -71,9 +72,16 @@ function Header() {
             <>
               <div className={styles.nav_group2}>
                 <li>
-                  <button onClick={logOut} className={"btn btn-success"}>
+                  {/* <button onClick={logOut} className={"btn btn-success"}>
                     Log Out
-                  </button>
+                  </button> */}
+
+                  <input
+                    type="image"
+                    className={styles.logout_button}
+                    onClick={logOut}
+                    src={logoutImage}
+                  />
                 </li>
 
                 <li className={styles.nav_username}>

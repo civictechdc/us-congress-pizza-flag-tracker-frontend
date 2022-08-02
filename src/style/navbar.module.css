@@ -1,46 +1,84 @@
+.logout_button {
+    height: 20px
+}
+
 .nav_container {
     width: 100vw;
     z-index: 100;
     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .nav_group1 {
-    width: 80%;
     display: flex;
     align-items: center;
-
+    justify-content: center;
 }
 
 .nav_group2 {
-    width: 20%;
     display: flex;
     justify-content: center;
     align-items: center
 }
 
 .nav_title {
-    margin: .5em;
-    font-size: 3rem;
+    margin: .25em;
+    font-size: 2rem;
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
 }
 
 .nav_item {
     margin: .5em .5em;
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: white;
     text-decoration: none;
-
 }
 
 .nav_logout {
-    margin: .5em .5em;
     font-size: 1.5rem;
-    color: white;
-    
+    color: white;   
 }
 
 .nav_username {
     margin: .5em .5em;
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: black;
     text-decoration: none;
+}
+
+@media only all and (min-width: 600px){
+    .nav_container {
+        flex-direction: row;
+    }
+
+    .nav_group1 {
+        
+        justify-content: start;
+    }
+
+    .nav_group2 {
+        margin: 0em 2em 0em 0em;
+    }
+
+    .nav_title {
+        margin: .5em;
+        font-size: 2.5rem;
+    }
+}
+
+@media only all and (min-width: 700px){
+    .nav_title {
+        font-size: 3rem;
+    }
+
+    .nav_item {
+        font-size: 2rem;
+    }
+
+    .nav_username {
+        font-size: 2rem;
+    }
 }
