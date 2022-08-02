@@ -86,8 +86,7 @@ label {
   margin-bottom: 4vh;
   background-color: white;
   display: grid;
-  grid-template-columns: 60% 40%;
-  grid-template-rows: 35% 65%;
+  grid-template-columns: 20% 80%;
 }
 
 
