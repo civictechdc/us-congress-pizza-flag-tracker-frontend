@@ -98,5 +98,4 @@ export const TableHeader = (props) => {
 /*
 Have the button collapse and expand with an arrow.
 Arrows can be changed in sortArrow.js
-Soften the shape and borders of the button.
 */
