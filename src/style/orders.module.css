@@ -256,13 +256,6 @@ label {
     flex-direction: column;
   }
 
-  .infoBox{
-    width: fit-content;
-    height: 99%;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
   .orderNum {
     order: 2;
     text-align: center;
