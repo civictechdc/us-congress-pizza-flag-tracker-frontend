@@ -44,7 +44,6 @@ const OrderNotReverted = (props) => {
             </p>
           </div>
           <SkipUpdateButton skipUpdateFunc={skipUpdate} />{" "}
-          <RevertStatusButtonOff revertUpdateFunc={revertUpdate} />{" "}
           <DeclineUpdateButtonOn declineUpdateFunc={declineUpdate} />
         </>
       ) : (
@@ -71,7 +70,6 @@ const OrderNotReverted = (props) => {
           ) : (
             <RefuseUpdateButton refuseUpdateFunc={refuseUpdate} />
           )}
-          <RevertStatusButtonOff revertUpdateFunc={revertUpdate} />{" "}
           <DeclineUpdateButtonOn declineUpdateFunc={declineUpdate} />
         </>
       )}

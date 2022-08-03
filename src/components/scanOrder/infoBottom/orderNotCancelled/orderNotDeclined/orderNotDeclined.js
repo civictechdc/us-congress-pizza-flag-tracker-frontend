@@ -35,7 +35,6 @@ const OrderNotDeclined = (props) => {
               </strong>
             </label>
           </div>
-          <UpdateStatusButtonOff saveUpdateFunc={saveUpdate} />{" "}
           <RevertStatusButtonOn revertUpdateFunc={revertUpdate} />{" "}
           <DeclineUpdateButtonOff declineUpdateFunc={declineUpdate} />{" "}
         </>
