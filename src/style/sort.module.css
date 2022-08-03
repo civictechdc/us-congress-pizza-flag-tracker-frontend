@@ -14,19 +14,33 @@
   color: #fff;
   background-color: #28a745;
   border-color: #28a745;
+  margin-bottom: 1vw;
 }
 
 .sortBox2 {
   width: 80%;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-evenly;
 }
 
 .sortItem {
-  width: 100%;
-  margin-right: 0.5em;
+  display: flex;
+  flex-direction: row;
 }
+
+.sortTitle {
+  font-size: 1.5em;
+  font-weight: 500;
+  margin-right: 5px;
+}
+
+.arrowContainer {
+  margin-top: -2px; 
+  display: flex;
+  flex-direction: column;
+}
+
+
 
 /*====================================================
   ==                                                ==
@@ -40,6 +54,10 @@
   .sortContainer {
     width: 80vw;
     margin: 1vh 0 3vh 0;
+  }
+
+  .sortBox2 {
+    width: 100%;
   }
 }
 
@@ -55,5 +73,16 @@
   .sortContainer {
     width: 90vw;
     margin: 0vh 0 2vh 0;
+  }
+
+  .sortBox2 {
+    width: 100%;
+  }
+
+  .sortTitle {
+    font-size: 1em;
+    font-weight: 500;
+    margin-right: 3px;
+    align-self: center;
   }
 }

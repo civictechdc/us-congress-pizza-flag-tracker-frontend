@@ -1,3 +1,5 @@
+import styles from "../../style/sort.module.css";
+
 export const SortArrows = (props) => {
   const getClassNamesFor = (col, dir) => {
     return props.sortedField === col && props.sortDir === dir
@@ -6,7 +8,7 @@ export const SortArrows = (props) => {
   };
 
   return (
-    <span className="sortContainer">
+    <span className={styles.arrowContainer}>
       <button
         className={getClassNamesFor(props.col, "asc")}
         onClick={props.handleClick}
