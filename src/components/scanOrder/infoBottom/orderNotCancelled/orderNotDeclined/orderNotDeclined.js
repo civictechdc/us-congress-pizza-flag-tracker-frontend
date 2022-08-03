@@ -3,7 +3,6 @@ import OrderNotReverted from "./orderNotReverted/orderNotReverted";
 
 import DeclineUpdateButtonOff from "../../../buttons/declineUpdateButtonOff";
 import RevertStatusButtonOn from "../../../buttons/revertStatusButtonOn";
-import UpdateStatusButtonOff from "../../../buttons/updateStatusButtonOff";
 
 const OrderNotDeclined = (props) => {
   const {
@@ -44,7 +43,6 @@ const OrderNotDeclined = (props) => {
           nextStatus={nextStatus}
           order={order}
           refuseUpdate={refuseUpdate}
-          revertUpdate={revertUpdate}
           saveUpdate={saveUpdate}
           skip={skip}
           skipStatus={skipStatus}

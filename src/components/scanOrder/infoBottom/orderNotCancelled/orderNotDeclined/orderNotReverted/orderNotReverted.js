@@ -2,7 +2,6 @@ import React from "react";
 
 import DeclineUpdateButtonOn from "../../../../buttons/declineUpdateButtonOn";
 import RefuseUpdateButton from "../../../../buttons/refuseUpdateButton";
-import RevertStatusButtonOff from "../../../../buttons/revertStatusButtonOff";
 import SkipUpdateButton from "../../../../buttons/skipUpdateButton";
 import UpdateStatusButtonOn from "../../../../buttons/updateStatusButtonOn";
 
@@ -14,7 +13,6 @@ const OrderNotReverted = (props) => {
     nextStatus,
     order,
     refuseUpdate,
-    revertUpdate,
     saveUpdate,
     skip,
     skipStatus,

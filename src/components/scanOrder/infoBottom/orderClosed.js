@@ -1,7 +1,6 @@
 import React from "react";
 import DeclineUpdateButtonOff from "../buttons/declineUpdateButtonOff";
 import RevertStatusButtonOn from "../buttons/revertStatusButtonOn";
-import UpdateStatusButtonOff from "../buttons/updateStatusButtonOff";
 
 const OrderClosed = (props) => {
   const { declineUpdate, unalteredOrder, revert, revertUpdate, saveUpdate } =
