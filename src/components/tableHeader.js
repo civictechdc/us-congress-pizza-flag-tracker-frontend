@@ -30,8 +30,7 @@ export const TableHeader = (props) => {
         </button>
         <div className={styles.sortBox2} style={{ display: sortControl }}>
           <div className={styles.sortItem}>
-            <div className={styles.sortTitle}>Order Number</div>
-
+            <div className={styles.sortTitle}>Order: </div>
             <SortArrows
               col="order_number"
               handleClick={handleSortClick}
@@ -41,7 +40,7 @@ export const TableHeader = (props) => {
             />
           </div>
           <div className={styles.sortItem}>
-            <div className={styles.sortTitle}>USA State</div>
+            <div className={styles.sortTitle}>State: </div>
             <SortArrows
               col="usa_state"
               handleClick={handleSortClick}
@@ -51,8 +50,7 @@ export const TableHeader = (props) => {
             />
           </div>
           <div className={styles.sortItem}>
-            <div className={styles.sortTitle}>Congressional Office</div>
-
+            <div className={styles.sortTitle}>Office: </div>
             <SortArrows
               col="home_office_code"
               handleClick={handleSortClick}
@@ -62,7 +60,7 @@ export const TableHeader = (props) => {
             />
           </div>
           <div className={styles.sortItem}>
-            <div className={styles.sortTitle}>Order Status</div>
+            <div className={styles.sortTitle}>Status: </div>
             <SortArrows
               col="order_status_id"
               handleClick={handleSortClick}
@@ -72,7 +70,7 @@ export const TableHeader = (props) => {
             />
           </div>
           <div className={styles.sortItem}>
-            <div className={styles.sortTitle}>Date created</div>
+            <div className={styles.sortTitle}>Created: </div>
             <SortArrows
               col="created_at"
               handleClick={handleSortClick}
@@ -82,7 +80,7 @@ export const TableHeader = (props) => {
             />
           </div>
           <div className={styles.sortItem}>
-            <div className={styles.sortTitle}>Date updated</div>
+            <div className={styles.sortTitle}>Updated: </div>
             <SortArrows
               col="updated_at"
               handleClick={handleSortClick}
@@ -98,11 +96,6 @@ export const TableHeader = (props) => {
 };
 
 /*
-Move sort to the top.
 Have the button collapse and expand with an arrow.
-Sort button should not appear if there is no data.
 Arrows can be changed in sortArrow.js
-Re arrange sort button so it sits above the sorting options.
-Shorten the  name of congressional office so it fits better.
-Soften the shape and borders of the button.
 */

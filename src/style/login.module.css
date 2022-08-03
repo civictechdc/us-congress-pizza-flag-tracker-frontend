@@ -9,11 +9,9 @@
     background-color: white;
     border-radius: 5px;
     
-
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-
 }
 
 .title {
@@ -22,7 +20,6 @@
     font-size: 6rem;
     text-align: center;
 }
-
 
 /*====================================================
   ==                                                ==
@@ -33,9 +30,14 @@
   ====================================================*/
 
 @media only screen and (max-width: 600px) {
+    .loginContainer {
+        width: 90vw;
+        left: 0;
+        margin-left: auto;
+        margin-right: auto;
+    }
 
     .title {
         font-size: 4rem;
     }
-
 }

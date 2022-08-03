@@ -186,24 +186,29 @@ const OrdersView = () => {
                 onClick={() => setActiveOrder(order)}
                 key={index}
               >
-                <p className={styles.orderNum}>{order.order_number}</p>
-                <div className={styles.constituentBox}>
-                  <p className={styles.officeCode}>{order.home_office_code}</p>
-                  <p className={styles.constituentName}>{order.person.name}</p>
-                  <p className={styles.constituentPhone}>
-                    {order.person.phone}
-                  </p>
+                <div className={styles.flagItemUpper}>                
+                  <p className={styles.orderNum}>{order.order_number}</p>
+                  <div className={styles.infoBox}>
+                    <p className={styles.officeCode}>{order.home_office_code}</p>
+                    <p className={styles.constituentName}>{order.person.name}</p>
+                    <p className={styles.basicInfo}>
+                      {order.person.phone}
+                    </p>
+                  </div>
+                  <div className={styles.infoBox}>
+                    <p className={styles.officeCodeSpacing}>Spacing</p>
+                    <p className={styles.basicInfo}>
+                      <b>Created:</b> {formatDate(order.created_at)}
+                    </p>
+                    <p className={styles.basicInfo}>
+                      <b>Updated:</b> {formatDate(order.updated_at)}
+                    </p>
+                  </div>
+                </div> 
+                <div className={styles.gaugeContainer}>
                   <p className={styles.description}>
                     {order.status.description}
                   </p>
-                  <p>
-                    <b>Created:</b> {formatDate(order.created_at)}
-                  </p>
-                  <p>
-                    <b>Updated:</b> {formatDate(order.updated_at)}
-                  </p>
-                </div>
-                <div className={styles.gaugeContainer}>
                   <Gauge
                     status={order.status.sequence_num}
                     statuses={statuses}

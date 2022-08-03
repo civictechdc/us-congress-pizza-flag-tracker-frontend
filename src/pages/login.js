@@ -40,7 +40,8 @@ const Login = () => {
 
     return AuthService.login(username, password)
       .then(() => {
-        setUserDisplay();
+        setUserDisplay("reset");
+        setMessage("Login successful");
       })
       .catch((error) => {
         const resMessage =

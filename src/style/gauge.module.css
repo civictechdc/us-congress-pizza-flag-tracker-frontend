@@ -1,12 +1,12 @@
 .gauge {
     width: 85%;
-    height: 80%;
     display: flex;
     border-radius: 1%;
 }
 
 .gaugeItem {
     width: 15%;
+    height: 8em;
     margin-right: 1em;
     border-radius: 5px;
     color: white;
@@ -24,14 +24,13 @@
 
 .gaugeItem:last-child {
     width: 20%;
-    box-shadow: 0px 0px 20px 5px rgba(132, 132, 248, 0.986);
+    /* box-shadow: 0px 0px 20px 5px rgba(132, 132, 248, 0.986); */
     transform: scale(1.1);
     text-shadow: 0px 0px 15px white,
         0px 0px 15px rgba(132, 132, 248, 0.986);
 }
 
 .gaugeItem:nth-child(n+1):nth-child(-n+2) {
-    width: 15%;
     background-color: blue;
     border-top: rgb(2, 2, 189) solid 1em;
     border-left: rgb(1, 1, 128) solid 1em;
@@ -39,7 +38,6 @@
 }
 
 .gaugeItem:nth-child(n+3):nth-child(-n+4) {
-    width: 15%;
     background-color: white;
     border-top: rgb(180, 177, 177) solid 1em;
     border-left: rgba(116, 116, 116, 0.952) solid 1em;
@@ -47,7 +45,6 @@
 }
 
 .gaugeItem:nth-child(n+6):nth-child(-n+7) {
-    width: 15%;
     background-color: blue;
     border-top: rgb(2, 2, 189) solid 1em;
     border-left: rgb(1, 1, 128) solid 1em;
@@ -56,14 +53,11 @@
 
     .gaugeNumber {
         font-size: 2.8rem;
-
-
     }
 
     .gaugeCode {
         font-size: 1rem;
         text-align: center;
-
     }
 
     .gaugeCancel {
@@ -80,7 +74,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-
     }
 
     .cancel {
@@ -89,8 +82,6 @@
         color: white;
         text-shadow: 0px 0px 15px white,
             0px 0px 15px rgba(132, 132, 248, 0.986);
-
-
     }
 
     .gaugeDone {
@@ -115,8 +106,6 @@
         color: white;
         text-shadow: 0px 0px 15px white,
             0px 0px 15px rgba(132, 132, 248, 0.986);
-
-
     }
 
 
@@ -131,16 +120,41 @@
 
     @media only screen and (max-width: 550px) {
 
+        .gauge {
+            width: 98%;
+        }
+
         .gaugeItem {
-            flex-direction: column;
+            width: 12%;
+            height: 5em;
+            margin-right: .5em;
+            border-left: rgba(126, 6, 6, 0.76) solid .5em;
+            border-top: rgba(182, 10, 10, 0.76) solid .5em;
+        }
+
+        .gaugeItem:nth-child(n+1):nth-child(-n+2) {
+            border-top: rgb(2, 2, 189) solid .5em;
+            border-left: rgb(1, 1, 128) solid .5em;
+        }
+        
+        .gaugeItem:nth-child(n+3):nth-child(-n+4) {
+            border-top: rgb(180, 177, 177) solid .5em;
+            border-left: rgba(116, 116, 116, 0.952) solid .5em;
+            color: black;
+        }
+        
+        .gaugeItem:nth-child(n+6):nth-child(-n+7) {
+            border-top: rgb(2, 2, 189) solid .5em;
+            border-left: rgb(1, 1, 128) solid .5em;
         }
 
         .gaugeNumber {
             font-size: 1.5rem;
-            margin-top: .3em;
+            margin-top: 0em;
+            margin-bottom: .3em;
         }
 
         .gaugeCode {
-            font-size: .5rem;
+            font-size: .7rem;
         }
     }

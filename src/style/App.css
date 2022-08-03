@@ -27,7 +27,16 @@
 .sortButton {
   background-color: transparent;
   border: none;
-  padding: 0px;
+  padding: 0px; 
+  transform: scale(1.5, 1.5);
+}
+
+.statusButton {
+  margin-bottom: 10px;
+}
+
+.statusLabel {
+  margin-bottom: 10px;
 }
 
 .active {
@@ -40,3 +49,11 @@
   margin-top: 15vh;
 }
 
+@media only screen and (max-width: 600px) {
+  .sortButton {
+    background-color: transparent;
+    border: none;
+    padding: 0px; 
+    transform: scale(1.1, 1.1);
+  }
+}

@@ -3,7 +3,6 @@ import OrderNotReverted from "./orderNotReverted/orderNotReverted";
 
 import DeclineUpdateButtonOff from "../../../buttons/declineUpdateButtonOff";
 import RevertStatusButtonOn from "../../../buttons/revertStatusButtonOn";
-import UpdateStatusButtonOff from "../../../buttons/updateStatusButtonOff";
 
 const OrderNotDeclined = (props) => {
   const {
@@ -26,8 +25,8 @@ const OrderNotDeclined = (props) => {
     <>
       {revert ? ( // if user changes there mind and wants to undo the update they just submitted before leaving the page view
         <>
-          <div className="form-group">
-            <label htmlFor="prior_status">
+          <div className="form-group statusLabel">
+            <label htmlFor="prior_status statusLabel">
               Prior Status:{" "}
               <strong>
                 #{unalteredOrder.status.sequence_num} -{" "}
@@ -35,7 +34,6 @@ const OrderNotDeclined = (props) => {
               </strong>
             </label>
           </div>
-          <UpdateStatusButtonOff saveUpdateFunc={saveUpdate} />{" "}
           <RevertStatusButtonOn revertUpdateFunc={revertUpdate} />{" "}
           <DeclineUpdateButtonOff declineUpdateFunc={declineUpdate} />{" "}
         </>
@@ -45,7 +43,6 @@ const OrderNotDeclined = (props) => {
           nextStatus={nextStatus}
           order={order}
           refuseUpdate={refuseUpdate}
-          revertUpdate={revertUpdate}
           saveUpdate={saveUpdate}
           skip={skip}
           skipStatus={skipStatus}

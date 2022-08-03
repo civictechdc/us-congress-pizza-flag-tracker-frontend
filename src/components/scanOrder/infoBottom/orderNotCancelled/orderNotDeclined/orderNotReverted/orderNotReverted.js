@@ -2,7 +2,6 @@ import React from "react";
 
 import DeclineUpdateButtonOn from "../../../../buttons/declineUpdateButtonOn";
 import RefuseUpdateButton from "../../../../buttons/refuseUpdateButton";
-import RevertStatusButtonOff from "../../../../buttons/revertStatusButtonOff";
 import SkipUpdateButton from "../../../../buttons/skipUpdateButton";
 import UpdateStatusButtonOn from "../../../../buttons/updateStatusButtonOn";
 
@@ -14,7 +13,6 @@ const OrderNotReverted = (props) => {
     nextStatus,
     order,
     refuseUpdate,
-    revertUpdate,
     saveUpdate,
     skip,
     skipStatus,
@@ -44,13 +42,12 @@ const OrderNotReverted = (props) => {
             </p>
           </div>
           <SkipUpdateButton skipUpdateFunc={skipUpdate} />{" "}
-          <RevertStatusButtonOff revertUpdateFunc={revertUpdate} />{" "}
           <DeclineUpdateButtonOn declineUpdateFunc={declineUpdate} />
         </>
       ) : (
         // basic selection of buttons available to user when no special circumstances apply
         <>
-          <div className="form-group">
+          <div className="form-group statusLabel">
             <label htmlFor="next_status">
               Next Status:{" "}
               {statuses && order.status.description ? (
@@ -71,7 +68,6 @@ const OrderNotReverted = (props) => {
           ) : (
             <RefuseUpdateButton refuseUpdateFunc={refuseUpdate} />
           )}
-          <RevertStatusButtonOff revertUpdateFunc={revertUpdate} />{" "}
           <DeclineUpdateButtonOn declineUpdateFunc={declineUpdate} />
         </>
       )}

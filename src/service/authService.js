@@ -55,7 +55,7 @@ class AuthService {
 
   getCurrentUserName() {
     const user = JSON.parse(localStorage.getItem("user"));
-    let username = user.username
+    let username = user?.username
     
     return username;
   } 

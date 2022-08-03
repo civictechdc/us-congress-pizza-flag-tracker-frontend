@@ -5,8 +5,16 @@ import styles from "../../style/scanOrder.module.css";
 const InfoTop = (props) => {
   const { order } = props;
 
+  const editLink = "/orders/" + order.uuid;
+  const printLink = "/print/" + order.uuid;
+
   return (
     <>
+      <h1 className={styles.title}>Scan</h1>
+      <a data-name="edit" href={editLink}>
+        Edit this order
+      </a>{" "}
+      <a href={printLink}>Print this order</a>
       <div className={styles.constituentBox}>
         {order.person === undefined ? (
           <></>
@@ -24,8 +32,7 @@ const InfoTop = (props) => {
         <h5>District: {order.home_office_code}</h5>
         <br></br>
       </div>
-
-      <div className="form-group">
+      <div className="form-group statusLabel">
         <label htmlFor="current_status">
           Current Status:{" "}
           {order.status.description ? (
