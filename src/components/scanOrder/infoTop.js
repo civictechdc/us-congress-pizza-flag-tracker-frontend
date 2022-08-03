@@ -32,7 +32,7 @@ const InfoTop = (props) => {
         <h5>District: {order.home_office_code}</h5>
         <br></br>
       </div>
-      <div className="form-group">
+      <div className="form-group statusLabel">
         <label htmlFor="current_status">
           Current Status:{" "}
           {order.status.description ? (

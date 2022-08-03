@@ -31,6 +31,14 @@
   transform: scale(1.5, 1.5);
 }
 
+.statusButton {
+  margin-bottom: 10px;
+}
+
+.statusLabel {
+  margin-bottom: 10px;
+}
+
 .active {
   color: rgb(94, 186, 125);
 }

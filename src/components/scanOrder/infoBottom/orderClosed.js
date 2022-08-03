@@ -9,7 +9,7 @@ const OrderClosed = (props) => {
   return (
     // if the order was already complete before user interaction
     <>
-      <div className="form-group">
+      <div className="form-group statusLabel">
         <label htmlFor="next_status">
           <strong>Order Complete</strong>
         </label>
@@ -17,7 +17,7 @@ const OrderClosed = (props) => {
 
       {revert ? ( // if user interaction caused the order to become closed
         <>
-          <div className="form-group">
+          <div className="form-group statusLabel">
             <label htmlFor="prior_status">
               Prior Status:{" "}
               <strong>

@@ -47,7 +47,7 @@ const OrderNotReverted = (props) => {
       ) : (
         // basic selection of buttons available to user when no special circumstances apply
         <>
-          <div className="form-group">
+          <div className="form-group statusLabel">
             <label htmlFor="next_status">
               Next Status:{" "}
               {statuses && order.status.description ? (

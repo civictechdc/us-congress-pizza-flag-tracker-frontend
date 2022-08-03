@@ -11,7 +11,7 @@ const UpdateStatusButtonOn = (props) => {
     <>
       <button
         onClick={handleInput}
-        className="btn btn-success"
+        className="btn btn-success statusButton"
         data-button-function="Update Enabled"
       >
         <strong>{"UPDATE STATUS"}</strong>

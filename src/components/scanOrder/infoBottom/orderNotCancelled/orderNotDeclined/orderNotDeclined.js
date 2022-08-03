@@ -25,8 +25,8 @@ const OrderNotDeclined = (props) => {
     <>
       {revert ? ( // if user changes there mind and wants to undo the update they just submitted before leaving the page view
         <>
-          <div className="form-group">
-            <label htmlFor="prior_status">
+          <div className="form-group statusLabel">
+            <label htmlFor="prior_status statusLabel">
               Prior Status:{" "}
               <strong>
                 #{unalteredOrder.status.sequence_num} -{" "}
