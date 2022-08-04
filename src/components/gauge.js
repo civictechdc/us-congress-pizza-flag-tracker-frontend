@@ -12,7 +12,11 @@ const Gauge = (props) => {
         <div className={style.gauge}>
           {statusesUpToAndIncludingCurrent.map(
             ({ sequence_num, status_code }, index) => (
-              <div className={style.gaugeItem} key={index}>
+              <div
+                className={style.gaugeItem}
+                key={index}
+                style={{ zIndex: 100 - index }}
+              >
                 {sequence_num === props.status && (
                   <p className={style.gaugeNumber}>{sequence_num}</p>
                 )}
