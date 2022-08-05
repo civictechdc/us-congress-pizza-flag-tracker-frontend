@@ -112,55 +112,81 @@ const PasswordUpdate = () => {
 
   return (
     <>
-      <form onSubmit={submitHandler}>
-        <label htmlFor="oldPassword">Type your current password here...</label>
+      <strong>Update password:</strong>
+      <form className={styles.passwordForm} onSubmit={submitHandler}>
+        <label htmlFor="oldPassword" className={styles.passwordFormLabel}>
+          Type your current password here
+        </label>
         <input
           type="password"
           name="oldPassword"
           value={oldPassword}
+          className={styles.passwordFormInput}
           onChange={handleChange}
-        ></input>
+        />
         <p>&nbsp;</p>
-        <label htmlFor="newPassword">Enter your new password...</label>
+        <label htmlFor="newPassword" className={styles.passwordFormLabel}>
+          Enter your new password
+        </label>
         <input
           type="password"
           name="newPassword"
           value={newPassword}
+          className={styles.passwordFormInput}
           onChange={handleChange}
-        ></input>
+        />
         <p>&nbsp;</p>
-        <label htmlFor="newPassword2">Confirm your new password...</label>
+        <label htmlFor="newPassword2" className={styles.passwordFormLabel}>
+          Confirm your new password
+        </label>
         <input
           type="password"
           name="newPassword2"
           value={newPassword2}
+          className={styles.passwordFormInput}
           onChange={handleChange}
-        ></input>
+        />
         <p>&nbsp;</p>
-        <input type="submit"></input>
+        <input type="submit" className={styles.passwordFormSubmit} />
       </form>
+      <br />
       {adminControl() ? (
-        <form className={styles.form2} onSubmit={submitAdmin}>
-          <h2 className={styles.form_title}>Change User Password</h2>
-
-          <label>User Being Changed</label>
-          <input type="text" value={userName} onChange={changeUserName}></input>
-          <label>New Password</label>
-          <input
-            type="password"
-            value={userNewPassword}
-            onChange={changeUserNewPassword}
-          ></input>
-          <label>Confirm New Password</label>
-          <input
-            type="password"
-            value={userNewPassword2}
-            onChange={changeUserNewPassword2}
-          ></input>
-          <input className={styles.form2_submit} type="submit" />
-        </form>
+        <>
+          <strong>Change User Password:</strong>
+          <form className={styles.passwordForm} onSubmit={submitAdmin}>
+            <label className={styles.passwordFormLabel}>
+              User Being Changed
+            </label>
+            <input
+              type="text"
+              value={userName}
+              className={styles.passwordFormInput}
+              onChange={changeUserName}
+            />
+            <p>&nbsp;</p>
+            <label className={styles.passwordFormLabel}>New Password</label>
+            <input
+              type="password"
+              value={userNewPassword}
+              className={styles.passwordFormInput}
+              onChange={changeUserNewPassword}
+            />
+            <p>&nbsp;</p>
+            <label className={styles.passwordFormLabel}>
+              Confirm New Password
+            </label>
+            <input
+              type="password"
+              value={userNewPassword2}
+              className={styles.passwordFormInput}
+              onChange={changeUserNewPassword2}
+            />
+            <p>&nbsp;</p>
+            <input type="submit" className={styles.passwordFormSubmit} />
+          </form>
+        </>
       ) : (
-        <div></div>
+        <></>
       )}
       <PopUpBoxComponent
         closePopUpBox={closePopUpBox}
