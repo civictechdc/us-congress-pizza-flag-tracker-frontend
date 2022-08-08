@@ -7,6 +7,11 @@
   font-weight: bold;
 }
 
+.constituentBox{
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .constituent {
   margin-bottom: 2px;
 }
@@ -14,7 +19,6 @@
 .flexContainer {
   display: flex;
   flex-direction: row;
-  column-gap: 25%;
 }
 
 .formContainer {
@@ -35,7 +39,14 @@
 
 .formGroup {
   margin-bottom: 10px;
-  width: 25%;
+  width: fit-content;
+}
+
+.formGroup2 {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  width: fit-content;
 }
 
 .title {
@@ -55,11 +66,12 @@
   ==                                                ==
   ====================================================*/
 
-@media only screen and (max-width: 600px) {
-
+@media only screen and (max-width: 500px) {
   .formContainer {
-    width: 70vw;
-    left: 15vw;
+    width: 95vw;
+    left: 0;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .title {

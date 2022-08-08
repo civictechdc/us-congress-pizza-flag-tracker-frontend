@@ -193,7 +193,7 @@ const OrderForm = (props) => {
                 )}
               </div>
 
-              <div className={styles.formGroup}>
+              <div className={styles.formGroup2}>
                 <label htmlFor="edit-office">District:</label>{" "}
                 {order.usa_state ? (
                   isLastChangeUSState ? (
