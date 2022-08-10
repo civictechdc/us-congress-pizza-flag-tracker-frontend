@@ -60,7 +60,6 @@ const ProfileView = (props) => {
           })}
       </ul>
       <br />
-      <strong>Update password:</strong>
       <PasswordUpdate />
     </div>
   );
