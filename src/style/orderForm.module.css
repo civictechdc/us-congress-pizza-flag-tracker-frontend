@@ -34,7 +34,6 @@
   display: flex;
   flex-direction: column;
   row-gap: 3em;
-
 }
 
 .formGroup {
@@ -77,5 +76,4 @@
   .title {
     font-size: 4rem;
   }
-
 }
