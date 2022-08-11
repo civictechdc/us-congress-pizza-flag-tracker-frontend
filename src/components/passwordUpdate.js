@@ -147,7 +147,7 @@ const PasswordUpdate = () => {
           onChange={handleChange}
         />
         <p>&nbsp;</p>
-        <input type="submit" className={styles.passwordFormSubmit} />
+        <input type="submit" value="Submit" className={styles.passwordFormSubmit} />
       </form>
       <br />
       {adminControl() ? (
@@ -182,7 +182,7 @@ const PasswordUpdate = () => {
               onChange={changeUserNewPassword2}
             />
             <p>&nbsp;</p>
-            <input type="submit" className={styles.passwordFormSubmit} />
+            <input type="submit" value="Submit" className={styles.passwordFormSubmit} />
           </form>
         </>
       ) : (

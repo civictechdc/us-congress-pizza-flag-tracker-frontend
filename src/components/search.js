@@ -5,7 +5,7 @@ import styles from "../style/orders.module.css";
 import { STATES } from "./states";
 
 export const Search = (props) => {
-  const { searchState, statuses, searchParams, clearSearch } = props;
+  const { searchState, statuses, searchParams, clearSearch, searchMode, changeMode } = props;
   const navigate = useNavigate();
 
   const statusOptions = statuses.map((status) => ({
@@ -94,67 +94,73 @@ export const Search = (props) => {
 
   return (
     <>
-      <div className={styles.outerInputContainer}>
-        <div className={styles.inputContainer}>
-          <div className={styles.searchComponent}>
-            <label htmlFor="keyword">Search by order number or keyword</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Search by order number or keyword"
-              value={searchState?.keyword}
-              onChange={onChangeSearchTitle}
-              id="keyword"
-            />
-          </div>
-        </div>
-        <div className={styles.inputContainer}>
-          <div className={styles.searchComponent}>
-            <label htmlFor="status">Search by status</label>
-            <Select
-              id="status"
-              options={statusOptions}
-              className={styles.subSelect}
-              onChange={onChangeMultiParams}
-              isMulti={true}
-              placeholder="Search by status"
-              label="Search by status"
-              value={statusSelected}
-            ></Select>
-          </div>
-        </div>
-        <div className={styles.inputContainer}>
-          <div className={styles.searchComponent}>
-            <label htmlFor="state">Search by state</label>
-            <Select
-              options={stateOptions}
-              className={styles.subSelect}
-              onChange={onChangeParams}
-              placeholder={"Search by state"}
-              value={{
-                label: searchState?.state,
-                name: "usa_state",
-                value: searchState?.state,
-              }}
-            ></Select>
-          </div>
-          <div className={styles.searchComponent}>
-            <label htmlFor="office">Search by office</label>
-            <Select
-              options={officeOptions}
-              className={styles.subSelect}
-              onChange={onChangeParams}
-              placeholder="Search by office"
-              value={{
-                label: searchState?.office,
-                name: "usa_state",
-                value: searchState?.office,
-              }}
-            ></Select>
-          </div>
-        </div>
-      </div>
+      {(searchMode == "basic") ? (
+        <button onClick={changeMode}>Go Advanced Search</button>
 
+
+      ) : (
+        <div className={styles.outerInputContainer}>
+          <div className={styles.inputContainer}>
+            <div className={styles.searchComponent}>
+              <label htmlFor="keyword">Search by order number or keyword</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search by order number or keyword"
+                value={searchState?.keyword}
+                onChange={onChangeSearchTitle}
+                id="keyword"
+              />
+            </div>
+            <button onClick={changeMode}>Go Basic Search</button>
+          </div>
+          <div className={styles.inputContainer}>
+            <div className={styles.searchComponent}>
+              <label htmlFor="status">Search by status</label>
+              <Select
+                id="status"
+                options={statusOptions}
+                className={styles.subSelect}
+                onChange={onChangeMultiParams}
+                isMulti={true}
+                placeholder="Search by status"
+                label="Search by status"
+                value={statusSelected}
+              />
+            </div>
+          </div>
+          <div className={styles.inputContainer}>
+            <div className={styles.searchComponent}>
+              <label htmlFor="state">Search by state</label>
+              <Select
+                options={stateOptions}
+                className={styles.subSelect}
+                onChange={onChangeParams}
+                placeholder={"Search by state"}
+                value={{
+                  label: searchState?.state,
+                  name: "usa_state",
+                  value: searchState?.state,
+                }}
+              />
+            </div>
+            <div className={styles.searchComponent}>
+              <label htmlFor="office">Search by office</label>
+                <Select
+                  options={officeOptions}
+                  className={styles.subSelect}
+                  onChange={onChangeParams}
+                  placeholder="Search by office"
+                  value={{
+                    label: searchState?.office,
+                    name: "usa_state",
+                    value: searchState?.office,
+                  }}
+                />
+            </div>
+          </div>
+        </div>
+      )}
       {searchParams ? (
         <button className={styles.clearButton} onClick={emptySearch}>
           Clear

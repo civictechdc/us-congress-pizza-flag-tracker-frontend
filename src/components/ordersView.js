@@ -236,21 +236,14 @@ const OrdersView = () => {
     <>
       <div className={styles.mainContainer}>
         <h4 className={styles.title}>Orders</h4>
-        <>
-          {(searchMode == "basic") ? (
-            <button onClick={changeMode}>Go Advanced Search</button>
-          ) : (
-            <>
-              <button onClick={changeMode}>Go Basic Search</button>
-              <Search
-                searchState={searchState}
-                statuses={statuses}
-                searchParams={searchParams}
-                clearSearch={clearSearch}
-              />
-            </>
-          )}
-        </>        
+        <Search
+          searchState={searchState}
+          statuses={statuses}
+          searchParams={searchParams}
+          clearSearch={clearSearch}
+          searchMode={searchMode}
+          changeMode={changeMode}
+        />       
         {ordersToDisplay.length ? (
           <>
             <TableHeader
