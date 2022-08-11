@@ -31,6 +31,7 @@ const OrdersView = () => {
   const [sortType, setSortType] = useState("numeric");
   const [loading, setLoading] = useState(false);
   const [statuses, setStatuses] = useState([]);
+  const [searchMode, setSearchMode] = useState("basic");
   const { setUserDisplay } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -174,6 +175,12 @@ const OrdersView = () => {
     editOrderControl() ? (isEditor.current = "yes") : (isEditor.current = "");
   }, [isEditor]);
 
+  const changeMode = () => {
+    (searchMode == "basic") ? setSearchMode("advanced") : setSearchMode("basic"); 
+  }
+
+  console.log("Mode Change: ", searchMode);
+
   const orderTbody = (
     <div className={styles.flagContainer}>
       {loading
@@ -229,12 +236,21 @@ const OrdersView = () => {
     <>
       <div className={styles.mainContainer}>
         <h4 className={styles.title}>Orders</h4>
-        <Search
-          searchState={searchState}
-          statuses={statuses}
-          searchParams={searchParams}
-          clearSearch={clearSearch}
-        />
+        <>
+          {(searchMode == "basic") ? (
+            <button onClick={changeMode}>Go Advanced Search</button>
+          ) : (
+            <>
+              <button onClick={changeMode}>Go Basic Search</button>
+              <Search
+                searchState={searchState}
+                statuses={statuses}
+                searchParams={searchParams}
+                clearSearch={clearSearch}
+              />
+            </>
+          )}
+        </>        
         {ordersToDisplay.length ? (
           <>
             <TableHeader
