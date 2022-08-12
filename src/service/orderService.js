@@ -11,6 +11,10 @@ const getAll = (params) => {
   }
 };
 
+const getAllByOrderNumber = (params) => {
+  return httpAuthenticate().get(`order_num/${params}`);
+}
+
 const get = (uuid) => {
   return httpAuthenticate().get(`/orders/${uuid}`);
 };
@@ -59,6 +63,7 @@ const getOrder = (id, setOrder, setUnalteredOrder, setLoading) => {
 
 const orderServiceObject = {
   getAll,
+  getAllByOrderNumber,
   get,
   create,
   update,

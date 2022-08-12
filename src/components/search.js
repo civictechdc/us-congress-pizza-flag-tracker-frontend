@@ -5,7 +5,7 @@ import styles from "../style/orders.module.css";
 import { STATES } from "./states";
 
 export const Search = (props) => {
-  const { searchState, statuses, searchParams, clearSearch, searchMode, changeMode } = props;
+  const { searchState, statuses, searchParams, clearSearch, searchMode, setSearchMode, basicSearchValue, setBasicSearchValue} = props;
   const navigate = useNavigate();
 
   const statusOptions = statuses.map((status) => ({
@@ -41,7 +41,7 @@ export const Search = (props) => {
     .map((office) => ({ label: office, value: office, name: "office" }));
   officeOptions.unshift({ value: null, label: "None", name: "office" });
 
-  function onChangeSearchTitle(e) {
+  const onChangeSearchTitle = (e) => {
     const searchTitle = e.target.value;
     const queryParams = new URLSearchParams(window.location.search);
     if (searchTitle == null) {
@@ -81,32 +81,57 @@ export const Search = (props) => {
       }
       queryParams.set("status", statusArray.join());
     }
-
     navigate(`${window.location.pathname}?${queryParams.toString()}`, {
       replace: true,
     });
   };
 
+  const onChangeOrderNumber = (e) => {
+    setBasicSearchValue(e.target.value);
+  }
+
   const emptySearch = () => {
     clearSearch();
     setStatusSelected(null);
+    setBasicSearchValue(null);
+    document.getElementById('orderNumber').value = '';
   };
+
+  const changeMode = () => {
+    (searchMode == "basic") ? setSearchMode("advanced") : setSearchMode("basic");
+    emptySearch();
+  }
 
   return (
     <>
       {(searchMode == "basic") ? (
-        <button onClick={changeMode}>Go Advanced Search</button>
-
-
+        <>
+          <button onClick={changeMode}>Go Advanced Search</button>
+          <div className={styles.outerInputContainer}>
+            <div className={styles.inputContainer}>
+              <div className={styles.searchComponent}>
+              <label htmlFor="orderNumber">Search by order number</label>
+              <input
+                type="number"
+                className="form-control"
+                placeholder="Search by order number"
+                onChange={onChangeOrderNumber}
+                id="orderNumber"
+                min="1"
+              />
+              </div> 
+            </div>
+          </div>
+        </>
       ) : (
         <div className={styles.outerInputContainer}>
           <div className={styles.inputContainer}>
             <div className={styles.searchComponent}>
-              <label htmlFor="keyword">Search by order number or keyword</label>
+              <label htmlFor="keyword">Search by keyword</label>
               <input
                 type="text"
                 className="form-control"
-                placeholder="Search by order number or keyword"
+                placeholder="Search by keyword"
                 value={searchState?.keyword}
                 onChange={onChangeSearchTitle}
                 id="keyword"
@@ -161,7 +186,7 @@ export const Search = (props) => {
           </div>
         </div>
       )}
-      {searchParams ? (
+      {(searchParams || basicSearchValue) ? (
         <button className={styles.clearButton} onClick={emptySearch}>
           Clear
         </button>
@@ -171,3 +196,10 @@ export const Search = (props) => {
     </>
   );
 };
+
+
+/*
+https://stackoverflow.com/questions/70760006/x-clear-icon-appears-only-when-the-input-has-value-react
+XIcon
+https://github.com/tailwindlabs/heroicons
+*/

@@ -23,7 +23,6 @@ const OrdersView = () => {
   const initialSearchState = { keyword: "", status: [], state: "", office: "" };
 
   const [orders, setOrders] = useState([]);
-  const [currentOrder, setCurrentOrder] = useState(null);
   const [popUpBox, setPopUpBox] = useState("none");
   const [message, setMessage] = useState("");
   const [sortedField, setSortedField] = useState(null);
@@ -32,6 +31,7 @@ const OrdersView = () => {
   const [loading, setLoading] = useState(false);
   const [statuses, setStatuses] = useState([]);
   const [searchMode, setSearchMode] = useState("basic");
+  const [basicSearchValue, setBasicSearchValue] = useState(0);
   const { setUserDisplay } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -69,6 +69,18 @@ const OrdersView = () => {
       setMessage("Order Issue: " + err);
     });
   };
+
+  const retrieveOrdersByOrderNumber = (params) => {
+    const serviceToExecute = async () => {
+      const response = await OrderDataService.getAllByOrderNumber(params);
+      setOrders(response?.data?.orders);
+      setLoading(false);
+    };
+    return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
+      setPopUpBox("block");
+      setMessage("Order Issue: " + err);
+    });
+  }
 
   let searchParams = useLocation().search;
 
@@ -120,7 +132,9 @@ const OrdersView = () => {
       dispatch({ type: "state", payload: "Search by State" });
       dispatch({ type: "office", payload: "Search by Office" });
       dispatch({ type: "keyword", payload: "" });
-      if (searchParams) {
+      if ((searchMode == "basic") && (basicSearchValue)) {
+        retrieveOrdersByOrderNumber(basicSearchValue);
+      } else if (searchParams) {
         retrieveOrders(searchParams);
         const parsedParams = new URLSearchParams(searchParams);
         parsedParams.forEach((value, propName) => {
@@ -132,19 +146,14 @@ const OrdersView = () => {
     } finally {
       setLoading(false);
     }
-  }, [searchParams, dispatch]);
-
-  const refreshList = () => {
-    retrieveOrders();
-    setCurrentOrder(null);
-  };
+  }, [basicSearchValue, searchMode, searchParams, dispatch]);
 
   const setActiveOrder = (order) => {
     navigate("/scan/" + order.uuid);
   };
 
   const clearSearch = () => {
-    refreshList();
+    retrieveOrders();
     navigate("/");
   };
 
@@ -174,12 +183,6 @@ const OrdersView = () => {
   useEffect(() => {
     editOrderControl() ? (isEditor.current = "yes") : (isEditor.current = "");
   }, [isEditor]);
-
-  const changeMode = () => {
-    (searchMode == "basic") ? setSearchMode("advanced") : setSearchMode("basic"); 
-  }
-
-  console.log("Mode Change: ", searchMode);
 
   const orderTbody = (
     <div className={styles.flagContainer}>
@@ -242,9 +245,11 @@ const OrdersView = () => {
           searchParams={searchParams}
           clearSearch={clearSearch}
           searchMode={searchMode}
-          changeMode={changeMode}
+          setSearchMode={setSearchMode}
+          basicSearchValue={basicSearchValue}
+          setBasicSearchValue={setBasicSearchValue}
         />       
-        {ordersToDisplay.length ? (
+        {ordersToDisplay?.length ? (
           <>
             <TableHeader
               sortedField={sortedField}
