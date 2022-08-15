@@ -105,24 +105,22 @@ export const Search = (props) => {
   return (
     <>
       {(searchMode == "basic") ? (
-        <>
-          <button onClick={changeMode}>Go Advanced Search</button>
-          <div className={styles.outerInputContainer}>
-            <div className={styles.inputContainer}>
-              <div className={styles.searchComponent}>
-              <label htmlFor="orderNumber">Search by order number</label>
-              <input
-                type="number"
-                className="form-control"
-                placeholder="Search by order number"
-                onChange={onChangeOrderNumber}
-                id="orderNumber"
-                min="1"
-              />
-              </div> 
+        <div className={styles.outerInputContainer}>
+          <div className={styles.inputContainer}>
+            <div className={styles.searchComponent}>
+            <label htmlFor="orderNumber">Search by order number</label>
+            <input
+              type="number"
+              className="form-control"
+              placeholder="Search by order number"
+              onChange={onChangeOrderNumber}
+              id="orderNumber"
+              min="1"
+            />
             </div>
+            <button className={styles.modeButton} onClick={changeMode}>Go Adv Search</button>
           </div>
-        </>
+        </div> 
       ) : (
         <div className={styles.outerInputContainer}>
           <div className={styles.inputContainer}>
@@ -137,7 +135,7 @@ export const Search = (props) => {
                 id="keyword"
               />
             </div>
-            <button onClick={changeMode}>Go Basic Search</button>
+            <button className={styles.modeButton} onClick={changeMode}>Go Basic Search</button>
           </div>
           <div className={styles.inputContainer}>
             <div className={styles.searchComponent}>
@@ -196,7 +194,6 @@ export const Search = (props) => {
     </>
   );
 };
-
 
 /*
 https://stackoverflow.com/questions/70760006/x-clear-icon-appears-only-when-the-input-has-value-react
