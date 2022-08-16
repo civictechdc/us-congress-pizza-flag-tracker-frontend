@@ -4,6 +4,7 @@ import Select from "react-select";
 import { XIcon } from '@heroicons/react/solid';
 import styles from "../style/orders.module.css";
 import { STATES } from "./states";
+import verticalLine from "./images/verticalLine.png"
 
 export const Search = (props) => {
   const { searchState, statuses, searchParams, clearSearch, searchMode, setSearchMode, basicSearchValue, setBasicSearchValue} = props;
@@ -116,16 +117,21 @@ export const Search = (props) => {
             <div className={styles.searchComponent}>
             <label htmlFor="orderNumber">Search by order number</label>
             <input
+              id="orderNumber"
               ref={inputOrderNumber}
               type="number"
-              className="form-control"
+              className={styles.inputOrderContainer}
               placeholder="Search by order number"
               onChange={onChangeOrderNumber}
-              id="orderNumber"
               min="1"
               value={basicSearchValue}
             />
             {basicSearchValue && <XIcon className={styles.XIcon} onClick={resetOrderNumber} />}
+            <img
+                className={styles.verticalLine}
+                src={verticalLine}
+                alt={"Vertical Line"}
+              />
             </div>
             <button className={styles.modeButton} onClick={changeMode}>Go Adv Search</button>
           </div>
@@ -136,12 +142,12 @@ export const Search = (props) => {
             <div className={styles.searchComponent}>
               <label htmlFor="keyword">Search by keyword</label>
               <input
+                id="keyword"
                 type="text"
-                className="form-control"
+                className={styles.inputOrderContainer}
                 placeholder="Search by keyword"
                 value={searchState?.keyword}
                 onChange={onChangeSearchTitle}
-                id="keyword"
               />
             </div>
             <button className={styles.modeButton} onClick={changeMode}>Go Basic Search</button>
@@ -165,6 +171,7 @@ export const Search = (props) => {
             <div className={styles.searchComponent}>
               <label htmlFor="state">Search by state</label>
               <Select
+                id="state"
                 options={stateOptions}
                 className={styles.subSelect}
                 onChange={onChangeParams}
@@ -179,6 +186,7 @@ export const Search = (props) => {
             <div className={styles.searchComponent}>
               <label htmlFor="office">Search by office</label>
                 <Select
+                  id="office"
                   options={officeOptions}
                   className={styles.subSelect}
                   onChange={onChangeParams}

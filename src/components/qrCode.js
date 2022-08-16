@@ -18,7 +18,7 @@ const QrCode = forwardRef((props, ref) => {
       <img
         src={baseURL + "/qrcode/" + order.uuid}
         alt="QR Code"
-        className="center item"
+        className="qrImg center item"
       />
     </div>
   );
