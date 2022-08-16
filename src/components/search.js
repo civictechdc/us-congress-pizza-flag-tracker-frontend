@@ -1,13 +1,14 @@
-import { React, useState } from "react";
+import { React, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
+import { XIcon } from '@heroicons/react/solid';
 import styles from "../style/orders.module.css";
 import { STATES } from "./states";
 
 export const Search = (props) => {
   const { searchState, statuses, searchParams, clearSearch, searchMode, setSearchMode, basicSearchValue, setBasicSearchValue} = props;
   const navigate = useNavigate();
-
+ 
   const statusOptions = statuses.map((status) => ({
     value: status.status_code,
     label: status.status_code,
@@ -15,6 +16,7 @@ export const Search = (props) => {
   }));
 
   const [statusSelected, setStatusSelected] = useState(statusOptions[0]);
+  const inputOrderNumber = useRef(null);
 
   let stateOptions = [];
   if (STATES) {
@@ -90,6 +92,10 @@ export const Search = (props) => {
     setBasicSearchValue(e.target.value);
   }
 
+  const resetOrderNumber = () => {
+    setBasicSearchValue('');
+  }
+
   const emptySearch = () => {
     clearSearch();
     setStatusSelected(null);
@@ -110,13 +116,16 @@ export const Search = (props) => {
             <div className={styles.searchComponent}>
             <label htmlFor="orderNumber">Search by order number</label>
             <input
+              ref={inputOrderNumber}
               type="number"
               className="form-control"
               placeholder="Search by order number"
               onChange={onChangeOrderNumber}
               id="orderNumber"
               min="1"
+              value={basicSearchValue}
             />
+            {basicSearchValue && <XIcon className={styles.XIcon} onClick={resetOrderNumber} />}
             </div>
             <button className={styles.modeButton} onClick={changeMode}>Go Adv Search</button>
           </div>

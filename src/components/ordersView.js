@@ -31,7 +31,7 @@ const OrdersView = () => {
   const [loading, setLoading] = useState(false);
   const [statuses, setStatuses] = useState([]);
   const [searchMode, setSearchMode] = useState("basic");
-  const [basicSearchValue, setBasicSearchValue] = useState(0);
+  const [basicSearchValue, setBasicSearchValue] = useState('');
   const { setUserDisplay } = useContext(UserContext);
   const navigate = useNavigate();
 

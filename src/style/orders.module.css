@@ -47,6 +47,7 @@
 
 .searchComponent {
   width: 100%;
+  position: relative;
 }
 
 .clearButton {
@@ -68,6 +69,19 @@
   background-color: #28a745;
   border-color: #28a745;
   border-radius: 8px;
+}
+
+.XIcon {
+  height: 15px;
+  position: absolute;
+  top: 20px;
+  right: 23px;
+  z-index: 10;
+  opacity: .75;
+}
+
+.XIcon:hover {
+  opacity: 1;
 }
 
 /*============================== Flags =========================================*/
