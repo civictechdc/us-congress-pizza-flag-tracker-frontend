@@ -107,9 +107,8 @@ export const Search = (props) => {
 
   const emptySearch = () => {
     clearSearch();
-    setStatusSelected(null);
-    setBasicSearchValue(null);
-    document.getElementById('orderNumber').value = '';
+    setStatusSelected('');
+    setBasicSearchValue('');
   };
 
   const changeMode = () => {
