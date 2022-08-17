@@ -25,15 +25,13 @@ function Header() {
                 Flagpizza
               </Link>
             </li>
-
-            <li>
-              <Link to={"/orders"} className={styles.nav_item}>
-                Orders
-              </Link>
-            </li>
-
             {isUser() ? (
               <>
+                <li>
+                  <Link to={"/orders"} className={styles.nav_item}>
+                    Orders
+                  </Link>
+                </li>
                 {orderControl() ? (
                   <>
                     <li>
