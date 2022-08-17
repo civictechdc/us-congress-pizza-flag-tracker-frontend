@@ -24,7 +24,7 @@
 
 .inputContainer {
   display: flex;
-  flex-direction:row;
+  flex-direction: row;
   border-radius: 5px;
   width: 100%;
   margin: 1vh 0;
