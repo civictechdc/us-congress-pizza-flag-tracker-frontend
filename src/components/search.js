@@ -57,6 +57,14 @@ export const Search = (props) => {
     });
   }
 
+  const onResetSearchTitle = () => {
+    const queryParams = new URLSearchParams(window.location.search);
+    queryParams.delete("keyword");
+    navigate(`${window.location.pathname}?${queryParams.toString()}`, {
+      replace: true,
+    });
+  }
+
   const onChangeParams = (e) => {
     const queryParams = new URLSearchParams(window.location.search);
     if (e.value == null) {
@@ -115,19 +123,19 @@ export const Search = (props) => {
         <div className={styles.outerInputContainer}>
           <div className={styles.inputContainer}>
             <div className={styles.searchComponent}>
-            <label htmlFor="orderNumber">Search by order number</label>
-            <input
-              id="orderNumber"
-              ref={inputOrderNumber}
-              type="number"
-              className={styles.inputOrderContainer}
-              placeholder="Search by order number"
-              onChange={onChangeOrderNumber}
-              min="1"
-              value={basicSearchValue}
-            />
-            {basicSearchValue && <XIcon className={styles.XIcon} onClick={resetOrderNumber} />}
-            <img
+              <label htmlFor="orderNumber">Search by order number</label>
+              <input
+                id="orderNumber"
+                ref={inputOrderNumber}
+                type="number"
+                className={styles.inputOrderContainer}
+                placeholder="Search by order number"
+                onChange={onChangeOrderNumber}
+                min="1"
+                value={basicSearchValue}
+              />
+              {basicSearchValue && <XIcon className={styles.XIcon + ' ' + styles.XIcon1} onClick={resetOrderNumber} />}
+              <img
                 className={styles.verticalLine}
                 src={verticalLine}
                 alt={"Vertical Line"}
@@ -149,6 +157,7 @@ export const Search = (props) => {
                 value={searchState?.keyword}
                 onChange={onChangeSearchTitle}
               />
+              {searchState.keyword && <XIcon className={styles.XIcon + ' ' + styles.XIcon2} onClick={onResetSearchTitle} />}  
             </div>
             <button className={styles.modeButton} onClick={changeMode}>Go Basic Search</button>
           </div>
@@ -211,9 +220,3 @@ export const Search = (props) => {
     </>
   );
 };
-
-/*
-https://stackoverflow.com/questions/70760006/x-clear-icon-appears-only-when-the-input-has-value-react
-XIcon
-https://github.com/tailwindlabs/heroicons
-*/

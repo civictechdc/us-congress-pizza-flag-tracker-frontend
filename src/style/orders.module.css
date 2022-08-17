@@ -100,12 +100,19 @@
   height: 15px;
   position: absolute;
   top: 26px;
-  right: 34px;
   z-index: 10;
   opacity: .5;
 }
 
-.XIcon:hover {
+.XIcon1 {
+  right: 34px;
+}
+
+.XIcon2 {
+  right: 17px;
+}
+
+.XIcon:hover, .XIcon2:hover {
   opacity: 1;
 }
 
