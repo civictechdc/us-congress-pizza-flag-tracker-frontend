@@ -28,7 +28,7 @@
   background-color: transparent;
   border: none;
   padding: 0px; 
-  transform: scale(1.5, 1.5);
+  transform: scale(1.1, 1.1);
 }
 
 .statusButton {
@@ -51,6 +51,6 @@
 
 @media only screen and (min-width: 600px) {
   .sortButton {
-    transform: scale(1.1, 1.1);
+    transform: scale(1.5, 1.5);
   }
 }
