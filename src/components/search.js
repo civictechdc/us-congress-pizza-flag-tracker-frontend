@@ -1,7 +1,6 @@
 import { React, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
-import { XIcon } from '@heroicons/react/solid';
 import styles from "../style/orders.module.css";
 import { STATES } from "./states";
 import verticalLine from "./images/verticalLine.png"
@@ -133,7 +132,7 @@ export const Search = (props) => {
                 min="1"
                 value={basicSearchValue}
               />
-              {basicSearchValue && <XIcon className={styles.XIcon + ' ' + styles.XIcon1} onClick={resetOrderNumber} />}
+              {/* {basicSearchValue && <XIcon className={styles.XIcon + ' ' + styles.XIcon1} onClick={resetOrderNumber} />} */}
               <img
                 className={styles.verticalLine}
                 src={verticalLine}
@@ -156,7 +155,7 @@ export const Search = (props) => {
                 value={searchState?.keyword}
                 onChange={onChangeSearchTitle}
               />
-              {searchState.keyword && <XIcon className={styles.XIcon + ' ' + styles.XIcon2} onClick={onResetSearchTitle} />}  
+              {/* {searchState.keyword && <XIcon className={styles.XIcon + ' ' + styles.XIcon2} onClick={onResetSearchTitle} />}   */}
             </div>
             <button className={styles.modeButton} onClick={changeMode}>Go Basic Search</button>
           </div>

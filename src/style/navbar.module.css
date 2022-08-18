@@ -49,7 +49,7 @@
     text-decoration: none;
 }
 
-@media only all and (min-width: 600px){
+@media only all and (min-width: 600px) {
     .nav_container {
         flex-direction: row;
     }
@@ -69,7 +69,7 @@
     }
 }
 
-@media only all and (min-width: 700px){
+@media only all and (min-width: 700px) {
     .nav_title {
         font-size: 3rem;
     }
