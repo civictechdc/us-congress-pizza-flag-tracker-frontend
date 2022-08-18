@@ -21,17 +21,7 @@
 
 
 /*============================== Search Bar =========================================*/
-
-.inputContainer {
-  display: flex;
-  flex-direction: row;
-  border-radius: 5px;
-  width: 100%;
-  margin: 1vh 0;
-  justify-content: space-between;
-}
-
-.outerInputContainer {
+.outerSearchContainer {
   width: 50vw;
   margin: 3vh 0 2vh 0;
   display: flex;
@@ -39,6 +29,15 @@
   align-items: center;
   flex-direction: column;
   flex-wrap: wrap;
+}
+
+.innerSearchContainer {
+  display: flex;
+  flex-direction: row;
+  border-radius: 5px;
+  width: 100%;
+  margin: 1vh 0;
+  justify-content: space-between;
 }
 
 .subSelect {
@@ -260,7 +259,7 @@ input[type=number]::-webkit-inner-spin-button {
     justify-content: space-between;
   }
 
-  .outerInputContainer {
+  .outerSearchContainer {
     width: 95vw;
   }
 
@@ -290,7 +289,7 @@ input[type=number]::-webkit-inner-spin-button {
     margin-top: 0vh;
   }
 
-  .outerInputContainer {
+  .outerSearchContainer {
     width: 95vw;
     margin: 0vh 0 2vh 0;
   }

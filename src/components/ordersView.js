@@ -20,7 +20,7 @@ import UserContext from "./userContext";
 import PopUpBoxComponent from "./popUpBoxComponent";
 
 const OrdersView = () => {
-  const initialSearchState = { keyword: "", status: [], state: "", office: "" };
+  const initialSearchState = { order_number: "", keyword: "", status: [], state: "", office: "" };
 
   const [orders, setOrders] = useState([]);
   const [popUpBox, setPopUpBox] = useState("none");
@@ -30,8 +30,6 @@ const OrdersView = () => {
   const [sortType, setSortType] = useState("numeric");
   const [loading, setLoading] = useState(false);
   const [statuses, setStatuses] = useState([]);
-  const [searchMode, setSearchMode] = useState("basic");
-  const [basicSearchValue, setBasicSearchValue] = useState('');
   const { setUserDisplay } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -39,6 +37,8 @@ const OrdersView = () => {
   const sortedOrders = useSortableData(orders, sortOptions);
   const searchStateReducer = (searchState, action) => {
     switch (action.type) {
+      case "order_number":
+        return { ...searchState, order_number: action.payload };
       case "keyword":
         return { ...searchState, keyword: action.payload };
       case "state":
@@ -69,18 +69,6 @@ const OrdersView = () => {
       setMessage("Order Issue: " + err);
     });
   };
-
-  const retrieveOrdersByOrderNumber = (params) => {
-    const serviceToExecute = async () => {
-      const response = await OrderDataService.getAllByOrderNumber(params);
-      setOrders(response?.data?.orders);
-      setLoading(false);
-    };
-    return AuthService.checkTokenAndExecute(serviceToExecute).catch((err) => {
-      setPopUpBox("block");
-      setMessage("Order Issue: " + err);
-    });
-  }
 
   let searchParams = useLocation().search;
 
@@ -129,12 +117,11 @@ const OrdersView = () => {
   useEffect(() => {
     setLoading(true);
     try {
+      dispatch({ type: "order_number", payload: "" });
+      dispatch({ type: "keyword", payload: "" });
       dispatch({ type: "state", payload: "Search by State" });
       dispatch({ type: "office", payload: "Search by Office" });
-      dispatch({ type: "keyword", payload: "" });
-      if ((searchMode == "basic") && (basicSearchValue)) {
-        retrieveOrdersByOrderNumber(basicSearchValue);
-      } else if (searchParams) {
+      if (searchParams) {
         retrieveOrders(searchParams);
         const parsedParams = new URLSearchParams(searchParams);
         parsedParams.forEach((value, propName) => {
@@ -146,7 +133,7 @@ const OrdersView = () => {
     } finally {
       setLoading(false);
     }
-  }, [basicSearchValue, searchMode, searchParams, dispatch]);
+  }, [searchParams, dispatch]);
 
   const setActiveOrder = (order) => {
     navigate("/scan/" + order.uuid);
@@ -244,10 +231,6 @@ const OrdersView = () => {
           statuses={statuses}
           searchParams={searchParams}
           clearSearch={clearSearch}
-          searchMode={searchMode}
-          setSearchMode={setSearchMode}
-          basicSearchValue={basicSearchValue}
-          setBasicSearchValue={setBasicSearchValue}
         />       
         {ordersToDisplay?.length ? (
           <>

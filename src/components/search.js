@@ -6,7 +6,7 @@ import { STATES } from "./states";
 import verticalLine from "./images/verticalLine.png"
 
 export const Search = (props) => {
-  const { searchState, statuses, searchParams, clearSearch, searchMode, setSearchMode, basicSearchValue, setBasicSearchValue} = props;
+  const { searchState, statuses, searchParams, clearSearch} = props;
   const navigate = useNavigate();
  
   const statusOptions = statuses.map((status) => ({
@@ -16,7 +16,6 @@ export const Search = (props) => {
   }));
 
   const [statusSelected, setStatusSelected] = useState(statusOptions[0]);
-  const inputOrderNumber = useRef(null);
 
   let stateOptions = [];
   if (STATES) {
@@ -42,6 +41,23 @@ export const Search = (props) => {
     .flat()
     .map((office) => ({ label: office, value: office, name: "office" }));
   officeOptions.unshift({ value: null, label: "None", name: "office" });
+
+  const onChangeOrderNumber = (e) => {
+    const searchOrderNumber = e.target.value;
+    const queryParams = new URLSearchParams(window.location.search);
+    if (searchOrderNumber == null) {
+      queryParams.delete("order_number");
+    } else {
+      queryParams.set("order_number", searchOrderNumber);
+    }
+    navigate(`${window.location.pathname}?${queryParams.toString()}`, {
+      replace: true,
+    });
+  }
+
+  // const resetOrderNumber = () => {
+  //   setBasicSearchValue('');
+  // }
 
   const onChangeSearchTitle = (e) => {
     const searchTitle = e.target.value;
@@ -96,119 +112,97 @@ export const Search = (props) => {
     });
   };
 
-  const onChangeOrderNumber = (e) => {
-    setBasicSearchValue(e.target.value);
-  }
-
-  const resetOrderNumber = () => {
-    setBasicSearchValue('');
-  }
-
   const emptySearch = () => {
     clearSearch();
     setStatusSelected('');
-    setBasicSearchValue('');
   };
-
-  const changeMode = () => {
-    (searchMode == "basic") ? setSearchMode("advanced") : setSearchMode("basic");
-    emptySearch();
-  }
 
   return (
     <>
-      {(searchMode == "basic") ? (
-        <div className={styles.outerInputContainer}>
-          <div className={styles.inputContainer}>
-            <div className={styles.searchComponent}>
-              <label htmlFor="orderNumber">Search by order number</label>
-              <input
-                id="orderNumber"
-                ref={inputOrderNumber}
-                type="number"
-                className={styles.inputOrderContainer}
-                placeholder="Search by order number"
-                onChange={onChangeOrderNumber}
-                min="1"
-                value={basicSearchValue}
-              />
-              {/* {basicSearchValue && <XIcon className={styles.XIcon + ' ' + styles.XIcon1} onClick={resetOrderNumber} />} */}
-              <img
-                className={styles.verticalLine}
-                src={verticalLine}
-                alt={"Vertical Line"}
-              />
-            </div>
-            <button className={styles.modeButton} onClick={changeMode}>Go Adv Search</button>
-          </div>
-        </div> 
-      ) : (
-        <div className={styles.outerInputContainer}>
-          <div className={styles.inputContainer}>
-            <div className={styles.searchComponent}>
-              <label htmlFor="keyword">Search by keyword</label>
-              <input
-                id="keyword"
-                type="text"
-                className={styles.inputOrderContainer}
-                placeholder="Search by keyword"
-                value={searchState?.keyword}
-                onChange={onChangeSearchTitle}
-              />
-              {/* {searchState.keyword && <XIcon className={styles.XIcon + ' ' + styles.XIcon2} onClick={onResetSearchTitle} />}   */}
-            </div>
-            <button className={styles.modeButton} onClick={changeMode}>Go Basic Search</button>
-          </div>
-          <div className={styles.inputContainer}>
-            <div className={styles.searchComponent}>
-              <label htmlFor="status">Search by status</label>
-              <Select
-                id="status"
-                options={statusOptions}
-                className={styles.subSelect}
-                onChange={onChangeMultiParams}
-                isMulti={true}
-                placeholder="Search by status"
-                label="Search by status"
-                value={statusSelected}
-              />
-            </div>
-          </div>
-          <div className={styles.inputContainer}>
-            <div className={styles.searchComponent}>
-              <label htmlFor="state">Search by state</label>
-              <Select
-                id="state"
-                options={stateOptions}
-                className={styles.subSelect}
-                onChange={onChangeParams}
-                placeholder={"Search by state"}
-                value={{
-                  label: searchState?.state,
-                  name: "usa_state",
-                  value: searchState?.state,
-                }}
-              />
-            </div>
-            <div className={styles.searchComponent}>
-              <label htmlFor="office">Search by office</label>
-                <Select
-                  id="office"
-                  options={officeOptions}
-                  className={styles.subSelect}
-                  onChange={onChangeParams}
-                  placeholder="Search by office"
-                  value={{
-                    label: searchState?.office,
-                    name: "usa_state",
-                    value: searchState?.office,
-                  }}
-                />
-            </div>
+      <div className={styles.outerSearchContainer}>
+        <div className={styles.innerSearchContainer}>
+          <div className={styles.searchComponent}>
+            <label htmlFor="orderNumber">Search by order number</label>
+            <input
+              id="orderNumber"
+              type="number"
+              className={styles.inputOrderContainer}
+              min="1"
+              onChange={onChangeOrderNumber}
+              placeholder="Search by order number"
+              value={searchState?.order_number}
+            />
+            {/* {basicSearchValue && <XIcon className={styles.XIcon + ' ' + styles.XIcon1} onClick={resetOrderNumber} />} */}
+            <img
+              className={styles.verticalLine}
+              src={verticalLine}
+              alt={"Vertical Line"}
+            />
           </div>
         </div>
-      )}
-      {(searchParams || basicSearchValue) ? (
+        <div className={styles.innerSearchContainer}>
+          <div className={styles.searchComponent}>
+            <label htmlFor="keyword">Search by keyword</label>
+            <input
+              id="keyword"
+              type="text"
+              className={styles.inputOrderContainer}
+              onChange={onChangeSearchTitle}
+              placeholder="Search by keyword"
+              value={searchState?.keyword}
+            />
+            {/* {searchState.keyword && <XIcon className={styles.XIcon + ' ' + styles.XIcon2} onClick={onResetSearchTitle} />}   */}
+          </div>
+        </div>
+        <div className={styles.innerSearchContainer}>
+          <div className={styles.searchComponent}>
+            <label htmlFor="status">Search by status</label>
+            <Select
+              id="status"
+              className={styles.subSelect}
+              isMulti={true}
+              label="Search by status"
+              onChange={onChangeMultiParams}
+              options={statusOptions}
+              placeholder="Search by status"
+              value={statusSelected}
+            />
+          </div>
+        </div>
+        <div className={styles.innerSearchContainer}>
+          <div className={styles.searchComponent}>
+            <label htmlFor="state">Search by state</label>
+            <Select
+              id="state"
+              className={styles.subSelect}
+              onChange={onChangeParams}
+              options={stateOptions}
+              placeholder={"Search by state"}
+              value={{
+                label: searchState?.state,
+                name: "usa_state",
+                value: searchState?.state,
+              }}
+            />
+          </div>
+          <div className={styles.searchComponent}>
+            <label htmlFor="office">Search by office</label>
+              <Select
+                id="office"
+                className={styles.subSelect}
+                onChange={onChangeParams}
+                options={officeOptions}
+                placeholder="Search by office"
+                value={{
+                  label: searchState?.office,
+                  name: "usa_state",
+                  value: searchState?.office,
+                }}
+              />
+          </div>
+        </div>
+      </div>
+      {searchParams ? (
         <button className={styles.clearButton} onClick={emptySearch}>
           Clear
         </button>
