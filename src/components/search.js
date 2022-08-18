@@ -1,4 +1,4 @@
-import { React, useState, useRef } from "react";
+import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import styles from "../style/orders.module.css";
@@ -6,7 +6,7 @@ import { STATES } from "./states";
 import verticalLine from "./images/verticalLine.png"
 
 export const Search = (props) => {
-  const { searchState, statuses, searchParams, clearSearch} = props;
+  const { searchState, statuses, searchParams, clearSearch } = props;
   const navigate = useNavigate();
  
   const statusOptions = statuses.map((status) => ({

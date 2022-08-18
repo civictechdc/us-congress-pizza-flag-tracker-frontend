@@ -25,7 +25,7 @@ export const TableHeader = (props) => {
   return (
     <>
       <div className={styles.sortContainer}>
-        <button className={styles.sortButton} onClick={displaySort}>
+        <button className={styles.sortToggle} onClick={displaySort}>
           Sort By
         </button>
         <div className={styles.sortBox} style={{ display: sortControl }}>
