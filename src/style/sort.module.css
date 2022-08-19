@@ -71,7 +71,7 @@
 @media only screen and (max-width: 600px) {
   .sortContainer {
     width: 90vw;
-    margin: 0vh 0 2vh 0;
+    margin: .5vh 0 2vh 0;
   }
 
   .sortBox2 {

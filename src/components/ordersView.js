@@ -279,6 +279,38 @@ const OrdersView = () => {
               )}
             </div>
             <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
+            {(searchMode == "off") ? (
+              <>
+                {ordersToDisplay?.length ? (
+                  <>
+                    <TableHeader
+                      sortedField={sortedField}
+                      sortDir={sortDir}
+                      setSortedField={setSortedField}
+                      setSortType={setSortType}
+                      setSortDir={setSortDir}
+                    />
+                   <div className={styles.statusItem}>
+                      <h5> Please click on an order... </h5>
+                    </div>
+                  </>
+                ) : (
+                  <div className={styles.mainContainer}>
+                    <h4 className={styles.title}>No orders found</h4>
+                  </div>
+                )}
+                <div className={styles.orderContainer}>
+                  {orderTbody}
+                </div>
+              </>
+            ) : (
+              <Search
+                searchState={searchState}
+                statuses={statuses}
+                searchParams={searchParams}
+                clearSearch={clearSearch}
+              /> 
+            )}
           </>
         ) : (
           <>
