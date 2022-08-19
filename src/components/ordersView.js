@@ -242,36 +242,41 @@ const OrdersView = () => {
     <>
       <div className={styles.mainContainer}>
         <h4 className={styles.title}>Orders</h4>
-        <Search
-          searchState={searchState}
-          statuses={statuses}
-          searchParams={searchParams}
-          clearSearch={clearSearch}
-        />       
-        {ordersToDisplay?.length ? (
+        {(windowWidth < 801) ? (
+          <h6>Smol Size</h6>  
+        ) : (
           <>
-            <TableHeader
-              sortedField={sortedField}
-              sortDir={sortDir}
-              setSortedField={setSortedField}
-              setSortType={setSortType}
-              setSortDir={setSortDir}
-            />
-            <div className={styles.statusItem}>
-              <h5> Please click on an order... </h5>
+            <Search
+              searchState={searchState}
+              statuses={statuses}
+              searchParams={searchParams}
+              clearSearch={clearSearch}
+            />       
+            {ordersToDisplay?.length ? (
+              <>
+                <TableHeader
+                  sortedField={sortedField}
+                  sortDir={sortDir}
+                  setSortedField={setSortedField}
+                  setSortType={setSortType}
+                  setSortDir={setSortDir}
+                />
+                <div className={styles.statusItem}>
+                  <h5> Please click on an order... </h5>
+                </div>
+              </>
+            ) : (
+              <div className={styles.mainContainer}>
+                <h4 className={styles.title}>No orders found</h4>
+              </div>
+            )}
+            <div className={styles.orderContainer}>
+              {orderTbody}
             </div>
           </>
-        ) : (
-          <div className={styles.mainContainer}>
-            <h4 className={styles.title}>No orders found</h4>
-          </div>
         )}
-        <div className={styles.orderContainer}>
-          {orderTbody}
-
-          <div className={styles.statusItemContainer}></div>
-        </div>
       </div>
+
       <PopUpBoxComponent
         closePopUpBox={closePopUpBox}
         message={message}
