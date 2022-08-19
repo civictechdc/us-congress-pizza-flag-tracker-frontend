@@ -120,6 +120,7 @@ export const Search = (props) => {
   return (
     <>
       <div className={styles.outerSearchContainer}>
+        <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
         <div className={styles.innerSearchContainer}>
           <label className={styles.innerSearchLabel} htmlFor="orderNumber">Order Number</label>
           <input
@@ -202,6 +203,7 @@ export const Search = (props) => {
             value={statusSelected}
           />       
         </div>
+        <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
       </div>
       {searchParams ? (
         <button className={styles.clearButton} onClick={emptySearch}>

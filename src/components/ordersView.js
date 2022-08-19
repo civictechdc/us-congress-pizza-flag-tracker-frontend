@@ -278,9 +278,10 @@ const OrdersView = () => {
                 />
               )}
             </div>
-            <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
+            
             {(searchMode == "off") ? (
               <>
+                <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
                 {ordersToDisplay?.length ? (
                   <>
                     <TableHeader
