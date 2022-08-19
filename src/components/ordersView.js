@@ -5,19 +5,22 @@ import React, {
   useRef,
   useContext,
 } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+
+import AuthService from "../service/authService";
 import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 
-import styles from "../style/orders.module.css";
-import AuthService from "../service/authService";
-import { useSortableData } from "./sorting/sortHook";
-import { TableHeader } from "./tableHeader";
-import Gauge from "./gauge";
-import { Search } from "./search";
 import { editOrderControl } from "./permissions";
-import { useNavigate, useLocation } from "react-router-dom";
-import UserContext from "./userContext";
+import Gauge from "./gauge";
 import PopUpBoxComponent from "./popUpBoxComponent";
+import { Search } from "./search";
+import { TableHeader } from "./tableHeader";
+import UserContext from "./userContext";
+import { useSortableData } from "./sorting/sortHook";
+import verticalLine from "./images/verticalLine.png"
+
+import styles from "../style/orders.module.css";
 
 const OrdersView = () => {
   const initialSearchState = { order_number: "", keyword: "", status: [], state: "", office: "" };
@@ -243,7 +246,18 @@ const OrdersView = () => {
       <div className={styles.mainContainer}>
         <h4 className={styles.title}>Orders</h4>
         {(windowWidth < 801) ? (
-          <h6>Smol Size</h6>  
+          <>
+            <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
+            <div className={styles.searchToggleContainer}>
+              <h5 className={styles.searchToggle}>Search Controls</h5>
+              <img
+                className={styles.verticalLineToggle}
+                src={verticalLine}
+                alt={"Vertical Line"}
+              />
+            </div>
+            <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
+          </>
         ) : (
           <>
             <Search

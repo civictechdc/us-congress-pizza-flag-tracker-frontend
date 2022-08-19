@@ -16,11 +16,38 @@
   font-size: 8rem;
   text-align: center;
   margin-top: 3vh;
+  margin-bottom: 0;
   text-shadow: rgba(80, 79, 79, 0.863) -4px -1px 0px;
 }
 
-
 /*============================== Search Bar =========================================*/
+
+.searchToggleContainer {
+  background-color: #fff;
+  display: flex;
+  flex-direction: row;
+  margin-right: auto;
+  position: relative;
+  width: 100%;
+}
+
+.searchToggle {
+  font-size: 2rem;
+  margin-left: 10px;
+  margin-right: 0px;
+  width: max-content;
+  text-align: left;
+}
+
+.verticalLineToggle {
+  height: 22px;
+  margin-top: auto;
+  margin-right: 10px;
+  margin-bottom: auto;
+  margin-left: 10px;
+  width: 3px;
+}
+
 .outerSearchContainer {
   width: 50vw;
   margin: 3vh 0 2vh 0;
