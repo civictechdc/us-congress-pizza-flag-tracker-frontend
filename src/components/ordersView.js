@@ -19,6 +19,8 @@ import { TableHeader } from "./tableHeader";
 import UserContext from "./userContext";
 import { useSortableData } from "./sorting/sortHook";
 import verticalLine from "./images/verticalLine.png"
+import downArrow from "./images/downArrow-14by9.png"
+import xIcon from "./images/x-12by13.png"
 
 import styles from "../style/orders.module.css";
 
@@ -34,6 +36,7 @@ const OrdersView = () => {
   const [loading, setLoading] = useState(false);
   const [statuses, setStatuses] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [searchMode, setSearchMode] = useState("off");
   const { setUserDisplay } = useContext(UserContext);
   const sortOptions = { sortedField, sortDir, sortType };
   const sortedOrders = useSortableData(orders, sortOptions);
@@ -163,6 +166,10 @@ const OrdersView = () => {
     navigate("/");
   };
 
+  const toggleSearchMode = () => {
+    (searchMode == "off") ? setSearchMode("on") : setSearchMode("off") ;
+  }
+
   const formatDate = (dateString) => {
     /*https://github.com/w3c/respec/issues/1357#issuecomment-760913749 
     and also remove the fractional seconds as was required */
@@ -255,6 +262,21 @@ const OrdersView = () => {
                 src={verticalLine}
                 alt={"Vertical Line"}
               />
+              {(searchMode == "off") ? (
+                <img
+                  className={styles.downArrowToggle}
+                  src={downArrow}
+                  alt={"Down Arrow"}
+                  onClick={toggleSearchMode}
+                />
+              ) : (
+                <img
+                  className={styles.xIconToggle}
+                  src={xIcon}
+                  alt={"X Icon"}
+                  onClick={toggleSearchMode}
+                />
+              )}
             </div>
             <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
           </>

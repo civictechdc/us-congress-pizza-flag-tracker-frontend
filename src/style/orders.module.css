@@ -48,6 +48,30 @@
   width: 3px;
 }
 
+.downArrowToggle {
+  height: 9px;
+  margin-top: auto;
+  margin-bottom: auto;
+  opacity: .3;
+  width: 14px;
+}
+
+.downArrowToggle:hover {
+  opacity: .6;
+}
+
+.xIconToggle {
+  height: 13px;
+  margin-top: auto;
+  margin-bottom: auto;
+  opacity: .3;
+  width: 12px;
+}
+
+.xIconToggle:hover {
+  opacity: .6;  
+}
+
 .outerSearchContainer {
   width: 50vw;
   margin: 3vh 0 2vh 0;
