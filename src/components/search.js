@@ -171,13 +171,13 @@ export const Search = (props) => {
         </div>
         <div className={styles.innerSearchContainer}>
           <div className={styles.searchComponent}>
-            <label htmlFor="state">Search by state</label>
+            <label htmlFor="state">Search by State</label>
             <Select
               id="state"
               className={styles.subSelect}
               onChange={onChangeParams}
               options={stateOptions}
-              placeholder={"Search by state"}
+              placeholder={"Search by State"}
               value={{
                 label: searchState?.state,
                 name: "usa_state",
@@ -185,14 +185,16 @@ export const Search = (props) => {
               }}
             />
           </div>
+        </div>
+        <div className={styles.innerSearchContainer}>
           <div className={styles.searchComponent}>
-            <label htmlFor="office">Search by office</label>
+            <label htmlFor="office">Search by Office</label>
               <Select
                 id="office"
                 className={styles.subSelect}
                 onChange={onChangeParams}
                 options={officeOptions}
-                placeholder="Search by office"
+                placeholder="Search by Office"
                 value={{
                   label: searchState?.office,
                   name: "usa_state",
@@ -200,7 +202,7 @@ export const Search = (props) => {
                 }}
               />
           </div>
-        </div>
+        </div>a
       </div>
       {searchParams ? (
         <button className={styles.clearButton} onClick={emptySearch}>
