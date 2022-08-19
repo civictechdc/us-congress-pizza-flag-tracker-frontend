@@ -30,11 +30,26 @@ const OrdersView = () => {
   const [sortType, setSortType] = useState("numeric");
   const [loading, setLoading] = useState(false);
   const [statuses, setStatuses] = useState([]);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const { setUserDisplay } = useContext(UserContext);
-  const navigate = useNavigate();
-
   const sortOptions = { sortedField, sortDir, sortType };
   const sortedOrders = useSortableData(orders, sortOptions);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowWidth(window.innerWidth);
+    }
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  }, []);
+
+  console.log("boop: ", windowWidth);
+
   const searchStateReducer = (searchState, action) => {
     switch (action.type) {
       case "order_number":
@@ -52,6 +67,7 @@ const OrdersView = () => {
         return;
     }
   };
+
   const [searchState, dispatch] = useReducer(
     searchStateReducer,
     initialSearchState

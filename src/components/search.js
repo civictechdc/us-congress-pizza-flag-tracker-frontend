@@ -202,7 +202,7 @@ export const Search = (props) => {
                 }}
               />
           </div>
-        </div>a
+        </div>
       </div>
       {searchParams ? (
         <button className={styles.clearButton} onClick={emptySearch}>
