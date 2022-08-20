@@ -20,7 +20,7 @@ import UserContext from "./userContext";
 import { useSortableData } from "./sorting/sortHook";
 import verticalLine from "./images/verticalLine.png"
 import downArrow from "./images/downArrow-14by9.png"
-import xIcon from "./images/x-12by13.png"
+import upArrow from "./images/upArrow-14by9.png"
 
 import styles from "../style/orders.module.css";
 
@@ -264,21 +264,20 @@ const OrdersView = () => {
               />
               {(searchMode == "off") ? (
                 <img
-                  className={styles.downArrowToggle}
+                  className={styles.arrowToggle}
                   src={downArrow}
                   alt={"Down Arrow"}
                   onClick={toggleSearchMode}
                 />
               ) : (
                 <img
-                  className={styles.xIconToggle}
-                  src={xIcon}
-                  alt={"X Icon"}
+                  className={styles.arrowToggle}
+                  src={upArrow}
+                  alt={"Up Arrow"}
                   onClick={toggleSearchMode}
                 />
               )}
             </div>
-            
             {(searchMode == "off") ? (
               <>
                 <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />

@@ -39,49 +39,6 @@
   text-align: left;
 }
 
-.verticalLineToggle {
-  height: 22px;
-  margin-top: auto;
-  margin-right: 10px;
-  margin-bottom: auto;
-  margin-left: auto;
-  width: 3px;
-}
-
-.verticalLineInput {
-  height: 22px;
-  right: 36px;
-  position: absolute;
-  top: 7px;
-  width: 3px;
-}
-
-.downArrowToggle {
-  height: 9px;
-  margin-top: auto;
-  margin-right: 14px;
-  margin-bottom: auto;
-  opacity: .3;
-  width: 14px;
-}
-
-.downArrowToggle:hover {
-  opacity: .6;
-}
-
-.xIconToggle {
-  height: 13px;
-  margin-top: auto;
-  margin-right: 14px;
-  margin-bottom: auto;
-  opacity: .3;
-  width: 12px;
-}
-
-.xIconToggle:hover {
-  opacity: .6;  
-}
-
 .outerSearchContainer {
   width: 50vw;
   margin: 3vh 0 2vh 0;
@@ -107,6 +64,60 @@
   margin-bottom: auto;
   margin-left: 10px;
   width: 75px;
+}
+
+.verticalLineToggle {
+  height: 22px;
+  margin-top: auto;
+  /* margin-right: 11px; */
+  margin-bottom: auto;
+  margin-left: auto;
+  width: 3px;
+}
+
+.verticalLineInput {
+  height: 22x;
+  position: absolute;
+  right: 36px;
+  top: 7px;
+  width: 3px;
+}
+
+.horizontalLineInput {
+  height: 1px;
+  right: 8px;
+  position: absolute;
+  top: 17.5px;
+  width: 22px;
+}
+
+.arrowToggle {
+  height: 29px;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding-top: 10px;
+  padding-right: 13px;
+  padding-bottom: 10px;
+  padding-left: 9px;
+  opacity: .3;
+  width: 3I 7px;
+}
+
+.arrowToggle:hover {
+  opacity: .6;
+}
+
+.xIconToggle {
+  height: 13px;
+  margin-top: auto;
+  margin-right: 13px;
+  margin-bottom: auto;
+  opacity: .3;
+  width: 12px;
+}
+
+.xIconToggle:hover {
+  opacity: .6;  
 }
 
 .subSelect {

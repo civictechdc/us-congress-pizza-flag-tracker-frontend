@@ -4,6 +4,7 @@ import Select from "react-select";
 import styles from "../style/orders.module.css";
 import { STATES } from "./states";
 import verticalLine from "./images/verticalLine.png"
+import xIcon from "./images/x-12by13.png"
 
 export const Search = (props) => {
   const { searchState, statuses, searchParams, clearSearch } = props;
@@ -154,6 +155,11 @@ export const Search = (props) => {
             className={styles.verticalLineInput}
             src={verticalLine}
             alt={"Vertical Line"}
+          />
+          <img
+            className={styles.horizontalLineInput}
+            src={verticalLine}
+            alt={"Horizontal Line"}
           />
           {/* {searchState.keyword && <XIcon className={styles.XIcon + ' ' + styles.XIcon2} onClick={onResetSearchTitle} />}   */}
         </div>
