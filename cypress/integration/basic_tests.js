@@ -33,14 +33,7 @@ describe("CRUD actions for superuser", () => {
   });
 
   beforeEach(() => {
-    cy.request({
-      method: "GET",
-      url: `${Cypress.env("api_server")}/reset`,
-      headers: {
-        "Content-type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-    });
+   cy.resetdb();
     cy.restoreLocalStorage();
   });
 
