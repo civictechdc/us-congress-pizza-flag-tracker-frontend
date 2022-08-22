@@ -97,7 +97,6 @@ export const Search = (props) => {
   };
 
   const onReset = (x) => {
-    console.log("X: ", x.target.attributes.id.value);
     const e = ({
       value: null,
       name: x.target.attributes.id.value,
@@ -126,6 +125,8 @@ export const Search = (props) => {
     clearSearch();
     setStatusSelected('');
   };
+
+  console.log("office", searchState?.office);
 
   return (
     <>
@@ -188,6 +189,15 @@ export const Search = (props) => {
               value: searchState?.state,
             }}
           />
+          {(searchState?.state !== "Search by State") && 
+            <img
+              id="state"
+              className={styles.xIcon}
+              src={xIcon}
+              alt={"X Icon"}
+              onClick={onReset}
+            />
+          } 
         </div>
         <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
         <div className={styles.innerSearchContainer}>
@@ -204,13 +214,15 @@ export const Search = (props) => {
               value: searchState?.office,
             }}
           />
-          <img
-            id="office"
-            className={styles.xIcon}
-            src={xIcon}
-            alt={"X Icon"}
-            onClick={onReset}
-          />
+          {(searchState?.office !== "Search by Office") && 
+            <img
+              id="office"
+              className={styles.xIcon}
+              src={xIcon}
+              alt={"X Icon"}
+              onClick={onReset}
+            />
+          } 
         </div>
         <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
         <div className={styles.innerSearchContainer}>
