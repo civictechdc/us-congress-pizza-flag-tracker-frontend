@@ -126,8 +126,6 @@ export const Search = (props) => {
     setStatusSelected('');
   };
 
-  console.log("office", searchState?.office);
-
   return (
     <>
       <div className={styles.outerSearchContainer}>
@@ -143,8 +141,15 @@ export const Search = (props) => {
             placeholder="Search by order number"
             value={searchState?.order_number}
           />
-          {/* {basicSearchValue && <XIcon className={styles.XIcon + ' ' + styles.XIcon1} onClick={resetOrderNumber} />} */}
- 
+          {searchState?.order_number && 
+            <img
+              id="order_number"
+              className={styles.xIcon}
+              src={xIcon}
+              alt={"X Icon"}
+              onClick={onReset}
+            />
+          }
           <img
             className={styles.verticalLineInput}
             src={verticalLine}
@@ -162,6 +167,15 @@ export const Search = (props) => {
             placeholder="Search by keyword"
             value={searchState?.keyword}
           />
+          {searchState?.keyword && 
+            <img
+              id="keyword"
+              className={styles.xIcon}
+              src={xIcon}
+              alt={"X Icon"}
+              onClick={onReset}
+            />
+          }
           <img
             className={styles.verticalLineInput}
             src={verticalLine}
@@ -171,8 +185,7 @@ export const Search = (props) => {
             className={styles.horizontalLineInput}
             src={verticalLine}
             alt={"Horizontal Line"}
-          />
-          {/* {searchState.keyword && <XIcon className={styles.XIcon + ' ' + styles.XIcon2} onClick={onResetSearchTitle} />}   */}
+          /> 
         </div>
         <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
         <div className={styles.innerSearchContainer}>

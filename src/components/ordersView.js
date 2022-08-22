@@ -54,8 +54,6 @@ const OrdersView = () => {
     };
   }, []);
 
-  console.log("boop: ", windowWidth);
-
   const searchStateReducer = (searchState, action) => {
     switch (action.type) {
       case "order_number":

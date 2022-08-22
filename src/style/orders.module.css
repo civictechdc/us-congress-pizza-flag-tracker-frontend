@@ -123,6 +123,18 @@
   opacity: .6;  
 }
 
+.xIcon:focus {
+  opacity: 1;
+}
+
+.innerSearchContainer:focus-within .xIcon {
+  opacity: .8;
+}
+
+.innerSearchContainer:focus-within .xIcon:hover {
+  opacity: 1;
+}
+
 .subSelect {
   width: 100%;
 }
