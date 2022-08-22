@@ -96,6 +96,15 @@ export const Search = (props) => {
     });
   };
 
+  const onReset = (x) => {
+    console.log("X: ", x.target.attributes.id.value);
+    const e = ({
+      value: null,
+      name: x.target.attributes.id.value,
+    });
+    onChangeParams(e);
+  }
+
   const onChangeMultiParams = (e) => {
     setStatusSelected(e);
     const queryParams = new URLSearchParams(window.location.search);
@@ -134,6 +143,7 @@ export const Search = (props) => {
             value={searchState?.order_number}
           />
           {/* {basicSearchValue && <XIcon className={styles.XIcon + ' ' + styles.XIcon1} onClick={resetOrderNumber} />} */}
+ 
           <img
             className={styles.verticalLineInput}
             src={verticalLine}
@@ -193,7 +203,14 @@ export const Search = (props) => {
               name: "usa_state",
               value: searchState?.office,
             }}
-          />          
+          />
+          <img
+            id="office"
+            className={styles.xIcon}
+            src={xIcon}
+            alt={"X Icon"}
+            onClick={onReset}
+          />
         </div>
         <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
         <div className={styles.innerSearchContainer}>

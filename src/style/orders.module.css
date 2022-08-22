@@ -69,26 +69,9 @@
 .verticalLineToggle {
   height: 22px;
   margin-top: auto;
-  /* margin-right: 11px; */
   margin-bottom: auto;
   margin-left: auto;
   width: 3px;
-}
-
-.verticalLineInput {
-  height: 22x;
-  position: absolute;
-  right: 36px;
-  top: 7px;
-  width: 3px;
-}
-
-.horizontalLineInput {
-  height: 1px;
-  right: 8px;
-  position: absolute;
-  top: 17.5px;
-  width: 22px;
 }
 
 .arrowToggle {
@@ -107,16 +90,36 @@
   opacity: .6;
 }
 
-.xIconToggle {
-  height: 13px;
-  margin-top: auto;
-  margin-right: 13px;
-  margin-bottom: auto;
-  opacity: .3;
-  width: 12px;
+.verticalLineInput {
+  height: 22x;
+  position: absolute;
+  right: 36px;
+  top: 7px;
+  width: 3px;
 }
 
-.xIconToggle:hover {
+.horizontalLineInput {
+  height: 1px;
+  right: 8px;
+  position: absolute;
+  top: 17.5px;
+  width: 22px;
+}
+
+.xIcon {
+  height: 36px;
+  opacity: .3;
+  padding-top: 10px;
+  padding-right: 13px;
+  padding-bottom: 13px;
+  padding-left: 13px;
+  position: absolute;
+  right: 37.5px;
+  top: 1px;
+  width: 38px;
+}
+
+.xIcon:hover {
   opacity: .6;  
 }
 
