@@ -311,35 +311,37 @@ const OrdersView = () => {
             )}
           </>
         ) : (
-          <>
+          <div className={styles.wideContentOuterContainer}>
             <Search
               searchState={searchState}
               statuses={statuses}
               searchParams={searchParams}
               clearSearch={clearSearch}
-            />       
-            {ordersToDisplay?.length ? (
-              <>
-                <TableHeader
-                  sortedField={sortedField}
-                  sortDir={sortDir}
-                  setSortedField={setSortedField}
-                  setSortType={setSortType}
-                  setSortDir={setSortDir}
-                />
-                <div className={styles.statusItem}>
-                  <h5> Please click on an order... </h5>
+            />
+            <div div className={styles.wideContentInnerContainer}>      
+              {ordersToDisplay?.length ? (
+                <>
+                  <TableHeader
+                    sortedField={sortedField}
+                    sortDir={sortDir}
+                    setSortedField={setSortedField}
+                    setSortType={setSortType}
+                    setSortDir={setSortDir}
+                  />
+                  <div className={styles.statusItem}>
+                    <h5> Please click on an order... </h5>
+                  </div>
+                </>
+              ) : (
+                <div className={styles.mainContainer}>
+                  <h4 className={styles.title}>No orders found</h4>
                 </div>
-              </>
-            ) : (
-              <div className={styles.mainContainer}>
-                <h4 className={styles.title}>No orders found</h4>
+              )}
+              <div className={styles.orderContainer}>
+                {orderTbody}
               </div>
-            )}
-            <div className={styles.orderContainer}>
-              {orderTbody}
-            </div>
-          </>
+            </div> 
+          </div>
         )}
       </div>
 

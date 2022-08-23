@@ -1,5 +1,4 @@
 .sortContainer {
-  width: 70vw;
   margin: 1vh 0 3vh 0;
   display: flex;
   justify-content: center;
@@ -49,14 +48,10 @@
   ==                                                ==
   ====================================================*/
 
-@media only screen and (min-width: 550px) and (max-width: 950px) {
+@media only screen and (min-width: 550px) and (max-width: 800px) {
   .sortContainer {
     width: 80vw;
     margin: 1vh 0 3vh 0;
-  }
-
-  .sortBox2 {
-    width: 100%;
   }
 }
 
@@ -72,10 +67,6 @@
   .sortContainer {
     width: 90vw;
     margin: .5vh 0 2vh 0;
-  }
-
-  .sortBox2 {
-    width: 100%;
   }
 
   .sortTitle {

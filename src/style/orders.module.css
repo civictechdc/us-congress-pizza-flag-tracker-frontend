@@ -5,8 +5,20 @@
   align-items: center;
 }
 
+.wideContentOuterContainer {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.wideContentInnerContainer {
+  align-items: center;
+  flex: 2;
+  flex-direction: column;
+}
+
 .orderContainer {
-  width: 100vw;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -40,13 +52,12 @@
 }
 
 .outerSearchContainer {
-  width: 50vw;
-  margin: 3vh 0 2vh 0;
-  display: flex;
-  justify-content: center;
   align-items: center;
+  margin: 3vh 20px 2vh 0;
+  display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  width: 350px;
 }
 
 .innerSearchContainer {
@@ -151,8 +162,10 @@
   color: #fff;
   background-color: #cf2f13;
   border-color: #cf2f13;
+  margin-top: 15px;
   padding: 1px 13.25px;
   border-radius: 8px;
+  width: min-content;
 }
 
 .inputOrderContainer {
@@ -275,11 +288,25 @@ input[type=number]::-webkit-inner-spin-button {
   ==                                                ==
   ====================================================*/
 
-@media only screen and (max-width: 801px) {
+@media only screen and (max-width: 800px) {
+  .outerSearchContainer {
+    width: 50vw;
+  }
+
+  .orderContainer {
+    width: 100vw;
+  }
+
+  .flagContainer {
+    width: 100vw;
+  }
+
   .flagItem {
-    width: 95vw;
-    margin-bottom: 2vh;
     flex-direction: column;
+    margin-right: auto;
+    margin-bottom: 2vh;
+    margin-left: auto;
+    width: 95vw;
   }
   
   .flagItemUpper {
@@ -291,6 +318,8 @@ input[type=number]::-webkit-inner-spin-button {
     width: 100vw;
     margin: 0 0 2vh 0;
   }
+
+
 
   .clearButton {
     margin-bottom: 1vh;
