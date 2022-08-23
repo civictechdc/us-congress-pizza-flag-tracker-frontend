@@ -309,14 +309,14 @@ const OrdersView = () => {
             )}
           </>
         ) : (
-          <div className={styles.wideContentOuterContainer}>
+          <>
             <Search
               searchState={searchState}
               statuses={statuses}
               searchParams={searchParams}
               clearSearch={clearSearch}
             />
-            <div div className={styles.wideContentInnerContainer}>      
+            <>      
               {ordersToDisplay?.length ? (
                 <>
                   <TableHeader
@@ -336,8 +336,8 @@ const OrdersView = () => {
               <div className={styles.orderContainer}>
                 {orderTbody}
               </div>
-            </div> 
-          </div>
+            </> 
+          </>
         )}
       </div>
 

@@ -1,22 +1,7 @@
 .mainContainer {
   width: 100vw;
-  display: flex;
-  flex-direction: column;
   align-items: center;
   min-height: 100%;
-}
-
-.wideContentOuterContainer {
-  align-items: flex-start;
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-}
-
-.wideContentInnerContainer {
-  align-items: center;
-  flex: 2;
-  flex-direction: column;
 }
 
 .orderContainer {
@@ -38,7 +23,6 @@
   text-align: center;
   margin-top: 3vh;
   margin-bottom: 1vh;
-  /* text-shadow: rgba(80, 79, 79, 0.863) -4px -1px 0px; */
 }
 
 /*============================== Search Bar =========================================*/
@@ -60,19 +44,12 @@
   text-align: left;
 }
 
-/* .verticalStretch {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-
-} */
-
 .outerSearchContainer {
   align-items: center;
   display: flex;
   flex-direction: column;
-  /* flex-grow: 1; */
-  /* height: 100%; */
+  float: left;
+  height: 100%;
   position: -webkit-sticky;
   position: sticky;
   top: 0;
@@ -177,9 +154,6 @@
 .clearContainer{
   background-color: #fff;
   display: flex;
-  /* flex-grow: 1; */
-  height: 100%;
-  overflow-y: hidden;
   width: 100%;
 }
 
