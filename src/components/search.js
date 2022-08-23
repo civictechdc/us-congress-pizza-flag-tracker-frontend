@@ -115,8 +115,8 @@ export const Search = (props) => {
   };
 
   return (
-    <div className={styles.outerSearchContainer}>
-      <>
+    // <div className={styles.verticalStretch}>    </div>  
+      <div className={styles.outerSearchContainer}>
         <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
         <div className={styles.innerSearchContainer}>
           <label className={styles.innerSearchLabel} htmlFor="orderNumber">Order Number</label>
@@ -240,14 +240,18 @@ export const Search = (props) => {
           />       
         </div>
         <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
-      </>
-      {searchParams ? (
-        <button className={styles.clearButton} onClick={emptySearch}>
-          Clear
-        </button>
-      ) : (
-        <></>
-      )}
-    </div>
+        <div className={styles.clearContainer} >
+          {searchParams ? (
+            <button className={styles.clearButton} onClick={emptySearch}>
+              Clear
+            </button>
+          ) : (
+            <button className={styles.clearButtonHidden} onClick={emptySearch}>
+            Clear
+          </button>
+          )}
+        </div>
+      </div>
+
   );
 };

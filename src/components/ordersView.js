@@ -293,9 +293,7 @@ const OrdersView = () => {
                     </div>
                   </>
                 ) : (
-                  <div className={styles.mainContainer}>
-                    <h4 className={styles.title}>No orders found</h4>
-                  </div>
+                  <h4 className={styles.subtitle}>No orders found</h4>
                 )}
                 <div className={styles.orderContainer}>
                   {orderTbody}
@@ -333,9 +331,7 @@ const OrdersView = () => {
                   </div>
                 </>
               ) : (
-                <div className={styles.mainContainer}>
-                  <h4 className={styles.title}>No orders found</h4>
-                </div>
+                <h4 className={styles.subtitle}>No orders found</h4>
               )}
               <div className={styles.orderContainer}>
                 {orderTbody}
