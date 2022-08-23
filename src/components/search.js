@@ -56,10 +56,6 @@ export const Search = (props) => {
     });
   }
 
-  // const resetOrderNumber = () => {
-  //   setBasicSearchValue('');
-  // }
-
   const onChangeSearchTitle = (e) => {
     const searchTitle = e.target.value;
     const queryParams = new URLSearchParams(window.location.search);
@@ -68,14 +64,6 @@ export const Search = (props) => {
     } else {
       queryParams.set("keyword", searchTitle);
     }
-    navigate(`${window.location.pathname}?${queryParams.toString()}`, {
-      replace: true,
-    });
-  }
-
-  const onResetSearchTitle = () => {
-    const queryParams = new URLSearchParams(window.location.search);
-    queryParams.delete("keyword");
     navigate(`${window.location.pathname}?${queryParams.toString()}`, {
       replace: true,
     });
@@ -127,8 +115,8 @@ export const Search = (props) => {
   };
 
   return (
-    <>
-      <div className={styles.outerSearchContainer}>
+    <div className={styles.outerSearchContainer}>
+      <>
         <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
         <div className={styles.innerSearchContainer}>
           <label className={styles.innerSearchLabel} htmlFor="orderNumber">Order Number</label>
@@ -252,7 +240,7 @@ export const Search = (props) => {
           />       
         </div>
         <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
-      </div>
+      </>
       {searchParams ? (
         <button className={styles.clearButton} onClick={emptySearch}>
           Clear
@@ -260,6 +248,6 @@ export const Search = (props) => {
       ) : (
         <></>
       )}
-    </>
+    </div>
   );
 };
