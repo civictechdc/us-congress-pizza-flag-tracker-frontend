@@ -25,10 +25,10 @@ export const TableHeader = (props) => {
   return (
     <>
       <div className={styles.sortContainer}>
-        <button className={styles.sortBox1} onClick={displaySort}>
+        <button className={styles.sortToggle} onClick={displaySort}>
           Sort By
         </button>
-        <div className={styles.sortBox2} style={{ display: sortControl }}>
+        <div className={styles.sortBox} style={{ display: sortControl }}>
           <div className={styles.sortItem}>
             <div className={styles.sortTitle}>Order: </div>
             <SortArrows

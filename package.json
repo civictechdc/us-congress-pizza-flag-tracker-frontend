@@ -40,7 +40,9 @@
     "eject": "react-scripts eject",
     "prepare": "husky install",
     "cypress:open": "cypress open",
-    "cy:run": "cypress run"
+    "cy:run": "cypress run",
+    "lint": "eslint --fix --ext .js,.jsx .",
+    "lint comment": "npm run lint -- --fix"
   },
   "eslintConfig": {
     "extends": [

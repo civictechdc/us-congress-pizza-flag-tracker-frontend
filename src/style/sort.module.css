@@ -1,13 +1,12 @@
 .sortContainer {
-  width: 70vw;
-  margin: 3vh 0 3vh 0;
+  margin: 1vh 0 3vh 0;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
 }
 
-.sortBox1 {
+.sortToggle {
   cursor: pointer;
   font-size: 1.5rem;
   font-weight: 500;
@@ -18,7 +17,7 @@
   border-radius: 8px;
 }
 
-.sortBox2 {
+.sortBox {
   width: 80%;
   display: flex;
   justify-content: space-evenly;
@@ -49,14 +48,10 @@
   ==                                                ==
   ====================================================*/
 
-@media only screen and (min-width: 550px) and (max-width: 950px) {
+@media only screen and (min-width: 550px) and (max-width: 800px) {
   .sortContainer {
     width: 80vw;
     margin: 1vh 0 3vh 0;
-  }
-
-  .sortBox2 {
-    width: 100%;
   }
 }
 
@@ -71,11 +66,7 @@
 @media only screen and (max-width: 600px) {
   .sortContainer {
     width: 90vw;
-    margin: 0vh 0 2vh 0;
-  }
-
-  .sortBox2 {
-    width: 100%;
+    margin: .5vh 0 2vh 0;
   }
 
   .sortTitle {

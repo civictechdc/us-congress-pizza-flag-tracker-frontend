@@ -25,23 +25,19 @@ function Header() {
                 Flagpizza
               </Link>
             </li>
-
-            <li>
-              <Link to={"/orders"} className={styles.nav_item}>
-                Orders
-              </Link>
-            </li>
-
             {isUser() ? (
               <>
+                <li>
+                  <Link to={"/orders"} className={styles.nav_item}>
+                    Orders
+                  </Link>
+                </li>
                 {orderControl() ? (
-                  <>
-                    <li>
-                      <Link to={"/add"} className={styles.nav_item}>
-                        Add
-                      </Link>
-                    </li>
-                  </>
+                  <li>
+                    <Link to={"/add"} className={styles.nav_item}>
+                      Add
+                    </Link>
+                  </li>
                 ) : (
                   <></>
                 )}
@@ -72,10 +68,6 @@ function Header() {
             <>
               <div className={styles.nav_group2}>
                 <li>
-                  {/* <button onClick={logOut} className={"btn btn-success"}>
-                    Log Out
-                  </button> */}
-
                   <input
                     type="image"
                     className={styles.logout_button}
@@ -83,7 +75,6 @@ function Header() {
                     src={logoutImage}
                   />
                 </li>
-
                 <li className={styles.nav_username}>
                   <p>{AuthService.getCurrentUserName()}</p>
                 </li>

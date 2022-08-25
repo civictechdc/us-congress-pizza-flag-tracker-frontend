@@ -4,7 +4,10 @@ export const useSortableData = (orders, options) => {
   const { sortedField, sortDir, sortType } = options;
 
   const sortedOrders = React.useMemo(() => {
-    let sortableOrders = [...orders];
+    let sortableOrders = [];
+    if (orders !== undefined) {
+      sortableOrders = [...orders];
+    }
     if (sortedField !== null) {
       if (sortType === "alpha" || sortType === "date") {
         sortableOrders = alphaSort(sortableOrders, sortedField, sortDir);

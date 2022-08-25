@@ -5,25 +5,29 @@ import React, {
   useRef,
   useContext,
 } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+
+import AuthService from "../service/authService";
 import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 
-import styles from "../style/orders.module.css";
-import AuthService from "../service/authService";
-import { useSortableData } from "./sorting/sortHook";
-import { TableHeader } from "./tableHeader";
-import Gauge from "./gauge";
-import { Search } from "./search";
 import { editOrderControl } from "./permissions";
-import { useNavigate, useLocation } from "react-router-dom";
-import UserContext from "./userContext";
+import Gauge from "./gauge";
 import PopUpBoxComponent from "./popUpBoxComponent";
+import { Search } from "./search";
+import { TableHeader } from "./tableHeader";
+import UserContext from "./userContext";
+import { useSortableData } from "./sorting/sortHook";
+import verticalLine from "./images/verticalLine.png"
+import downArrow from "./images/downArrow-14by9.png"
+import upArrow from "./images/upArrow-14by9.png"
+
+import styles from "../style/orders.module.css";
 
 const OrdersView = () => {
-  const initialSearchState = { keyword: "", status: [], state: "", office: "" };
+  const initialSearchState = { order_number: "", keyword: "", status: [], state: "", office: "" };
 
   const [orders, setOrders] = useState([]);
-  const [currentOrder, setCurrentOrder] = useState(null);
   const [popUpBox, setPopUpBox] = useState("none");
   const [message, setMessage] = useState("");
   const [sortedField, setSortedField] = useState(null);
@@ -31,13 +35,29 @@ const OrdersView = () => {
   const [sortType, setSortType] = useState("numeric");
   const [loading, setLoading] = useState(false);
   const [statuses, setStatuses] = useState([]);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [searchMode, setSearchMode] = useState("off");
   const { setUserDisplay } = useContext(UserContext);
-  const navigate = useNavigate();
-
   const sortOptions = { sortedField, sortDir, sortType };
   const sortedOrders = useSortableData(orders, sortOptions);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowWidth(window.innerWidth);
+    }
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  }, []);
+
   const searchStateReducer = (searchState, action) => {
     switch (action.type) {
+      case "order_number":
+        return { ...searchState, order_number: action.payload };
       case "keyword":
         return { ...searchState, keyword: action.payload };
       case "state":
@@ -51,6 +71,7 @@ const OrdersView = () => {
         return;
     }
   };
+
   const [searchState, dispatch] = useReducer(
     searchStateReducer,
     initialSearchState
@@ -116,9 +137,10 @@ const OrdersView = () => {
   useEffect(() => {
     setLoading(true);
     try {
+      dispatch({ type: "order_number", payload: "" });
+      dispatch({ type: "keyword", payload: "" });
       dispatch({ type: "state", payload: "Search by State" });
       dispatch({ type: "office", payload: "Search by Office" });
-      dispatch({ type: "keyword", payload: "" });
       if (searchParams) {
         retrieveOrders(searchParams);
         const parsedParams = new URLSearchParams(searchParams);
@@ -133,19 +155,18 @@ const OrdersView = () => {
     }
   }, [searchParams, dispatch]);
 
-  const refreshList = () => {
-    retrieveOrders();
-    setCurrentOrder(null);
-  };
-
   const setActiveOrder = (order) => {
     navigate("/scan/" + order.uuid);
   };
 
   const clearSearch = () => {
-    refreshList();
+    retrieveOrders();
     navigate("/");
   };
+
+  const toggleSearchMode = () => {
+    (searchMode == "off") ? setSearchMode("on") : setSearchMode("off") ;
+  }
 
   const formatDate = (dateString) => {
     /*https://github.com/w3c/respec/issues/1357#issuecomment-760913749 
@@ -229,36 +250,97 @@ const OrdersView = () => {
     <>
       <div className={styles.mainContainer}>
         <h4 className={styles.title}>Orders</h4>
-        <Search
-          searchState={searchState}
-          statuses={statuses}
-          searchParams={searchParams}
-          clearSearch={clearSearch}
-        />
-        {ordersToDisplay.length ? (
+        {(windowWidth < 801) ? (
           <>
-            <TableHeader
-              sortedField={sortedField}
-              sortDir={sortDir}
-              setSortedField={setSortedField}
-              setSortType={setSortType}
-              setSortDir={setSortDir}
-            />
-            <div className={styles.statusItem}>
-              <h5> Please click on an order... </h5>
+            <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
+            <div className={styles.searchToggleContainer}>
+              <h5 className={styles.searchToggle}>Search Controls</h5>
+              <img
+                className={styles.verticalLineToggle}
+                src={verticalLine}
+                alt={"Vertical Line"}
+              />
+              {(searchMode == "off") ? (
+                <img
+                  className={styles.arrowToggle}
+                  src={downArrow}
+                  alt={"Down Arrow"}
+                  onClick={toggleSearchMode}
+                />
+              ) : (
+                <img
+                  className={styles.arrowToggle}
+                  src={upArrow}
+                  alt={"Up Arrow"}
+                  onClick={toggleSearchMode}
+                />
+              )}
             </div>
+            {(searchMode == "off") ? (
+              <>
+                <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
+                {ordersToDisplay?.length ? (
+                  <>
+                    <TableHeader
+                      sortedField={sortedField}
+                      sortDir={sortDir}
+                      setSortedField={setSortedField}
+                      setSortType={setSortType}
+                      setSortDir={setSortDir}
+                    />
+                   <div className={styles.statusItem}>
+                      <h5> Please click on an order... </h5>
+                    </div>
+                  </>
+                ) : (
+                  <h4 className={styles.subtitle}>No orders found</h4>
+                )}
+                <div className={styles.orderContainer}>
+                  {orderTbody}
+                </div>
+              </>
+            ) : (
+              <Search
+                searchState={searchState}
+                statuses={statuses}
+                searchParams={searchParams}
+                clearSearch={clearSearch}
+              /> 
+            )}
           </>
         ) : (
-          <div className={styles.mainContainer}>
-            <h4 className={styles.title}>No orders found</h4>
-          </div>
+          <>
+            <Search
+              searchState={searchState}
+              statuses={statuses}
+              searchParams={searchParams}
+              clearSearch={clearSearch}
+            />
+            <>      
+              {ordersToDisplay?.length ? (
+                <>
+                  <TableHeader
+                    sortedField={sortedField}
+                    sortDir={sortDir}
+                    setSortedField={setSortedField}
+                    setSortType={setSortType}
+                    setSortDir={setSortDir}
+                  />
+                  <div className={styles.statusItem}>
+                    <h5> Please click on an order... </h5>
+                  </div>
+                </>
+              ) : (
+                <h4 className={styles.subtitle}>No orders found</h4>
+              )}
+              <div className={styles.orderContainer}>
+                {orderTbody}
+              </div>
+            </> 
+          </>
         )}
-        <div className={styles.orderContainer}>
-          {orderTbody}
-
-          <div className={styles.statusItemContainer}></div>
-        </div>
       </div>
+
       <PopUpBoxComponent
         closePopUpBox={closePopUpBox}
         message={message}
