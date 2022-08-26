@@ -116,139 +116,135 @@ export const Search = (props) => {
 
   return (
     <div className={styles.outerSearchContainer}>
-      <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
-      <div className={styles.innerSearchContainer}>
-        <label className={styles.innerSearchLabel} htmlFor="orderNumber">Order Number</label>
-        <input
-          id="orderNumber"
-          type="number"
-          className={styles.inputOrderContainer}
-          min="1"
-          onChange={onChangeOrderNumber}
-          placeholder="Search by order number"
-          value={searchState?.order_number}
-        />
-        {searchState?.order_number && 
-          <img
-            id="order_number"
-            className={styles.xIcon}
-            src={xIcon}
-            alt={"X Icon"}
-            onClick={onReset}
+      <div className={styles.middleSearchContainer}>  
+        <div className={styles.innerSearchContainer}>
+          <label className={styles.innerSearchLabel} htmlFor="orderNumber">Order Number</label>
+          <input
+            id="orderNumber"
+            type="number"
+            className={styles.inputOrderContainer}
+            min="1"
+            onChange={onChangeOrderNumber}
+            placeholder="Search by order number"
+            value={searchState?.order_number}
           />
-        }
-        <img
-          className={styles.verticalLineInput}
-          src={verticalLine}
-          alt={"Vertical Line"}
-        />
-      </div>
-      <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
-      <div className={styles.innerSearchContainer}>
-        <label className={styles.innerSearchLabel} htmlFor="keyword">Keyword</label>
-        <input
-          id="keyword"
-          type="text"
-          className={styles.inputOrderContainer}
-          onChange={onChangeSearchTitle}
-          placeholder="Search by keyword"
-          value={searchState?.keyword}
-        />
-        {searchState?.keyword && 
+          {searchState?.order_number && 
+            <img
+              id="order_number"
+              className={styles.xIcon}
+              src={xIcon}
+              alt={"X Icon"}
+              onClick={onReset}
+            />
+          }
           <img
+            className={styles.verticalLineInput}
+            src={verticalLine}
+            alt={"Vertical Line"}
+          />
+        </div>
+        <div className={styles.innerSearchContainer}>
+          <label className={styles.innerSearchLabel} htmlFor="keyword">Keyword</label>
+          <input
             id="keyword"
-            className={styles.xIcon}
-            src={xIcon}
-            alt={"X Icon"}
-            onClick={onReset}
+            type="text"
+            className={styles.inputOrderContainer}
+            onChange={onChangeSearchTitle}
+            placeholder="Search by keyword"
+            value={searchState?.keyword}
           />
-        }
-        <img
-          className={styles.verticalLineInput}
-          src={verticalLine}
-          alt={"Vertical Line"}
-        />
-        <img
-          className={styles.horizontalLineInput}
-          src={verticalLine}
-          alt={"Horizontal Line"}
-        /> 
-      </div>
-      <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
-      <div className={styles.innerSearchContainer}>
-        <label className={styles.innerSearchLabel} htmlFor="state">State</label>
-        <Select
-          id="state"
-          className={styles.subSelect}
-          onChange={onChangeParams}
-          options={stateOptions}
-          placeholder={"Search by State"}
-          value={{
-            label: searchState?.state,
-            name: "usa_state",
-            value: searchState?.state,
-          }}
-        />
-        {(searchState?.state !== "Search by State") && 
+          {searchState?.keyword && 
+            <img
+              id="keyword"
+              className={styles.xIcon}
+              src={xIcon}
+              alt={"X Icon"}
+              onClick={onReset}
+            />
+          }
           <img
+            className={styles.verticalLineInput}
+            src={verticalLine}
+            alt={"Vertical Line"}
+          />
+          <img
+            className={styles.horizontalLineInput}
+            src={verticalLine}
+            alt={"Horizontal Line"}
+          /> 
+        </div>
+        <div className={styles.innerSearchContainer}>
+          <label className={styles.innerSearchLabel} htmlFor="state">State</label>
+          <Select
             id="state"
-            className={styles.xIcon}
-            src={xIcon}
-            alt={"X Icon"}
-            onClick={onReset}
+            className={styles.subSelect}
+            onChange={onChangeParams}
+            options={stateOptions}
+            placeholder={"Search by State"}
+            value={{
+              label: searchState?.state,
+              name: "usa_state",
+              value: searchState?.state,
+            }}
           />
-        } 
-      </div>
-      <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
-      <div className={styles.innerSearchContainer}>
-        <label className={styles.innerSearchLabel} htmlFor="office">Office</label>
-        <Select
-          id="office"
-          className={styles.subSelect}
-          onChange={onChangeParams}
-          options={officeOptions}
-          placeholder="Search by Office"
-          value={{
-            label: searchState?.office,
-            name: "usa_state",
-            value: searchState?.office,
-          }}
-        />
-        {(searchState?.office !== "Search by Office") && 
-          <img
+          {(searchState?.state !== "Search by State") && 
+            <img
+              id="state"
+              className={styles.xIcon}
+              src={xIcon}
+              alt={"X Icon"}
+              onClick={onReset}
+            />
+          } 
+        </div>
+        <div className={styles.innerSearchContainer}>
+          <label className={styles.innerSearchLabel} htmlFor="office">Office</label>
+          <Select
             id="office"
-            className={styles.xIcon}
-            src={xIcon}
-            alt={"X Icon"}
-            onClick={onReset}
+            className={styles.subSelect}
+            onChange={onChangeParams}
+            options={officeOptions}
+            placeholder="Search by Office"
+            value={{
+              label: searchState?.office,
+              name: "usa_state",
+              value: searchState?.office,
+            }}
           />
-        } 
-      </div>
-      <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
-      <div className={styles.innerSearchContainer}>
-        <label className={styles.innerSearchLabel} htmlFor="status">Status</label>
-        <Select
-          id="status"
-          className={styles.subSelect}
-          isMulti={true}
-          label="Search by status"
-          onChange={onChangeMultiParams}
-          options={statusOptions}
-          placeholder="Search by status"
-          value={statusSelected}
-        />       
-      </div>
-      <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
-      <div className={styles.clearContainer} >
-        {searchParams ? (
-          <button className={styles.clearButton} onClick={emptySearch}>
+          {(searchState?.office !== "Search by Office") && 
+            <img
+              id="office"
+              className={styles.xIcon}
+              src={xIcon}
+              alt={"X Icon"}
+              onClick={onReset}
+            />
+          } 
+        </div>
+        <div className={styles.innerSearchContainer}>
+          <label className={styles.innerSearchLabel} htmlFor="status">Status</label>
+          <Select
+            id="status"
+            className={styles.subSelect}
+            isMulti={true}
+            label="Search by status"
+            onChange={onChangeMultiParams}
+            options={statusOptions}
+            placeholder="Search by status"
+            value={statusSelected}
+          />       
+        </div>
+        <div className={styles.clearContainer} >
+          {searchParams ? (
+            <button className={styles.clearButton} onClick={emptySearch}>
+              Clear
+            </button>
+          ) : (
+            <button className={styles.clearButtonHidden} onClick={emptySearch}>
             Clear
           </button>
-        ) : (
-          <button className={styles.clearButtonHidden} onClick={emptySearch}>
-          Clear
-        </button>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

@@ -308,7 +308,7 @@ const OrdersView = () => {
               /> 
             )}
           </>
-        ) : (
+        ) : (     // windowWidth > 800
           <>
             <Search
               searchState={searchState}
@@ -316,7 +316,7 @@ const OrdersView = () => {
               searchParams={searchParams}
               clearSearch={clearSearch}
             />
-            <>      
+            <div className={styles.sortAndResultsContainer}>      
               {ordersToDisplay?.length ? (
                 <>
                   <TableHeader
@@ -336,7 +336,7 @@ const OrdersView = () => {
               <div className={styles.orderContainer}>
                 {orderTbody}
               </div>
-            </> 
+            </div>
           </>
         )}
       </div>
