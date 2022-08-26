@@ -6,9 +6,12 @@ input:-webkit-autofill:active {
 }
 
 .mainContainer {
-  width: 100vw;
+
   align-items: center;
+  display: flex;
+  flex-direction: column;
   min-height: 100%;
+  width: 100vw;
 }
 
 .orderContainer {
@@ -320,6 +323,10 @@ input[type=number]::-webkit-inner-spin-button {
   ====================================================*/
 
 @media only screen and (max-width: 800px) {
+  html, body {
+    height: 100%
+  }
+
   .outerSearchContainer {
     width: 50vw;
   }
@@ -346,13 +353,13 @@ input[type=number]::-webkit-inner-spin-button {
   }
 
   .outerSearchContainer {
-    width: 100vw;
+    flex-grow: 2;
     margin: 0 0 0vh 0;
+    width: 100vw;
   }
 
   .clearContainer{
-    flex-grow: 0;
-    min-height: 0;
+    flex-grow: 2;
   }
 }
 
