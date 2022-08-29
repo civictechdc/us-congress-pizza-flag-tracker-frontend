@@ -43,6 +43,23 @@ const OrdersView = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (statuses.length === 0) {
+      StatusDataService.retrieveStatuses(setStatuses).catch((err) => {
+        setMessage("Status Issue: " + err);
+        setPopUpBox("block");
+      });
+    }
+  }, [statuses]);
+
+  const statusOptions = statuses.map((status) => ({
+    value: status.status_code,
+    label: status.status_code,
+    name: "status_code",
+  }));
+
+  const [statusSelected, setStatusSelected] = useState(statusOptions[0]);
+
+  useEffect(() => {
     const handleWindowResize = () => {
       setWindowWidth(window.innerWidth);
     }
@@ -160,6 +177,7 @@ const OrdersView = () => {
   };
 
   const clearSearch = () => {
+    setStatusSelected('');
     retrieveOrders();
     navigate("/");
   };
@@ -180,15 +198,6 @@ const OrdersView = () => {
 
   let ordersToDisplay = [];
   sortedOrders ? (ordersToDisplay = sortedOrders) : (ordersToDisplay = orders);
-
-  useEffect(() => {
-    if (statuses.length === 0) {
-      StatusDataService.retrieveStatuses(setStatuses).catch((err) => {
-        setMessage("Status Issue: " + err);
-        setPopUpBox("block");
-      });
-    }
-  }, [statuses]);
 
   const isEditor = useRef("");
   useEffect(() => {
@@ -302,7 +311,9 @@ const OrdersView = () => {
             ) : (
               <Search
                 searchState={searchState}
-                statuses={statuses}
+                statusOptions={statusOptions}
+                statusSelected={statusSelected}
+                setStatusSelected={setStatusSelected}
                 searchParams={searchParams}
                 clearSearch={clearSearch}
               /> 
@@ -312,7 +323,9 @@ const OrdersView = () => {
           <>
             <Search
               searchState={searchState}
-              statuses={statuses}
+              statusOptions={statusOptions}
+              statusSelected={statusSelected}
+              setStatusSelected={setStatusSelected}
               searchParams={searchParams}
               clearSearch={clearSearch}
             />

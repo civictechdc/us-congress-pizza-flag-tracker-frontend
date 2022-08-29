@@ -7,17 +7,9 @@ import verticalLine from "./images/verticalLine.png"
 import xIcon from "./images/x-12by13.png"
 
 export const Search = (props) => {
-  const { searchState, statuses, searchParams, clearSearch } = props;
+  const { searchState, statusOptions, statusSelected, setStatusSelected, searchParams, clearSearch } = props;
   const navigate = useNavigate();
  
-  const statusOptions = statuses.map((status) => ({
-    value: status.status_code,
-    label: status.status_code,
-    name: "status_code",
-  }));
-
-  const [statusSelected, setStatusSelected] = useState(statusOptions[0]);
-
   let stateOptions = [];
   if (STATES) {
     stateOptions = STATES.map((state) => ({
@@ -107,11 +99,6 @@ export const Search = (props) => {
     navigate(`${window.location.pathname}?${queryParams.toString()}`, {
       replace: true,
     });
-  };
-
-  const emptySearch = () => {
-    clearSearch();
-    setStatusSelected('');
   };
 
   return (
@@ -236,11 +223,11 @@ export const Search = (props) => {
         </div>
         <div className={styles.clearContainer} >
           {searchParams ? (
-            <button className={styles.clearButton} onClick={emptySearch}>
+            <button className={styles.clearButton} onClick={clearSearch}>
               Clear
             </button>
           ) : (
-            <button className={styles.clearButtonHidden} onClick={emptySearch}>
+            <button className={styles.clearButtonHidden} onClick={clearSearch}>
             Clear
           </button>
           )}
