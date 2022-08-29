@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Select from "react-select";
 import { STATES } from "./states.js";
 import styles from "../style/orderForm.module.css";
+import ConfirmPopUpBoxComponent from "./ConfirmPopUpBoxComponent.js";
 
 const OrderForm = (props) => {
   const {
@@ -18,6 +19,11 @@ const OrderForm = (props) => {
 
   const [isLastChangeUSState, setIsLastChangeUSState] = useState(false);
   const [whyCantIUpdate, setWhyCantIUpdate] = useState(false);
+  const [popUpBox, setPopUpBox] = useState("none");
+
+  const closePopUpBox = () => {
+    setPopUpBox("none");
+  };
 
   let optionUSStates = [];
   if (STATES) {
@@ -107,6 +113,10 @@ const OrderForm = (props) => {
 
   const whyNoSave = () => {
     setWhyCantIUpdate(true);
+  };
+
+  const handleDeleteClick = () => {
+    setPopUpBox("block");
   };
 
   // used to set Submit button className in addition to handleSave function
@@ -267,7 +277,7 @@ const OrderForm = (props) => {
             {mode === "edit" && (
               <button
                 className={`btn btn-danger mr-2`}
-                onClick={deleteOrderFunc}
+                onClick={handleDeleteClick}
               >
                 Delete
               </button>
@@ -283,6 +293,12 @@ const OrderForm = (props) => {
           </>
         )}
       </div>
+      <ConfirmPopUpBoxComponent
+        closePopUpBox={closePopUpBox}
+        message={`Are you sure you want to delete order number ${order.order_number} ?`}
+        popUpBox={popUpBox}
+        handleClick={deleteOrderFunc}
+      />
     </>
   );
 };
