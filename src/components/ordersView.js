@@ -63,6 +63,7 @@ const OrdersView = () => {
       case "state":
         return { ...searchState, state: action.payload };
       case "status":
+        //eslint-disable-next-line
         const statusArray = [...searchState?.status ?? [], action?.payload]; // https://www.angularfix.com/2021/12/typeerror-intermediate.html
         return { ...searchState, status: statusArray };
       case "office":
@@ -208,7 +209,7 @@ const OrdersView = () => {
                 key={index}
               >
                 <div className={styles.flagItemUpper}>                
-                  <p className={styles.orderNum}>{order.order_number}</p>
+                  <p className={styles.orderNum} data-order-number={order.order_number}>{order.order_number}</p>
                   <div className={styles.infoBox}>
                     <p className={styles.officeCode}>{order.home_office_code}</p>
                     <p className={styles.constituentName}>{order.person.name}</p>
