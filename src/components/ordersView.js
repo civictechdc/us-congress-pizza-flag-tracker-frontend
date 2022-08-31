@@ -310,23 +310,27 @@ const OrdersView = () => {
               </>
             ) : (
               <Search
+                mediaQuery={mediaQuery}
                 searchState={searchState}
                 statusOptions={statusOptions}
                 statusSelected={statusSelected}
                 setStatusSelected={setStatusSelected}
                 searchParams={searchParams}
+                toggleSearchMode={toggleSearchMode}
                 clearSearch={clearSearch}
               /> 
             )}
           </>
-        ) : (     // mediaQuery > 800
+        ) : (     // mediaQuery >= 801
           <>
             <Search
+              mediaQuery={mediaQuery}
               searchState={searchState}
               statusOptions={statusOptions}
               statusSelected={statusSelected}
               setStatusSelected={setStatusSelected}
               searchParams={searchParams}
+              toggleSearchMode={toggleSearchMode}
               clearSearch={clearSearch}
             />
             <div className={styles.sortAndResultsContainer}>      

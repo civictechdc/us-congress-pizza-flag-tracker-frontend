@@ -7,7 +7,7 @@ import verticalLine from "./images/verticalLine.png"
 import xIcon from "./images/x-12by13.png"
 
 export const Search = (props) => {
-  const { searchState, statusOptions, statusSelected, setStatusSelected, searchParams, clearSearch } = props;
+  const { mediaQuery, searchState, statusOptions, statusSelected, setStatusSelected, searchParams, toggleSearchMode, clearSearch } = props;
   const navigate = useNavigate();
  
   let stateOptions = [];
@@ -221,7 +221,15 @@ export const Search = (props) => {
             value={statusSelected}
           />       
         </div>
-        <div className={styles.clearContainer} >
+        <div className={styles.buttonContainer}>
+          <div className={styles.buttonInnerContainer}>
+          {(mediaQuery < 801) ? (
+            <button className={styles.closeButton} onClick={toggleSearchMode}>
+              Close
+            </button>
+          ) : (
+            <></>
+          )}
           {searchParams ? (
             <button className={styles.clearButton} onClick={clearSearch}>
               Clear
@@ -231,6 +239,7 @@ export const Search = (props) => {
             Clear
           </button>
           )}
+          </div>
         </div>
       </div>
     </div>
