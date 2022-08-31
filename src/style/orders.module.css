@@ -225,7 +225,6 @@ input:-webkit-autofill:active {
   height: fit-content;
   padding: 1px 13.25px;
   border-radius: 8px;
-  /* visibility: hidden; */
   width: min-content;
 }
 
