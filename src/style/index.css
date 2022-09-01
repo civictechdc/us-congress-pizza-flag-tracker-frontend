@@ -67,3 +67,10 @@ code {
 .badge {
   margin: 1px;
 }
+
+@media only screen and (max-width: 600px) {
+  .pop-up {
+    width: 94vw;
+    left: 3vw;
+  }
+}
