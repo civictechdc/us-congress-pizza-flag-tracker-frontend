@@ -467,6 +467,14 @@ input[type=number]::-webkit-inner-spin-button {
     order: 3;
   }
 
+  .innerSearchLabel{
+    font-size: 12px;
+  }
+
+  .subSelect {
+    font-size: 16px;
+  }
+
   .gaugeContainer {
     order: 5;
     width: 100%;
