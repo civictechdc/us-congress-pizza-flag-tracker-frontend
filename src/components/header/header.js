@@ -12,6 +12,7 @@ function Header() {
 
   function logOut() {
     AuthService.logout();
+    window.location.reload();
     setUserDisplay();
   }
 
