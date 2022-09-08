@@ -35,7 +35,7 @@ const OrdersView = () => {
   const [sortType, setSortType] = useState("numeric");
   const [loading, setLoading] = useState(false);
   const [statuses, setStatuses] = useState([]);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [mediaQuery, setMediaQuery] = useState(window.innerWidth);
   const [searchMode, setSearchMode] = useState("off");
   const { setUserDisplay } = useContext(UserContext);
   const sortOptions = { sortedField, sortDir, sortType };
@@ -43,8 +43,25 @@ const OrdersView = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (statuses.length === 0) {
+      StatusDataService.retrieveStatuses(setStatuses).catch((err) => {
+        setMessage("Status Issue: " + err);
+        setPopUpBox("block");
+      });
+    }
+  }, [statuses]);
+
+  const statusOptions = statuses.map((status) => ({
+    value: status.status_code,
+    label: status.status_code,
+    name: "status_code",
+  }));
+
+  const [statusSelected, setStatusSelected] = useState(statusOptions[0]);
+
+  useEffect(() => {
     const handleWindowResize = () => {
-      setWindowWidth(window.innerWidth);
+      setMediaQuery(window.innerWidth);
     }
 
     window.addEventListener('resize', handleWindowResize);
@@ -161,6 +178,7 @@ const OrdersView = () => {
   };
 
   const clearSearch = () => {
+    setStatusSelected('');
     retrieveOrders();
     navigate("/");
   };
@@ -181,15 +199,6 @@ const OrdersView = () => {
 
   let ordersToDisplay = [];
   sortedOrders ? (ordersToDisplay = sortedOrders) : (ordersToDisplay = orders);
-
-  useEffect(() => {
-    if (statuses.length === 0) {
-      StatusDataService.retrieveStatuses(setStatuses).catch((err) => {
-        setMessage("Status Issue: " + err);
-        setPopUpBox("block");
-      });
-    }
-  }, [statuses]);
 
   const isEditor = useRef("");
   useEffect(() => {
@@ -251,7 +260,7 @@ const OrdersView = () => {
     <>
       <div className={styles.mainContainer}>
         <h4 className={styles.title}>Orders</h4>
-        {(windowWidth < 801) ? (
+        {(mediaQuery < 801) ? (
           <>
             <div style={{backgroundColor:"#000", height:"1px", width:"100%"}} />
             <div className={styles.searchToggleContainer}>
@@ -302,22 +311,30 @@ const OrdersView = () => {
               </>
             ) : (
               <Search
+                mediaQuery={mediaQuery}
                 searchState={searchState}
-                statuses={statuses}
+                statusOptions={statusOptions}
+                statusSelected={statusSelected}
+                setStatusSelected={setStatusSelected}
                 searchParams={searchParams}
+                toggleSearchMode={toggleSearchMode}
                 clearSearch={clearSearch}
               /> 
             )}
           </>
-        ) : (
+        ) : (     // mediaQuery >= 801
           <>
             <Search
+              mediaQuery={mediaQuery}
               searchState={searchState}
-              statuses={statuses}
+              statusOptions={statusOptions}
+              statusSelected={statusSelected}
+              setStatusSelected={setStatusSelected}
               searchParams={searchParams}
+              toggleSearchMode={toggleSearchMode}
               clearSearch={clearSearch}
             />
-            <>      
+            <div className={styles.sortAndResultsContainer}>      
               {ordersToDisplay?.length ? (
                 <>
                   <TableHeader
@@ -337,7 +354,7 @@ const OrdersView = () => {
               <div className={styles.orderContainer}>
                 {orderTbody}
               </div>
-            </> 
+            </div>
           </>
         )}
       </div>
