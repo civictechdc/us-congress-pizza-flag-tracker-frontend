@@ -1,7 +1,7 @@
 import React from "react";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
-import "../style/carousel.css";
+import "../style/carousel.module.css";
 
 import flag from "../components/images/us-capitol-flag-6240878.jpg";
 
