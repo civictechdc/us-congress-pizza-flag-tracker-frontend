@@ -1,4 +1,5 @@
 import React from "react";
+import Carousel from "../components/carousel";
 import flag from "../components/images/us-capitol-flag-6240878.jpg";
 
 const styles = {
@@ -19,6 +20,7 @@ const Welcome = () => {
         Welcome Page!
       </h2>
       <br></br>
+      <Carousel />
       <div style={styles.flexContainer}>
         <img
           style={styles.flexItem}
