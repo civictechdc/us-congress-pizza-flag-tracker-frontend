@@ -1,0 +1,7 @@
+.alice-carousel {
+  /* width: 100% */
+}
+
+.alice-carousel__stage-item * {
+  margin: auto;
+}
