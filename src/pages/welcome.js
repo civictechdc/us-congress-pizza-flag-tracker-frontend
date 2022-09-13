@@ -5,12 +5,8 @@ import styles from "../style/welcome.module.css";
 const Welcome = () => {
   return (
     <>
-      <h2 style={{ margin: "auto", width: "50%", textAlign: "center" }}>
-        Welcome Page!
-      </h2>
-      <br></br>
       <Carousel />
-      <div className={styles.textContainer}>
+      <section className={styles.textContainer}>
         <div className={styles.textInnerContainer}>
           <h4>
             Frustrated{" "}
@@ -42,16 +38,16 @@ const Welcome = () => {
           <br />
           <h4>
             The app here proposes to ask the agency employees who box the flag
-            for their help to print and add QR code stickers . Then at each
-            step, we would ask the next employees to confirm a flag box's
-            arrival by scanning that sticker. House district staffers won't lose
-            track of flags anymore. Whenever updates happen, the app clarifies
-            who last scanned it, and where the flag is. That means the beloved
-            flag service works better for everyone.
+            for their help to print and add QR code stickers. Then at each step,
+            we would ask the next employees to confirm a flag box's arrival by
+            scanning that sticker. House district staffers won't lose track of
+            flags anymore. Whenever updates happen, the app clarifies who last
+            scanned it, and where the flag is. That means the beloved flag
+            service works better for everyone.
           </h4>
           <br />
           <h4>
-            This app has been a collaboration between{" "}
+            This app is a collaboration between{" "}
             <a href="https://codefordc.org/">Code For DC</a> and the{" "}
             <a href="https://msacaphill.my.canva.site/">
               Modernization Staff Association
@@ -59,7 +55,7 @@ const Welcome = () => {
             .
           </h4>
         </div>
-      </div>
+      </section>
     </>
   );
 };
