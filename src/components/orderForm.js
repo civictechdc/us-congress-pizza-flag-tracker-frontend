@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Select from "react-select";
 import { STATES } from "./states.js";
 import styles from "../style/orderForm.module.css";
-import ConfirmPopUpBoxComponent from "./ConfirmPopUpBoxComponent.js";
+import ConfirmPopUpBoxComponent from "./confirmPopUpBoxComponent.js";
 
 const OrderForm = (props) => {
   const {

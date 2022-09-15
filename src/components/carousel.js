@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AliceCarousel from "react-alice-carousel";
-import "react-alice-carousel/lib/alice-carousel.css";
+import "../style/alice-carousel.css";
 // https://github.com/maxmarinich/react-alice-carousel
-import styles from "../style/carousel.module.css";
 
 import office from "../components/images/Capitol-Flag-Office-800x450.jpg";
 import officeMedium from "../components/images/Capitol-Flag-Office-500x281.jpg";
@@ -19,9 +18,24 @@ import coverPanel from "../components/images/coverPanel.png";
 const handleDragStart = (e) => e.preventDefault();
 
 const large = [
-  <img src={zoomOut} onDragStart={handleDragStart} role="presentation" />,
-  <img src={zoomIn} onDragStart={handleDragStart} role="presentation" />,
-  <img src={office} onDragStart={handleDragStart} role="presentation" />,
+  <img
+    src={zoomOut}
+    className="widthfiftypercent"
+    onDragStart={handleDragStart}
+    role="presentation"
+  />,
+  <img
+    src={zoomIn}
+    className="widthfiftypercent"
+    onDragStart={handleDragStart}
+    role="presentation"
+  />,
+  <img
+    src={office}
+    className="widthfiftypercent"
+    onDragStart={handleDragStart}
+    role="presentation"
+  />,
 ];
 
 const medium = [
@@ -69,14 +83,14 @@ const Carousel = () => {
   }
 
   return (
-    <section className={styles.carouselContainer}>
+    <section className="carouselContainer">
       <img
-        className={styles.coverPanelLeft}
+        className="coverPanelLeft"
         src={coverPanel}
         // covers odd edge carousel artifact edge cases
       />
       <AliceCarousel
-        autoPlay
+        // autoPlay
         autoPlayInterval={10000}
         autoPlayStrategy={"all"}
         disableButtonsControls
@@ -87,7 +101,7 @@ const Carousel = () => {
         paddingLeft={buffer}
       />
       <img
-        className={styles.coverPanelRight}
+        className="coverPanelRight"
         src={coverPanel}
         // covers odd edge carousel artifact edge cases
       />
