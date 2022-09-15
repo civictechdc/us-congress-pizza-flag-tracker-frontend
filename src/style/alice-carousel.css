@@ -233,3 +233,21 @@
 .widthfiftypercent {
   width: 50%;
 }
+
+
+@media only all and (min-width: 800px) {
+  .carouselContainer {
+    padding-left: 15px;
+    position: static;
+    top: 0px;
+    width: 50%;
+  }
+
+  .coverPanelLeft, .coverPanelRight {
+    display: none;
+  }
+
+  .widthfiftypercent {
+    width: 45vw;
+  }
+}

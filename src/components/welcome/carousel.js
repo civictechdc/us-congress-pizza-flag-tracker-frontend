@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import AliceCarousel from "react-alice-carousel";
-import "../style/alice-carousel.css";
+import "../../style/alice-carousel.css";
 // https://github.com/maxmarinich/react-alice-carousel
 
-import office from "../components/images/Capitol-Flag-Office-800x450.jpg";
-import officeMedium from "../components/images/Capitol-Flag-Office-500x281.jpg";
-import officeSmall from "../components/images/Capitol-Flag-Office-280x157.jpg";
-import zoomIn from "../components/images/STOCap-05-800x450.jpg";
-import zoomInMedium from "../components/images/STOCap-05-500x281.jpg";
-import zoomInSmall from "../components/images/STOCap-05-280x157.jpg";
-import zoomOut from "../components/images/STOCap-02-800x450.jpg";
-import zoomOutMedium from "../components/images/STOCap-02-500x281.jpg";
-import zoomOutSmall from "../components/images/STOCap-02-280x157.jpg";
+import office from "../../components/images/Capitol-Flag-Office-800x450.jpg";
+import officeMedium from "../../components/images/Capitol-Flag-Office-500x281.jpg";
+import officeSmall from "../../components/images/Capitol-Flag-Office-280x157.jpg";
+import zoomIn from "../../components/images/STOCap-05-800x450.jpg";
+import zoomInMedium from "../../components/images/STOCap-05-500x281.jpg";
+import zoomInSmall from "../../components/images/STOCap-05-280x157.jpg";
+import zoomOut from "../../components/images/STOCap-02-800x450.jpg";
+import zoomOutMedium from "../../components/images/STOCap-02-500x281.jpg";
+import zoomOutSmall from "../../components/images/STOCap-02-280x157.jpg";
 
-import coverPanel from "../components/images/coverPanel.png";
+import coverPanel from "../../components/images/coverPanel.png";
 
 const handleDragStart = (e) => e.preventDefault();
 
@@ -50,20 +50,8 @@ const small = [
   <img src={officeSmall} onDragStart={handleDragStart} role="presentation" />,
 ];
 
-const Carousel = () => {
-  const [mediaQuery, setMediaQuery] = useState(window.innerWidth);
-
-  useEffect(() => {
-    const handleWindowResize = () => {
-      setMediaQuery(window.innerWidth);
-    };
-
-    window.addEventListener("resize", handleWindowResize);
-
-    return () => {
-      window.removeEventListener("resize", handleWindowResize);
-    };
-  }, []);
+const Carousel = (props) => {
+  const { mediaQuery } = props;
 
   let items = large;
   let buffer = (mediaQuery - 800) / 2;
@@ -98,7 +86,7 @@ const Carousel = () => {
         items={items}
         keyboardNavigation
         mouseTracking
-        paddingLeft={buffer}
+        // paddingLeft={buffer}
       />
       <img
         className="coverPanelRight"
