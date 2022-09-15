@@ -1,0 +1,18 @@
+.carouselContainer {
+  position: relative;
+  top: -430px;
+  width: 100%;
+}
+
+.coverPanelLeft {
+  position: relative;
+  top: 452px;
+  z-index: 10;
+}
+
+.coverPanelRight {
+  left: 98%;
+  position: absolute;
+  top: 452px;
+  z-index: 10;
+}

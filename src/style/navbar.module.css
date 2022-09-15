@@ -1,3 +1,7 @@
+header {
+    z-index: 100;
+}
+
 .logout_button {
     height: 20px
 }
