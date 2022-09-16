@@ -230,10 +230,9 @@
   z-index: 10;
 }
 
-.widthfiftypercent {
-  width: 50%;
+.imgSize {
+  width: 90vw;
 }
-
 
 @media only all and (min-width: 800px) {
   .carouselContainer {
@@ -247,7 +246,7 @@
     display: none;
   }
 
-  .widthfiftypercent {
+  .imgSize {
     width: 45vw;
   }
 }

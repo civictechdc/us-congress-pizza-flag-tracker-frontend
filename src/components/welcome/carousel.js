@@ -1,73 +1,57 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
 import AliceCarousel from "react-alice-carousel";
 import "../../style/alice-carousel.css";
 // https://github.com/maxmarinich/react-alice-carousel
 
-import office from "../../components/images/Capitol-Flag-Office-800x450.jpg";
-import officeMedium from "../../components/images/Capitol-Flag-Office-500x281.jpg";
-import officeSmall from "../../components/images/Capitol-Flag-Office-280x157.jpg";
-import zoomIn from "../../components/images/STOCap-05-800x450.jpg";
-import zoomInMedium from "../../components/images/STOCap-05-500x281.jpg";
-import zoomInSmall from "../../components/images/STOCap-05-280x157.jpg";
-import zoomOut from "../../components/images/STOCap-02-800x450.jpg";
-import zoomOutMedium from "../../components/images/STOCap-02-500x281.jpg";
-import zoomOutSmall from "../../components/images/STOCap-02-280x157.jpg";
+import office from "../../components/images/Architect-of-the-Capital-office.jpg";
+import zoomIn from "../../components/images/STOCap-05.jpg";
+import zoomOut from "../../components/images/STOCap-02.jpg";
 
 import coverPanel from "../../components/images/coverPanel.png";
 
 const handleDragStart = (e) => e.preventDefault();
 
-const large = [
+const items = [
   <img
     src={zoomOut}
-    className="widthfiftypercent"
+    className="imgSize"
     onDragStart={handleDragStart}
     role="presentation"
   />,
   <img
     src={zoomIn}
-    className="widthfiftypercent"
+    className="imgSize"
     onDragStart={handleDragStart}
     role="presentation"
   />,
   <img
     src={office}
-    className="widthfiftypercent"
+    className="imgSize"
     onDragStart={handleDragStart}
     role="presentation"
   />,
 ];
 
-const medium = [
-  <img src={zoomOutMedium} onDragStart={handleDragStart} role="presentation" />,
-  <img src={zoomInMedium} onDragStart={handleDragStart} role="presentation" />,
-  <img src={officeMedium} onDragStart={handleDragStart} role="presentation" />,
-];
+const Carousel = () => {
+  const [mediaQuery, setMediaQuery] = useState(window.innerWidth);
 
-const small = [
-  <img src={zoomOutSmall} onDragStart={handleDragStart} role="presentation" />,
-  <img src={zoomInSmall} onDragStart={handleDragStart} role="presentation" />,
-  <img src={officeSmall} onDragStart={handleDragStart} role="presentation" />,
-];
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setMediaQuery(window.innerWidth);
+    };
 
-const Carousel = (props) => {
-  const { mediaQuery } = props;
+    window.addEventListener("resize", handleWindowResize);
 
-  let items = large;
-  let buffer = (mediaQuery - 800) / 2;
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+
+  let buffer = 0;
 
   if (mediaQuery < 800) {
-    items = medium;
-    buffer = (mediaQuery - 500) / 2;
-  }
-
-  if (mediaQuery < 500) {
-    items = small;
-    buffer = (mediaQuery - 280) / 2;
-  }
-
-  if (buffer < 1) {
-    buffer = 0;
+    buffer = mediaQuery * 0.05;
   }
 
   return (
@@ -75,10 +59,10 @@ const Carousel = (props) => {
       <img
         className="coverPanelLeft"
         src={coverPanel}
-        // covers odd edge carousel artifact edge cases
+        // covers odd carousel artifact edge cases
       />
       <AliceCarousel
-        // autoPlay
+        autoPlay
         autoPlayInterval={10000}
         autoPlayStrategy={"all"}
         disableButtonsControls
@@ -86,12 +70,12 @@ const Carousel = (props) => {
         items={items}
         keyboardNavigation
         mouseTracking
-        // paddingLeft={buffer}
+        paddingLeft={buffer}
       />
       <img
         className="coverPanelRight"
         src={coverPanel}
-        // covers odd edge carousel artifact edge cases
+        // covers odd carousel artifact edge cases
       />
     </section>
   );

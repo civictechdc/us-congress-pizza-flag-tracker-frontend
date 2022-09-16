@@ -5,7 +5,7 @@ const WelcomeText = () => {
   return (
     <section className={styles.textContainer}>
       <div className={styles.textInnerContainer}>
-        <h4>
+        <h4 className={styles.text}>
           Frustrated{" "}
           <a href="https://msacaphill.my.canva.site/">
             Modernization Staff Association
@@ -17,12 +17,12 @@ const WelcomeText = () => {
           when you order a pizza.
         </h4>
         <br />
-        <h4>
+        <h4 className={styles.text}>
           Any resident in a USA congressional district can order an American
           flag from their House representative or from one of their Senators.
         </h4>
         <br />
-        <h4>
+        <h4 className={styles.text}>
           Many agencies come together to deliver the flag service. A flag starts
           with their constituents' payment then goes across several internal
           agencies. On request, that flag can even be flown at the US Capitol
@@ -33,7 +33,7 @@ const WelcomeText = () => {
           further delays.
         </h4>
         <br />
-        <h4>
+        <h4 className={styles.text}>
           The app here proposes to ask the agency employees who box the flag for
           their help to print and add QR code stickers. Then at each step, we
           would ask the next employees to confirm a flag box's arrival by
@@ -43,7 +43,7 @@ const WelcomeText = () => {
           works better for everyone.
         </h4>
         <br />
-        <h4>
+        <h4 className={styles.text}>
           This app is a collaboration between{" "}
           <a href="https://codefordc.org/">Code For DC</a> and the{" "}
           <a href="https://msacaphill.my.canva.site/">
