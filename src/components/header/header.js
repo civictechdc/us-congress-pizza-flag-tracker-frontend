@@ -66,21 +66,19 @@ function Header() {
             )}
           </div>
           {isUser() ? (
-            <>
-              <div className={styles.nav_group2}>
-                <li>
-                  <input
-                    type="image"
-                    className={styles.logout_button}
-                    onClick={logOut}
-                    src={logoutImage}
-                  />
-                </li>
-                <li className={styles.nav_username}>
-                  <p>{AuthService.getCurrentUserName()}</p>
-                </li>
-              </div>
-            </>
+            <div className={styles.nav_group2}>
+              <li>
+                <input
+                  type="image"
+                  className={styles.logout_button}
+                  onClick={logOut}
+                  src={logoutImage}
+                />
+              </li>
+              <li className={styles.nav_username}>
+                <p>{AuthService.getCurrentUserName()}</p>
+              </li>
+            </div>
           ) : (
             <></>
           )}
