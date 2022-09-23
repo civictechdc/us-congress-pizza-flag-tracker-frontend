@@ -64,6 +64,21 @@ code {
   align-items: center;
 }
 
+.pop-up-confirm-dialog {
+  align-content: center;
+  flex-direction: column;
+}
+
+.pop-button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.pop-button {
+  margin-right: 15px;
+}
+
 .badge {
   margin: 1px;
 }
