@@ -111,7 +111,7 @@ const OrdersView = () => {
   };
 
   const debouncedRetrieveOrders = useMemo(
-    () => debounce(retrieveOrders, 300)
+    () => debounce(retrieveOrders, 500)
   , []);
 
   useEffect(() => {
