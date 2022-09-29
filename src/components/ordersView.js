@@ -1,11 +1,13 @@
 import React, {
-  useState,
+  useContext,
   useEffect,
+  useMemo,
   useReducer,
   useRef,
-  useContext,
+  useState
 } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import debounce from 'lodash.debounce';
 
 import AuthService from "../service/authService";
 import OrderDataService from "../service/orderService";
@@ -108,6 +110,16 @@ const OrdersView = () => {
     });
   };
 
+  const debouncedRetrieveOrders = useMemo(
+    () => debounce(retrieveOrders, 500)
+  , []);
+
+  useEffect(() => {
+    return () => {
+      debouncedRetrieveOrders.cancel();
+    }
+  }, [debouncedRetrieveOrders]);
+
   let searchParams = useLocation().search;
 
   if (searchState === undefined) {
@@ -160,18 +172,18 @@ const OrdersView = () => {
       dispatch({ type: "state", payload: "Search by State" });
       dispatch({ type: "office", payload: "Search by Office" });
       if (searchParams) {
-        retrieveOrders(searchParams);
+        debouncedRetrieveOrders(searchParams);
         const parsedParams = new URLSearchParams(searchParams);
         parsedParams.forEach((value, propName) => {
           dispatch({ type: propName, payload: value });
         });
       } else {
-        retrieveOrders();
+        debouncedRetrieveOrders();
       }
     } finally {
       setLoading(false);
     }
-  }, [searchParams, dispatch]);
+  }, [debouncedRetrieveOrders, searchParams, dispatch]);
 
   const setActiveOrder = (order) => {
     navigate("/scan/" + order.uuid);
