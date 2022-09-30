@@ -42,12 +42,12 @@ export const LogTable = (props) => {
         <table className="table table-striped table-bordered table-sm">
           <thead className="thead-dark">
             <tr>
-              <th>Order updated at</th>
-              <th>By</th>
-              <th>Order number</th>
+              <th>Updated</th>
+              <th>Order #</th>
               <th>State</th>
-              <th>Office code</th>
+              <th>Office</th>
               <th>Status</th>
+              <th>Closure</th>
             </tr>
           </thead>
           <tbody>
@@ -55,11 +55,11 @@ export const LogTable = (props) => {
               return (
                 <tr key={row.uuid}>
                   <td>{row.updated_at}</td>
-                  <td>(Data not available)</td>
                   <td>{row.order_number}</td>
                   <td>{row.usa_state}</td>
                   <td>{row.home_office_code}</td>
                   <td>{String(row.order_status_id)}</td>
+                  {row.order_archived == 0 ? <td>Open</td> : <td>Deleted</td>}
                 </tr>
               );
             })}
