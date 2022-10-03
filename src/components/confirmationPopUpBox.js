@@ -1,6 +1,6 @@
 import React from "react";
 
-const ConfirmPopUpBoxComponent = (props) => {
+const ConfirmationPopUpBox = (props) => {
   const { closePopUpBox, message, popUpBox, handleClick } = props;
 
   return (
@@ -25,4 +25,4 @@ const ConfirmPopUpBoxComponent = (props) => {
   );
 };
 
-export default ConfirmPopUpBoxComponent;
+export default ConfirmationPopUpBox;

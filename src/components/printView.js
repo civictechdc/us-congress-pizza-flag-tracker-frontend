@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import ReactToPrint from "react-to-print";
 import OrderDataService from "../service/orderService";
-import PopUpBoxComponent from "./popUpBoxComponent";
+import PopUpBox from "./popUpBox";
 import QrCode from "../components/qrCode";
 import "../style/printOrder.css";
 
@@ -53,15 +53,18 @@ const PrintView = (props) => {
       {loading ? (
         "Loading..."
       ) : (
-        <>
+        <div className="printContainer">
+          <div className="titleContainer">
+            <h1 className="title">Print</h1>
+          </div>
           <QrCode ref={componentRef} order={order} />
           <ReactToPrint
             trigger={() => <button className="center">Print this out!</button>}
             content={() => componentRef.current}
           />
-        </>
+        </div>
       )}
-      <PopUpBoxComponent
+      <PopUpBox
         closePopUpBox={closePopUpBox}
         message={message}
         popUpBox={popUpBox}

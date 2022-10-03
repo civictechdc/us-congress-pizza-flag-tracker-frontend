@@ -15,7 +15,7 @@ import StatusDataService from "../service/statusService";
 
 import { editOrderControl } from "./permissions";
 import Gauge from "./gauge";
-import PopUpBoxComponent from "./popUpBoxComponent";
+import PopUpBox from "./popUpBox";
 import { Search } from "./search";
 import { TableHeader } from "./tableHeader";
 import UserContext from "./userContext";
@@ -371,7 +371,7 @@ const OrdersView = () => {
         )}
       </div>
 
-      <PopUpBoxComponent
+      <PopUpBox
         closePopUpBox={closePopUpBox}
         message={message}
         popUpBox={popUpBox}

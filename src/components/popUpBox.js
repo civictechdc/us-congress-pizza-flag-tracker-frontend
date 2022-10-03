@@ -1,6 +1,6 @@
 import React from "react";
 
-const PopUpBoxComponent = (props) => {
+const PopUpBox = (props) => {
   const { closePopUpBox, message, popUpBox } = props;
 
   return (
@@ -12,4 +12,4 @@ const PopUpBoxComponent = (props) => {
   );
 };
 
-export default PopUpBoxComponent;
+export default PopUpBox;

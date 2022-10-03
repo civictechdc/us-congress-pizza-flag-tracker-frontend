@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AuthService from "../service/authService";
 import OrderDataService from "../service/orderService";
 import OrderForm from "./orderForm";
-import PopUpBoxComponent from "./popUpBoxComponent";
+import PopUpBox from "./popUpBox";
 
 const AddView = () => {
   const initialOrderState = {
@@ -53,7 +53,7 @@ const AddView = () => {
         saveOrderFunc={saveOrder}
         mode={mode}
       />
-      <PopUpBoxComponent
+      <PopUpBox
         closePopUpBox={closePopUpBox}
         message={message}
         popUpBox={popUpBox}

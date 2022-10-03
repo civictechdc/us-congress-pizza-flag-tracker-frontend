@@ -83,6 +83,10 @@ code {
   margin: 1px;
 }
 
+.mr-3 {
+  margin-left: 10px;
+}
+
 @media only screen and (max-width: 600px) {
   .pop-up {
     width: 94vw;

@@ -1,5 +1,5 @@
 import { React, useCallback, useEffect, useState } from "react";
-import PopUpBoxComponent from "./popUpBoxComponent";
+import PopUpBox from "./popUpBox";
 import OrderDataService from "../service/orderService";
 import AuthService from "../service/authService";
 
@@ -68,7 +68,7 @@ export const LogTable = (props) => {
       ) : (
         "No data to display"
       )}
-      <PopUpBoxComponent
+      <PopUpBox
         closePopUpBox={closePopUpBox}
         message={message}
         popUpBox={popUpBox}

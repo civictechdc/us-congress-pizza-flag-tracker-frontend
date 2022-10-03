@@ -2,9 +2,10 @@
   opacity: .6;
 }
 
-.validationMessage {
-  color: #FF0000;
-  font-weight: bold;
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .constituentBox{
@@ -55,6 +56,11 @@
 
 .qrImage {
   height: 30%;
+}
+
+.validationMessage {
+  color: #FF0000;
+  font-weight: bold;
 }
 
 /*====================================================

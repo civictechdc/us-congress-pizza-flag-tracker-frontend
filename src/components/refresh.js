@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
-import PopUpBoxComponent from "./popUpBoxComponent";
+import PopUpBox from "./popUpBox";
 import OrderDataService from "../service/orderService";
 import styles from "../style/orderForm.module.css";
 
@@ -37,7 +37,7 @@ const Refresh = () => {
         </button>
       </div>
       {navigateNow ? <Navigate to="/" replace /> : <></>}
-      <PopUpBoxComponent
+      <PopUpBox
         closePopUpBox={closePopUpBox}
         message={message}
         popUpBox={popUpBox}
