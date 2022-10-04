@@ -1,5 +1,6 @@
 import React from "react";
 import OrderNotCancelled from "./orderNotCancelled/orderNotCancelled";
+import { editOrderControl } from "../../permissions";
 
 const OrderOpen = (props) => {
   const {
@@ -22,11 +23,19 @@ const OrderOpen = (props) => {
   return (
     <>
       {order.archived === "1" ? (
-        <div className="form-group statusLabel">
-          <label htmlFor="next_status">
-            <strong>Use Edit Screen to Uncancel</strong>
-          </label>
-        </div>
+        editOrderControl() ? (
+          <div className="form-group statusLabel">
+            <label htmlFor="next_status">
+              <strong>Use Edit Screen to Uncancel</strong>
+            </label>
+          </div>
+        ) : (
+          <div className="form-group statusLabel">
+            <label htmlFor="next_status">
+              <strong>Contact IT Admin to Uncancel</strong>
+            </label>
+          </div>
+        )
       ) : (
         <OrderNotCancelled
           decline={decline}
