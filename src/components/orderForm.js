@@ -147,8 +147,6 @@ const OrderForm = (props) => {
     }
   };
 
-  console.log("order: ", order);
-
   return (
     <>
       <div className={styles.formContainer}>
