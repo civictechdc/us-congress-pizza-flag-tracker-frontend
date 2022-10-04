@@ -59,7 +59,7 @@ export const LogTable = (props) => {
                   <td>{row.usa_state}</td>
                   <td>{row.home_office_code}</td>
                   <td>{String(row.order_status_id)}</td>
-                  {row.order_archived == 0 ? <td>Open</td> : <td>Deleted</td>}
+                  {row.order_archived == 0 ? <td>Open</td> : <td>Cancelled</td>}
                 </tr>
               );
             })}

@@ -85,6 +85,11 @@ code {
 
 .mr-3 {
   margin-left: 10px;
+  width: 89px;
+}
+
+.mr-4 {
+  color: #dc2b45;
 }
 
 @media only screen and (max-width: 600px) {
