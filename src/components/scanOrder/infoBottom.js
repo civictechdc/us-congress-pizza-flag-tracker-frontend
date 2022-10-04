@@ -61,7 +61,7 @@ const InfoBottom = (props) => {
           {showLog ? "Hide" : "Show"} flag history
         </button>
         {showLog && (
-          <LogTable uuid={order.uuid} order_number={order.order_number} />
+          <LogTable order_number={order.order_number} />
         )}
       </>
     </>

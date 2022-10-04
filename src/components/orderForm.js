@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Select from "react-select";
 import { STATES } from "./states.js";
+import { LogTable } from "./logTable";
 import styles from "../style/orderForm.module.css";
-import ConfirmPopUpBoxComponent from "./confirmPopUpBoxComponent.js";
+import ConfirmationPopUpBox from "./confirmationPopUpBox.js";
 
 const OrderForm = (props) => {
   const {
@@ -20,6 +21,7 @@ const OrderForm = (props) => {
   const [isLastChangeUSState, setIsLastChangeUSState] = useState(false);
   const [whyCantIUpdate, setWhyCantIUpdate] = useState(false);
   const [popUpBox, setPopUpBox] = useState("none");
+  const [showLog, setShowLog] = useState(false);
 
   const closePopUpBox = () => {
     setPopUpBox("none");
@@ -115,7 +117,7 @@ const OrderForm = (props) => {
     setWhyCantIUpdate(true);
   };
 
-  const handleDeleteClick = () => {
+  const handleCancelClick = () => {
     setPopUpBox("block");
   };
 
@@ -142,9 +144,9 @@ const OrderForm = (props) => {
     <>
       <div className={styles.formContainer}>
         {mode === "edit" ? (
-          <h1 className={styles.title}>Edit Order</h1>
+          <h1 className={styles.title}>Edit</h1>
         ) : (
-          <h1 className={styles.title}>Add Order</h1>
+          <h1 className={styles.title}>New Order</h1>
         )}
         {mode === "edit" && loading ? (
           "Loading..."
@@ -174,6 +176,7 @@ const OrderForm = (props) => {
                 onChange={handleInputChange}
                 name="order_number"
               />
+
               {!order.order_number && whyCantIUpdate ? (
                 <p className={styles.validationMessage}>
                   Enter a valid Order Number
@@ -250,38 +253,55 @@ const OrderForm = (props) => {
               </div>
             </span>
 
-            {mode === "edit" ? (
-              <>
-                <div className="form-group">
-                  <label htmlFor="edit-status">Status:</label>{" "}
-                  <Select
-                    inputId="edit-status"
-                    onChange={handleInputChange}
-                    options={optionStatuses}
-                    value={{
-                      label: `#${order.status.sequence_num} ${order.status.description}`,
-                      name: "order_status_id",
-                      value: order.status.sequence_num,
-                    }}
-                  />
-                </div>
-              </>
-            ) : null}
+            {((mode === "edit") && (order.archived == 1)) ? (
+              <div className="form-group">
+                <label htmlFor="edit-status">Status:</label>
+                <b className="mr-4"> Order Cancelled</b>
+              </div>
+            ) : (mode === "edit" ? (
+              <div className="form-group">
+                <label htmlFor="edit-status">Status:</label>{" "}
+                <Select
+                  inputId="edit-status"
+                  onChange={handleInputChange}
+                  options={optionStatuses}
+                  value={{
+                    label: `#${order.status.sequence_num} ${order.status.description}`,
+                    name: "order_status_id",
+                    value: order.status.sequence_num,
+                  }}
+                />
+              </div>
+            ) : (
+              <></>
+            ))}
 
+            <div className={styles.buttonContainer}>
             <button
               onClick={handleSave}
               className={`btn btn-success ${disableButton ? "btn-why" : ""}`}
             >
-              {mode === "edit" ? "Update" : "Submit"}
+              Submit Changes
             </button>
-            {mode === "edit" && (
+            {((mode === "edit") && (order.archived == 1)) ? (
               <button
-                className={`btn btn-danger mr-2`}
-                onClick={handleDeleteClick}
+                className={`btn btn-danger mr-2 mr-3`}
+                // onClick={handleUncancelClick}
               >
-                Delete
+                Uncancel
               </button>
-            )}
+            ) : (mode === "edit" ? (
+              <button
+                className={`btn btn-danger mr-2 mr-3`}
+                onClick={handleCancelClick}
+              >
+                Cancel Order
+              </button>
+            ) : (
+              <></>
+            ))}
+            </div>
+
             {!checkSaved ? (
               <p className={styles.validationMessage}>
                 Changes not saved, press {mode === "edit" ? "Update" : "Submit"}{" "}
@@ -290,12 +310,25 @@ const OrderForm = (props) => {
             ) : (
               ""
             )}
+
+            <button
+              onClick={() => {
+                setShowLog(!showLog);
+              }}
+              className="btn btn-link"
+            >
+              {showLog ? "Hide" : "Show"} flag history
+            </button>
+            {showLog && (
+              <LogTable order_number={order.order_number} />
+            )}
           </>
         )}
       </div>
-      <ConfirmPopUpBoxComponent
+
+      <ConfirmationPopUpBox
         closePopUpBox={closePopUpBox}
-        message={`Are you sure you want to delete order number ${order.order_number} ?`}
+        message={`Are you sure you want to cancel order number ${order.order_number} ?`}
         popUpBox={popUpBox}
         handleClick={deleteOrderFunc}
       />

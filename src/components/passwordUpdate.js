@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PopUpBoxComponent from "./popUpBoxComponent";
+import PopUpBox from "./popUpBox";
 import userService from "../service/userService";
 import AuthService from "../service/authService";
 import styles from "../style/password.module.css";
@@ -188,7 +188,7 @@ const PasswordUpdate = () => {
       ) : (
         <></>
       )}
-      <PopUpBoxComponent
+      <PopUpBox
         closePopUpBox={closePopUpBox}
         message={message}
         popUpBox={popUpBox}

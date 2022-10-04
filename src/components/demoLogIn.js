@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import PopUpBoxComponent from "./popUpBoxComponent";
+import PopUpBox from "./popUpBox";
 import UserContext from "./userContext";
 import AuthService from "../service/authService";
 import styles from "../style/orderForm.module.css";
@@ -44,7 +44,7 @@ const DemoLogIn = () => {
       <div className={styles.formContainer}>
         Updating User Account: Demo Use Only
       </div>
-      <PopUpBoxComponent
+      <PopUpBox
         closePopUpBox={closePopUpBox}
         message={message}
         popUpBox={popUpBox}

@@ -7,7 +7,7 @@ import StatusDataService from "../../service/statusService";
 import InfoBottom from "./infoBottom";
 import InfoTop from "./infoTop";
 import { numSort } from "../sorting/sortHook";
-import PopUpBoxComponent from "../popUpBoxComponent";
+import PopUpBox from "../popUpBox";
 
 import styles from "../../style/scanOrder.module.css";
 
@@ -259,7 +259,7 @@ const ScanView = (props) => {
           <p>Please click on an order...</p>
         </>
       )}
-      <PopUpBoxComponent
+      <PopUpBox
         closePopUpBox={closePopUpBox}
         message={message}
         popUpBox={popUpBox}

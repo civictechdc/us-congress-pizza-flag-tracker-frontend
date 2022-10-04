@@ -10,7 +10,7 @@ const InfoTop = (props) => {
 
   return (
     <>
-      <h1 className={styles.title}>Scan</h1>
+      <h1 className={styles.title}>Update</h1>
       <a data-name="edit" href={editLink}>
         Edit this order
       </a>{" "}
@@ -32,18 +32,27 @@ const InfoTop = (props) => {
         <h5>District: {order.home_office_code}</h5>
         <br></br>
       </div>
-      <div className="form-group statusLabel">
-        <label htmlFor="current_status">
-          Current Status:{" "}
-          {order.status.description ? (
-            <strong>
-              #{order.status.sequence_num} - {order.status.description}
-            </strong>
-          ) : (
-            <strong>Missing status...</strong>
-          )}
-        </label>
-      </div>
+      {order.archived === "1" ? (
+        <div className="form-group statusLabel">
+          <label htmlFor="next_status">
+            <strong>Order canceled</strong>
+          </label>
+        </div>
+      ) : (
+        <div className="form-group statusLabel">
+          <label htmlFor="current_status">
+            Current Status:{" "}
+            {order.status.description ? (
+              <strong>
+                #{order.status.sequence_num} - {order.status.description}
+              </strong>
+            ) : (
+              <strong>Missing status...</strong>
+            )}
+          </label>
+        </div>
+	    )}
+
     </>
   );
 };

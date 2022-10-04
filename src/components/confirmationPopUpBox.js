@@ -1,6 +1,6 @@
 import React from "react";
 
-const ConfirmPopUpBoxComponent = (props) => {
+const ConfirmationPopUpBox = (props) => {
   const { closePopUpBox, message, popUpBox, handleClick } = props;
 
   return (
@@ -13,10 +13,10 @@ const ConfirmPopUpBoxComponent = (props) => {
               onClick={handleClick}
               className={`btn btn-success pop-button`}
             >
-              Confirm
+              Yes
             </button>
             <button className={`btn btn-danger mr-2`} onClick={closePopUpBox}>
-              Cancel
+              No
             </button>
           </div>
         </div>
@@ -25,4 +25,4 @@ const ConfirmPopUpBoxComponent = (props) => {
   );
 };
 
-export default ConfirmPopUpBoxComponent;
+export default ConfirmationPopUpBox;

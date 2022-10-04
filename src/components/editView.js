@@ -3,7 +3,7 @@ import AuthService from "../service/authService";
 import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 import OrderForm from "./orderForm";
-import PopUpBoxComponent from "./popUpBoxComponent";
+import PopUpBox from "./popUpBox";
 import { numSort } from "./sorting/sortHook";
 import { useNavigate } from "react-router-dom";
 
@@ -109,7 +109,7 @@ const EditView = (props) => {
           <p>Please click on an order...</p>
         </>
       )}
-      <PopUpBoxComponent
+      <PopUpBox
         closePopUpBox={closePopUpBox}
         message={message}
         popUpBox={popUpBox}
