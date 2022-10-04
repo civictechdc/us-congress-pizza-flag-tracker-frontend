@@ -4,7 +4,7 @@ import OrderDataService from "../service/orderService";
 import AuthService from "../service/authService";
 
 export const LogTable = (props) => {
-  const {order_number, setUpdated, updated} = props
+  const { order_number, setUpdated, updated } = props;
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -25,19 +25,16 @@ export const LogTable = (props) => {
   }, []);
 
   useEffect(() => {
-    if (!orderLog || (updated == true)) {
+    if (!orderLog || updated == true) {
       setLoading(true);
       getOrderLog(order_number);
       setUpdated(false);
     }
-    
-  }, [getOrderLog, order_number, orderLog, setUpdated, updated ]);
+  }, [getOrderLog, order_number, orderLog, setUpdated, updated]);
 
   const closePopUpBox = () => {
     setPopUpBox("none");
   };
-
-  console.log("Updated? ", updated);
 
   return (
     <>
