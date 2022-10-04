@@ -136,9 +136,18 @@ const OrderForm = (props) => {
     if (disableButton) {
       whyNoSave();
     } else {
+      setOrderFunc((prevOrderFunc) => {
+        return {
+          ...prevOrderFunc,
+          archived: "0",
+        };
+      });
       saveOrderFunc();
+      setShowLog(false);
     }
   };
+
+  console.log("order: ", order);
 
   return (
     <>
@@ -277,29 +286,39 @@ const OrderForm = (props) => {
             ))}
 
             <div className={styles.buttonContainer}>
-            <button
-              onClick={handleSave}
-              className={`btn btn-success ${disableButton ? "btn-why" : ""}`}
-            >
-              Submit Changes
-            </button>
-            {((mode === "edit") && (order.archived == 1)) ? (
-              <button
-                className={`btn btn-danger mr-2 mr-3`}
-                // onClick={handleUncancelClick}
-              >
-                Uncancel
-              </button>
-            ) : (mode === "edit" ? (
-              <button
-                className={`btn btn-danger mr-2 mr-3`}
-                onClick={handleCancelClick}
-              >
-                Cancel Order
-              </button>
-            ) : (
-              <></>
-            ))}
+              {((mode === "edit") && (order.archived == 1)) ? (
+                <button
+                  onClick={handleSave}
+                  className={`btn btn-success ${disableButton ? "btn-why" : ""}`}
+                  disabled
+                >
+                  Submit Changes
+                </button>
+              ) : (
+                <button
+                  onClick={handleSave}
+                  className={`btn btn-success ${disableButton ? "btn-why" : ""}`}
+                >
+                  Submit Changes
+                </button>
+              )}
+              {((mode === "edit") && (order.archived == 1)) ? (
+                <button
+                  className={`btn btn-danger mr-2 mr-3`}
+                  onClick={handleSave}
+                >
+                  Uncancel
+                </button>
+              ) : (mode === "edit" ? (
+                <button
+                  className={`btn btn-danger mr-2 mr-3`}
+                  onClick={handleCancelClick}
+                >
+                  Cancel Order
+                </button>
+              ) : (
+                <></>
+              ))}
             </div>
 
             {!checkSaved ? (
@@ -328,9 +347,10 @@ const OrderForm = (props) => {
 
       <ConfirmationPopUpBox
         closePopUpBox={closePopUpBox}
+        deleteOrderFunc={deleteOrderFunc}
         message={`Are you sure you want to cancel order number ${order.order_number} ?`}
         popUpBox={popUpBox}
-        handleClick={deleteOrderFunc}
+        setShowLog={setShowLog}
       />
     </>
   );
