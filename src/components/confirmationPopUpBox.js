@@ -1,12 +1,11 @@
 import React from "react";
 
 const ConfirmationPopUpBox = (props) => {
-  const { closePopUpBox, deleteOrderFunc, message, popUpBox, setShowLog } = props;
+  const { closePopUpBox, deleteOrderFunc, message, popUpBox } = props;
 
   const handleClick = () => {
-    setShowLog(false);
     deleteOrderFunc();
-  }
+  };
 
   return (
     <div className="pop-container" style={{ display: popUpBox }}>

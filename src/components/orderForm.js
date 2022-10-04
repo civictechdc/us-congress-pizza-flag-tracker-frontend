@@ -19,9 +19,10 @@ const OrderForm = (props) => {
   } = props;
 
   const [isLastChangeUSState, setIsLastChangeUSState] = useState(false);
-  const [whyCantIUpdate, setWhyCantIUpdate] = useState(false);
   const [popUpBox, setPopUpBox] = useState("none");
   const [showLog, setShowLog] = useState(false);
+  const [updated, setUpdated] = useState(false);
+  const [whyCantIUpdate, setWhyCantIUpdate] = useState(false);
 
   const closePopUpBox = () => {
     setPopUpBox("none");
@@ -143,7 +144,7 @@ const OrderForm = (props) => {
         };
       });
       saveOrderFunc();
-      setShowLog(false);
+      setUpdated(true);
     }
   };
 
@@ -260,12 +261,12 @@ const OrderForm = (props) => {
               </div>
             </span>
 
-            {((mode === "edit") && (order.archived == 1)) ? (
+            {mode === "edit" && order.archived == 1 ? (
               <div className="form-group">
                 <label htmlFor="edit-status">Status:</label>
                 <b className="mr-4"> Order Cancelled</b>
               </div>
-            ) : (mode === "edit" ? (
+            ) : mode === "edit" ? (
               <div className="form-group">
                 <label htmlFor="edit-status">Status:</label>{" "}
                 <Select
@@ -281,13 +282,15 @@ const OrderForm = (props) => {
               </div>
             ) : (
               <></>
-            ))}
+            )}
 
             <div className={styles.buttonContainer}>
-              {((mode === "edit") && (order.archived == 1)) ? (
+              {mode === "edit" && order.archived == 1 ? (
                 <button
                   onClick={handleSave}
-                  className={`btn btn-success ${disableButton ? "btn-why" : ""}`}
+                  className={`btn btn-success ${
+                    disableButton ? "btn-why" : ""
+                  }`}
                   disabled
                 >
                   Submit Changes
@@ -295,19 +298,21 @@ const OrderForm = (props) => {
               ) : (
                 <button
                   onClick={handleSave}
-                  className={`btn btn-success ${disableButton ? "btn-why" : ""}`}
+                  className={`btn btn-success ${
+                    disableButton ? "btn-why" : ""
+                  }`}
                 >
                   Submit Changes
                 </button>
               )}
-              {((mode === "edit") && (order.archived == 1)) ? (
+              {mode === "edit" && order.archived == 1 ? (
                 <button
                   className={`btn btn-danger mr-2 mr-3`}
                   onClick={handleSave}
                 >
                   Uncancel
                 </button>
-              ) : (mode === "edit" ? (
+              ) : mode === "edit" ? (
                 <button
                   className={`btn btn-danger mr-2 mr-3`}
                   onClick={handleCancelClick}
@@ -316,7 +321,7 @@ const OrderForm = (props) => {
                 </button>
               ) : (
                 <></>
-              ))}
+              )}
             </div>
 
             {!checkSaved ? (
@@ -328,16 +333,26 @@ const OrderForm = (props) => {
               ""
             )}
 
-            <button
-              onClick={() => {
-                setShowLog(!showLog);
-              }}
-              className="btn btn-link"
-            >
-              {showLog ? "Hide" : "Show"} flag history
-            </button>
-            {showLog && (
-              <LogTable order_number={order.order_number} />
+            {mode === "edit" ? (
+              <>
+                <button
+                  onClick={() => {
+                    setShowLog(!showLog);
+                  }}
+                  className="btn btn-link"
+                >
+                  {showLog ? "Hide" : "Show"} flag history
+                </button>
+                {showLog && (
+                  <LogTable
+                    order_number={order.order_number}
+                    setUpdated={setUpdated}
+                    updated={updated}
+                  />
+                )}
+              </>
+            ) : (
+              <></>
             )}
           </>
         )}
@@ -348,7 +363,6 @@ const OrderForm = (props) => {
         deleteOrderFunc={deleteOrderFunc}
         message={`Are you sure you want to cancel order number ${order.order_number} ?`}
         popUpBox={popUpBox}
-        setShowLog={setShowLog}
       />
     </>
   );
