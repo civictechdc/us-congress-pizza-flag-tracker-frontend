@@ -1,7 +1,7 @@
 import React from "react";
 
 const ConfirmationPopUpBox = (props) => {
-  const { closePopUpBox, message, popUpBox, handleClick } = props;
+  const { closePopUpBox, deleteOrderFunc, message, popUpBox } = props;
 
   return (
     <div className="pop-container" style={{ display: popUpBox }}>
@@ -10,7 +10,7 @@ const ConfirmationPopUpBox = (props) => {
           <h3>{message}</h3>
           <div className="pop-button-container">
             <button
-              onClick={handleClick}
+              onClick={deleteOrderFunc}
               className={`btn btn-success pop-button`}
             >
               Yes

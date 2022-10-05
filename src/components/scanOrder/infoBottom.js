@@ -14,10 +14,12 @@ const InfoBottom = (props) => {
     revert,
     revertUpdate,
     saveUpdate,
+    setUpdated,
     skip,
     skipStatus,
     skipUpdate,
     statuses,
+    updated,
     user,
   } = props;
 
@@ -61,7 +63,7 @@ const InfoBottom = (props) => {
           {showLog ? "Hide" : "Show"} flag history
         </button>
         {showLog && (
-          <LogTable order_number={order.order_number} />
+          <LogTable order_number={order.order_number} setUpdated={setUpdated} updated={updated} />
         )}
       </>
     </>

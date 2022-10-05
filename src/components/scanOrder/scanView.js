@@ -41,6 +41,7 @@ const ScanView = (props) => {
   const [statuses, setStatuses] = useState([]);
   const [popUpBox, setPopUpBox] = useState("none");
   const [loading, setLoading] = useState(false);
+  const [updated, setUpdated] = useState(false);
 
   let user = JSON.parse(localStorage.getItem("user"));
   if (user == null) {
@@ -159,6 +160,7 @@ const ScanView = (props) => {
       setOrder(response.data);
       setPopUpBox("block");
       setMessage("The order was updated successfully!");
+      setUpdated(true);
       if (activateRevertButton === "on") {
         setRevert("yes");
       }
@@ -246,10 +248,12 @@ const ScanView = (props) => {
             revert={revert}
             revertUpdate={revertUpdate}
             saveUpdate={saveUpdate}
+            setUpdated={setUpdated}
             skip={skip}
             skipStatus={skipStatus}
             skipUpdate={skipUpdate}
             statuses={statuses}
+            updated={updated}
             user={user}
           />
         </>

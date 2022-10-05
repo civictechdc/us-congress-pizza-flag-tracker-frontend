@@ -63,7 +63,11 @@ const EditView = (props) => {
 
   const updateOrder = () => {
     const serviceToExecute = async () => {
-      const response = await OrderDataService.update(order.uuid, order);
+      const updatedOrder = {
+          ...order,
+          archived: 0,
+        };
+      const response = await OrderDataService.update(updatedOrder.uuid, updatedOrder);
       setPopUpBox("block");
       setMessage("The order was updated successfully!");
       setCheckSaved(true);
