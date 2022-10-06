@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import styles from "../../style/scanOrder.module.css";
 
@@ -11,10 +12,15 @@ const InfoTop = (props) => {
   return (
     <>
       <h1 className={styles.title}>Update</h1>
-      <a data-name="edit" href={editLink}>
-        Edit this order
-      </a>{" "}
-      <a href={printLink}>Print this order</a>
+      <div className={styles.buttonContainer}>
+        <Link to={editLink}>
+          <button className="btn btn-success mr-6">Edit</button>
+        </Link>
+        <Link to={printLink}>
+          <button className="btn btn-success mr-3">Print</button>
+        </Link>
+      </div>
+
       <div className={styles.constituentBox}>
         {order.person === undefined ? (
           <></>
@@ -51,8 +57,7 @@ const InfoTop = (props) => {
             )}
           </label>
         </div>
-	    )}
-
+      )}
     </>
   );
 };

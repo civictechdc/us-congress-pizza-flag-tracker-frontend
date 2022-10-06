@@ -1,5 +1,5 @@
 .scanContainer {
-    width: 40vw;
+    width: 50vw;
     min-height: 50vh;
     position: relative;
     margin-left: auto;
@@ -14,8 +14,13 @@
     flex-direction: column;
     align-items: center;
     row-gap: .5em;
-
 }
+
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
 
 .constituent {
     margin-bottom: 2px;
@@ -32,7 +37,7 @@
 }
 
 .title {
-    font-size: 6rem;
+    font-size: 4rem;
 }
 
 /*====================================================

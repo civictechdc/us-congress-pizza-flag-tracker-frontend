@@ -307,14 +307,14 @@ const OrderForm = (props) => {
               )}
               {mode === "edit" && order.archived == 1 ? (
                 <button
-                  className={`btn btn-danger mr-2 mr-3`}
+                  className={`btn btn-danger mr-2 mr-3 mr-5`}
                   onClick={handleSave}
                 >
                   Uncancel Order
                 </button>
               ) : mode === "edit" ? (
                 <button
-                  className={`btn btn-danger mr-2 mr-3`}
+                  className={`btn btn-danger mr-2 mr-3 mr-5`}
                   onClick={handleCancelClick}
                 >
                   Cancel Order
