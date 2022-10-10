@@ -41,6 +41,15 @@ code {
   border-radius: 0.25rem;
 }
 
+.linkContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  right: 5%;
+  top: 31px;
+}
+
 .pop-container {
   position: fixed;
   right: 0;
@@ -93,10 +102,6 @@ code {
 
 .mr-5 {
   width: 89px;
-}
-
-.mr-6 {
-  width: 37.54px;
 }
 
 @media only screen and (max-width: 600px) {

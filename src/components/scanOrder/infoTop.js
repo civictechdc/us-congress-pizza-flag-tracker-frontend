@@ -12,13 +12,9 @@ const InfoTop = (props) => {
   return (
     <>
       <h1 className={styles.title}>Update</h1>
-      <div className={styles.buttonContainer}>
-        <Link to={editLink}>
-          <button className="btn btn-success mr-6">Edit</button>
-        </Link>
-        <Link to={printLink}>
-          <button className="btn btn-success mr-3">Print</button>
-        </Link>
+      <div className="linkContainer">
+        <Link to={editLink}>Edit</Link>
+        <Link to={printLink}>Print</Link>
       </div>
 
       <div className={styles.constituentBox}>

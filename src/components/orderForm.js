@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Select from "react-select";
 import { STATES } from "./states.js";
 import { LogTable } from "./logTable";
@@ -23,6 +24,9 @@ const OrderForm = (props) => {
   const [showLog, setShowLog] = useState(false);
   const [updated, setUpdated] = useState(false);
   const [whyCantIUpdate, setWhyCantIUpdate] = useState(false);
+
+  const updateLink = "/scan/" + order.uuid;
+  const printLink = "/print/" + order.uuid;
 
   const closePopUpBox = () => {
     setPopUpBox("none");
@@ -152,7 +156,13 @@ const OrderForm = (props) => {
     <>
       <div className={styles.formContainer}>
         {mode === "edit" ? (
-          <h1 className={styles.title}>Edit</h1>
+          <>
+            <h1 className={styles.title}>Edit</h1>
+            <div className="linkContainer">
+              <Link to={updateLink}>Update</Link>
+              <Link to={printLink}>Print</Link>
+            </div>
+          </>
         ) : (
           <h1 className={styles.title}>New Order</h1>
         )}
