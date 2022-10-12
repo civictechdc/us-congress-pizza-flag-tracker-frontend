@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { editOrderControl } from "../permissions";
 
 import styles from "../../style/scanOrder.module.css";
 
@@ -11,10 +13,17 @@ const InfoTop = (props) => {
   return (
     <>
       <h1 className={styles.title}>Update</h1>
-      <a data-name="edit" href={editLink}>
-        Edit this order
-      </a>{" "}
-      <a href={printLink}>Print this order</a>
+      <div className="linkContainer">
+        {editOrderControl() ? (
+          <Link to={editLink}>Edit</Link>
+        ) : (
+          <Link style={{ visibility: "hidden" }} to={editLink}>
+            Edit
+          </Link>
+        )}
+        <Link to={printLink}>Print</Link>
+      </div>
+
       <div className={styles.constituentBox}>
         {order.person === undefined ? (
           <></>
@@ -51,8 +60,7 @@ const InfoTop = (props) => {
             )}
           </label>
         </div>
-	    )}
-
+      )}
     </>
   );
 };

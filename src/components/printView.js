@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import ReactToPrint from "react-to-print";
+
 import OrderDataService from "../service/orderService";
+
+import { editOrderControl } from "./permissions";
 import PopUpBox from "./popUpBox";
 import QrCode from "../components/qrCode";
+
 import "../style/printOrder.css";
 
 const PrintView = (props) => {
@@ -34,6 +39,9 @@ const PrintView = (props) => {
 
   const componentRef = useRef();
 
+  const updateLink = "/scan/" + order.uuid;
+  const editLink = "/edit/" + order.uuid;
+
   useEffect(() => {
     setLoading(true);
     OrderDataService.getOrder(printId, setOrder, false, setLoading).catch(
@@ -56,6 +64,16 @@ const PrintView = (props) => {
         <div className="printContainer">
           <div className="titleContainer">
             <h1 className="title">Print</h1>
+          </div>
+          <div className="linkContainer">
+            {editOrderControl() ? (
+              <Link to={editLink}>Edit</Link>
+            ) : (
+              <Link style={{ visibility: "hidden" }} to={editLink}>
+                Edit
+              </Link>
+            )}
+            <Link to={updateLink}>Update</Link>
           </div>
           <QrCode ref={componentRef} order={order} />
           <ReactToPrint

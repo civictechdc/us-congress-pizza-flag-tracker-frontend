@@ -41,6 +41,8 @@
   margin-left: auto;
   margin-right: auto;
   padding-bottom: 15px;
+  position: relative;
+  top: 10vh;
   width: max-content;
 
   background-color: white;

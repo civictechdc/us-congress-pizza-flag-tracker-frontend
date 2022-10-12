@@ -1,5 +1,5 @@
 .scanContainer {
-    width: 40vw;
+    width: 50vw;
     min-height: 50vh;
     position: relative;
     margin-left: auto;
@@ -14,7 +14,10 @@
     flex-direction: column;
     align-items: center;
     row-gap: .5em;
+}
 
+.constituentBox {
+    margin-top: 25px;
 }
 
 .constituent {
@@ -32,7 +35,7 @@
 }
 
 .title {
-    font-size: 6rem;
+    font-size: 4rem;
 }
 
 /*====================================================
@@ -44,10 +47,6 @@
   ====================================================*/
 
 @media only screen and (max-width: 600px) {
-    .title {
-        font-size: 4rem;
-    }
-
     .scanContainer {
         width: 90vw;
     }

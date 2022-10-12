@@ -25,11 +25,11 @@ export const LogTable = (props) => {
   }, []);
 
   useEffect(() => {
-    if (!orderLog || updated == true) {
-      setLoading(true);
-      getOrderLog(order_number);
-      setUpdated(false);
-    }
+    if ((orderLog && !updated) == true) return;
+
+    setLoading(true);
+    getOrderLog(order_number);
+    setUpdated(false);
   }, [getOrderLog, order_number, orderLog, setUpdated, updated]);
 
   const closePopUpBox = () => {
