@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { editOrderControl } from "../permissions";
 
 import styles from "../../style/scanOrder.module.css";
 
@@ -13,7 +14,13 @@ const InfoTop = (props) => {
     <>
       <h1 className={styles.title}>Update</h1>
       <div className="linkContainer">
-        <Link to={editLink}>Edit</Link>
+        {editOrderControl() ? (
+          <Link to={editLink}>Edit</Link>
+        ) : (
+          <Link style={{ visibility: "hidden" }} to={editLink}>
+            Edit
+          </Link>
+        )}
         <Link to={printLink}>Print</Link>
       </div>
 

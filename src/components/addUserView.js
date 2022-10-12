@@ -7,33 +7,33 @@ import styles from "../style/addUser.module.css";
 import UserService from "../service/userService";
 
 function required(value) {
-  if (!value) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
-      </div>
-    );
-  }
+  if (value) return;
+
+  return (
+    <div className="alert alert-danger" role="alert">
+      This field is required!
+    </div>
+  );
 }
 
 const vusername = (value) => {
-  if (value.length < 3 || value.length > 20) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        The username must be between 3 and 20 characters.
-      </div>
-    );
-  }
+  if (value.length > 2 && value.length < 21) return;
+
+  return (
+    <div className="alert alert-danger" role="alert">
+      The username must be between 3 and 20 characters.
+    </div>
+  );
 };
 
 const vpassword = (value) => {
-  if (value.length < 6 || value.length > 40) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        The password must be between 6 and 40 characters.
-      </div>
-    );
-  }
+  if (value.length > 5 && value.length < 41) return;
+
+  return (
+    <div className="alert alert-danger" role="alert">
+      The password must be between 6 and 40 characters.
+    </div>
+  );
 };
 
 export default class AddUserView extends Component {

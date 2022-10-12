@@ -51,12 +51,12 @@ const EditView = (props) => {
   }, [editId]);
 
   useEffect(() => {
-    if (statuses.length === 0) {
-      StatusDataService.retrieveStatuses(setStatuses).catch((err) => {
-        setMessage("Status Issue: " + err);
-        setPopUpBox("block");
-      });
-    }
+    if (statuses.length !== 0) return;
+
+    StatusDataService.retrieveStatuses(setStatuses).catch((err) => {
+      setMessage("Status Issue: " + err);
+      setPopUpBox("block");
+    });
   }, [statuses]);
 
   const sortedStatuses = numSort(statuses, "sequence_num", "asc");
@@ -64,10 +64,13 @@ const EditView = (props) => {
   const updateOrder = () => {
     const serviceToExecute = async () => {
       const updatedOrder = {
-          ...order,
-          archived: 0,
-        };
-      const response = await OrderDataService.update(updatedOrder.uuid, updatedOrder);
+        ...order,
+        archived: 0,
+      };
+      const response = await OrderDataService.update(
+        updatedOrder.uuid,
+        updatedOrder
+      );
       setPopUpBox("block");
       setMessage("The order was updated successfully!");
       setCheckSaved(true);
