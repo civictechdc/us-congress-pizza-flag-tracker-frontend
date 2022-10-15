@@ -1,4 +1,5 @@
 import React, {
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -98,7 +99,7 @@ const OrdersView = () => {
   );
 
   //retrieve orders based on authorization level
-  const retrieveOrders = (params) => {
+  const retrieveOrders = useCallback((params) => {
     const serviceToExecute = async () => {
       const response = await OrderDataService.getAll(params);
       setOrders(response.data.orders);
@@ -108,11 +109,11 @@ const OrdersView = () => {
       setPopUpBox("block");
       setMessage("Order Issue: " + err);
     });
-  };
+  }, []);
 
   const debouncedRetrieveOrders = useMemo(
     () => debounce(retrieveOrders, 500)
-  , []);
+  , [retrieveOrders]);
 
   useEffect(() => {
     return () => {
@@ -265,6 +266,10 @@ const OrdersView = () => {
 
   const closePopUpBox = () => {
     setPopUpBox("none");
+    if (message.includes("401 Unauthorized: Token is past renew date.  See token in response.")) {
+      AuthService.logout();
+      window.location.reload();      
+    }
     setUserDisplay();
   };
 
