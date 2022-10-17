@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthService from "../service/authService";
 import OrderDataService from "../service/orderService";
 import StatusDataService from "../service/statusService";
 import OrderForm from "./orderForm";
 import PopUpBox from "./popUpBox";
+import UserContext from "./userContext";
 import { numSort } from "./sorting/sortHook";
-import { useNavigate } from "react-router-dom";
 
 const EditView = (props) => {
   const { editId } = props;
@@ -37,6 +38,7 @@ const EditView = (props) => {
   const [statuses, setStatuses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [popUpBox, setPopUpBox] = useState("none");
+  const { setUserDisplay } = useContext(UserContext);
   const mode = "edit";
   const navigate = useNavigate();
 
@@ -94,6 +96,15 @@ const EditView = (props) => {
 
   const closePopUpBox = () => {
     setPopUpBox("none");
+    if (
+      message.includes(
+        "401 Unauthorized: Token is past renew date.  See token in response."
+      )
+    ) {
+      AuthService.logout();
+      window.location.reload();
+    }
+    setUserDisplay();
   };
 
   return (

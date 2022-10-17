@@ -1,9 +1,10 @@
-import { useState } from "react";
-import PopUpBox from "./popUpBox";
+import { useContext, useState } from "react";
 import userService from "../service/userService";
 import AuthService from "../service/authService";
-import styles from "../style/password.module.css";
 import { adminControl } from "./permissions";
+import PopUpBox from "./popUpBox";
+import UserContext from "./userContext";
+import styles from "../style/password.module.css";
 
 const PasswordUpdate = () => {
   const [oldPassword, setOldPassword] = useState("");
@@ -15,6 +16,7 @@ const PasswordUpdate = () => {
 
   const [message, setMessage] = useState("");
   const [popUpBox, setPopUpBox] = useState("none");
+  const { setUserDisplay } = useContext(UserContext);
 
   const handleChange = (e) => {
     let { name, value } = e;
@@ -108,6 +110,15 @@ const PasswordUpdate = () => {
 
   const closePopUpBox = () => {
     setPopUpBox("none");
+    if (
+      message.includes(
+        "401 Unauthorized: Token is past renew date.  See token in response."
+      )
+    ) {
+      AuthService.logout();
+      window.location.reload();
+    }
+    setUserDisplay();
   };
 
   return (
@@ -147,7 +158,11 @@ const PasswordUpdate = () => {
           onChange={handleChange}
         />
         <p>&nbsp;</p>
-        <input type="submit" value="Submit" className={styles.passwordFormSubmit} />
+        <input
+          type="submit"
+          value="Submit"
+          className={styles.passwordFormSubmit}
+        />
       </form>
       <br />
       {adminControl() ? (
@@ -182,7 +197,11 @@ const PasswordUpdate = () => {
               onChange={changeUserNewPassword2}
             />
             <p>&nbsp;</p>
-            <input type="submit" value="Submit" className={styles.passwordFormSubmit} />
+            <input
+              type="submit"
+              value="Submit"
+              className={styles.passwordFormSubmit}
+            />
           </form>
         </>
       ) : (
