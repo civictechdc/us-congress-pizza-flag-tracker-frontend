@@ -96,18 +96,12 @@ const EditView = (props) => {
 
   const closePopUpBox = () => {
     setPopUpBox("none");
-    if (
-      message.includes(
-        "401 Unauthorized"
-      )
-    ) {
+    if (message.includes("401 Unauthorized")) {
       AuthService.logout();
       window.location.reload();
     }
     setUserDisplay();
   };
-
-  console.log(message);
 
   return (
     <>
