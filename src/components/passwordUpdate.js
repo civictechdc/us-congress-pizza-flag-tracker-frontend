@@ -112,7 +112,7 @@ const PasswordUpdate = () => {
     setPopUpBox("none");
     if (
       message.includes(
-        "401 Unauthorized: Token is past renew date.  See token in response."
+        "401 Unauthorized"
       )
     ) {
       AuthService.logout();

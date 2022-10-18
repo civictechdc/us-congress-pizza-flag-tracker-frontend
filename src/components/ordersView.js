@@ -266,7 +266,7 @@ const OrdersView = () => {
 
   const closePopUpBox = () => {
     setPopUpBox("none");
-    if (message.includes("401 Unauthorized: Token is past renew date.  See token in response.")) {
+    if (message.includes("401 Unauthorized")) {
       AuthService.logout();
       window.location.reload();      
     }

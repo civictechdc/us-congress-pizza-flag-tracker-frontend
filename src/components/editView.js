@@ -98,7 +98,7 @@ const EditView = (props) => {
     setPopUpBox("none");
     if (
       message.includes(
-        "401 Unauthorized: Token is past renew date.  See token in response."
+        "401 Unauthorized"
       )
     ) {
       AuthService.logout();
@@ -106,6 +106,8 @@ const EditView = (props) => {
     }
     setUserDisplay();
   };
+
+  console.log(message);
 
   return (
     <>
