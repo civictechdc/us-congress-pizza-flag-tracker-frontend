@@ -1,17 +1,9 @@
 //check if user is logged in and has a token
 export function isUser() {
   const user = JSON.parse(localStorage.getItem("user"));
-  if (user !== null) {
-    const token = user.accessToken;
-
-    if (user && token) {
-      return true;
-    } else {
-      return false;
-    }
-  } else {
-    return false;
-  }
+  if (user == null) return false;
+  if (!user || !user.accessToken) return false;
+  return true;
 }
 
 //check admin status
