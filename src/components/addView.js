@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import AuthService from "../service/authService";
 import OrderDataService from "../service/orderService";
 import OrderForm from "./orderForm";
 import PopUpBox from "./popUpBox";
+import UserContext from "./userContext";
 
 const AddView = () => {
   const initialOrderState = {
@@ -17,6 +18,7 @@ const AddView = () => {
   const [order, setOrder] = useState(initialOrderState);
   const [message, setMessage] = useState("");
   const [popUpBox, setPopUpBox] = useState("none");
+  const { setUserDisplay } = useContext(UserContext);
   const mode = "add";
 
   const saveOrder = () => {
@@ -41,6 +43,11 @@ const AddView = () => {
 
   const closePopUpBox = () => {
     setPopUpBox("none");
+    if (message.includes("401 Unauthorized")) {
+      AuthService.logout();
+      window.location.reload();
+      setUserDisplay();   
+    }
   };
 
   return (

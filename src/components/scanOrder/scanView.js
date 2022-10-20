@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import AuthService from "../../service/authService";
 import OrderDataService from "../../service/orderService";
@@ -8,6 +8,7 @@ import InfoBottom from "./infoBottom";
 import InfoTop from "./infoTop";
 import { numSort } from "../sorting/sortHook";
 import PopUpBox from "../popUpBox";
+import UserContext from "../userContext";
 
 import styles from "../../style/scanOrder.module.css";
 
@@ -42,6 +43,7 @@ const ScanView = (props) => {
   const [popUpBox, setPopUpBox] = useState("none");
   const [loading, setLoading] = useState(false);
   const [updated, setUpdated] = useState(false);
+  const { setUserDisplay } = useContext(UserContext);
 
   let user = JSON.parse(localStorage.getItem("user"));
   if (user == null) {
@@ -229,6 +231,15 @@ const ScanView = (props) => {
 
   const closePopUpBox = () => {
     setPopUpBox("none");
+    if (
+      message.includes(
+        "401 Unauthorized"
+      )
+    ) {
+      AuthService.logout();
+      window.location.reload();
+    }
+    setUserDisplay();
   };
 
   return (

@@ -7,7 +7,7 @@ import { adminControl, isUser, orderControl } from "../permissions";
 import UserContext from "../userContext";
 import logoutImage from "../images/Logout.svg.png";
 
-function Header() {
+const Header = () => {
   const { setUserDisplay } = useContext(UserContext); // rerenders when user logs in
 
   function logOut() {

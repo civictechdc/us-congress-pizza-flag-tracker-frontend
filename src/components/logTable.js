@@ -1,7 +1,8 @@
-import { React, useCallback, useEffect, useState } from "react";
-import PopUpBox from "./popUpBox";
+import { React, useCallback, useContext, useEffect, useState } from "react";
 import OrderDataService from "../service/orderService";
 import AuthService from "../service/authService";
+import UserContext from "./userContext";
+import PopUpBox from "./popUpBox";
 
 export const LogTable = (props) => {
   const { order_number, setUpdated, updated } = props;
@@ -10,6 +11,7 @@ export const LogTable = (props) => {
   const [message, setMessage] = useState("");
   const [orderLog, setOrderLog] = useState();
   const [popUpBox, setPopUpBox] = useState("none");
+  const { setUserDisplay } = useContext(UserContext);
 
   const getOrderLog = useCallback((order_number) => {
     const serviceToExecute = async () => {
@@ -34,6 +36,15 @@ export const LogTable = (props) => {
 
   const closePopUpBox = () => {
     setPopUpBox("none");
+    if (
+      message.includes(
+        "401 Unauthorized"
+      )
+    ) {
+      AuthService.logout();
+      window.location.reload();
+    }
+    setUserDisplay();
   };
 
   return (
