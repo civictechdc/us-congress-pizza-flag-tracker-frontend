@@ -6,7 +6,7 @@ import styles from "../style/addUser.module.css";
 
 import UserService from "../service/userService";
 
-function required(value) {
+const required = (value) => {
   if (value) return;
 
   return (
@@ -14,7 +14,7 @@ function required(value) {
       This field is required!
     </div>
   );
-}
+};
 
 const vusername = (value) => {
   if (value.length > 2 && value.length < 21) return;
@@ -54,6 +54,7 @@ export default class AddUserView extends Component {
       message: "",
     };
   }
+
   onChangeValue(field_name, value) {
     const state = this.state;
     state[field_name] = value;
