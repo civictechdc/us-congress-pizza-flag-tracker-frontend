@@ -37,10 +37,6 @@ const vpassword = (value) => {
 };
 
 const AddUserView = () => {
-  // super(props);
-  // this.handleRegister = this.handleRegister.bind(this);
-  // this.onChangeValue = this.onChangeValue.bind(this);
-
   const initialState = {
     username: "",
     password: "",
@@ -58,9 +54,6 @@ const AddUserView = () => {
   let checkBtn = 0;
 
   const onChangeValue = (field_name, value) => {
-    // const state = state;
-    // state[field_name] = value;
-    // this.setState(state);
     setState({
       ...state,
       [field_name]: value,
